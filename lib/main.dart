@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customColors;
@@ -42,22 +43,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search', style: TextStyle(color: customColors.mainTextColor)),
+        title: const Text(
+          'Search',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
         backgroundColor: customColors.appbarColor,
         actions: [
-          // Toggle button for switching themes
-          IconButton(
-            icon: Icon(
-                Provider.of<ThemeProvider>(context).isDarkMode
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-              color: customColors.mainTextColor, // Dynamic icon color
-            ),
-            onPressed: () {
-              // Toggles between light and dark themes
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-          ),
+          ThemeToggleButton(), // Use the reusable widget
         ],
       ),
 
@@ -85,31 +77,23 @@ class RectifierMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Search Menu',
           style: TextStyle(color: customColors.mainTextColor),
         ),
         backgroundColor: customColors.appbarColor,
         actions: [
-          // Toggle button for switching themes
-          IconButton(
-            icon: Icon(
-                Provider.of<ThemeProvider>(context).isDarkMode
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-              color: customColors.mainTextColor, // Dynamic icon color
-            ),
-            onPressed: () {
-              // Toggles between light and dark themes
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-          ),
+          ThemeToggleButton(), // Use the reusable widget
         ],
       ),
 
       body: Center(
+        child: Container(
+          color: customColors.mainBackgroundColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -224,6 +208,7 @@ class RectifierMenu extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }
