@@ -77,7 +77,7 @@ class RectifierMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customColors = Theme.of(context).extension<CustomColors>()!;
+        final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
       appBar: AppBar(
@@ -92,8 +92,6 @@ class RectifierMenu extends StatelessWidget {
       ),
 
       body: Center(
-        child: Container(
-          color: customColors.mainBackgroundColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -208,7 +206,6 @@ class RectifierMenu extends StatelessWidget {
           ],
         ),
       ),
-    ),
     );
   }
 }
