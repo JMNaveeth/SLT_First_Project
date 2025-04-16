@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 
 class ViewRectifierModuleDetails extends StatelessWidget {
@@ -12,6 +14,8 @@ class ViewRectifierModuleDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     List<DataRow> buildModuleRows(List<String> keys) {
       List<DataRow> rows = [];
       for (var i = 0; i < keys.length; i++) {
@@ -34,7 +38,7 @@ class ViewRectifierModuleDetails extends StatelessWidget {
                 DataCell(Text(
                   value.toString(),
                   style: TextStyle(
-                    color: subTextColor,
+                    color: customColors.subTextColor,
                     backgroundColor: isMatch ? highlightColor : null,
                   ),
                 )),
@@ -48,12 +52,16 @@ class ViewRectifierModuleDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rectifier Unit Details',style: TextStyle(color: Colors.white),),
-        backgroundColor: appbarColor,
-        iconTheme: const IconThemeData(color: Colors.white),
+        title:  Text('Rectifier Unit Details',style: TextStyle(color: customColors.mainTextColor),),
+        backgroundColor: customColors.appbarColor,
+        iconTheme:  IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+
       ),
       body: Container(
-        color: mainBackgroundColor,
+        color: customColors.mainBackgroundColor,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 // import '../../HomePage/widgets/colors.dart';
 import 'ViewRectifierModuleDetails.dart';
@@ -10,12 +11,11 @@ import 'ViewRectifierUnit.dart';
 
 class ViewRectifierModuleList extends StatefulWidget {
   @override
-  _ViewRectifierModuleListState createState() => _ViewRectifierModuleListState();
+  _ViewRectifierModuleListState createState() =>
+      _ViewRectifierModuleListState();
 }
 
 class _ViewRectifierModuleListState extends State<ViewRectifierModuleList> {
-
-
   List<dynamic> RectifierSystems = []; // List to store Rectifier system data
   bool isLoading = true; // Flag to track if data is being loaded
 
@@ -46,49 +46,60 @@ class _ViewRectifierModuleListState extends State<ViewRectifierModuleList> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ViewRectifierModuleDetails(RectifierUnit: RectifierUnit),
+        builder:
+            (context) =>
+                ViewRectifierModuleDetails(RectifierUnit: RectifierUnit),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      backgroundColor:customColors.mainBackgroundColor,
+      backgroundColor: customColors.mainBackgroundColor,
       appBar: AppBar(
-        title: Text('Rectifier Details',
-          style: TextStyle(color: customColors.mainTextColor),),
+        title: Text(
+          'Rectifier Details',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
         centerTitle: true,
         backgroundColor: customColors.appbarColor,
         iconTheme: IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
       body: Column(
         children: [
-
           Expanded(
-            child: isLoading
-                ? const Center(
-              child: CircularProgressIndicator(), // Show loading indicator
-            )
-                : ListView.builder(
-              itemCount: RectifierSystems.length,
-              itemBuilder: (context, index) {
-                final system = RectifierSystems[index];
+            child:
+                isLoading
+                    ? const Center(
+                      child:
+                          CircularProgressIndicator(), // Show loading indicator
+                    )
+                    : ListView.builder(
+                      itemCount: RectifierSystems.length,
+                      itemBuilder: (context, index) {
+                        final system = RectifierSystems[index];
 
-                return ListTile(
-                  title: Text('Module ID: ${system['ModuleID']}',
-                    style: TextStyle(color: customColors.subTextColor),),
-                  subtitle: Text('Rectifier ID: ${system['RecID']}',
-                    style:  TextStyle(color: customColors.subTextColor),),
-                  onTap: () {
-                    navigateToRectifierUnitDetails(system);
-                  },
-                );
-
-              },
-            ),
+                        return ListTile(
+                          title: Text(
+                            'Module ID: ${system['ModuleID']}',
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                          subtitle: Text(
+                            'Rectifier ID: ${system['RecID']}',
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                          onTap: () {
+                            navigateToRectifierUnitDetails(system);
+                          },
+                        );
+                      },
+                    ),
           ),
         ],
       ),
