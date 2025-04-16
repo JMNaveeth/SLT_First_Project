@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 // import '../../HomePage/widgets/colors.dart';
 import 'ViewRectifierModuleDetails.dart';
@@ -52,14 +53,16 @@ class _ViewRectifierModuleListState extends State<ViewRectifierModuleList> {
 
   @override
   Widget build(BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
-      backgroundColor:mainBackgroundColor,
+      backgroundColor:customColors.mainBackgroundColor,
       appBar: AppBar(
-        title: const Text('Rectifier Details',
-          style: TextStyle(color: Colors.white),),
+        title: Text('Rectifier Details',
+          style: TextStyle(color: customColors.mainTextColor),),
         centerTitle: true,
-        backgroundColor: appbarColor,
-        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
       ),
       body: Column(
         children: [
@@ -76,9 +79,9 @@ class _ViewRectifierModuleListState extends State<ViewRectifierModuleList> {
 
                 return ListTile(
                   title: Text('Module ID: ${system['ModuleID']}',
-                    style: const TextStyle(color: subTextColor),),
+                    style: TextStyle(color: customColors.subTextColor),),
                   subtitle: Text('Rectifier ID: ${system['RecID']}',
-                    style: const TextStyle(color: subTextColor),),
+                    style:  TextStyle(color: customColors.subTextColor),),
                   onTap: () {
                     navigateToRectifierUnitDetails(system);
                   },

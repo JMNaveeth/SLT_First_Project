@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:theme_update/widgets/searchWidget.dart';
 import 'ViewRectifierUnit.dart';
@@ -39,12 +41,13 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
 
   String selectedRegion = 'ALL'; // Initial selected region
   List<dynamic> allRectifierSystems = []; // Original list of all systems
-  List<dynamic> filteredRectifierSystems = []; // Filtered list based on search and region
+  List<dynamic> filteredRectifierSystems =
+      []; // Filtered list based on search and region
   bool isLoading = true; // Flag to track if data is being loaded
   String searchQuery = ''; // Store the current search query
 
@@ -75,19 +78,25 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
   void applyFilters() {
     setState(() {
       // First filter by region
-      var tempFiltered = selectedRegion == 'ALL'
-          ? allRectifierSystems
-          : allRectifierSystems.where((system) {
-        return (system['Region'] ?? '').toString().toUpperCase() ==
-            selectedRegion.toUpperCase();
-      }).toList();
+      var tempFiltered =
+          selectedRegion == 'ALL'
+              ? allRectifierSystems
+              : allRectifierSystems.where((system) {
+                return (system['Region'] ?? '').toString().toUpperCase() ==
+                    selectedRegion.toUpperCase();
+              }).toList();
 
       // Then filter by search query if it exists
       if (searchQuery.isNotEmpty) {
-        tempFiltered = tempFiltered
-            .where((system) => SearchHelperRectifier.matchesRectifierQuery(
-            system, searchQuery))
-            .toList();
+        tempFiltered =
+            tempFiltered
+                .where(
+                  (system) => SearchHelperRectifier.matchesRectifierQuery(
+                    system,
+                    searchQuery,
+                  ),
+                )
+                .toList();
       }
 
       filteredRectifierSystems = tempFiltered;
@@ -116,10 +125,11 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ViewRectifierUnit(
-          RectifierUnit: RectifierUnit,
-          searchQuery: searchQuery,
-        ),
+        builder:
+            (context) => ViewRectifierUnit(
+              RectifierUnit: RectifierUnit,
+              searchQuery: searchQuery,
+            ),
       ),
     );
   }
@@ -149,6 +159,8 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     final summary = getSummary();
 
     return GestureDetector(
@@ -156,15 +168,18 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: mainBackgroundColor,
+        backgroundColor: customColors.mainBackgroundColor,
         appBar: AppBar(
-          title: const Text(
+          title: Text(
             'Rectifier Details',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: customColors.mainTextColor),
           ),
           centerTitle: true,
-          backgroundColor: appbarColor,
-          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: customColors.appbarColor,
+          iconTheme: IconThemeData(color: customColors.mainTextColor),
+          actions: [
+            ThemeToggleButton(), // Use the reusable widget
+          ],
         ),
         body: GestureDetector(
           onTap: () {
@@ -183,34 +198,45 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                       flex: 2,
                       child: DropdownButtonFormField<String>(
                         value: selectedRegion,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Region',
-                          labelStyle: const TextStyle(color: mainTextColor),
+                          labelStyle: TextStyle(
+                            color: customColors.mainTextColor,
+                          ),
                           filled: true,
-                          fillColor: mainBackgroundColor,
-                          border: OutlineInputBorder(
+                          fillColor: customColors.mainBackgroundColor,
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
-                          enabledBorder: OutlineInputBorder(
+                          enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                            BorderSide(color: Colors.grey, width: 2.0),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 2.0,
+                            ),
                           ),
                         ),
-                        dropdownColor: suqarBackgroundColor,
-                        style: const TextStyle(color: mainTextColor),
-                        icon: const Icon(Icons.arrow_drop_down,
-                            color: Colors.white),
+                        dropdownColor: customColors.suqarBackgroundColor,
+                        style: TextStyle(color: customColors.mainTextColor),
+                        icon: Icon(
+                          Icons.arrow_drop_down,
+                          color: customColors.mainTextColor,
+                        ),
                         onChanged: handleRegionChange,
-                        items: regions.map((region) {
-                          return DropdownMenuItem<String>(
-                            value: region,
-                            child: Text(region,
-                                style: const TextStyle(color: mainTextColor)),
-                          );
-                        }).toList(),
+                        items:
+                            regions.map((region) {
+                              return DropdownMenuItem<String>(
+                                value: region,
+                                child: Text(
+                                  region,
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -228,44 +254,46 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Table(
-                    border: TableBorder.all(
-                      color: mainTextColor,
-                    ),
+                    border: TableBorder.all(color: customColors.mainTextColor),
                     columnWidths: const {0: FixedColumnWidth(200)},
                     children: [
-                      const TableRow(
+                      TableRow(
                         children: [
                           TableCell(
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Summary',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: mainTextColor,
-                                  )),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Summary',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ),
                           TableCell(
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Count',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: mainTextColor,
-                                  )),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Count',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       TableRow(
                         children: [
-                          const TableCell(
+                          TableCell(
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Total Rectifiers',
                                 style: TextStyle(
-                                  color: subTextColor,
+                                  color: customColors.subTextColor,
                                 ),
                               ),
                             ),
@@ -275,8 +303,8 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '${summary['Total Rectifiers']}',
-                                style: const TextStyle(
-                                  color: subTextColor,
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
                                 ),
                               ),
                             ),
@@ -285,13 +313,13 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                       ),
                       TableRow(
                         children: [
-                          const TableCell(
+                          TableCell(
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Modular',
                                 style: TextStyle(
-                                  color: subTextColor,
+                                  color: customColors.subTextColor,
                                 ),
                               ),
                             ),
@@ -301,8 +329,8 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '${summary['Modular']}',
-                                style: const TextStyle(
-                                  color: subTextColor,
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
                                 ),
                               ),
                             ),
@@ -311,13 +339,13 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                       ),
                       TableRow(
                         children: [
-                          const TableCell(
+                          TableCell(
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Unitary',
                                 style: TextStyle(
-                                  color: subTextColor,
+                                  color: customColors.subTextColor,
                                 ),
                               ),
                             ),
@@ -327,8 +355,8 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '${summary['Unitary']}',
-                                style: const TextStyle(
-                                  color: subTextColor,
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
                                 ),
                               ),
                             ),
@@ -340,64 +368,68 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                 ),
                 const SizedBox(height: 20),
                 Expanded(
-                  child: isLoading
-                      ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                      : filteredRectifierSystems.isEmpty
-                      ? const Center(
-                    child: Text(
-                      'No Rectifier systems found.',
-                      style: TextStyle(
-                          fontSize: 16, color: subTextColor),
-                    ),
-                  )
-                      : ListView.builder(
-                    itemCount: filteredRectifierSystems.length,
-                    itemBuilder: (context, index) {
-                      final system = filteredRectifierSystems[index];
-                      return Card(
-                        color: mainBackgroundColor,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          decoration: BoxDecoration(
-                            color: suqarBackgroundColor,
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xFF918F8F),
-                                blurRadius: 4.0,
-                                spreadRadius: 1.0,
-                                offset: Offset(2.0, 2.0),
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.battery_charging_full,
-                              color: subTextColor,
-                            ),
-                            title: Text(
-                              '${system['Brand']} - ${system['Model']}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: subTextColor,
+                  child:
+                      isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : filteredRectifierSystems.isEmpty
+                          ? Center(
+                            child: Text(
+                              'No Rectifier systems found.',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: customColors.subTextColor,
                               ),
                             ),
-                            subtitle: Text(
-                              'Location: ${system['Region']} - ${system['RTOM']}',
-                              style: const TextStyle(
-                                  color: subTextColor),
-                            ),
-                            onTap: () {
-                              navigateToRectifierUnitDetails(system);
+                          )
+                          : ListView.builder(
+                            itemCount: filteredRectifierSystems.length,
+                            itemBuilder: (context, index) {
+                              final system = filteredRectifierSystems[index];
+                              return Card(
+                                color: customColors.mainBackgroundColor,
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 8.0,
+                                    horizontal: 16.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: customColors.suqarBackgroundColor,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0xFF918F8F),
+                                        blurRadius: 4.0,
+                                        spreadRadius: 1.0,
+                                        offset: Offset(2.0, 2.0),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.battery_charging_full,
+                                      color: customColors.subTextColor,
+                                    ),
+                                    title: Text(
+                                      '${system['Brand']} - ${system['Model']}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      'Location: ${system['Region']} - ${system['RTOM']}',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      navigateToRectifierUnitDetails(system);
+                                    },
+                                  ),
+                                ),
+                              );
                             },
                           ),
-                        ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),
