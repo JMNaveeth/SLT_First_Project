@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/utils/utils/colors.dart';
-import 'package:theme_update/utils/utils/colors.dart' as customColors;
 
 class ViewRectifierModuleDetails extends StatelessWidget {
   final dynamic RectifierUnit;
@@ -54,23 +51,7 @@ class ViewRectifierModuleDetails extends StatelessWidget {
         title: const Text('Rectifier Unit Details',style: TextStyle(color: Colors.white),),
         backgroundColor: appbarColor,
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          // Toggle button for switching themes
-          IconButton(
-            icon: Icon(
-                Provider.of<ThemeProvider>(context).isDarkMode
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-              color: customColors.mainTextColor, // Dynamic icon color
-            ),
-            onPressed: () {
-              // Toggles between light and dark themes
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-          ),
-        ],
       ),
-
       body: Container(
         color: mainBackgroundColor,
         child: SingleChildScrollView(
@@ -181,6 +162,148 @@ class ViewRectifierModuleDetails extends StatelessWidget {
   }
 }
 
+
+
+//v3
+// import 'package:flutter/material.dart';
+//
+// class ViewRectifierModuleDetails extends StatelessWidget {
+//   final dynamic RectifierUnit;
+//
+//   ViewRectifierModuleDetails({required this.RectifierUnit});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     List<DataRow> buildModuleRows(List<String> keys) {
+//       List<DataRow> rows = [];
+//       for (var i = 0; i < keys.length; i++) {
+//         var key = keys[i];
+//         var value = RectifierUnit[key];
+//         if (value != null && value != 'null' && value.toString().trim().isNotEmpty) {
+//           rows.add(
+//             DataRow(
+//               cells: [
+//                 DataCell(Text('Module ${i + 1}')),
+//                 DataCell(Text(value.toString())),
+//               ],
+//             ),
+//           );
+//         }
+//       }
+//       return rows;
+//     }
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Rectifier Unit Details'),
+//       ),
+//       body: SingleChildScrollView(
+//         child: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 'Rectifier ID: ${RectifierUnit['RecID']}',
+//                 style: TextStyle(fontSize: 16),
+//               ),
+//               SizedBox(height: 10),
+//
+//               // Power Modules Table
+//               Center(
+//                 child: Text(
+//                   'Power Modules',
+//                   style: TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                     fontSize: 18,
+//                     color: Colors.black,
+//                   ),
+//                 ),
+//               ),
+//               SizedBox(height: 10),
+//               DataTable(
+//                 columns: const <DataColumn>[
+//                   DataColumn(
+//                     label: Text(
+//                       'Module',
+//                       style: TextStyle(fontStyle: FontStyle.italic),
+//                     ),
+//                   ),
+//                   DataColumn(
+//                     label: Text(
+//                       'Serial',
+//                       style: TextStyle(fontStyle: FontStyle.italic),
+//                     ),
+//                   ),
+//                 ],
+//                 rows: buildModuleRows([
+//                   'PW_Serial_1',
+//                   'PW_Serial_2',
+//                   'PW_Serial_3',
+//                   'PW_Serial_4',
+//                   'PW_Serial_5',
+//                   'PW_Serial_6',
+//                   'PW_Serial_7',
+//                   'PW_Serial_8',
+//                   'PW_Serial_9',
+//                   'PW_Serial_10',
+//                   'PW_Serial_11',
+//                   'PW_Serial_12',
+//                   'PW_Serial_13',
+//                   'PW_Serial_14',
+//                   'PW_Serial_15',
+//                   'PW_Serial_16',
+//                   'PW_Serial_17',
+//                   'PW_Serial_18',
+//                   'PW_Serial_19',
+//                   'PW_Serial_20',
+//                 ]),
+//               ),
+//
+//               // Control Modules Table
+//               SizedBox(height: 20),
+//               Center(
+//                 child: Text(
+//                   'Control Modules',
+//                   style: TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                     fontSize: 18,
+//                     color: Colors.black,
+//                   ),
+//                 ),
+//               ),
+//               SizedBox(height: 10),
+//               DataTable(
+//                 columns: const <DataColumn>[
+//                   DataColumn(
+//                     label: Text(
+//                       'Module',
+//                       style: TextStyle(fontStyle: FontStyle.italic),
+//                     ),
+//                   ),
+//                   DataColumn(
+//                     label: Text(
+//                       'Serial',
+//                       style: TextStyle(fontStyle: FontStyle.italic),
+//                     ),
+//                   ),
+//                 ],
+//                 rows: buildModuleRows([
+//                   'Ctr_Serial_1',
+//                   'Ctr_Serial_2',
+//                   'Ctr_Serial_3',
+//                   'Ctr_Serial_4',
+//                   'Ctr_Serial_5',
+//                 ]),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
 
 
 //v2 working
