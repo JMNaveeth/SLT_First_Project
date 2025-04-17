@@ -173,66 +173,65 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
     );
   }
 
-  ListTile makeListTile(String subjectName, String? variable) {
-    final customColors = Theme.of(context).extension<CustomColors>()!;
+ ListTile makeListTile(String subjectName, String? variable) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 20.0,
-        vertical: 10.0,
+  return ListTile(
+    contentPadding: const EdgeInsets.symmetric(
+      horizontal: 20.0,
+      vertical: 10.0,
+    ),
+    leading: Container(
+      padding: const EdgeInsets.only(right: 12.0),
+      decoration: BoxDecoration(
+        border: Border(
+          right: BorderSide(width: 2.5, color: customColors.mainTextColor),
+        ),
       ),
-      leading: Container(
-        padding: const EdgeInsets.only(right: 12.0),
+      child: Text(
+        subjectName,
+        style: TextStyle(
+          color: customColors.mainTextColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+        ),
+      ),
+    ),
+    title: Text(
+      variable ?? 'N/A',
+      style: TextStyle(
+        color: customColors.subTextColor,
+      ),
+    ),
+  );
+}
+
+Card makeCard(Lesson lesson) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+  final bool isMatch = widget.searchQuery.isNotEmpty &&
+      lesson.variable != null &&
+      lesson.variable.toString().toLowerCase().contains(
+            widget.searchQuery.toLowerCase(),
+          );
+
+  return Card(
+    elevation: 4.0,
+    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+    child: SizedBox(
+      height: 75.0,
+      child: Container(
         decoration: BoxDecoration(
-          border: Border(
-            right: BorderSide(width: 2.5, color: customColors.mainTextColor),
-          ),
+          color: isMatch
+              ? customColors.highlightColor // Highlight color for search match
+              : customColors.suqarBackgroundColor, // Dynamic color
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        child: Text(
-          subjectName,
-          style: TextStyle(
-            color: customColors.mainTextColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-          ),
-        ),
+        child: makeListTile(lesson.subjectName, lesson.variable),
       ),
-      title: Text(
-        variable ?? 'N/A',
-        style: TextStyle(color: customColors.subTextColor),
-      ),
-    );
-  }
-
-  Card makeCard(Lesson lesson) {
-    final customColors = Theme.of(context).extension<CustomColors>()!;
-    final bool isMatch =
-        widget.searchQuery.isNotEmpty &&
-        lesson.variable != null &&
-        lesson.variable.toString().toLowerCase().contains(
-          widget.searchQuery.toLowerCase(),
-        );
-
-    return Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      child: SizedBox(
-        height: 75.0,
-        child: Container(
-          decoration: BoxDecoration(
-            color:
-                isMatch
-                    ? customColors
-                        .highlightColor // Highlight color for search match
-                    : customColors.suqarBackgroundColor, // Dynamic color
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: makeListTile(lesson.subjectName, lesson.variable),
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}
 
   // Card makeCard(Lesson lesson) => Card(
   //   elevation: 4.0,
@@ -348,53 +347,12 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
                   ),
                 ),
                 Card(
-                  color:
-                      customColors
-                          .highlightColor, // Apply the highlight color to the Card
-                  elevation: 4.0,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 6.0,
+                  color: customColors.suqarBackgroundColor, 
+                  child: makeCard(
+                  Lesson(
+                    subjectName: 'Frame Capacity',
+                    variable: widget.RectifierUnit['FrameCap'] ?? 'N/A',
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color:
-                          customColors
-                              .highlightColor, // Ensure the color is applied to the container
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 10.0,
-                      ),
-                      leading: Container(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                              width: 2.5,
-                              color: customColors.mainTextColor,
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'Frame Capacity',
-                          style: TextStyle(
-                            color: customColors.mainTextColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        widget.RectifierUnit['FrameCap'] ?? 'N/A',
-                        style: TextStyle(color: customColors.subTextColor),
-                      ),
-                    ),
                   ),
                 ),
                 Card(
