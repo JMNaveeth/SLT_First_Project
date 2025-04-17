@@ -13,7 +13,7 @@ class ThemeToggleButton extends StatelessWidget {
     return IconButton(
       icon: Icon(
         isDarkMode ? Icons.dark_mode : Icons.light_mode,
-        color: customColors.mainTextColor, // Dynamic icon color
+        color: isDarkMode ? Colors.black : Colors.white, // Dynamic icon color
       ),
       onPressed: () {
         Provider.of<ThemeProvider>(context, listen: false).toggleTheme();

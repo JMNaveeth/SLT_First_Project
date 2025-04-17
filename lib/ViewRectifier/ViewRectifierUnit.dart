@@ -22,6 +22,8 @@ class ViewRectifierUnit extends StatefulWidget {
 }
 
 class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
+  bool isToggled = false; // State to track toggle button
+
   late Future<List<Map<String, dynamic>>> _moduleDetailsFuture;
 
   @override
@@ -81,7 +83,7 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: customColors.subTextColor,
+                    color: customColors.suqarBackgroundColor,
                   ),
                 ),
               ),
@@ -113,14 +115,14 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
-                color: Colors.blue[800],
+                color: customColors.mainTextColor,
               ),
             ),
           ),
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
-              color: customColors.mainTextColor,
+              color: const Color.fromARGB(255, 224, 222, 222),
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -171,8 +173,10 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
     );
   }
 
-  ListTile makeListTile(String subjectName, String? variable) => ListTile(
-    
+ ListTile makeListTile(String subjectName, String? variable) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+
+  return ListTile(
     contentPadding: const EdgeInsets.symmetric(
       horizontal: 20.0,
       vertical: 10.0,
@@ -181,12 +185,12 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
       padding: const EdgeInsets.only(right: 12.0),
       decoration: BoxDecoration(
         border: Border(
-          right: BorderSide(width: 2.5, color: Colors.blue.shade800),
+          right: BorderSide(width: 2.5, color: customColors.mainTextColor),
         ),
       ),
       child: Text(
         subjectName,
-        style: const TextStyle(
+        style: TextStyle(
           color: customColors.mainTextColor,
           fontWeight: FontWeight.w900,
           fontSize: 15,
@@ -195,38 +199,41 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
     ),
     title: Text(
       variable ?? 'N/A',
-      style: const TextStyle(
+      style: TextStyle(
         color: customColors.subTextColor,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w300,
         fontSize: 17,
       ),
     ),
   );
+}
 
-  Card makeCard(Lesson lesson) {
-    final bool isMatch =
-        widget.searchQuery.isNotEmpty &&
-        lesson.variable != null &&
-        lesson.variable.toString().toLowerCase().contains(
-          widget.searchQuery.toLowerCase(),
-        );
+Card makeCard(Lesson lesson) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+  final bool isMatch = widget.searchQuery.isNotEmpty &&
+      lesson.variable != null &&
+      lesson.variable.toString().toLowerCase().contains(
+            widget.searchQuery.toLowerCase(),
+          );
 
-    return Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      child: SizedBox(
-        height: 75.0,
-        child: Container(
-          decoration: BoxDecoration(
-            color: isMatch ? highlightColor : customColors.suqarBackgroundColor,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: makeListTile(lesson.subjectName, lesson.variable),
+  return Card(
+    elevation: 4.0,
+    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+    child: SizedBox(
+      height: 75.0,
+      child: Container(
+        decoration: BoxDecoration(
+          color: isMatch
+              ? customColors.highlightColor // Highlight color for search match
+              : customColors.suqarBackgroundColor, // Dynamic color
+          borderRadius: BorderRadius.circular(8.0),
         ),
+        child: makeListTile(lesson.subjectName, lesson.variable),
       ),
-    );
-  }
+    ),
+  );
+}
 
   // Card makeCard(Lesson lesson) => Card(
   //   elevation: 4.0,

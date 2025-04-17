@@ -14,47 +14,48 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   ThemeData get lightTheme => ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: appbarColor,
-          foregroundColor: mainTextColor,
-        ),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: mainTextColor),
-          bodyMedium: TextStyle(color: mainTextColor),
-        ),
-        extensions: <ThemeExtension<dynamic>>[
-          const CustomColors(
-            mainBackgroundColor: mainBackgroundColor,
-            appbarColor: appbarColor,
-            mainTextColor: mainTextColor,
-            subTextColor: subTextColor,
-            suqarBackgroundColor: suqarBackgroundColor,
-            
-          ),
-        ],
-      );
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: appbarColor,
+      foregroundColor: mainTextColor,
+    ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: mainTextColor),
+      bodyMedium: TextStyle(color: mainTextColor),
+    ),
+    extensions: <ThemeExtension<dynamic>>[
+      const CustomColors(
+        mainBackgroundColor: mainBackgroundColor,
+        appbarColor: appbarColor,
+        mainTextColor: mainTextColor,
+        subTextColor: subTextColor,
+        suqarBackgroundColor: suqarBackgroundColor,
+        highlightColor: Colors.orangeAccent, // Highlight color for dark theme
+      ),
+    ],
+  );
 
   ThemeData get darkTheme => ThemeData(
-        scaffoldBackgroundColor: Colors.black,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xff212529),
-          foregroundColor: Color(0xffFFFFFF),
-        ),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Color(0xffFFFFFF)),
-          bodyMedium: TextStyle(color: Color(0xffD9D9D9)),
-        ),
-        extensions: <ThemeExtension<dynamic>>[
-          const CustomColors(
-            mainBackgroundColor: Colors.white,
-            appbarColor: Colors.white54,
-            mainTextColor: Colors.black,
-            subTextColor: Colors.black87,
-            suqarBackgroundColor: Colors.white,
-          ),
-        ],
-      );
+    scaffoldBackgroundColor: Colors.black,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xff212529),
+      foregroundColor: Color(0xffFFFFFF),
+    ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: Color(0xffFFFFFF)),
+      bodyMedium: TextStyle(color: Color(0xffD9D9D9)),
+    ),
+    extensions: <ThemeExtension<dynamic>>[
+      const CustomColors(
+        mainBackgroundColor: Colors.white,
+        appbarColor: Colors.white54,
+        mainTextColor: Colors.black,
+        subTextColor: Colors.black87,
+        suqarBackgroundColor: Colors.white,
+        highlightColor: Colors.yellowAccent, // Highlight color for light theme
+      ),
+    ],
+  );
 }
 
 class CustomColors extends ThemeExtension<CustomColors> {
@@ -63,6 +64,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color mainTextColor;
   final Color subTextColor;
   final Color suqarBackgroundColor;
+  final Color highlightColor; // Add highlightColor here
 
   const CustomColors({
     required this.mainBackgroundColor,
@@ -70,6 +72,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.mainTextColor,
     required this.subTextColor,
     required this.suqarBackgroundColor,
+    required this.highlightColor, // Initialize highlightColor
   });
 
   @override
@@ -79,6 +82,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     Color? mainTextColor,
     Color? subTextColor,
     Color? suqarBackgroundColor,
+    Color? highlightColor, // Add highlightColor to copyWith
   }) {
     return CustomColors(
       mainBackgroundColor: mainBackgroundColor ?? this.mainBackgroundColor,
@@ -86,6 +90,8 @@ class CustomColors extends ThemeExtension<CustomColors> {
       mainTextColor: mainTextColor ?? this.mainTextColor,
       subTextColor: subTextColor ?? this.subTextColor,
       suqarBackgroundColor: suqarBackgroundColor ?? this.suqarBackgroundColor,
+      highlightColor:
+          highlightColor ?? this.highlightColor, // Copy highlightColor
     );
   }
 
@@ -100,7 +106,14 @@ class CustomColors extends ThemeExtension<CustomColors> {
       appbarColor: Color.lerp(appbarColor, other.appbarColor, t)!,
       mainTextColor: Color.lerp(mainTextColor, other.mainTextColor, t)!,
       subTextColor: Color.lerp(subTextColor, other.subTextColor, t)!,
-      suqarBackgroundColor: Color.lerp(suqarBackgroundColor, other.suqarBackgroundColor, t)!,
+      suqarBackgroundColor:
+          Color.lerp(suqarBackgroundColor, other.suqarBackgroundColor, t)!,
+      highlightColor:
+          Color.lerp(
+            highlightColor,
+            other.highlightColor,
+            t,
+          )!, // Lerp highlightColor
     );
   }
 }
