@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
-
+import 'package:theme_update/utils/utils/colors.dart' as customColors;
 
 class ViewUPSUnit extends StatelessWidget {
   final dynamic UPSUnit;
@@ -9,160 +11,275 @@ class ViewUPSUnit extends StatelessWidget {
 
   ViewUPSUnit({required this.UPSUnit, this.searchQuery = ''});
 
-  ListTile makeListTile(String subjectName, String? variable) => ListTile(
-    contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-    leading: Container(
-      padding: EdgeInsets.only(right: 12.0),
-      decoration: const BoxDecoration(
-        border: Border(
-          right: BorderSide(width: 1.0, color: subTextColor),
+  ListTile makeListTile(
+    String subjectName,
+    String? variable,
+    BuildContext context,
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      leading: Container(
+        padding: EdgeInsets.only(right: 12.0),
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(width: 1.0, color: customColors.subTextColor),
+          ),
+        ),
+        child: Text(
+          subjectName,
+          style: TextStyle(
+            color: customColors.mainTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
         ),
       ),
-      child: Text(
-        subjectName,
-        style: TextStyle(color: mainTextColor, fontWeight: FontWeight.bold),
+      title: Text(
+        variable ?? 'N/A',
+        style: TextStyle(
+          color: customColors.subTextColor,
+          backgroundColor:
+              _shouldHighlight(variable)
+                  ? customColors.highlightColor
+                  : customColors.suqarBackgroundColor,
+        ),
       ),
-    ),
-    title: Text(
-      variable ?? 'N/A',
-      style: TextStyle(
-          color: subTextColor,
-          fontWeight: FontWeight.bold,
-          backgroundColor: _shouldHighlight(variable)
-              ? highlightColor
-              : Colors.transparent),
-    ),
-  );
+    );
+  }
 
   bool _shouldHighlight(String? value) {
     if (value == null || searchQuery.isEmpty) return false;
     return value.toLowerCase().contains(searchQuery.toLowerCase());
   }
 
-  Card makeCard(Lesson lesson) => Card(
+  Card makeCard(Lesson lesson, BuildContext context) 
+  {     final customColors = Theme.of(context).extension<CustomColors>()!;
+
+  return Card(
     elevation: 8.0,
     margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
     child: SizedBox(
       height: 60.0, // Adjust the height value as per your requirements
       child: Container(
         decoration: BoxDecoration(
-          color: suqarBackgroundColor,
+          color: customColors.suqarBackgroundColor,
           borderRadius: BorderRadius.circular(12.0),
         ),
-        child: makeListTile(lesson.subjectName, lesson.variable),
+        child: makeListTile(lesson.subjectName, lesson.variable, context),
       ),
     ),
   );
-
+}
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "UPS Unit Details",
-          style: TextStyle(color: mainTextColor),
+          style: TextStyle(color: customColors.mainTextColor),
         ),
-        iconTheme: IconThemeData(
-          color: mainTextColor,
-        ),
-        backgroundColor: appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
       body: Container(
-        color: mainBackgroundColor,
+        color: customColors.mainBackgroundColor,
         child: Padding(
           padding: EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                makeCard(Lesson(
+                makeCard(
+                  Lesson(
                     subjectName: 'UPS ID',
-                    variable: UPSUnit['upsID'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['upsID'] ?? 'N/A',
+                  ),
+                   context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Region',
-                    variable: UPSUnit['Region'] ?? 'N/A')),
-                makeCard(Lesson(
-                    subjectName: 'RTOM', variable: UPSUnit['RTOM'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['Region'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'RTOM',
+                    variable: UPSUnit['RTOM'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Station',
-                    variable: UPSUnit['Station'] ?? 'N/A')),
-                makeCard(Lesson(
-                    subjectName: 'Brand', variable: UPSUnit['Brand'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['Station'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Brand',
+                    variable: UPSUnit['Brand'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Other Brand',
-                    variable: UPSUnit['UPSBrandOther'] ?? 'N/A')),
-                makeCard(Lesson(
-                    subjectName: 'Model', variable: UPSUnit['Model'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['UPSBrandOther'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Model',
+                    variable: UPSUnit['Model'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Capacity Units',
-                    variable: UPSUnit['UPSCapUnits'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['UPSCapUnits'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Capacity',
-                    variable: UPSUnit['UPSCap'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['UPSCap'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Power Factor',
-                    variable: UPSUnit['UPSpf'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['UPSpf'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Installed Date',
-                    variable: UPSUnit['InstalledDate'] ?? 'N/A')),
-                makeCard(Lesson(
-                    subjectName: 'Type', variable: UPSUnit['Type'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['InstalledDate'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Type',
+                    variable: UPSUnit['Type'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Power Module Model',
-                    variable: UPSUnit['PWModModel'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['PWModModel'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: "Ampere Rating",
-                    variable: UPSUnit["AmpRating"])),
-                makeCard(Lesson(
+                    variable: UPSUnit["AmpRating"],
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Power Module Used',
-                    variable: UPSUnit['PWModsUsed'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['PWModsUsed'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Power Module Available',
-                    variable: UPSUnit['PWModsAvail'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['PWModsAvail'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Control Module Model',
-                    variable: UPSUnit['CtrModModel'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['CtrModModel'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Control Module Used',
-                    variable: UPSUnit['CtrModsUsed'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['CtrModsUsed'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Control Module Available',
-                    variable: UPSUnit['CtrModsAvail'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['CtrModsAvail'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'acCapuF',
                     // change the subject name since line 178 to line 193
-                    variable: UPSUnit['acCapuF'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['acCapuF'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'acCapVoltage',
-                    variable: UPSUnit['acCapVoltage'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['acCapVoltage'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'acCapNos',
-                    variable: UPSUnit['acCapNos'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['acCapNos'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'dcCapuF',
-                    variable: UPSUnit['dcCapuF'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['dcCapuF'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'dcCapVoltage',
-                    variable: UPSUnit['dcCapVoltage'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['dcCapVoltage'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'dcCapNos',
-                    variable: UPSUnit['dcCapNos'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['dcCapNos'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Last Updated',
-                    variable: UPSUnit['lastUpdated'] ?? 'N/A')),
-                makeCard(Lesson(
-                    subjectName: 'AMC', variable: UPSUnit['AMC'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['lastUpdated'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(subjectName: 'AMC', variable: UPSUnit['AMC'] ?? 'N/A'), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Supplier Name',
-                    variable: UPSUnit['Supplier_Name'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['Supplier_Name'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Supplier Contact Number',
-                    variable: UPSUnit['SupContactN'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['SupContactN'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Supplier Contact Email Address',
-                    variable: UPSUnit['SupContactE'] ?? 'N/A')),
-                makeCard(Lesson(
+                    variable: UPSUnit['SupContactE'] ?? 'N/A',
+                  ), context,
+                ),
+                makeCard(
+                  Lesson(
                     subjectName: 'Updated By',
-                    variable: UPSUnit['Updated_By'] ?? 'N/A')),
+                    variable: UPSUnit['Updated_By'] ?? 'N/A',
+                  ), context,
+                ),
               ],
             ),
           ),

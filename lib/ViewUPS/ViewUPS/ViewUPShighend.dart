@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:theme_update/widgets/searchWidget.dart';
 import 'ViewUPSUnit.dart';
@@ -155,21 +157,27 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
 
   @override
   Widget build(BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     final summary = getSummary();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'UPS Details',
-          style: TextStyle(color: mainTextColor),
+          style: TextStyle(color: customColors.mainTextColor),
         ),
         iconTheme: IconThemeData(
-          color: mainTextColor,
+          color: customColors.mainTextColor,
         ),
-        backgroundColor: appbarColor,
+        backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+
       ),
       body: Container(
-        color: mainBackgroundColor,
+        color: customColors.mainBackgroundColor,
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -185,20 +193,20 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                       flex: 2,
                       child: DropdownButtonFormField<String>(
                         value: selectedRegion,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Select Region',
-                          labelStyle: TextStyle(color: subTextColor),
+                          labelStyle: TextStyle(color: customColors.subTextColor),
                           filled: true,
-                          fillColor: mainBackgroundColor,
+                          fillColor: customColors.mainBackgroundColor,
                         ),
-                        dropdownColor: suqarBackgroundColor,
-                        style: TextStyle(color: mainTextColor),
+                        dropdownColor: customColors.suqarBackgroundColor,
+                        style: TextStyle(color: customColors.mainTextColor),
                         onChanged: handleRegionChange,
                         items: regions.map((region) {
                           return DropdownMenuItem<String>(
                             value: region,
                             child: Text(region,
-                                style: TextStyle(color: mainTextColor)),
+                                style: TextStyle(color: customColors.mainTextColor)),
                           );
                         }).toList(),
                       ),
@@ -217,7 +225,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Table(
-                  border: TableBorder.all(color: subTextColor),
+                  border: TableBorder.all(color: customColors.subTextColor),
                   columnWidths: {0: FixedColumnWidth(200)},
                   children: [
                     TableRow(
@@ -228,7 +236,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               child: Text('Summary',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: mainTextColor)),
+                                      color: customColors.mainTextColor)),
                             )),
                         TableCell(
                             child: Padding(
@@ -236,7 +244,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               child: Text('Count',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: mainTextColor)),
+                                      color: customColors.mainTextColor)),
                             )),
                       ],
                     ),
@@ -247,7 +255,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Total Systems',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                         TableCell(
@@ -255,7 +263,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '${summary['Total Systems']}',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                       ],
@@ -267,7 +275,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Less than 10 kVA',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                         TableCell(
@@ -275,7 +283,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '${summary['Less than 10 kVA']}',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                       ],
@@ -287,7 +295,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '10-100 kVA',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                         TableCell(
@@ -295,7 +303,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '${summary['10-100 kVA']}',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                       ],
@@ -307,7 +315,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'More than 100 kVA',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                         TableCell(
@@ -315,7 +323,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 '${summary['More than 100 kVA']}',
-                                style: TextStyle(color: subTextColor),
+                                style: TextStyle(color: customColors.subTextColor),
                               ),
                             )),
                       ],
@@ -331,10 +339,10 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                   ), // Show loading indicator
                 )
                     : filteredUPSSystems.isEmpty
-                    ? const Center(
+                    ? Center(
                   child: Text(
                     'No UPS systems found.',
-                    style: TextStyle(color: subTextColor),
+                    style: TextStyle(color: customColors.subTextColor),
                   ),
                 )
                     : ListView.builder(
@@ -342,16 +350,16 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                   itemBuilder: (context, index) {
                     final system = filteredUPSSystems[index];
                     return Card(
-                      color: mainBackgroundColor,
+                      color: customColors.mainBackgroundColor,
                       child: Container(
                         margin: const EdgeInsets.symmetric(
                           vertical: 8.0,
                           horizontal: 16.0,
                         ),
                         decoration: BoxDecoration(
-                          color: suqarBackgroundColor,
+                          color: customColors.suqarBackgroundColor,
                           borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: const [
+                          boxShadow:  [
                             BoxShadow(
                               color: Color(0xFF918F8F),
                               blurRadius: 4.0,
@@ -364,12 +372,12 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                           title: Text(
                             'Model: ${system['Model']}',
                             style:
-                            TextStyle(color: mainTextColor),
+                            TextStyle(color: customColors.mainTextColor),
                           ),
                           subtitle: Text(
                             'Location: ${system['Region']}-${system['RTOM']}',
                             style:
-                            TextStyle(color: subTextColor),
+                            TextStyle(color: customColors.subTextColor),
                           ),
                           onTap: () {
                             navigateToBatteryUnitDetails(system);

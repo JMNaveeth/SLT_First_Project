@@ -30,7 +30,7 @@ class ThemeProvider extends ChangeNotifier {
         mainTextColor: mainTextColor,
         subTextColor: subTextColor,
         suqarBackgroundColor: suqarBackgroundColor,
-        highlightColor: Colors.orangeAccent, // Highlight color for dark theme
+        highlightColor: Colors.blue, // Highlight color for dark theme
       ),
     ],
   );

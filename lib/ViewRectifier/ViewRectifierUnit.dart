@@ -192,8 +192,8 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
         subjectName,
         style: TextStyle(
           color: customColors.mainTextColor,
-          fontWeight: FontWeight.w900,
-          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
         ),
       ),
     ),
@@ -201,8 +201,6 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
       variable ?? 'N/A',
       style: TextStyle(
         color: customColors.subTextColor,
-        fontWeight: FontWeight.w300,
-        fontSize: 17,
       ),
     ),
   );
