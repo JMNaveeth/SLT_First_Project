@@ -52,7 +52,7 @@ class ThemeProvider extends ChangeNotifier {
         mainTextColor: Colors.black,
         subTextColor: Colors.black87,
         suqarBackgroundColor: Colors.white,
-        highlightColor: Colors.yellowAccent, // Highlight color for light theme
+        highlightColor: Colors.white, // Highlight color for light theme
       ),
     ],
   );
