@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 
 import 'ac_details_model.dart';
@@ -37,16 +39,22 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('AC Detail', style: TextStyle(color: mainTextColor)),
-        backgroundColor: appbarColor,
-        iconTheme: IconThemeData(
-          color: mainTextColor,
+        title: Text(
+          'AC Detail',
+          style: TextStyle(color: customColors.mainTextColor),
         ),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
       body: Container(
-        color: mainBackgroundColor,
+        color: customColors.mainBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -55,7 +63,7 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                 height: MediaQuery.of(context).size.height * 0.07,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: suqarBackgroundColor,
+                  color: customColors.suqarBackgroundColor,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -71,17 +79,19 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                         height: MediaQuery.of(context).size.height * 0.055,
                         width: MediaQuery.of(context).size.width * 0.45,
                         decoration: BoxDecoration(
-                          color: currentState == 0
-                              ? Colors.grey
-                              : suqarBackgroundColor,
+                          color:
+                              currentState == 0
+                                  ? Colors.grey
+                                  : customColors.suqarBackgroundColor,
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "INDOOR",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: mainTextColor),
+                              fontWeight: FontWeight.bold,
+                              color: customColors.mainTextColor,
+                            ),
                           ),
                         ),
                       ),
@@ -97,17 +107,18 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                         height: MediaQuery.of(context).size.height * 0.055,
                         width: MediaQuery.of(context).size.width * 0.45,
                         decoration: BoxDecoration(
-                          color: currentState == 1
-                              ? Colors.grey
-                              : suqarBackgroundColor,
+                          color:
+                              currentState == 1
+                                  ? Colors.grey
+                                  : customColors.suqarBackgroundColor,
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "OUTDOOR",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: mainTextColor,
+                              color: customColors.mainTextColor,
                             ),
                           ),
                         ),
@@ -122,20 +133,24 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                   child: Column(
                     children: [
                       Card(
-                        color: suqarBackgroundColor,
+                        color: customColors.suqarBackgroundColor,
                         child: ListTile(
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 "${widget.indoorData!.acIndoorId}",
-                                style: TextStyle(color: mainTextColor),
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
                               ),
                               widget.outdoorData != null
                                   ? Text(
-                                "${widget.outdoorData!.acOutdoorId}",
-                                style: TextStyle(color: mainTextColor),
-                              )
+                                    "${widget.outdoorData!.acOutdoorId}",
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  )
                                   : const Text(""),
                             ],
                           ),
@@ -145,25 +160,33 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Region: ${widget.logData.region}',
-                                    style: TextStyle(color: mainTextColor),
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
                                   ),
                                   Text(
                                     'Brand: ${widget.indoorData!.brand ?? ""}',
-                                    style: TextStyle(color: mainTextColor),
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
                                   ),
                                 ],
                               ),
                               Text(
                                 'Location: ${widget.logData.location}',
-                                style: TextStyle(color: mainTextColor),
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
                               ),
                               Text(
                                 "Last Updated: ${widget.indoorData!.lastUpdated ?? ""}",
-                                style: TextStyle(color: mainTextColor),
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
                               ),
                             ],
                           ),
@@ -201,59 +224,54 @@ class CustomOneDetailsCard extends StatefulWidget {
 class _CustomOneDetailsCardState extends State<CustomOneDetailsCard> {
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
-      color: suqarBackgroundColor,
+      color: customColors.suqarBackgroundColor,
       child: Padding(
-        padding:
-        const EdgeInsets.only(left: 15, top: 20, bottom: 20, right: 15),
+        padding: const EdgeInsets.only(
+          left: 15,
+          top: 20,
+          bottom: 20,
+          right: 15,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              widget.title,
-              style: TextStyle(color: mainTextColor),
-            ),
+            Text(widget.title, style: TextStyle(color: customColors.mainTextColor)),
             widget.title == "Condition ID Unit"
                 ? widget.titleResponse == "Good"
-                ? Row(
-              children: [
-                Container(
-                  color:
-                  widget.shouldHighlight ? highlightColor : null,
-                  child: Text(
-                    widget.titleResponse ?? "",
-                    style: TextStyle(color: mainTextColor),
-                  ),
-                ),
-                const Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                )
-              ],
-            )
-                : Row(
-              children: [
-                Container(
-                  color:
-                  widget.shouldHighlight ? highlightColor : null,
-                  child: Text(
-                    widget.titleResponse ?? "",
-                    style: TextStyle(color: mainTextColor),
-                  ),
-                ),
-                const Icon(
-                  Icons.cancel,
-                  color: Colors.red,
-                )
-              ],
-            )
+                    ? Row(
+                      children: [
+                        Container(
+                          color: widget.shouldHighlight ? customColors.highlightColor : null,
+                          child: Text(
+                            widget.titleResponse ?? "",
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                        ),
+                        const Icon(Icons.check_circle, color: Colors.green),
+                      ],
+                    )
+                    : Row(
+                      children: [
+                        Container(
+                          color: widget.shouldHighlight ? customColors.highlightColor : null,
+                          child: Text(
+                            widget.titleResponse ?? "",
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                        ),
+                        const Icon(Icons.cancel, color: Colors.red),
+                      ],
+                    )
                 : Container(
-              color: widget.shouldHighlight ? highlightColor : null,
-              child: Text(
-                widget.titleResponse ?? "",
-                style: TextStyle(color: mainTextColor),
-              ),
-            ),
+                  color: widget.shouldHighlight ? customColors.highlightColor : null,
+                  child: Text(
+                    widget.titleResponse ?? "",
+                    style: TextStyle(color: customColors.mainTextColor),
+                  ),
+                ),
           ],
         ),
       ),
@@ -262,7 +280,10 @@ class _CustomOneDetailsCardState extends State<CustomOneDetailsCard> {
 }
 
 Widget indoorList(
-    AcIndoorData? indoorData, AcLogData logData, String searchQuery) {
+  AcIndoorData? indoorData,
+  AcLogData logData,
+  String searchQuery,
+) {
   bool shouldHighlight(String? value) {
     if (value == null || searchQuery.isEmpty) return false;
     return value.toLowerCase().contains(searchQuery.toLowerCase());
@@ -430,123 +451,123 @@ Widget outDoorList(AcOutdoorData outdoorData, String searchQuery) {
   }
 
   return
-    //  AcOutdoorData == null
-    //     ? Center(child: Text("Not Submitted Those datas Yet"))
-    //     :
-    Column(
-      children: [
-        CustomOneDetailsCard(
-          title: "AC Outdoor ID",
-          titleResponse: outdoorData.acOutdoorId ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.acOutdoorId),
-        ),
-        CustomOneDetailsCard(
-          title: "QR",
-          titleResponse: outdoorData.qrOut,
-          shouldHighlight: shouldHighlight(outdoorData.qrOut),
-        ),
-        CustomOneDetailsCard(
-          title: "Brand",
-          titleResponse: outdoorData.brand ?? "N/A",
-          shouldHighlight: shouldHighlight(outdoorData.brand),
-        ),
-        CustomOneDetailsCard(
-          title: "Model",
-          titleResponse: outdoorData.model ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.model),
-        ),
-        CustomOneDetailsCard(
-          title: "Capacity",
-          titleResponse: outdoorData.capacity ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.capacity),
-        ),
-        CustomOneDetailsCard(
-          title: "Outdoor Fan Model",
-          titleResponse: outdoorData.outdoorFanModel ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.outdoorFanModel),
-        ),
-        CustomOneDetailsCard(
-          title: "Out Door Fan Unit",
-          titleResponse: outdoorData.outdoorFanModel,
-          shouldHighlight: shouldHighlight(outdoorData.outdoorFanModel),
-        ),
-        CustomOneDetailsCard(
-          title: "Power Supply",
-          titleResponse: outdoorData.powerSupply ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.powerSupply),
-        ),
-        CustomOneDetailsCard(
-          title: "Compressor Mounted With",
-          titleResponse: outdoorData.compressorMountedWith ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.compressorMountedWith),
-        ),
-        CustomOneDetailsCard(
-          title: "Compressor Capacity",
-          titleResponse: outdoorData.compressorCapacity ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.compressorCapacity),
-        ),
-        CustomOneDetailsCard(
-          title: "Compressor Brand",
-          titleResponse: outdoorData.compressorBrand ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.compressorBrand),
-        ),
-        CustomOneDetailsCard(
-          title: "Compressor Model",
-          titleResponse: outdoorData.compressorModel ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.compressorModel),
-        ),
-        CustomOneDetailsCard(
-          title: "Compressor Serial Number",
-          titleResponse: outdoorData.compressorSerialNumber ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.compressorSerialNumber),
-        ),
-        CustomOneDetailsCard(
-          title: "Supplier Name",
-          titleResponse: outdoorData.supplierName ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.supplierName),
-        ),
-        CustomOneDetailsCard(
-          title: "PO Number",
-          titleResponse: outdoorData.poNumber ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.poNumber),
-        ),
-        CustomOneDetailsCard(
-          title: "Notes",
-          titleResponse: outdoorData.notes ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.notes),
-        ),
-        CustomOneDetailsCard(
-          title: "Last Updated",
-          titleResponse: outdoorData.lastUpdated ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.lastUpdated),
-        ),
-        CustomOneDetailsCard(
-          title: "Status",
-          titleResponse: outdoorData.status ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.status),
-        ),
-        CustomOneDetailsCard(
-          title: "Warranty Expiry Date",
-          titleResponse: outdoorData.warrantyExpiryDate ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.warrantyExpiryDate),
-        ),
-        CustomOneDetailsCard(
-          title: "Condition OD Unit",
-          titleResponse: outdoorData.conditionOdUnit ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.conditionOdUnit),
-        ),
-        CustomOneDetailsCard(
-          title: "Date of Manufacture",
-          titleResponse: outdoorData.dateOfManufacture ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.dateOfManufacture),
-        ),
-        CustomOneDetailsCard(
-          title: "Installation Date",
-          titleResponse: outdoorData.installationDate ?? 'N/A',
-          shouldHighlight: shouldHighlight(outdoorData.installationDate),
-        ),
-      ],
-    );
+  //  AcOutdoorData == null
+  //     ? Center(child: Text("Not Submitted Those datas Yet"))
+  //     :
+  Column(
+    children: [
+      CustomOneDetailsCard(
+        title: "AC Outdoor ID",
+        titleResponse: outdoorData.acOutdoorId ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.acOutdoorId),
+      ),
+      CustomOneDetailsCard(
+        title: "QR",
+        titleResponse: outdoorData.qrOut,
+        shouldHighlight: shouldHighlight(outdoorData.qrOut),
+      ),
+      CustomOneDetailsCard(
+        title: "Brand",
+        titleResponse: outdoorData.brand ?? "N/A",
+        shouldHighlight: shouldHighlight(outdoorData.brand),
+      ),
+      CustomOneDetailsCard(
+        title: "Model",
+        titleResponse: outdoorData.model ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.model),
+      ),
+      CustomOneDetailsCard(
+        title: "Capacity",
+        titleResponse: outdoorData.capacity ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.capacity),
+      ),
+      CustomOneDetailsCard(
+        title: "Outdoor Fan Model",
+        titleResponse: outdoorData.outdoorFanModel ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.outdoorFanModel),
+      ),
+      CustomOneDetailsCard(
+        title: "Out Door Fan Unit",
+        titleResponse: outdoorData.outdoorFanModel,
+        shouldHighlight: shouldHighlight(outdoorData.outdoorFanModel),
+      ),
+      CustomOneDetailsCard(
+        title: "Power Supply",
+        titleResponse: outdoorData.powerSupply ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.powerSupply),
+      ),
+      CustomOneDetailsCard(
+        title: "Compressor Mounted With",
+        titleResponse: outdoorData.compressorMountedWith ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.compressorMountedWith),
+      ),
+      CustomOneDetailsCard(
+        title: "Compressor Capacity",
+        titleResponse: outdoorData.compressorCapacity ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.compressorCapacity),
+      ),
+      CustomOneDetailsCard(
+        title: "Compressor Brand",
+        titleResponse: outdoorData.compressorBrand ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.compressorBrand),
+      ),
+      CustomOneDetailsCard(
+        title: "Compressor Model",
+        titleResponse: outdoorData.compressorModel ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.compressorModel),
+      ),
+      CustomOneDetailsCard(
+        title: "Compressor Serial Number",
+        titleResponse: outdoorData.compressorSerialNumber ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.compressorSerialNumber),
+      ),
+      CustomOneDetailsCard(
+        title: "Supplier Name",
+        titleResponse: outdoorData.supplierName ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.supplierName),
+      ),
+      CustomOneDetailsCard(
+        title: "PO Number",
+        titleResponse: outdoorData.poNumber ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.poNumber),
+      ),
+      CustomOneDetailsCard(
+        title: "Notes",
+        titleResponse: outdoorData.notes ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.notes),
+      ),
+      CustomOneDetailsCard(
+        title: "Last Updated",
+        titleResponse: outdoorData.lastUpdated ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.lastUpdated),
+      ),
+      CustomOneDetailsCard(
+        title: "Status",
+        titleResponse: outdoorData.status ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.status),
+      ),
+      CustomOneDetailsCard(
+        title: "Warranty Expiry Date",
+        titleResponse: outdoorData.warrantyExpiryDate ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.warrantyExpiryDate),
+      ),
+      CustomOneDetailsCard(
+        title: "Condition OD Unit",
+        titleResponse: outdoorData.conditionOdUnit ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.conditionOdUnit),
+      ),
+      CustomOneDetailsCard(
+        title: "Date of Manufacture",
+        titleResponse: outdoorData.dateOfManufacture ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.dateOfManufacture),
+      ),
+      CustomOneDetailsCard(
+        title: "Installation Date",
+        titleResponse: outdoorData.installationDate ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoorData.installationDate),
+      ),
+    ],
+  );
 }
 
 

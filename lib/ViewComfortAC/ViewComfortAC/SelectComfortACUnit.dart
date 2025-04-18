@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:theme_update/widgets/searchWidget.dart';
 import 'ViewComfortACUnit.dart';
@@ -183,16 +185,23 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
   @override
   Widget build(BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('AC Details', style: TextStyle(color: mainTextColor)),
+        title: Text('AC Details', style: TextStyle(color: customColors.mainTextColor)),
         iconTheme: IconThemeData(
-          color: mainTextColor,
+          color: customColors.mainTextColor,
         ),
-        backgroundColor: appbarColor,
+        backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+
+
       ),
       body: Container(
-        color: mainBackgroundColor,
+        color: customColors.mainBackgroundColor,
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -218,14 +227,14 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
-                        color: mainTextColor,
+                        color: customColors.mainTextColor,
                       ),
                     ),
                     DropdownButton<String>(
-                      dropdownColor: suqarBackgroundColor,
+                      dropdownColor: customColors.suqarBackgroundColor,
                       hint: Text(
                         'Select Region',
-                        style: TextStyle(color: mainTextColor),
+                        style: TextStyle(color: customColors.mainTextColor),
                       ),
                       value: selectedRegion,
                       onChanged: (String? newValue) {
@@ -246,7 +255,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           value: value!,
                           child: Text(
                             value,
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                         );
                       }).toList(),
@@ -267,14 +276,14 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
-                            color: mainTextColor,
+                            color: customColors.mainTextColor,
                           ),
                         ),
                         DropdownButton<String>(
-                          dropdownColor: suqarBackgroundColor,
+                          dropdownColor: customColors.suqarBackgroundColor,
                           hint: Text(
                             'RTOM',
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                           value: selectedRtom,
                           onChanged: (String? newValue) {
@@ -295,7 +304,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           ]).map((String? value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value!,style: TextStyle(color: mainTextColor),),
+                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
                             );
                           }).toList()
                               : [],
@@ -310,14 +319,14 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
-                            color: mainTextColor,
+                            color: customColors.mainTextColor,
                           ),
                         ),
                         DropdownButton<String>(
-                          dropdownColor: suqarBackgroundColor,
+                          dropdownColor: customColors.suqarBackgroundColor,
                           hint: Text(
                             'Station',
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                           value: selectedStation,
                           onChanged: (String? newValue) {
@@ -341,7 +350,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           ]).map((String? value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value!,style: TextStyle(color: mainTextColor),),
+                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
                             );
                           }).toList()
                               : [],
@@ -364,14 +373,14 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
-                            color: mainTextColor,
+                            color: customColors.mainTextColor,
                           ),
                         ),
                         DropdownButton<String>(
-                          dropdownColor: suqarBackgroundColor,
+                          dropdownColor: customColors.suqarBackgroundColor,
                           hint: Text(
                             'Building',
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                           value: selectedBuildingId,
                           onChanged: (String? newValue) {
@@ -394,7 +403,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           ]).map((String? value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value!,style: TextStyle(color: mainTextColor),),
+                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
                             );
                           }).toList()
                               : [],
@@ -408,14 +417,14 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
-                            color: mainTextColor,
+                            color: customColors.mainTextColor,
                           ),
                         ),
                         DropdownButton<String>(
-                          dropdownColor: suqarBackgroundColor,
+                          dropdownColor: customColors.suqarBackgroundColor,
                           hint: Text(
                             'Flow',
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                           value: selectedFlowNo,
                           onChanged: (String? newValue) {
@@ -439,7 +448,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           ]).map((String? value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value!,style: TextStyle(color: mainTextColor),),
+                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
                             );
                           }).toList()
                               : [],
@@ -459,14 +468,14 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
                       DropdownButton<String>(
-                        dropdownColor: suqarBackgroundColor,
+                        dropdownColor: customColors.suqarBackgroundColor,
                         hint: Text(
                           'Office No',
-                          style: TextStyle(color: mainTextColor),
+                          style: TextStyle(color: customColors.mainTextColor),
                         ),
                         value: selectedOfficeNo,
                         onChanged: (String? newValue) {
@@ -491,7 +500,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         ]).map((String? value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value!,style: TextStyle(color: mainTextColor),),
+                            child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
                           );
                         }).toList()
                             : [],
@@ -504,14 +513,14 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
                       DropdownButton<String>(
-                        dropdownColor: suqarBackgroundColor,
+                        dropdownColor: customColors.suqarBackgroundColor,
                         hint: Text(
                           'Location',
-                          style: TextStyle(color: mainTextColor),
+                          style: TextStyle(color: customColors.mainTextColor),
                         ),
                         value: selectedLocation,
                         onChanged: (String? newValue) {
@@ -535,7 +544,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         ]).map((String? value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value!,style: TextStyle(color: mainTextColor),),
+                            child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
                           );
                         }).toList()
                             : [],
@@ -598,7 +607,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           return Center(
                               child: Text(
                                 'No data available for the selected filters',
-                                style: TextStyle(color: mainTextColor),
+                                style: TextStyle(color: customColors.mainTextColor),
                               ));
                         }
 
@@ -669,7 +678,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                               },
                               child: Card(
                                 elevation: 4, // Adds a subtle shadow
-                                color: suqarBackgroundColor,
+                                color: customColors.suqarBackgroundColor,
 
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
@@ -682,7 +691,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
                                   title: Text(
                                     'Region: ${logData.region ?? ""}',
-                                    style: TextStyle(color: mainTextColor),
+                                    style: TextStyle(color: customColors.mainTextColor,fontSize: 18,),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment:
@@ -690,23 +699,23 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                     children: [
                                       Text(
                                         'Location: ${logData.location ?? ""}',
-                                        style: TextStyle(color: subTextColor),
+                                        style: TextStyle(color: customColors.subTextColor),
                                       ),
                                       Text(
                                         'AC ID: ${indoorData?.qrIn ?? "N/A"}',
-                                        style: TextStyle(color: subTextColor),
+                                        style: TextStyle(color: customColors.subTextColor),
                                       ),
                                       Text(
                                         'Capacity: ${indoorData?.capacity ?? "N/A"}',
-                                        style: TextStyle(color: subTextColor),
+                                        style: TextStyle(color: customColors.subTextColor),
                                       ),
                                       Text(
                                         'Brand: ${indoorData?.brand ?? "N/A"}',
-                                        style: TextStyle(color: subTextColor),
+                                        style: TextStyle(color: customColors.subTextColor),
                                       ),
                                       Text(
                                         'Last Updated: ${indoorData?.lastUpdated ?? "N/A"}',
-                                        style: TextStyle(color: subTextColor),
+                                        style: TextStyle(color: customColors.subTextColor),
                                       ),
                                     ],
                                   ),
