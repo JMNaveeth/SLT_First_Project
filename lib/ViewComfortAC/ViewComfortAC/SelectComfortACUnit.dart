@@ -32,9 +32,12 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
   String searchQuery = '';
 
   Map<
+    String?,
+    Map<
       String?,
-      Map<String?,
-          Map<String?, Map<String?, Map<String?, Map<String?, String?>>>>>>
+      Map<String?, Map<String?, Map<String?, Map<String?, String?>>>>
+    >
+  >
   nestedLocationData = {};
 
   void updateNestedLocationData(List<AcLogData> data) {
@@ -51,10 +54,10 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
       nestedLocationData[region]![rtom] ??= {};
       nestedLocationData[region]![rtom]![station] ??= {};
       nestedLocationData[region]![rtom]![station]![rtomBuildingId] ??= {};
-      nestedLocationData[region]![rtom]![station]![rtomBuildingId]![
-      floorNumber] ??= {};
-      nestedLocationData[region]![rtom]![station]![rtomBuildingId]![
-      floorNumber]![officeNumber] = location;
+      nestedLocationData[region]![rtom]![station]![rtomBuildingId]![floorNumber] ??=
+          {};
+      nestedLocationData[region]![rtom]![station]![rtomBuildingId]![floorNumber]![officeNumber] =
+          location;
     }
     debugPrint('Nested Location Data: $nestedLocationData');
   }
@@ -67,7 +70,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
     }
   }
 
-//filter by Rtom
+  //filter by Rtom
   List<AcLogData> acFilterDataByRtom(List<AcLogData> data, String? rtom) {
     if (rtom == null || rtom.isEmpty || rtom == 'ALL') {
       return data;
@@ -89,7 +92,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
   //filter by building id
   List<AcLogData> acFilterDataByBuildingId(
-      List<AcLogData> data, String? buildingId) {
+    List<AcLogData> data,
+    String? buildingId,
+  ) {
     if (buildingId == null || buildingId.isEmpty || buildingId == 'ALL') {
       return data;
     } else {
@@ -108,7 +113,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
   //filter by Office No
   List<AcLogData> acFilterDataByOficeNo(
-      List<AcLogData> data, String? officeNo) {
+    List<AcLogData> data,
+    String? officeNo,
+  ) {
     if (officeNo == null || officeNo.isEmpty || officeNo == 'ALL') {
       return data;
     } else {
@@ -118,7 +125,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
   //filter by Location
   List<AcLogData> acFilterDataByLocation(
-      List<AcLogData> data, String? location) {
+    List<AcLogData> data,
+    String? location,
+  ) {
     if (location == null || location.isEmpty || location == 'ALL') {
       return data;
     } else {
@@ -142,7 +151,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
         AcIndoorData? indoor;
         try {
           indoor = allIndoorData.firstWhere(
-                (indoor) => indoor.acIndoorId == logItem.acIndoorId,
+            (indoor) => indoor.acIndoorId == logItem.acIndoorId,
           );
         } catch (e) {
           indoor = null;
@@ -152,14 +161,18 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
         AcOutdoorData? outdoor;
         try {
           outdoor = allOutdoorData.firstWhere(
-                (outdoor) => outdoor.acOutdoorId == logItem.acOutdoorId,
+            (outdoor) => outdoor.acOutdoorId == logItem.acOutdoorId,
           );
         } catch (e) {
           outdoor = null;
         }
 
         return SearchHelperAC.matchesACQuery(
-            logItem, indoor, outdoor, searchQuery);
+          logItem,
+          indoor,
+          outdoor,
+          searchQuery,
+        );
       }).toList();
     }
   }
@@ -185,20 +198,19 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('AC Details', style: TextStyle(color: customColors.mainTextColor)),
-        iconTheme: IconThemeData(
-          color: customColors.mainTextColor,
+        title: Text(
+          'AC Details',
+          style: TextStyle(color: customColors.mainTextColor),
         ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
         backgroundColor: customColors.appbarColor,
         actions: [
           ThemeToggleButton(), // Use the reusable widget
         ],
-
-
       ),
       body: Container(
         color: customColors.mainBackgroundColor,
@@ -249,16 +261,21 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           // Reset selections
                         });
                       },
-                      items: (['ALL', ...nestedLocationData.keys])
-                          .map<DropdownMenuItem<String>>((String? value) {
-                        return DropdownMenuItem<String>(
-                          value: value!,
-                          child: Text(
-                            value,
-                            style: TextStyle(color: customColors.mainTextColor),
-                          ),
-                        );
-                      }).toList(),
+                      items:
+                          ([
+                            'ALL',
+                            ...nestedLocationData.keys,
+                          ]).map<DropdownMenuItem<String>>((String? value) {
+                            return DropdownMenuItem<String>(
+                              value: value!,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                            );
+                          }).toList(),
                     ),
                   ],
                 ),
@@ -296,24 +313,28 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                               selectedLocation = 'ALL';
                             });
                           },
-                          items: selectedRegion != null &&
-                              nestedLocationData[selectedRegion] != null
-                              ? ([
-                            'ALL',
-                            ...nestedLocationData[selectedRegion]!.keys
-                          ]).map((String? value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
-                            );
-                          }).toList()
-                              : [],
+                          items:
+                              selectedRegion != null &&
+                                      nestedLocationData[selectedRegion] != null
+                                  ? ([
+                                    'ALL',
+                                    ...nestedLocationData[selectedRegion]!.keys,
+                                  ]).map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value!,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+                                  : [],
                         ),
                         //station
                         //Spacer(),
-                        SizedBox(
-                          width: 85,
-                        ),
+                        SizedBox(width: 85),
                         Text(
                           "STATION  :",
                           style: TextStyle(
@@ -338,22 +359,26 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                               selectedLocation = 'ALL';
                             });
                           },
-                          items: selectedRtom != null &&
-                              nestedLocationData[selectedRegion]
-                              ?[selectedRtom] !=
-                                  null
-                              ? ([
-                            'ALL',
-                            ...nestedLocationData[selectedRegion!]![
-                            selectedRtom]!
-                                .keys
-                          ]).map((String? value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
-                            );
-                          }).toList()
-                              : [],
+                          items:
+                              selectedRtom != null &&
+                                      nestedLocationData[selectedRegion]?[selectedRtom] !=
+                                          null
+                                  ? ([
+                                    'ALL',
+                                    ...nestedLocationData[selectedRegion!]![selectedRtom]!
+                                        .keys,
+                                  ]).map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value!,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+                                  : [],
                         ),
                       ],
                     ),
@@ -391,26 +416,28 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                               selectedLocation = 'ALL';
                             });
                           },
-                          items: selectedStation != null &&
-                              nestedLocationData[selectedRegion]
-                              ?[selectedRtom]?[selectedStation] !=
-                                  null
-                              ? ([
-                            'ALL',
-                            ...nestedLocationData[selectedRegion!]![
-                            selectedRtom]![selectedStation]!
-                                .keys
-                          ]).map((String? value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
-                            );
-                          }).toList()
-                              : [],
+                          items:
+                              selectedStation != null &&
+                                      nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation] !=
+                                          null
+                                  ? ([
+                                    'ALL',
+                                    ...nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]!
+                                        .keys,
+                                  ]).map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value!,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+                                  : [],
                         ),
-                        SizedBox(
-                          width: 40,
-                        ),
+                        SizedBox(width: 40),
                         //Spacer(),
                         Text(
                           "FLOW  :",
@@ -434,24 +461,26 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                               selectedLocation = 'ALL';
                             });
                           },
-                          items: selectedBuildingId != null &&
-                              nestedLocationData[selectedRegion]
-                              ?[selectedRtom]?[selectedStation]
-                              ?[selectedBuildingId] !=
-                                  null
-                              ? ([
-                            'ALL',
-                            ...nestedLocationData[selectedRegion!]![
-                            selectedRtom]![selectedStation]![
-                            selectedBuildingId]!
-                                .keys
-                          ]).map((String? value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
-                            );
-                          }).toList()
-                              : [],
+                          items:
+                              selectedBuildingId != null &&
+                                      nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation]?[selectedBuildingId] !=
+                                          null
+                                  ? ([
+                                    'ALL',
+                                    ...nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]![selectedBuildingId]!
+                                        .keys,
+                                  ]).map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value!,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+                                  : [],
                         ),
                       ],
                     ),
@@ -484,30 +513,28 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                             selectedLocation = 'ALL';
                           });
                         },
-                        items: selectedFlowNo != null &&
-                            nestedLocationData[selectedRegion]
-                            ?[selectedRtom]
-                            ?[selectedStation]
-                            ?[selectedBuildingId]
-                            ?[selectedFlowNo] !=
-                                null
-                            ? ([
-                          'ALL',
-                          ...nestedLocationData[selectedRegion!]![
-                          selectedRtom]![selectedStation]![
-                          selectedBuildingId]![selectedFlowNo]!
-                              .keys
-                        ]).map((String? value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
-                          );
-                        }).toList()
-                            : [],
+                        items:
+                            selectedFlowNo != null &&
+                                    nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation]?[selectedBuildingId]?[selectedFlowNo] !=
+                                        null
+                                ? ([
+                                  'ALL',
+                                  ...nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]![selectedBuildingId]![selectedFlowNo]!
+                                      .keys,
+                                ]).map((String? value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value!,
+                                      style: TextStyle(
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                }).toList()
+                                : [],
                       ),
-                      SizedBox(
-                        width: 22,
-                      ),
+                      SizedBox(width: 22),
                       Text(
                         "LOCATION  :",
                         style: TextStyle(
@@ -528,35 +555,85 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                             selectedLocation = newValue;
                           });
                         },
-                        items: selectedOfficeNo != null &&
-                            nestedLocationData[selectedRegion]
-                            ?[selectedRtom]
-                            ?[selectedStation]
-                            ?[selectedBuildingId]
-                            ?[selectedFlowNo]?[selectedOfficeNo] !=
-                                null
-                            ? ([
-                          'ALL',
-                          nestedLocationData[selectedRegion!]![
-                          selectedRtom]![selectedStation]![
-                          selectedBuildingId]![selectedFlowNo]![
-                          selectedOfficeNo]!
-                        ]).map((String? value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value!,style: TextStyle(color: customColors.mainTextColor),),
-                          );
-                        }).toList()
-                            : [],
+                        items:
+                            selectedOfficeNo != null &&
+                                    nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation]?[selectedBuildingId]?[selectedFlowNo]?[selectedOfficeNo] !=
+                                        null
+                                ? ([
+                                  'ALL',
+                                  nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]![selectedBuildingId]![selectedFlowNo]![selectedOfficeNo]!,
+                                ]).map((String? value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value!,
+                                      style: TextStyle(
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                }).toList()
+                                : [],
                       ),
                     ],
                   ),
                 ),
-
+                // Summary Table
+                Table(
+                  border: TableBorder.all(color: Colors.grey),
+                  children: [
+                    TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Summary',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Count',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Inverter Type'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('10'), // Replace with dynamic count
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Non-Inverter Type'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('5'), // Replace with dynamic count
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 Expanded(
                   child: FutureBuilder<List<dynamic>>(
-                    future:
-                    Future.wait([acIndoorData, acOutdoorData, acLogData]),
+                    future: Future.wait([
+                      acIndoorData,
+                      acOutdoorData,
+                      acLogData,
+                    ]),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -569,27 +646,41 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         return Center(child: Text('No data available'));
                       } else {
                         List<AcIndoorData> indoorDataList =
-                        snapshot.data![0] as List<AcIndoorData>;
+                            snapshot.data![0] as List<AcIndoorData>;
                         List<AcOutdoorData> outdoorDataList =
-                        snapshot.data![1] as List<AcOutdoorData>;
+                            snapshot.data![1] as List<AcOutdoorData>;
                         List<AcLogData> logDataList =
-                        snapshot.data![2] as List<AcLogData>;
+                            snapshot.data![2] as List<AcLogData>;
 
-                        logDataList =
-                            acFilterDataByRegion(logDataList, selectedRegion);
-                        logDataList =
-                            acFilterDataByRtom(logDataList, selectedRtom);
-                        logDataList =
-                            acFilterDataByStation(logDataList, selectedStation);
+                        logDataList = acFilterDataByRegion(
+                          logDataList,
+                          selectedRegion,
+                        );
+                        logDataList = acFilterDataByRtom(
+                          logDataList,
+                          selectedRtom,
+                        );
+                        logDataList = acFilterDataByStation(
+                          logDataList,
+                          selectedStation,
+                        );
                         logDataList = acFilterDataByBuildingId(
-                            logDataList, selectedBuildingId);
-                        logDataList =
-                            acFilterDataByFlowNo(logDataList, selectedFlowNo);
+                          logDataList,
+                          selectedBuildingId,
+                        );
+                        logDataList = acFilterDataByFlowNo(
+                          logDataList,
+                          selectedFlowNo,
+                        );
 
                         logDataList = acFilterDataByOficeNo(
-                            logDataList, selectedOfficeNo);
+                          logDataList,
+                          selectedOfficeNo,
+                        );
                         logDataList = acFilterDataByLocation(
-                            logDataList, selectedLocation);
+                          logDataList,
+                          selectedLocation,
+                        );
 
                         // indoorDataList.sort(
                         //     (a, b) => b.lastUpdated!.compareTo(a.lastUpdated!));
@@ -605,10 +696,13 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
                         if (logDataList.isEmpty) {
                           return Center(
-                              child: Text(
-                                'No data available for the selected filters',
-                                style: TextStyle(color: customColors.mainTextColor),
-                              ));
+                            child: Text(
+                              'No data available for the selected filters',
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+                          );
                         }
 
                         return ListView.builder(
@@ -625,19 +719,22 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                 logData.acIndoorId.isNotEmpty) {
                               try {
                                 indoorData = indoorDataList.firstWhere(
-                                        (indoor) =>
-                                    int.parse(indoor.acIndoorId) ==
-                                        int.parse(logData.acIndoorId));
+                                  (indoor) =>
+                                      int.parse(indoor.acIndoorId) ==
+                                      int.parse(logData.acIndoorId),
+                                );
                                 debugPrint(logData.acIndoorId);
                               } catch (e) {
                                 debugPrint(
-                                    'No suitable logData found for ${logData.acIndoorId}');
+                                  'No suitable logData found for ${logData.acIndoorId}',
+                                );
                                 indoorData =
-                                null; // Set indoorData to null explicitly
+                                    null; // Set indoorData to null explicitly
                               }
                             } else {
                               debugPrint(
-                                  'Skipping logData with null or empty acIndoorId');
+                                'Skipping logData with null or empty acIndoorId',
+                              );
                             }
 
                             // Check if acOutdoorId is not null and try to find the corresponding outdoorData
@@ -646,20 +743,23 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                               if (indoorData != null) {
                                 try {
                                   outdoorData = outdoorDataList.firstWhere(
-                                          (outdoor) =>
-                                      int.parse(outdoor.acOutdoorId!) ==
-                                          int.parse(logData.acOutdoorId));
+                                    (outdoor) =>
+                                        int.parse(outdoor.acOutdoorId!) ==
+                                        int.parse(logData.acOutdoorId),
+                                  );
                                   debugPrint(logData.acOutdoorId);
                                 } catch (e) {
                                   debugPrint(
-                                      'No suitable outdoorData found for ${logData.acOutdoorId}');
+                                    'No suitable outdoorData found for ${logData.acOutdoorId}',
+                                  );
                                   outdoorData =
-                                  null; // Set outdoorData to null explicitly
+                                      null; // Set outdoorData to null explicitly
                                 }
                               }
                             } else {
                               debugPrint(
-                                  'Skipping logData with null or empty acOutdoorId');
+                                'Skipping logData with null or empty acOutdoorId',
+                              );
                             }
 
                             return GestureDetector(
@@ -667,12 +767,13 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ViewComfortACUnit(
-                                      outdoorData: outdoorData,
-                                      logData: logData,
-                                      indoorData: indoorData,
-                                      searchQuery: searchQuery,
-                                    ),
+                                    builder:
+                                        (context) => ViewComfortACUnit(
+                                          outdoorData: outdoorData,
+                                          logData: logData,
+                                          indoorData: indoorData,
+                                          searchQuery: searchQuery,
+                                        ),
                                   ),
                                 );
                               },
@@ -682,40 +783,54 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      15), // Rounded corners
+                                    15,
+                                  ), // Rounded corners
                                 ),
 
                                 child: ListTile(
                                   hoverColor: Colors.blue.withOpacity(0.1),
-                                  // Blue hover effect
 
+                                  // Blue hover effect
                                   title: Text(
                                     'Region: ${logData.region ?? ""}',
-                                    style: TextStyle(color: customColors.mainTextColor,fontSize: 18,),
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                      fontSize: 18,
+                                    ),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Location: ${logData.location ?? ""}',
-                                        style: TextStyle(color: customColors.subTextColor),
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
                                       ),
                                       Text(
                                         'AC ID: ${indoorData?.qrIn ?? "N/A"}',
-                                        style: TextStyle(color: customColors.subTextColor),
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
                                       ),
                                       Text(
                                         'Capacity: ${indoorData?.capacity ?? "N/A"}',
-                                        style: TextStyle(color: customColors.subTextColor),
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
                                       ),
                                       Text(
                                         'Brand: ${indoorData?.brand ?? "N/A"}',
-                                        style: TextStyle(color: customColors.subTextColor),
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
                                       ),
                                       Text(
                                         'Last Updated: ${indoorData?.lastUpdated ?? "N/A"}',
-                                        style: TextStyle(color: customColors.subTextColor),
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
                                       ),
                                     ],
                                   ),
