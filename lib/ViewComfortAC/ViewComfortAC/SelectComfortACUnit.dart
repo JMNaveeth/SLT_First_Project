@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
+import 'package:theme_update/utils/utils/colors.dart' as customsColors;
 import 'package:theme_update/widgets/searchWidget.dart';
 import 'ViewComfortACUnit.dart';
 import 'ac_details_model.dart';
@@ -21,6 +22,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
   late Future<List<AcLogData>> acLogData;
   List<AcIndoorData> allIndoorData = [];
   List<AcOutdoorData> allOutdoorData = [];
+
+  int nonInverterCount = 0; // Initialize nonInverterCount
+  int inverterCount = 0; // Initialize inverterCount
 
   String? selectedRegion = 'ALL';
   String? selectedRtom = 'ALL';
@@ -180,16 +184,33 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
   @override
   void initState() {
     super.initState();
+
+    // Fetch Outdoor Data
     acOutdoorData = fetchAcOutdoorData().then((data) {
       allOutdoorData = data;
       return data;
     });
+
+    // Fetch Indoor Data and Calculate Counts
     acIndoorData = fetchAcIndoorData().then((data) {
       setState(() {
-        allIndoorData = data; // This is where the code is located
+        allIndoorData = data;
+        inverterCount =
+            allIndoorData
+                .where((item) => item.type?.toLowerCase() == 'inverter')
+                .length;
+        nonInverterCount =
+            allIndoorData
+                .where((item) => item.type?.toLowerCase() == 'non-inverter')
+                .length;
+        // Add debug statements here
+        debugPrint('Inverter Count: $inverterCount');
+        debugPrint('Non-Inverter Count: $nonInverterCount');
       });
       return data;
     });
+
+    // Fetch Log Data
     acLogData = fetchAcLogData().then((data) {
       setState(() {
         updateNestedLocationData(data);
@@ -198,19 +219,111 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
     });
   }
 
+  Map<String, int> getSummary(List<AcIndoorData> indoorDataList) {
+    int totalInvertor = 0;
+    int totalNoninvertor = 0;
+
+    for (var system in indoorDataList) {
+      final type = system.type?.trim().toLowerCase();
+      if (type == 'inverter') {
+        totalInvertor++;
+      } else if (type == 'non-inverter') {
+        totalNoninvertor++;
+      }
+    }
+
+    return {'Invertor': totalInvertor, 'Non Invertor': totalNoninvertor};
+  }
+
+ Widget buildSummaryTable() {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+  return FutureBuilder<List<AcIndoorData>>(
+    future: acIndoorData,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        return Center(child: Text('No data available'));
+      } else {
+        final summary = getSummary(snapshot.data!);
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Table(
+            border: TableBorder.all(color: customColors.subTextColor),
+            columnWidths: {0: FixedColumnWidth(200)},
+            children: [
+              TableRow(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Summary',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: customColors.mainTextColor,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Count',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: customColors.mainTextColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Inverter',
+                      style: TextStyle(color: customColors.subTextColor),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '${summary['Invertor'] ?? 0}',
+                      style: TextStyle(color: customColors.subTextColor),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Non-Inverter',
+                      style: TextStyle(color: customColors.subTextColor),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '${summary['Non Invertor'] ?? 0}',
+                      style: TextStyle(color: customColors.subTextColor),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      }
+    },
+  );
+}
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
-
-    // Calculate counts for Inverter and Non-Inverter
-    int inverterCount =
-        allIndoorData
-            .where((data) => data.type?.toLowerCase() == 'inverter')
-            .length;
-    int nonInverterCount =
-        allIndoorData
-            .where((data) => data.type?.toLowerCase() == 'non-inverter')
-            .length;
 
     return Scaffold(
       appBar: AppBar(
@@ -590,123 +703,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                     ],
                   ),
                 ),
+                buildSummaryTable(),
 
-                const SizedBox(height: 20),
-
-                // Add the Summary Table
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Summary Table",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: customColors.mainTextColor,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Table(
-                          border: TableBorder.all(
-                            color: customColors.mainTextColor,
-                            width: 1,
-                          ),
-                          children: [
-                            TableRow(
-                              decoration: BoxDecoration(
-                                color: customColors.suqarBackgroundColor,
-                              ),
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Summary",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Count",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Inverter',
-                                      style: TextStyle(
-                                        color: customColors.subTextColor,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '$inverterCount',
-                                      style: TextStyle(
-                                        color: customColors.subTextColor,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Non-Inverter',
-                                      style: TextStyle(
-                                        color: customColors.subTextColor,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '$nonInverterCount',
-                                      style: TextStyle(
-                                        color: customColors.subTextColor,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
 
                 Expanded(
                   child: FutureBuilder<List<dynamic>>(
