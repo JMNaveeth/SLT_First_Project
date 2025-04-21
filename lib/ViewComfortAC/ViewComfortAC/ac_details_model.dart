@@ -159,7 +159,6 @@ class AcLogData {
   final String? location;
   final String? noAcPlants;
   final String? qrLoc;
-  final String? type; // Add this property to store the AC type
 
   AcLogData({
     required this.logId,
@@ -174,7 +173,6 @@ class AcLogData {
     this.location,
     this.noAcPlants,
     this.qrLoc,
-    this.type, // Initialize the new property
   });
 
   factory AcLogData.fromJson(Map<String?, dynamic> json) {
@@ -191,7 +189,6 @@ class AcLogData {
       location: json["location"],
       noAcPlants: json["no_AC_plants"],
       qrLoc: json["QR_loc"],
-      type: json["type"], // Map the new property from JSON
     );
   }
 }

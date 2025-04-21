@@ -224,103 +224,125 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
     int totalNoninvertor = 0;
 
     for (var system in indoorDataList) {
-      final type = system.type?.trim().toLowerCase();
-      if (type == 'inverter') {
+      // Check both type and category fields
+      final type = (system.type ?? '').trim().toLowerCase();
+      final category = (system.category ?? '').trim().toLowerCase();
+
+      debugPrint('AC Type: $type, AC Category: $category'); // Debug both fields
+
+      // Check both fields for inverter information
+      bool isInverter = false;
+      bool isNonInverter = false;
+
+      // Check type field
+      if (type.contains('inverter') && !type.contains('non')) {
+        isInverter = true;
+      } else if (type.contains('non') ||
+          type.contains('non-inverter') ||
+          type.contains('non inverter')) {
+        isNonInverter = true;
+      }
+
+      // If not found in type, check category field
+      if (!isInverter && !isNonInverter) {
+        if (category.contains('inverter') && !category.contains('non')) {
+          isInverter = true;
+        } else if (category.contains('non') ||
+            category.contains('non-inverter') ||
+            category.contains('non inverter')) {
+          isNonInverter = true;
+        }
+      }
+
+      // Final count
+      if (isInverter) {
         totalInvertor++;
-      } else if (type == 'non-inverter') {
+      } else if (isNonInverter) {
         totalNoninvertor++;
       }
     }
 
+    debugPrint(
+      'Total Invertor: $totalInvertor, Total Non-invertor: $totalNoninvertor',
+    );
     return {'Invertor': totalInvertor, 'Non Invertor': totalNoninvertor};
   }
 
- Widget buildSummaryTable() {
-  final customColors = Theme.of(context).extension<CustomColors>()!;
-  return FutureBuilder<List<AcIndoorData>>(
-    future: acIndoorData,
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.error}'));
-      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        return Center(child: Text('No data available'));
-      } else {
-        final summary = getSummary(snapshot.data!);
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Table(
-            border: TableBorder.all(color: customColors.subTextColor),
-            columnWidths: {0: FixedColumnWidth(200)},
+  Widget buildSummaryTable(List<AcIndoorData> filteredIndoorData) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    final summary = getSummary(filteredIndoorData);
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Table(
+        border: TableBorder.all(color: customColors.subTextColor),
+        columnWidths: {0: FixedColumnWidth(200)},
+        children: [
+          TableRow(
             children: [
-              TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Summary',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: customColors.mainTextColor,
-                      ),
-                    ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Summary',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: customColors.mainTextColor,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Count',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: customColors.mainTextColor,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-              TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Inverter',
-                      style: TextStyle(color: customColors.subTextColor),
-                    ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Count',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: customColors.mainTextColor,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '${summary['Invertor'] ?? 0}',
-                      style: TextStyle(color: customColors.subTextColor),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Non-Inverter',
-                      style: TextStyle(color: customColors.subTextColor),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '${summary['Non Invertor'] ?? 0}',
-                      style: TextStyle(color: customColors.subTextColor),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
-        );
-      }
-    },
-  );
-}
+          TableRow(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Inverter',
+                  style: TextStyle(color: customColors.subTextColor),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '${summary['Invertor'] ?? 0}',
+                  style: TextStyle(color: customColors.subTextColor),
+                ),
+              ),
+            ],
+          ),
+          TableRow(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Non-Inverter',
+                  style: TextStyle(color: customColors.subTextColor),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '${summary['Non Invertor'] ?? 0}',
+                  style: TextStyle(color: customColors.subTextColor),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
@@ -703,7 +725,6 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                     ],
                   ),
                 ),
-                buildSummaryTable(),
 
                 const SizedBox(height: 15),
 
@@ -774,150 +795,204 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         // Apply search filter
                         logDataList = filterDataBySearch(logDataList);
 
-                        if (logDataList.isEmpty) {
-                          return Center(
-                            child: Text(
-                              'No data available for the selected filters',
-                              style: TextStyle(
-                                color: customColors.mainTextColor,
-                              ),
+                        // Filter indoorDataList to match filtered logDataList
+                        List<AcIndoorData> filteredIndoorData =
+                            indoorDataList.where((indoorItem) {
+                              return logDataList.any(
+                                (logItem) =>
+                                    logItem.acIndoorId == indoorItem.acIndoorId,
+                              );
+                            }).toList();
+
+                        return Column(
+                          children: [
+                            // Now pass the filtered indoor data to the summary table
+                            buildSummaryTable(filteredIndoorData),
+
+                            const SizedBox(height: 15),
+
+                            Expanded(
+                              child:
+                                  logDataList.isEmpty
+                                      ? Center(
+                                        child: Text(
+                                          'No data available for the selected filters',
+                                          style: TextStyle(
+                                            color: customColors.mainTextColor,
+                                          ),
+                                        ),
+                                      )
+                                      : ListView.builder(
+                                        itemCount: logDataList.length,
+                                        itemBuilder: (context, index) {
+                                          AcLogData logData =
+                                              logDataList[index];
+                                          debugPrint(
+                                            " INDOOR ID ${logData.acIndoorId}",
+                                          );
+
+                                          AcIndoorData? indoorData;
+                                          AcOutdoorData? outdoorData;
+
+                                          // Check if acIndoorId is not null and try to find the corresponding indoorData
+                                          if (logData.acIndoorId != null &&
+                                              logData.acIndoorId.isNotEmpty) {
+                                            try {
+                                              indoorData = indoorDataList
+                                                  .firstWhere(
+                                                    (indoor) =>
+                                                        int.parse(
+                                                          indoor.acIndoorId,
+                                                        ) ==
+                                                        int.parse(
+                                                          logData.acIndoorId,
+                                                        ),
+                                                  );
+                                              debugPrint(logData.acIndoorId);
+                                            } catch (e) {
+                                              debugPrint(
+                                                'No suitable logData found for ${logData.acIndoorId}',
+                                              );
+                                              indoorData =
+                                                  null; // Set indoorData to null explicitly
+                                            }
+                                          } else {
+                                            debugPrint(
+                                              'Skipping logData with null or empty acIndoorId',
+                                            );
+                                          }
+
+                                          // Check if acOutdoorId is not null and try to find the corresponding outdoorData
+                                          if (logData.acOutdoorId != null &&
+                                              logData.acOutdoorId.isNotEmpty) {
+                                            if (indoorData != null) {
+                                              try {
+                                                outdoorData = outdoorDataList
+                                                    .firstWhere(
+                                                      (outdoor) =>
+                                                          int.parse(
+                                                            outdoor
+                                                                .acOutdoorId!,
+                                                          ) ==
+                                                          int.parse(
+                                                            logData.acOutdoorId,
+                                                          ),
+                                                    );
+                                                debugPrint(logData.acOutdoorId);
+                                              } catch (e) {
+                                                debugPrint(
+                                                  'No suitable outdoorData found for ${logData.acOutdoorId}',
+                                                );
+                                                outdoorData =
+                                                    null; // Set outdoorData to null explicitly
+                                              }
+                                            }
+                                          } else {
+                                            debugPrint(
+                                              'Skipping logData with null or empty acOutdoorId',
+                                            );
+                                          }
+
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (context) =>
+                                                          ViewComfortACUnit(
+                                                            outdoorData:
+                                                                outdoorData,
+                                                            logData: logData,
+                                                            indoorData:
+                                                                indoorData,
+                                                            searchQuery:
+                                                                searchQuery,
+                                                          ),
+                                                ),
+                                              );
+                                            },
+                                            child: Card(
+                                              elevation:
+                                                  4, // Adds a subtle shadow
+                                              color:
+                                                  customColors
+                                                      .suqarBackgroundColor,
+
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                      15,
+                                                    ), // Rounded corners
+                                              ),
+
+                                              child: ListTile(
+                                                hoverColor: Colors.blue
+                                                    .withOpacity(0.1),
+
+                                                // Blue hover effect
+                                                title: Text(
+                                                  'Region: ${logData.region ?? ""}',
+                                                  style: TextStyle(
+                                                    color:
+                                                        customColors
+                                                            .mainTextColor,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                                subtitle: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'Location: ${logData.location ?? ""}',
+                                                      style: TextStyle(
+                                                        color:
+                                                            customColors
+                                                                .subTextColor,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'AC ID: ${indoorData?.qrIn ?? "N/A"}',
+                                                      style: TextStyle(
+                                                        color:
+                                                            customColors
+                                                                .subTextColor,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Capacity: ${indoorData?.capacity ?? "N/A"}',
+                                                      style: TextStyle(
+                                                        color:
+                                                            customColors
+                                                                .subTextColor,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Brand: ${indoorData?.brand ?? "N/A"}',
+                                                      style: TextStyle(
+                                                        color:
+                                                            customColors
+                                                                .subTextColor,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Last Updated: ${indoorData?.lastUpdated ?? "N/A"}',
+                                                      style: TextStyle(
+                                                        color:
+                                                            customColors
+                                                                .subTextColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
                             ),
-                          );
-                        }
-
-                        return ListView.builder(
-                          itemCount: logDataList.length,
-                          itemBuilder: (context, index) {
-                            AcLogData logData = logDataList[index];
-                            debugPrint(" INDOOR ID ${logData.acIndoorId}");
-
-                            AcIndoorData? indoorData;
-                            AcOutdoorData? outdoorData;
-
-                            // Check if acIndoorId is not null and try to find the corresponding indoorData
-                            if (logData.acIndoorId != null &&
-                                logData.acIndoorId.isNotEmpty) {
-                              try {
-                                indoorData = indoorDataList.firstWhere(
-                                  (indoor) =>
-                                      int.parse(indoor.acIndoorId) ==
-                                      int.parse(logData.acIndoorId),
-                                );
-                                debugPrint(logData.acIndoorId);
-                              } catch (e) {
-                                debugPrint(
-                                  'No suitable logData found for ${logData.acIndoorId}',
-                                );
-                                indoorData =
-                                    null; // Set indoorData to null explicitly
-                              }
-                            } else {
-                              debugPrint(
-                                'Skipping logData with null or empty acIndoorId',
-                              );
-                            }
-
-                            // Check if acOutdoorId is not null and try to find the corresponding outdoorData
-                            if (logData.acOutdoorId != null &&
-                                logData.acOutdoorId.isNotEmpty) {
-                              if (indoorData != null) {
-                                try {
-                                  outdoorData = outdoorDataList.firstWhere(
-                                    (outdoor) =>
-                                        int.parse(outdoor.acOutdoorId!) ==
-                                        int.parse(logData.acOutdoorId),
-                                  );
-                                  debugPrint(logData.acOutdoorId);
-                                } catch (e) {
-                                  debugPrint(
-                                    'No suitable outdoorData found for ${logData.acOutdoorId}',
-                                  );
-                                  outdoorData =
-                                      null; // Set outdoorData to null explicitly
-                                }
-                              }
-                            } else {
-                              debugPrint(
-                                'Skipping logData with null or empty acOutdoorId',
-                              );
-                            }
-
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => ViewComfortACUnit(
-                                          outdoorData: outdoorData,
-                                          logData: logData,
-                                          indoorData: indoorData,
-                                          searchQuery: searchQuery,
-                                        ),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 4, // Adds a subtle shadow
-                                color: customColors.suqarBackgroundColor,
-
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    15,
-                                  ), // Rounded corners
-                                ),
-
-                                child: ListTile(
-                                  hoverColor: Colors.blue.withOpacity(0.1),
-
-                                  // Blue hover effect
-                                  title: Text(
-                                    'Region: ${logData.region ?? ""}',
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Location: ${logData.location ?? ""}',
-                                        style: TextStyle(
-                                          color: customColors.subTextColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        'AC ID: ${indoorData?.qrIn ?? "N/A"}',
-                                        style: TextStyle(
-                                          color: customColors.subTextColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Capacity: ${indoorData?.capacity ?? "N/A"}',
-                                        style: TextStyle(
-                                          color: customColors.subTextColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Brand: ${indoorData?.brand ?? "N/A"}',
-                                        style: TextStyle(
-                                          color: customColors.subTextColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Last Updated: ${indoorData?.lastUpdated ?? "N/A"}',
-                                        style: TextStyle(
-                                          color: customColors.subTextColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                          ],
                         );
                       }
                     },
