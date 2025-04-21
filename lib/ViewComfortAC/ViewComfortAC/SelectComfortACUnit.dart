@@ -185,7 +185,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
       return data;
     });
     acIndoorData = fetchAcIndoorData().then((data) {
-      allIndoorData = data;
+      setState(() {
+        allIndoorData = data; // This is where the code is located
+      });
       return data;
     });
     acLogData = fetchAcLogData().then((data) {
@@ -589,116 +591,122 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                   ),
                 ),
 
+                const SizedBox(height: 20),
 
-
-
-
-   const SizedBox(height: 20),
-
-              // Add the Summary Table
-              Card(
-                color: customColors.suqarBackgroundColor,
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Summary Table",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: customColors.mainTextColor,
+                // Add the Summary Table
+                Card(
+                  color: customColors.suqarBackgroundColor,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Summary Table",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: customColors.mainTextColor,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Table(
-                        border: TableBorder.all(
-                          color: customColors.mainTextColor,
-                          width: 1,
-                        ),
-                        children: [
-                          TableRow(
-                            decoration: BoxDecoration(
-                              color: customColors.suqarBackgroundColor,
+                        const SizedBox(height: 10),
+                        Table(
+                          border: TableBorder.all(
+                            color: customColors.mainTextColor,
+                            width: 1,
+                          ),
+                          children: [
+                            TableRow(
+                              decoration: BoxDecoration(
+                                color: customColors.suqarBackgroundColor,
+                              ),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Summary",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Count",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Summary",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: customColors.mainTextColor,
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Inverter',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Count",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: customColors.mainTextColor,
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      '$inverterCount',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Inverter",
-                                  style: TextStyle(color: customColors.mainTextColor),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Non-Inverter',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  inverterCount.toString(),
-                                  style: TextStyle(color: customColors.mainTextColor),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      '$nonInverterCount',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Non-Inverter",
-                                  style: TextStyle(color: customColors.mainTextColor),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  nonInverterCount.toString(),
-                                  style: TextStyle(color: customColors.mainTextColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 20),
-
-
-
-
-
-
+                const SizedBox(height: 20),
 
                 Expanded(
                   child: FutureBuilder<List<dynamic>>(
