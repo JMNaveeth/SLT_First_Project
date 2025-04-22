@@ -551,16 +551,13 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         ),
                       ],
                     ),
-                    // Right side: Search bar, Station, Flow, Location
+                    // Right side: Search, Station, Flow, Location
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: SearchWidget(
-                            onSearch: handleSearch,
-                            hintText: 'Search',
-                          ),
+                        SearchWidget(
+                          onSearch: handleSearch,
+                          hintText: 'Search',
                         ),
                         Text(
                           "Station:",
@@ -749,17 +746,6 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                           logDataList,
                           selectedLocation,
                         );
-
-                        // indoorDataList.sort(
-                        //     (a, b) => b.lastUpdated!.compareTo(a.lastUpdated!));
-
-                        // if (indoorDataList.isEmpty) {
-                        //   return Center(
-                        //       child: Text(
-                        //           'No data available for the selected region'));
-                        // }
-
-                        // Apply search filter
 
                         logDataList = filterDataBySearch(logDataList);
 
