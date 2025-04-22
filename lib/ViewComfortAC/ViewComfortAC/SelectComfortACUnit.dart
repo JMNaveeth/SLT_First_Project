@@ -370,73 +370,57 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                // Add SearchWidget here
-                Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: SearchWidget(
-                    onSearch: handleSearch,
-                    hintText: 'Search',
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Region:",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: customColors.mainTextColor,
-                      ),
-                    ),
-                    DropdownButton<String>(
-                      dropdownColor: customColors.suqarBackgroundColor,
-                      hint: Text(
-                        'Select Region',
-                        style: TextStyle(color: customColors.mainTextColor),
-                      ),
-                      value: selectedRegion,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedRegion = newValue;
-                          selectedRtom = 'ALL';
-                          selectedStation = 'ALL';
-                          selectedBuildingId = 'ALL';
-                          selectedFlowNo = 'ALL';
-                          selectedOfficeNo = 'ALL';
-                          selectedLocation = 'ALL';
-                          // Reset selections
-                        });
-                      },
-                      items:
-                          ([
-                            'ALL',
-                            ...nestedLocationData.keys,
-                          ]).map<DropdownMenuItem<String>>((String? value) {
-                            return DropdownMenuItem<String>(
-                              value: value!,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                    ),
-                  ],
-                ),
-
-                //rtom
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    // Left side: Region, RTOM, Building, Office No
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "RTOM  :",
+                          "Region:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: customColors.mainTextColor,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          hint: Text(
+                            'Select Region',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          value: selectedRegion,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedRegion = newValue;
+                              selectedRtom = 'ALL';
+                              selectedStation = 'ALL';
+                              selectedBuildingId = 'ALL';
+                              selectedFlowNo = 'ALL';
+                              selectedOfficeNo = 'ALL';
+                              selectedLocation = 'ALL';
+                            });
+                          },
+                          items:
+                              ([
+                                'ALL',
+                                ...nestedLocationData.keys,
+                              ]).map<DropdownMenuItem<String>>((String? value) {
+                                return DropdownMenuItem<String>(
+                                  value: value!,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                        ),
+                        Text(
+                          "RTOM:",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
@@ -479,11 +463,107 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                   }).toList()
                                   : [],
                         ),
-                        //station
-                        //Spacer(),
-                        SizedBox(width: 85),
                         Text(
-                          "STATION  :",
+                          "Building:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: customColors.mainTextColor,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          hint: Text(
+                            'Building',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          value: selectedBuildingId,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedBuildingId = newValue;
+                              selectedFlowNo = 'ALL';
+                              selectedOfficeNo = 'ALL';
+                              selectedLocation = 'ALL';
+                            });
+                          },
+                          items:
+                              selectedStation != null &&
+                                      nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation] !=
+                                          null
+                                  ? ([
+                                    'ALL',
+                                    ...nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]!
+                                        .keys,
+                                  ]).map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value!,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+                                  : [],
+                        ),
+                        Text(
+                          "Office No:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: customColors.mainTextColor,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          hint: Text(
+                            'Office No',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          value: selectedOfficeNo,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedOfficeNo = newValue;
+                              selectedLocation = 'ALL';
+                            });
+                          },
+                          items:
+                              selectedFlowNo != null &&
+                                      nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation]?[selectedBuildingId]?[selectedFlowNo] !=
+                                          null
+                                  ? ([
+                                    'ALL',
+                                    ...nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]![selectedBuildingId]![selectedFlowNo]!
+                                        .keys,
+                                  ]).map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value!,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+                                  : [],
+                        ),
+                      ],
+                    ),
+                    // Right side: Search bar, Station, Flow, Location
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SearchWidget(
+                            onSearch: handleSearch,
+                            hintText: 'Search',
+                          ),
+                        ),
+                        Text(
+                          "Station:",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
@@ -527,67 +607,8 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                   }).toList()
                                   : [],
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                //station
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
                         Text(
-                          "BUILDING  :",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: customColors.mainTextColor,
-                          ),
-                        ),
-                        DropdownButton<String>(
-                          dropdownColor: customColors.suqarBackgroundColor,
-                          hint: Text(
-                            'Building',
-                            style: TextStyle(color: customColors.mainTextColor),
-                          ),
-                          value: selectedBuildingId,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedBuildingId = newValue;
-                              selectedFlowNo = 'ALL';
-                              selectedOfficeNo = 'ALL';
-                              selectedLocation = 'ALL';
-                            });
-                          },
-                          items:
-                              selectedStation != null &&
-                                      nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation] !=
-                                          null
-                                  ? ([
-                                    'ALL',
-                                    ...nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]!
-                                        .keys,
-                                  ]).map((String? value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value!,
-                                        style: TextStyle(
-                                          color: customColors.mainTextColor,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList()
-                                  : [],
-                        ),
-                        SizedBox(width: 40),
-                        //Spacer(),
-                        Text(
-                          "FLOW  :",
+                          "Flow:",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
@@ -629,105 +650,51 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                   }).toList()
                                   : [],
                         ),
+                        Text(
+                          "Location:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: customColors.mainTextColor,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          hint: Text(
+                            'Location',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          value: selectedLocation,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedLocation = newValue;
+                            });
+                          },
+                          items:
+                              selectedOfficeNo != null &&
+                                      nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation]?[selectedBuildingId]?[selectedFlowNo]?[selectedOfficeNo] !=
+                                          null
+                                  ? ([
+                                    'ALL',
+                                    nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]![selectedBuildingId]![selectedFlowNo]![selectedOfficeNo]!,
+                                  ]).map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value!,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+                                  : [],
+                        ),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "OFFICE NO  :",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: customColors.mainTextColor,
-                        ),
-                      ),
-                      DropdownButton<String>(
-                        dropdownColor: customColors.suqarBackgroundColor,
-                        hint: Text(
-                          'Office No',
-                          style: TextStyle(color: customColors.mainTextColor),
-                        ),
-                        value: selectedOfficeNo,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedOfficeNo = newValue;
-                            selectedLocation = 'ALL';
-                          });
-                        },
-                        items:
-                            selectedFlowNo != null &&
-                                    nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation]?[selectedBuildingId]?[selectedFlowNo] !=
-                                        null
-                                ? ([
-                                  'ALL',
-                                  ...nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]![selectedBuildingId]![selectedFlowNo]!
-                                      .keys,
-                                ]).map((String? value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value!,
-                                      style: TextStyle(
-                                        color: customColors.mainTextColor,
-                                      ),
-                                    ),
-                                  );
-                                }).toList()
-                                : [],
-                      ),
-                      SizedBox(width: 22),
-                      Text(
-                        "LOCATION  :",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: customColors.mainTextColor,
-                        ),
-                      ),
-                      DropdownButton<String>(
-                        dropdownColor: customColors.suqarBackgroundColor,
-                        hint: Text(
-                          'Location',
-                          style: TextStyle(color: customColors.mainTextColor),
-                        ),
-                        value: selectedLocation,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedLocation = newValue;
-                          });
-                        },
-                        items:
-                            selectedOfficeNo != null &&
-                                    nestedLocationData[selectedRegion]?[selectedRtom]?[selectedStation]?[selectedBuildingId]?[selectedFlowNo]?[selectedOfficeNo] !=
-                                        null
-                                ? ([
-                                  'ALL',
-                                  nestedLocationData[selectedRegion!]![selectedRtom]![selectedStation]![selectedBuildingId]![selectedFlowNo]![selectedOfficeNo]!,
-                                ]).map((String? value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value!,
-                                      style: TextStyle(
-                                        color: customColors.mainTextColor,
-                                      ),
-                                    ),
-                                  );
-                                }).toList()
-                                : [],
-                      ),
-                    ],
-                  ),
-                ),
-
                 const SizedBox(height: 15),
-
                 Expanded(
                   child: FutureBuilder<List<dynamic>>(
                     future: Future.wait([
@@ -793,9 +760,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                         // }
 
                         // Apply search filter
+
                         logDataList = filterDataBySearch(logDataList);
 
-                        // Filter indoorDataList to match filtered logDataList
                         List<AcIndoorData> filteredIndoorData =
                             indoorDataList.where((indoorItem) {
                               return logDataList.any(
@@ -806,11 +773,8 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
 
                         return Column(
                           children: [
-                            // Now pass the filtered indoor data to the summary table
                             buildSummaryTable(filteredIndoorData),
-
                             const SizedBox(height: 15),
-
                             Expanded(
                               child:
                                   logDataList.isEmpty
@@ -827,14 +791,9 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                         itemBuilder: (context, index) {
                                           AcLogData logData =
                                               logDataList[index];
-                                          debugPrint(
-                                            " INDOOR ID ${logData.acIndoorId}",
-                                          );
-
                                           AcIndoorData? indoorData;
                                           AcOutdoorData? outdoorData;
 
-                                          // Check if acIndoorId is not null and try to find the corresponding indoorData
                                           if (logData.acIndoorId != null &&
                                               logData.acIndoorId.isNotEmpty) {
                                             try {
@@ -848,21 +807,11 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                                           logData.acIndoorId,
                                                         ),
                                                   );
-                                              debugPrint(logData.acIndoorId);
                                             } catch (e) {
-                                              debugPrint(
-                                                'No suitable logData found for ${logData.acIndoorId}',
-                                              );
-                                              indoorData =
-                                                  null; // Set indoorData to null explicitly
+                                              indoorData = null;
                                             }
-                                          } else {
-                                            debugPrint(
-                                              'Skipping logData with null or empty acIndoorId',
-                                            );
                                           }
 
-                                          // Check if acOutdoorId is not null and try to find the corresponding outdoorData
                                           if (logData.acOutdoorId != null &&
                                               logData.acOutdoorId.isNotEmpty) {
                                             if (indoorData != null) {
@@ -878,19 +827,10 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                                             logData.acOutdoorId,
                                                           ),
                                                     );
-                                                debugPrint(logData.acOutdoorId);
                                               } catch (e) {
-                                                debugPrint(
-                                                  'No suitable outdoorData found for ${logData.acOutdoorId}',
-                                                );
-                                                outdoorData =
-                                                    null; // Set outdoorData to null explicitly
+                                                outdoorData = null;
                                               }
                                             }
-                                          } else {
-                                            debugPrint(
-                                              'Skipping logData with null or empty acOutdoorId',
-                                            );
                                           }
 
                                           return GestureDetector(
@@ -913,24 +853,17 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                               );
                                             },
                                             child: Card(
-                                              elevation:
-                                                  4, // Adds a subtle shadow
+                                              elevation: 4,
                                               color:
                                                   customColors
                                                       .suqarBackgroundColor,
-
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                      15,
-                                                    ), // Rounded corners
+                                                    BorderRadius.circular(15),
                                               ),
-
                                               child: ListTile(
                                                 hoverColor: Colors.blue
                                                     .withOpacity(0.1),
-
-                                                // Blue hover effect
                                                 title: Text(
                                                   'Region: ${logData.region ?? ""}',
                                                   style: TextStyle(
@@ -1006,7 +939,6 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
     );
   }
 }
-
 
 
 //v3
