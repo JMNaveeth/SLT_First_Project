@@ -378,10 +378,15 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                     hintText: 'Search',
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
+                 //rtom
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
                       "Region:",
                       style: TextStyle(
                         fontSize: 18,
@@ -426,7 +431,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                     ),
                   ],
                 ),
-
+                  )),
                 //rtom
                 Align(
                   alignment: Alignment.centerLeft,
