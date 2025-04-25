@@ -289,6 +289,7 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
                             onPressed();
                           } else {}
                         },
+                        style: ElevatedButton.styleFrom(),
                         child: Text(
                           widget.batteryUnit["SetNo"] == "1"
                               ? 'View Battery Set'
@@ -300,7 +301,6 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
                               ? 'View Battery Set'
                               : 'No valid SetNo',
                         ),
-                        style: ElevatedButton.styleFrom(),
                       ),
                     ],
                   ),
