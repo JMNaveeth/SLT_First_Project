@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import '../../utils/utils/colors.dart';
 import '../../widgets/searchWidget.dart';
 import 'ViewBatteryUnit.dart';
@@ -38,7 +40,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
 
   String selectedRegion = 'ALL'; // Initial selected region
@@ -63,8 +65,9 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
         battSetsResponse.statusCode == 200) {
       setState(() {
         allBatterySystems = json.decode(batSysResponse.body);
-        battSetsData =
-            json.decode(battSetsResponse.body); // Store battery sets data
+        battSetsData = json.decode(
+          battSetsResponse.body,
+        ); // Store battery sets data
         applyFilters(); // Apply initial filters
         isLoading = false;
       });
@@ -85,35 +88,41 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
   void applyFilters() {
     setState(() {
       // First filter by region
-      var filteredBatSys = selectedRegion == 'ALL'
-          ? allBatterySystems
-          : allBatterySystems
-              .where((system) =>
-                  system['Region']?.toString().toUpperCase() ==
-                  selectedRegion.toUpperCase())
-              .toList();
+      var filteredBatSys =
+          selectedRegion == 'ALL'
+              ? allBatterySystems
+              : allBatterySystems
+                  .where(
+                    (system) =>
+                        system['Region']?.toString().toUpperCase() ==
+                        selectedRegion.toUpperCase(),
+                  )
+                  .toList();
 
       // Then filter by search query if it exists
       if (searchQuery.isNotEmpty) {
         final query = searchQuery.toLowerCase();
 
         // Search in battery systems (racks)
-        filteredBatSys = filteredBatSys.where((system) {
-          return SearchHelperBattery.matchesBatteryQuery(system, query);
-        }).toList();
+        filteredBatSys =
+            filteredBatSys.where((system) {
+              return SearchHelperBattery.matchesBatteryQuery(system, query);
+            }).toList();
 
         // Also search in battery sets and include systems that have matching sets
-        final matchingSetIds = battSetsData
-            .where((set) {
-              return SearchHelperBattery.matchesBatteryQuery(set, query);
-            })
-            .map((set) => set['SystemID']?.toString())
-            .toSet();
+        final matchingSetIds =
+            battSetsData
+                .where((set) {
+                  return SearchHelperBattery.matchesBatteryQuery(set, query);
+                })
+                .map((set) => set['SystemID']?.toString())
+                .toSet();
 
         if (matchingSetIds.isNotEmpty) {
-          final systemsWithMatchingSets = allBatterySystems.where((system) {
-            return matchingSetIds.contains(system['SystemID']?.toString());
-          }).toList();
+          final systemsWithMatchingSets =
+              allBatterySystems.where((system) {
+                return matchingSetIds.contains(system['SystemID']?.toString());
+              }).toList();
 
           // Combine with existing filtered systems and remove duplicates
           filteredBatSys =
@@ -127,9 +136,10 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
       numberOfRacks = filteredBatSys.length;
       var systemIds =
           filteredBatSys.map((system) => system['SystemID']).toSet();
-      var filteredBattSets = battSetsData
-          .where((set) => systemIds.contains(set['SystemID']))
-          .toList();
+      var filteredBattSets =
+          battSetsData
+              .where((set) => systemIds.contains(set['SystemID']))
+              .toList();
       numberOfStrings = filteredBattSets.length;
       numberOfBatteries = filteredBattSets.fold(0, (sum, set) {
         return sum + (int.tryParse(set['batCount'] ?? '0') ?? 0);
@@ -159,29 +169,33 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ViewBatteryUnit(
-          batteryUnit: batteryUnit,
-          searchQuery: searchQuery,
-        ),
+        builder:
+            (context) => ViewBatteryUnit(
+              batteryUnit: batteryUnit,
+              searchQuery: searchQuery,
+            ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appbarColor,
+        backgroundColor: customColors.appbarColor,
         title: Text(
           'Battery Details',
-          style: TextStyle(color: mainTextColor),
+          style: TextStyle(color: customColors.mainTextColor),
         ),
-        iconTheme: IconThemeData(
-          color: mainTextColor,
-        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
       body: Container(
-        color: mainBackgroundColor,
+        color: customColors.mainBackgroundColor,
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -199,22 +213,27 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                         value: selectedRegion,
                         decoration: InputDecoration(
                           labelText: 'Select Region',
-                          labelStyle: TextStyle(color: subTextColor),
+                          labelStyle: TextStyle(
+                            color: customColors.subTextColor,
+                          ),
                           filled: true,
-                          fillColor: mainBackgroundColor,
+                          fillColor: customColors.mainBackgroundColor,
                         ),
-                        dropdownColor: suqarBackgroundColor,
-                        style: TextStyle(color: mainTextColor),
+                        dropdownColor: customColors.suqarBackgroundColor,
+                        style: TextStyle(color: customColors.mainTextColor),
                         onChanged: handleRegionChange,
-                        items: regions.map((region) {
-                          return DropdownMenuItem<String>(
-                            value: region,
-                            child: Text(
-                              region,
-                              style: TextStyle(color: mainTextColor),
-                            ),
-                          );
-                        }).toList(),
+                        items:
+                            regions.map((region) {
+                              return DropdownMenuItem<String>(
+                                value: region,
+                                child: Text(
+                                  region,
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                       ),
                     ),
                     SizedBox(width: 16),
@@ -231,16 +250,16 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Table(
-                  border: TableBorder.all(color: subTextColor),
+                  border: TableBorder.all(color: customColors.subTextColor),
                   children: [
-                    const TableRow(
+                    TableRow(
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'Number of Racks',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                         ),
                         Padding(
@@ -248,7 +267,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                           child: Text(
                             'Number of Strings',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                         ),
                         Padding(
@@ -256,7 +275,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                           child: Text(
                             'Number of Batteries',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: mainTextColor),
+                            style: TextStyle(color: customColors.mainTextColor),
                           ),
                         ),
                       ],
@@ -268,7 +287,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                           child: Text(
                             '$numberOfRacks',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: subTextColor),
+                            style: TextStyle(color: customColors.subTextColor),
                           ),
                         ),
                         Padding(
@@ -276,7 +295,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                           child: Text(
                             '$numberOfStrings',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: subTextColor),
+                            style: TextStyle(color: customColors.subTextColor),
                           ),
                         ),
                         Padding(
@@ -284,7 +303,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                           child: Text(
                             '$numberOfBatteries',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: subTextColor),
+                            style: TextStyle(color: customColors.subTextColor),
                           ),
                         ),
                       ],
@@ -293,124 +312,134 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                 ),
               ),
               Expanded(
-                  child: isLoading
-                      ? Center(
+                child:
+                    isLoading
+                        ? Center(
                           child: CircularProgressIndicator(
                             color: qrcodeiconColor1,
                           ), // Show loading indicator
                         )
-                      : filteredBatterySystems.isEmpty
-                          ? const Center(
-                              child: Text(
-                                'No data available for the selected filters',
-                                style: TextStyle(color: subTextColor),
-                              ),
-                            )
-                          // : ListView.builder(
-                          //     itemCount: filteredBatterySystems.length,
-                          //     itemBuilder: (context, index) {
-                          //       final system = filteredBatterySystems[index];
-                          //       final isRackIdMatch = searchQuery.isNotEmpty &&
-                          //           (system['SystemID']?.toString().toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
-                          //       final isLocationMatch = searchQuery.isNotEmpty &&
-                          //           (system['Location']?.toString().toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
-                          //
-                          //       return ListTile(
-                          //         title: Text('Rack ID: ${system['SystemID']}'),
-                          //         subtitle: Text('Location: ${system['Location']}'),
-                          //         onTap: () {
-                          //           navigateToBatteryUnitDetails(system);
-                          //         },
-                          //       );
-                          //     },
-                          //   ),
-                          : ListView.builder(
-                              itemCount: filteredBatterySystems.length,
-                              itemBuilder: (context, index) {
-                                final system = filteredBatterySystems[index];
-                                final isRackIdMatch = searchQuery.isNotEmpty &&
-                                    (system['SystemID']
-                                            ?.toString()
-                                            .toLowerCase()
-                                            .contains(
-                                                searchQuery.toLowerCase()) ??
-                                        false);
-                                final isLocationMatch = searchQuery
-                                        .isNotEmpty &&
-                                    (system['Location']
-                                            ?.toString()
-                                            .toLowerCase()
-                                            .contains(
-                                                searchQuery.toLowerCase()) ??
-                                        false);
+                        : filteredBatterySystems.isEmpty
+                        ? Center(
+                          child: Text(
+                            'No data available for the selected filters',
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                        )
+                        // : ListView.builder(
+                        //     itemCount: filteredBatterySystems.length,
+                        //     itemBuilder: (context, index) {
+                        //       final system = filteredBatterySystems[index];
+                        //       final isRackIdMatch = searchQuery.isNotEmpty &&
+                        //           (system['SystemID']?.toString().toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
+                        //       final isLocationMatch = searchQuery.isNotEmpty &&
+                        //           (system['Location']?.toString().toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
+                        //
+                        //       return ListTile(
+                        //         title: Text('Rack ID: ${system['SystemID']}'),
+                        //         subtitle: Text('Location: ${system['Location']}'),
+                        //         onTap: () {
+                        //           navigateToBatteryUnitDetails(system);
+                        //         },
+                        //       );
+                        //     },
+                        //   ),
+                        : ListView.builder(
+                          itemCount: filteredBatterySystems.length,
+                          itemBuilder: (context, index) {
+                            final system = filteredBatterySystems[index];
+                            final isRackIdMatch =
+                                searchQuery.isNotEmpty &&
+                                (system['SystemID']
+                                        ?.toString()
+                                        .toLowerCase()
+                                        .contains(searchQuery.toLowerCase()) ??
+                                    false);
+                            final isLocationMatch =
+                                searchQuery.isNotEmpty &&
+                                (system['Location']
+                                        ?.toString()
+                                        .toLowerCase()
+                                        .contains(searchQuery.toLowerCase()) ??
+                                    false);
 
-                                return Card(
-                                  color: mainBackgroundColor,
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      vertical: 8.0,
-                                      horizontal: 16.0,
+                            return Card(
+                              color: customColors.mainBackgroundColor,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 8.0,
+                                  horizontal: 16.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: customColors.suqarBackgroundColor,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: customColors.subTextColor,
+                                      blurRadius: 4.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(2.0, 2.0),
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: suqarBackgroundColor,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color(0xFF918F8F),
-                                          blurRadius: 4.0,
-                                          spreadRadius: 1.0,
-                                          offset: Offset(2.0, 2.0),
+                                  ],
+                                ),
+                                child: ListTile(
+                                  title: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: customColors.mainTextColor,
+                                      ),
+                                      // White text
+                                      children: [
+                                        TextSpan(text: 'Rack ID: '),
+                                        TextSpan(
+                                          text:
+                                              system['SystemID']?.toString() ??
+                                              'N/A',
+                                          style: TextStyle(
+                                            backgroundColor:
+                                                isRackIdMatch
+                                                    ? customColors
+                                                        .highlightColor
+                                                    : customColors
+                                                        .suqarBackgroundColor,
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    child: ListTile(
-                                      title: RichText(
-                                        text: TextSpan(
-                                          style:
-                                              TextStyle(color: mainTextColor),
-                                          // White text
-                                          children: [
-                                            TextSpan(text: 'Rack ID: '),
-                                            TextSpan(
-                                              text: system['SystemID']
-                                                      ?.toString() ??
-                                                  'N/A',
-                                              style: TextStyle(
-                                                backgroundColor: isRackIdMatch
-                                                    ? highlightColor
-                                                    : Colors.transparent,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                  ),
+                                  subtitle: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
                                       ),
-                                      subtitle: RichText(
-                                        text: TextSpan(
-                                          style: TextStyle(color: subTextColor),
-                                          // Light gray text
-                                          children: [
-                                            TextSpan(text: 'Location: '),
-                                            TextSpan(
-                                              text: system['Location']
-                                                      ?.toString() ??
-                                                  'N/A',
-                                              style: TextStyle(
-                                                backgroundColor: isLocationMatch
-                                                    ? highlightColor
-                                                    : Colors.transparent,
-                                              ),
-                                            ),
-                                          ],
+                                      // Light gray text
+                                      children: [
+                                        TextSpan(text: 'Location: '),
+                                        TextSpan(
+                                          text:
+                                              system['Location']?.toString() ??
+                                              'N/A',
+                                          style: TextStyle(
+                                            backgroundColor:
+                                                isLocationMatch
+                                                    ? customColors
+                                                        .highlightColor
+                                                    : customColors
+                                                        .suqarBackgroundColor,
+                                          ),
                                         ),
-                                      ),
-                                      onTap: () {
-                                        navigateToBatteryUnitDetails(system);
-                                      },
+                                      ],
                                     ),
                                   ),
-                                );
-                              },
-                            )),
+                                  onTap: () {
+                                    navigateToBatteryUnitDetails(system);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+              ),
             ],
           ),
         ),
