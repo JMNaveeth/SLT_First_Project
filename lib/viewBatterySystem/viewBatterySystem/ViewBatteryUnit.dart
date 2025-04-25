@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 
 import 'combinedSet.dart';
@@ -25,74 +27,84 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
     super.initState();
   }
 
-  ListTile makeListTile(String subjectName, String? variable) => ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        leading: Container(
-          padding: EdgeInsets.only(right: 12.0),
-          decoration: new BoxDecoration(
-            border: new Border(
-              right: new BorderSide(width: 1.0, color: Colors.white),
-            ),
-          ),
-          child: Text(
-            subjectName,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+  ListTile makeListTile(String subjectName, String? variable) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      leading: Container(
+        padding: EdgeInsets.only(right: 12.0),
+        decoration: new BoxDecoration(
+          border: new Border(
+            right: new BorderSide(width: 1.0, color: customColors.mainTextColor),
           ),
         ),
-        title: Text(
-          variable ?? 'N/A',
+        child: Text(
+          subjectName,
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-      );
-
-  Card makeCard(Lesson lesson) {
-    final isMatch = widget.searchQuery.isNotEmpty &&
-        (lesson.variable
-                ?.toString()
-                .toLowerCase()
-                .contains(widget.searchQuery.toLowerCase()) ??
-            false);
-
-    return Card(
-      elevation: 8.0,
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      child: SizedBox(
-        height: 60.0,
-        child: Container(
-          decoration: BoxDecoration(
-            color: suqarBackgroundColor,
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: ListTile(
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            leading: Container(
-              padding: EdgeInsets.only(right: 12.0),
-              decoration: BoxDecoration(
-                border: Border(
-                  right: BorderSide(width: 1.0, color: subTextColor),
-                ),
-              ),
-              child: Text(
-                lesson.subjectName,
-                style: TextStyle(
-                    color: mainTextColor, fontWeight: FontWeight.bold),
-              ),
-            ),
-            title: Text(
-              lesson.variable ?? 'N/A',
-              style: TextStyle(
-                color: subTextColor,
-                fontWeight: FontWeight.bold,
-                backgroundColor: isMatch ? highlightColor : Colors.transparent,
-              ),
-            ),
-          ),
-        ),
+      ),
+      title: Text(
+        variable ?? 'N/A',
+        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
     );
   }
+    Card makeCard(Lesson lesson) {
+      final isMatch =
+          widget.searchQuery.isNotEmpty &&
+          (lesson.variable?.toString().toLowerCase().contains(
+                widget.searchQuery.toLowerCase(),
+              ) ??
+              false);
+                  final customColors = Theme.of(context).extension<CustomColors>()!;
 
+
+      return Card(
+        elevation: 8.0,
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        child: SizedBox(
+          height: 60.0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: customColors.suqarBackgroundColor,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            child: ListTile(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 10.0,
+              ),
+              leading: Container(
+                padding: EdgeInsets.only(right: 12.0),
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(width: 1.0, color: customColors.subTextColor),
+                  ),
+                ),
+                child: Text(
+                  lesson.subjectName,
+                  style: TextStyle(
+                    color: customColors.mainTextColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              title: Text(
+                lesson.variable ?? 'N/A',
+                style: TextStyle(
+                  color: customColors.subTextColor,
+                  backgroundColor:
+                      isMatch ? customColors.highlightColor : customColors.suqarBackgroundColor,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  
   // Card makeCard(Lesson lesson) => Card(
   //   elevation: 8.0,
   //   margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -114,156 +126,189 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
     //int sysID2 = int.parse(widget.batteryUnit['SystemID'] ?? '0');
     //int sysID3 = int.parse(widget.batteryUnit['SystemID'] ?? '0');
     int setCnt = int.parse(widget.batteryUnit['SetNo'] ?? 0);
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Battery Unit Details",
-          style: TextStyle(color: mainTextColor),
+          style: TextStyle(color: customColors.mainTextColor),
         ),
-        iconTheme: IconThemeData(
-          color: mainTextColor,
-        ),
-        backgroundColor: appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
-      body: _dataLoaded
-          ? SingleChildScrollView(
-              child: Container(
-                color: mainBackgroundColor,
-                child: Column(
-                  children: [
-                    makeCard(Lesson(
-                        subjectName: 'Rack ID',
-                        variable: widget.batteryUnit['SystemID'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Region',
-                        variable: widget.batteryUnit['Region'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Site',
-                        variable: widget.batteryUnit['Site'] ?? 'N/A')),
-                    // makeCard(Lesson(
-                    //     subjectName: 'System Type',
-                    //     variable: widget.batteryUnit['sysType'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Battery Type',
-                        variable: widget.batteryUnit['batType'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Location',
-                        variable: widget.batteryUnit['Location'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Set Number',
-                        variable: widget.batteryUnit['SetNo'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Notes',
-                        variable: widget.batteryUnit['Notes'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Last Update',
-                        variable: widget.batteryUnit['last_updated'] ?? 'N/A')),
-                    makeCard(Lesson(
-                        subjectName: 'Uploader',
-                        variable: widget.batteryUnit['uploader'] ?? 'N/A')),
-                    ElevatedButton(
-                      onPressed: () {
-                        String buttonText = '';
-                        Function()? onPressed;
-
-                        if (widget.batteryUnit["SetNo"] == "1") {
-                          buttonText = 'for set No 1';
-                          onPressed = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => //Set1Page(setID: '111')
-                                      CombinedSetPage(
-                                        systemID1: sysID1,
-                                        //systemID2: sysID2,
-                                        //systemID3: sysID3,
-                                        setCount: setCnt,
-                                        searchQuery: widget.searchQuery,
-                                      )),
-                            );
-                          };
-                        } else if (widget.batteryUnit["SetNo"] == "2") {
-                          buttonText = 'for set No 2';
-                          onPressed = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => //Set1Page(setID: '111')
-                                      CombinedSetPage(
-                                        systemID1: sysID1,
-                                        //systemID2: sysID2,
-                                        //systemID3: sysID3,
-                                        setCount: setCnt,
-                                        searchQuery: widget.searchQuery,
-                                      )),
-                            );
-                          };
-                        }
-                        if (widget.batteryUnit["SetNo"] == "3") {
-                          buttonText = 'for set No 3';
-                          onPressed = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => //Set1Page(setID: '111')
-                                      CombinedSetPage(
-                                        systemID1: sysID1,
-                                        //systemID2: sysID2,
-                                        //systemID3: sysID3,
-                                        setCount: setCnt,
-                                        searchQuery: widget.searchQuery,
-                                      )),
-                            );
-                          };
-                        }
-                        if (widget.batteryUnit["SetNo"] == "4") {
-                          buttonText = 'for set No 4';
-                          onPressed = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => //Set1Page(setID: '111')
-                                      CombinedSetPage(
-                                        systemID1: sysID1,
-                                        //systemID2: sysID2,
-                                        //systemID3: sysID3,
-                                        setCount: setCnt,
-                                        searchQuery: widget.searchQuery,
-                                      )),
-                            );
-                          };
-                        }
-
-                        if (onPressed != null) {
-                          onPressed();
-                        } else {}
-                      },
-                      child: Text(
-                        widget.batteryUnit["SetNo"] == "1"
-                            ? 'View Battery Set'
-                            : widget.batteryUnit["SetNo"] == "2"
-                                ? 'View Battery Set'
-                                : widget.batteryUnit["SetNo"] == "3"
-                                    ? 'View Battery Set'
-                                    : widget.batteryUnit["SetNo"] == "4"
-                                        ? 'View Battery Set'
-                                        : 'No valid SetNo',
-                        style: TextStyle(color: Colors.black),
+      body:
+          _dataLoaded
+              ? SingleChildScrollView(
+                child: Container(
+                  color: customColors.mainBackgroundColor,
+                  child: Column(
+                    children: [
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Rack ID',
+                          variable: widget.batteryUnit['SystemID'] ?? 'N/A',
+                        ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.brown,
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Region',
+                          variable: widget.batteryUnit['Region'] ?? 'N/A',
+                        ),
                       ),
-                    ),
-                  ],
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Site',
+                          variable: widget.batteryUnit['Site'] ?? 'N/A',
+                        ),
+                      ),
+                      // makeCard(Lesson(
+                      //     subjectName: 'System Type',
+                      //     variable: widget.batteryUnit['sysType'] ?? 'N/A')),
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Battery Type',
+                          variable: widget.batteryUnit['batType'] ?? 'N/A',
+                        ),
+                      ),
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Location',
+                          variable: widget.batteryUnit['Location'] ?? 'N/A',
+                        ),
+                      ),
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Set Number',
+                          variable: widget.batteryUnit['SetNo'] ?? 'N/A',
+                        ),
+                      ),
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Notes',
+                          variable: widget.batteryUnit['Notes'] ?? 'N/A',
+                        ),
+                      ),
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Last Update',
+                          variable: widget.batteryUnit['last_updated'] ?? 'N/A',
+                        ),
+                      ),
+                      makeCard(
+                        Lesson(
+                          subjectName: 'Uploader',
+                          variable: widget.batteryUnit['uploader'] ?? 'N/A',
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          String buttonText = '';
+                          Function()? onPressed;
+
+                          if (widget.batteryUnit["SetNo"] == "1") {
+                            buttonText = 'for set No 1';
+                            onPressed = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => //Set1Page(setID: '111')
+                                          CombinedSetPage(
+                                        systemID1: sysID1,
+                                        //systemID2: sysID2,
+                                        //systemID3: sysID3,
+                                        setCount: setCnt,
+                                        searchQuery: widget.searchQuery,
+                                      ),
+                                ),
+                              );
+                            };
+                          } else if (widget.batteryUnit["SetNo"] == "2") {
+                            buttonText = 'for set No 2';
+                            onPressed = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => //Set1Page(setID: '111')
+                                          CombinedSetPage(
+                                        systemID1: sysID1,
+                                        //systemID2: sysID2,
+                                        //systemID3: sysID3,
+                                        setCount: setCnt,
+                                        searchQuery: widget.searchQuery,
+                                      ),
+                                ),
+                              );
+                            };
+                          }
+                          if (widget.batteryUnit["SetNo"] == "3") {
+                            buttonText = 'for set No 3';
+                            onPressed = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => //Set1Page(setID: '111')
+                                          CombinedSetPage(
+                                        systemID1: sysID1,
+                                        //systemID2: sysID2,
+                                        //systemID3: sysID3,
+                                        setCount: setCnt,
+                                        searchQuery: widget.searchQuery,
+                                      ),
+                                ),
+                              );
+                            };
+                          }
+                          if (widget.batteryUnit["SetNo"] == "4") {
+                            buttonText = 'for set No 4';
+                            onPressed = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => //Set1Page(setID: '111')
+                                          CombinedSetPage(
+                                        systemID1: sysID1,
+                                        //systemID2: sysID2,
+                                        //systemID3: sysID3,
+                                        setCount: setCnt,
+                                        searchQuery: widget.searchQuery,
+                                      ),
+                                ),
+                              );
+                            };
+                          }
+
+                          if (onPressed != null) {
+                            onPressed();
+                          } else {}
+                        },
+                        child: Text(
+                          widget.batteryUnit["SetNo"] == "1"
+                              ? 'View Battery Set'
+                              : widget.batteryUnit["SetNo"] == "2"
+                              ? 'View Battery Set'
+                              : widget.batteryUnit["SetNo"] == "3"
+                              ? 'View Battery Set'
+                              : widget.batteryUnit["SetNo"] == "4"
+                              ? 'View Battery Set'
+                              : 'No valid SetNo',
+                        ),
+                        style: ElevatedButton.styleFrom(),
+                      ),
+                    ],
+                  ),
                 ),
+              )
+              : Center(
+                child: CircularProgressIndicator(color: qrcodeiconColor1),
               ),
-            )
-          : Center(
-              child: CircularProgressIndicator(
-                color: qrcodeiconColor1,
-              ),
-            ),
     );
   }
 }
