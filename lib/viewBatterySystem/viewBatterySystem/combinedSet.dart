@@ -416,21 +416,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[0]["installDt"] ?? 'N/A',
+                                    (_matchedStations[0]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[0]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[0]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -629,21 +629,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[0]["installDt"] ?? 'N/A',
+                                    (_matchedStations[0]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[0]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[0]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -793,21 +793,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[1]["installDt"] ?? 'N/A',
+                                    (_matchedStations[1]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[1]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[1]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[1]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[1]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -998,21 +998,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[0]["installDt"] ?? 'N/A',
+                                    (_matchedStations[0]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[0]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[0]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -1162,21 +1162,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[1]["installDt"] ?? 'N/A',
+                                    (_matchedStations[1]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[1]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[1]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[1]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[1]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -1326,21 +1326,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[2]["installDt"] ?? 'N/A',
+                                    (_matchedStations[2]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[2]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[2]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[2]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[2]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -1528,21 +1528,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[0]["installDt"] ?? 'N/A',
+                                    (_matchedStations[0]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[0]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[0]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[0]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -1692,21 +1692,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[1]["installDt"] ?? 'N/A',
+                                  ( _matchedStations[1]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[1]["warrantSt"] ?? 'N/A',
+                                   ( _matchedStations[1]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[1]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[1]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -1856,21 +1856,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[2]["installDt"] ?? 'N/A',
+                                    (_matchedStations[2]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[2]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[2]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[2]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[2]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
@@ -2020,21 +2020,21 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                               Lesson(
                                 subjectName: "Installed Date",
                                 variable:
-                                    _matchedStations[3]["installDt"] ?? 'N/A',
+                                    (_matchedStations[3]["installDt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Commencement Date",
                                 variable:
-                                    _matchedStations[3]["warrantSt"] ?? 'N/A',
+                                    (_matchedStations[3]["warrantSt"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
                               Lesson(
                                 subjectName: "Warranty Expiration Date",
                                 variable:
-                                    _matchedStations[3]["warrantEd"] ?? 'N/A',
+                                    (_matchedStations[3]["warrantEd"] ?? 'N/A').replaceAll('00:00:00.000', ''),
                               ),
                             ),
                             makeCard(
