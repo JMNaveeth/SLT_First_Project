@@ -140,13 +140,17 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
+      
       body:
-          _dataLoaded
-              ? SingleChildScrollView(
-                child: Container(
-                  color: customColors.mainBackgroundColor,
-                  child: Column(
-                    children: [
+           _dataLoaded
+    ? SingleChildScrollView(
+        child: Container(
+          color: customColors.mainBackgroundColor,
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: Column(
+            children: [
                       makeCard(
                         Lesson(
                           subjectName: 'Rack ID',
