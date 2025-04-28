@@ -140,7 +140,154 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
-      
+      override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: customColors.appbarColor,
+        title: Text(
+          'Battery Details',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+      ),
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: DropdownButtonFormField<String>(
+                        value: selectedRegion,
+                        decoration: InputDecoration(
+                          labelText: 'Select Region',
+                          labelStyle: TextStyle(
+                            color: customColors.subTextColor,
+                          ),
+                          filled: true,
+                          fillColor: customColors.mainBackgroundColor,
+                        ),
+                        dropdownColor: customColors.suqarBackgroundColor,
+                        style: TextStyle(color: customColors.mainTextColor),
+                        onChanged: handleRegionChange,
+                        items:
+                            regions.map((region) {
+                              return DropdownMenuItem<String>(
+                                value: region,
+                                child: Text(
+                                  region,
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                      ),
+                    ),
+                    SizedBox(width: 16),
+                    Expanded(
+                      flex: 3,
+                      child: SearchWidget(
+                        onSearch: handleSearch,
+                        hintText: 'Search',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Table(
+                  border: TableBorder.all(color: customColors.subTextColor),
+                  children: [
+                    TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Number of Racks',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Number of Strings',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Number of Batteries',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '$numberOfRacks',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '$numberOfStrings',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '$numberOfBatteries',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child:
+                    isLoading
+                        ? Center(
+                          child: CircularProgressIndicator(
+                            color: qrcodeiconColor1,
+                          ), // Show loading indicator
+                        )
+                        : filteredBatterySystems.isEmpty
+                        ? Center(
+                          child: Text(
+                            'No data available for the selected filters',
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                        )
       body:
            _dataLoaded
     ? SingleChildScrollView(
