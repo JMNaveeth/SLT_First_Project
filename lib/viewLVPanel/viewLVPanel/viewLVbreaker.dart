@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'dart:convert';
 import '../../utils/utils/colors.dart';
 import '../../widgets/searchWidget.dart';
@@ -63,16 +65,24 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
   void applyFilters() {
     setState(() {
       // First filter by region
-      var tempFiltered = selectedRegion == 'All'
-          ? lvBreakers
-          : lvBreakers.where((panel) => panel['Region'] == selectedRegion)
-          .toList();
+      var tempFiltered =
+          selectedRegion == 'All'
+              ? lvBreakers
+              : lvBreakers
+                  .where((panel) => panel['Region'] == selectedRegion)
+                  .toList();
 
       // Then filter by search query if it exists
       if (searchQuery.isNotEmpty) {
-        tempFiltered = tempFiltered.where((panel) =>
-            SearchHelperLVBreaker.matchesLVBreakerQuery(panel, searchQuery))
-            .toList();
+        tempFiltered =
+            tempFiltered
+                .where(
+                  (panel) => SearchHelperLVBreaker.matchesLVBreakerQuery(
+                    panel,
+                    searchQuery,
+                  ),
+                )
+                .toList();
       }
 
       filteredLvBreakers = tempFiltered;
@@ -99,16 +109,22 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View LV Breaker Panels', style: TextStyle(color: mainTextColor),),
-        iconTheme: IconThemeData(
-          color: mainTextColor,
+        title: Text(
+          'View LV Breaker Panels',
+          style: TextStyle(color: customColors.mainTextColor),
         ),
-        backgroundColor: appbarColor,
-        foregroundColor: mainTextColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        foregroundColor: customColors.mainTextColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
-      backgroundColor: mainBackgroundColor,
+      backgroundColor: customColors.mainBackgroundColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -124,35 +140,42 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                     flex: 2,
                     child: DropdownButtonFormField<String>(
                       value: selectedRegion,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Select Region',
-                        labelStyle: TextStyle(color: subTextColor),
+                        labelStyle: TextStyle(color: customColors.subTextColor),
                         filled: true,
-                        fillColor: mainBackgroundColor,
+                        fillColor: customColors.mainBackgroundColor,
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey, width: 2.0),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                            width: 2.0,
+                          ),
                         ),
                       ),
-                      style: const TextStyle(
-                        color: mainTextColor,
+                      style: TextStyle(color: customColors.mainTextColor),
+                      dropdownColor: customColors.suqarBackgroundColor,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: customColors.mainTextColor,
                       ),
-                      dropdownColor: suqarBackgroundColor,
-                      icon: const Icon(Icons.arrow_drop_down,
-                          color: Colors.white),
                       onChanged: handleRegionChange,
-                      items: regions.map((String region) {
-                        return DropdownMenuItem<String>(
-                          value: region,
-                          child: Text(region),
-                        );
-                      }).toList(),
+                      items:
+                          regions.map((String region) {
+                            return DropdownMenuItem<String>(
+                              value: region,
+                              child: Text(region),
+                            );
+                          }).toList(),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -169,84 +192,85 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
             isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Expanded(
-                    child: Column(
-                      children: [
-                        // Summary Table
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Table(
-                            border: TableBorder.all(
-                              color: Colors.white,
-                              width: 1.0,
-                            ),
-                            children: [
-                              // Table Header
-                              const TableRow(
-                                decoration: BoxDecoration(
-                                  color: mainBackgroundColor,
-                                ),
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Summary',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: mainTextColor,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Count',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: mainTextColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // Table Row for Total Panels
-                              TableRow(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Total Panels',
-                                      style: TextStyle(
-                                        color: subTextColor, // White text
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '${filteredLvBreakers.length}',
-                                      style: const TextStyle(
-                                        color: subTextColor, // White text
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                  child: Column(
+                    children: [
+                      // Summary Table
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Table(
+                          border: TableBorder.all(
+                            color: customColors.subTextColor,
+                            width: 1.0,
                           ),
+                          children: [
+                            // Table Header
+                            TableRow(
+                              decoration: BoxDecoration(
+                                color: customColors.mainBackgroundColor,
+                              ),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Summary',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Count',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Table Row for Total Panels
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Total Panels',
+                                    style: TextStyle(
+                                      color: customColors.subTextColor, // White text
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    '${filteredLvBreakers.length}',
+                                    style: TextStyle(
+                                      color: customColors.subTextColor, // White text
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        // List of LV Breakers
-                        Expanded(
-                          child: filteredLvBreakers.isEmpty
-                              ? Center(
+                      ),
+                      // List of LV Breakers
+                      Expanded(
+                        child:
+                            filteredLvBreakers.isEmpty
+                                ? Center(
                                   child: Text(
                                     'No results found for "$searchQuery"',
-                                    style: const TextStyle(
-                                      color: mainTextColor,
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
                                       fontSize: 16,
                                     ),
                                   ),
                                 )
-                              : ListView.builder(
+                                : ListView.builder(
                                   itemCount: filteredLvBreakers.length,
                                   itemBuilder: (context, index) {
                                     final panel = filteredLvBreakers[index];
@@ -256,11 +280,12 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                LVBreakerDetailPage(
-                                                    breaker: panel,
-                                                  searchQuery: searchQuery,
-                                                ),
+                                            builder:
+                                                (context) =>
+                                                    LVBreakerDetailPage(
+                                                      breaker: panel,
+                                                      searchQuery: searchQuery,
+                                                    ),
                                           ),
                                         );
                                       },
@@ -270,12 +295,13 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                           horizontal: 30,
                                           vertical: 10,
                                         ),
-                                        color: suqarBackgroundColor,
+                                        color: customColors.suqarBackgroundColor,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4.0),
+                                          borderRadius: BorderRadius.circular(
+                                            4.0,
+                                          ),
                                         ),
-                                        shadowColor: Colors.white,
+                                        shadowColor: customColors.subTextColor,
                                         child: Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: Column(
@@ -285,17 +311,18 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                               // Display summarized information
                                               Text(
                                                 '${panel['Building']} - ${panel['Room']}',
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                    color: subTextColor),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: customColors.subTextColor,
+                                                ),
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
                                                 'Location - ${panel['Region']} ${panel['RTOM']}',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 14,
-                                                  color: subTextColor,
+                                                  color: customColors.subTextColor,
                                                 ),
                                               ),
                                             ],
@@ -305,10 +332,10 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                     );
                                   },
                                 ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                ),
           ],
         ),
       ),

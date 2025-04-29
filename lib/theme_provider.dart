@@ -23,6 +23,10 @@ class ThemeProvider extends ChangeNotifier {
       bodyLarge: TextStyle(color: mainTextColor),
       bodyMedium: TextStyle(color: mainTextColor),
     ),
+
+    useMaterial3: false,
+    cardColor: Colors.blueGrey,
+
     extensions: <ThemeExtension<dynamic>>[
       const CustomColors(
         mainBackgroundColor: mainBackgroundColor,
@@ -45,6 +49,10 @@ class ThemeProvider extends ChangeNotifier {
       bodyLarge: TextStyle(color: Color(0xffFFFFFF)),
       bodyMedium: TextStyle(color: Color(0xffD9D9D9)),
     ),
+
+    useMaterial3: false,
+    cardColor: Colors.blue, //tested here for default card color
+
     extensions: <ThemeExtension<dynamic>>[
       const CustomColors(
         mainBackgroundColor: Colors.white,

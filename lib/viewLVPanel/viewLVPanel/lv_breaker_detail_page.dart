@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 
 import '../../utils/utils/colors.dart';
 
@@ -12,97 +14,105 @@ class LVBreakerDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           'LV Breaker Details',
-          style: TextStyle(color: mainTextColor),
+          style: TextStyle(color: customColors.mainTextColor),
         ),
-        iconTheme: const IconThemeData(
-          color: mainTextColor,
+        iconTheme:  IconThemeData(
+          color: customColors.mainTextColor,
         ),
-        backgroundColor: appbarColor,
+        backgroundColor: customColors.appbarColor,
+         actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+
       ),
-      backgroundColor: mainBackgroundColor,
+      backgroundColor: customColors.mainBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildInfoCard('Panel Information', [
-              _buildDetailRow('Panel ID:', breaker['PanelID']),
-              _buildDetailRow('QR Tag:', breaker['QRtag']),
-            ]),
+              _buildDetailRow('Panel ID:', breaker['PanelID'], context),
+              _buildDetailRow('QR Tag:', breaker['QRtag'], context),
+            ], context),
             const SizedBox(height: 16),
             _buildInfoCard('Location', [
-              _buildDetailRow('Region:', breaker['Region']),
-              _buildDetailRow('RTOM:', breaker['RTOM']),
-              _buildDetailRow('Station:', breaker['Station']),
-              _buildDetailRow('Building:', breaker['Building']),
-              _buildDetailRow('Room:', breaker['Room']),
-              _buildDetailRow('Latitude:', breaker['LocationLatitude']),
-              _buildDetailRow('Longitude:', breaker['LocationLongitude']),
-            ]),
+              _buildDetailRow('Region:', breaker['Region'], context),
+              _buildDetailRow('RTOM:', breaker['RTOM'], context),
+              _buildDetailRow('Station:', breaker['Station'], context),
+              _buildDetailRow('Building:', breaker['Building'], context),
+              _buildDetailRow('Room:', breaker['Room'], context),
+              _buildDetailRow('Latitude:', breaker['LocationLatitude'], context),
+              _buildDetailRow('Longitude:', breaker['LocationLongitude'], context),
+            ], context),
             const SizedBox(height: 16),
             _buildInfoCard('General Details', [
-              _buildDetailRow('Panel Type:', breaker['PanelType']),
-              _buildDetailRow('Panel Serial:', breaker['PanelSerial']),
-              _buildDetailRow('Manufacturer:', breaker['Manufacturer']),
+              _buildDetailRow('Panel Type:', breaker['PanelType'], context),
+              _buildDetailRow('Panel Serial:', breaker['PanelSerial'], context),
+              _buildDetailRow('Manufacturer:', breaker['Manufacturer'], context),
               _buildDetailRow(
-                  'Installation Date:', breaker['InstallationDate']),
+                  'Installation Date:', breaker['InstallationDate'], context),
               _buildDetailRow(
-                  'Last Maintenance Date:', breaker['LastMaintenanceDate']),
-              _buildDetailRow('Busbar Details:', breaker['BusbarDetails']),
+                  'Last Maintenance Date:', breaker['LastMaintenanceDate'], context),
+              _buildDetailRow('Busbar Details:', breaker['BusbarDetails'], context),
               _buildDetailRow('Breaker Current Capacity:',
-                  '${breaker['BreakerCurrentCapacity']} A'),
-              _buildDetailRow('Breaker Brand:', breaker['BreakerBrand']),
-              _buildDetailRow('Breaker Model:', breaker['BreakerModel']),
-              _buildDetailRow('Connection Bus:', breaker['ConnectionBus']),
-              _buildDetailRow('Cable Type:', breaker['CableType']),
-              _buildDetailRow('Cable Size:', breaker['CableSize']),
-            ]),
+                  '${breaker['BreakerCurrentCapacity']} A', context),
+              _buildDetailRow('Breaker Brand:', breaker['BreakerBrand'], context),
+              _buildDetailRow('Breaker Model:', breaker['BreakerModel'], context),
+              _buildDetailRow('Connection Bus:', breaker['ConnectionBus'], context),
+              _buildDetailRow('Cable Type:', breaker['CableType'], context),
+              _buildDetailRow('Cable Size:', breaker['CableSize'], context),
+            ], context),
             const SizedBox(height: 16),
             _buildInfoCard('Supplier Details', [
-              _buildDetailRow('Supplier Name:', breaker['ServiceProvider']),
-              _buildDetailRow('AMC Available:', breaker['AMCAvailable']),
-              _buildDetailRow('Supplier Contact:', breaker['SupplierContact']),
-              _buildDetailRow('Supplier Email:', breaker['SupplierEmail']),
-            ]),
+              _buildDetailRow('Supplier Name:', breaker['ServiceProvider'], context),
+              _buildDetailRow('AMC Available:', breaker['AMCAvailable'], context),
+              _buildDetailRow('Supplier Contact:', breaker['SupplierContact'], context),
+              _buildDetailRow('Supplier Email:', breaker['SupplierEmail'], context),
+            ], context),
             const SizedBox(height: 16),
             _buildInfoCard('Other Equipment Details', [
               _buildDetailRow(
-                  'Power Analyzer Brand:', breaker['PowerAnalyzerBrand']),
+                  'Power Analyzer Brand:', breaker['PowerAnalyzerBrand'], context),
               _buildDetailRow(
-                  'Power Analyzer Model:', breaker['PowerAnalyzerModel']),
-              _buildDetailRow('Earth Fault Relay:', breaker['EarthFaultRelay']),
-            ]),
+                  'Power Analyzer Model:', breaker['PowerAnalyzerModel'], context),
+              _buildDetailRow('Earth Fault Relay:', breaker['EarthFaultRelay'], context),
+            ], context),
             const SizedBox(height: 16),
             _buildInfoCard('Other Details', [
-              _buildDetailRow('Remarks:', breaker['Remarks']),
-              _buildDetailRow('Uploaded By:', breaker['uploadedBy']),
-              _buildDetailRow('Uploaded Time:', breaker['uploadedTime']),
-            ]),
+              _buildDetailRow('Remarks:', breaker['Remarks'], context),
+              _buildDetailRow('Uploaded By:', breaker['uploadedBy'], context),
+              _buildDetailRow('Uploaded Time:', breaker['uploadedTime'], context),
+            ], context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(String title, List<Widget> details) {
+  Widget _buildInfoCard(String title, List<Widget> details, BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 5,
-      color: suqarBackgroundColor,
+      color: customColors.suqarBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(title,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: mainTextColor)),
+                    color: customColors.mainTextColor)),
             const SizedBox(height: 10),
             const Divider(),
             ...details,
@@ -112,7 +122,9 @@ class LVBreakerDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildDetailRow(String label, String value, BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (value == 'N/A' || value == null) return const SizedBox.shrink();
     final bool isMatch = searchQuery.isNotEmpty &&
         value.toLowerCase().contains(searchQuery.toLowerCase());
@@ -121,7 +133,7 @@ class LVBreakerDetailPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: isMatch ? highlightColor : suqarBackgroundColor,
+          color: isMatch ? customColors.highlightColor : customColors.suqarBackgroundColor,
           borderRadius: BorderRadius.circular(8.0),
         ),
         padding: const EdgeInsets.all(12.0),
@@ -130,10 +142,10 @@ class LVBreakerDetailPage extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: mainTextColor,
+                color: customColors.mainTextColor,
               ),
             ),
             Expanded(
@@ -143,8 +155,8 @@ class LVBreakerDetailPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: subTextColor,
-                  backgroundColor: isMatch ? highlightColor : null,
+                  color: customColors.subTextColor,
+                  backgroundColor: isMatch ? customColors.highlightColor : null,
                 ),
               ),
             ),

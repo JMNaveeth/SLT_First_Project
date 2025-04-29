@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 
 import '../../utils/utils/colors.dart';
 import '../../widgets/searchWidget.dart';
@@ -48,7 +50,7 @@ class _ViewElevatorDetailsState extends State<ViewElevatorDetails> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
 
   @override
@@ -78,7 +80,7 @@ class _ViewElevatorDetailsState extends State<ViewElevatorDetails> {
       } else {
         setState(() {
           errorMessage =
-          'Failed to load elevators. Status code: ${response.statusCode}';
+              'Failed to load elevators. Status code: ${response.statusCode}';
           isLoading = false;
         });
       }
@@ -93,18 +95,25 @@ class _ViewElevatorDetailsState extends State<ViewElevatorDetails> {
   void applyFilters() {
     setState(() {
       // First filter by region
-      var tempFiltered = selectedRegion == 'ALL'
-          ? elevators
-          : elevators.where((elevator) {
-        return (elevator['Region'] ?? '').toString().toUpperCase() ==
-            selectedRegion.toUpperCase();
-      }).toList();
+      var tempFiltered =
+          selectedRegion == 'ALL'
+              ? elevators
+              : elevators.where((elevator) {
+                return (elevator['Region'] ?? '').toString().toUpperCase() ==
+                    selectedRegion.toUpperCase();
+              }).toList();
 
       // Then filter by search query if it exists
       if (searchQuery.isNotEmpty) {
-        tempFiltered = tempFiltered.where((elevator) =>
-            SearchHelperElevator.matchesElevatorQuery(elevator, searchQuery))
-            .toList();
+        tempFiltered =
+            tempFiltered
+                .where(
+                  (elevator) => SearchHelperElevator.matchesElevatorQuery(
+                    elevator,
+                    searchQuery,
+                  ),
+                )
+                .toList();
       }
 
       filteredElevators = tempFiltered;
@@ -129,16 +138,20 @@ class _ViewElevatorDetailsState extends State<ViewElevatorDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Elevator Details'),
-        iconTheme: IconThemeData(
-          color: mainTextColor,
-        ),
-        backgroundColor: appbarColor,
-        foregroundColor: mainTextColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        foregroundColor: customColors.mainTextColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
-      backgroundColor: mainBackgroundColor,
+      backgroundColor: customColors.mainBackgroundColor,
+
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -154,35 +167,42 @@ class _ViewElevatorDetailsState extends State<ViewElevatorDetails> {
                     flex: 2,
                     child: DropdownButtonFormField<String>(
                       value: selectedRegion,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Select Region',
-                        labelStyle: TextStyle(color: subTextColor),
+                        labelStyle: TextStyle(color: customColors.subTextColor),
                         filled: true,
-                        fillColor: mainBackgroundColor,
+                        fillColor: customColors.mainBackgroundColor,
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.grey, width: 2.0),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                            width: 2.0,
+                          ),
                         ),
                       ),
-                      style: const TextStyle(
-                        color: mainTextColor,
+                      style: TextStyle(color: customColors.mainTextColor),
+                      dropdownColor: customColors.suqarBackgroundColor,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: customColors.mainTextColor,
                       ),
-                      dropdownColor: suqarBackgroundColor,
-                      icon: const Icon(Icons.arrow_drop_down,
-                          color: Colors.white),
                       onChanged: handleRegionChange,
-                      items: regions.map((String region) {
-                        return DropdownMenuItem<String>(
-                          value: region,
-                          child: Text(region),
-                        );
-                      }).toList(),
+                      items:
+                          regions.map((String region) {
+                            return DropdownMenuItem<String>(
+                              value: region,
+                              child: Text(region),
+                            );
+                          }).toList(),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -200,160 +220,167 @@ class _ViewElevatorDetailsState extends State<ViewElevatorDetails> {
                 ? const Center(child: CircularProgressIndicator())
                 : errorMessage.isNotEmpty
                 ? Center(
-              child: Text(
-                errorMessage,
-                style: const TextStyle(color: Colors.white),
-              ),
-            )
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(color: customColors.mainTextColor),
+                  ),
+                )
                 : Expanded(
-              child: Column(
-                children: [
-                  // Summary Table
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Table(
-                      border: TableBorder.all(
-                        color: Colors.white,
-                        width: 1.0,
-                      ),
-                      children: [
-                        // Table Header
-                        const TableRow(
-                          decoration: BoxDecoration(
-                            color: mainBackgroundColor,
+                  child: Column(
+                    children: [
+                      // Summary Table
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Table(
+                          border: TableBorder.all(
+                            color: customColors.subTextColor,
+                            width: 1.0,
                           ),
                           children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Summary',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: mainTextColor,
-                                ),
+                            // Table Header
+                            TableRow(
+                              decoration: BoxDecoration(
+                                color: customColors.mainBackgroundColor,
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Count',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: mainTextColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Table Row for Total Elevators
-                        TableRow(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Total Elevators',
-                                style: TextStyle(
-                                  color: subTextColor,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${filteredElevators.length}',
-                                style: const TextStyle(
-                                  color: subTextColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  // List of Elevators
-                  Expanded(
-                    child: filteredElevators.isEmpty
-                        ? Center(
-                      child: Text(
-                        searchQuery.isEmpty
-                            ? 'No elevators found'
-                            : 'No results found for "$searchQuery"',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                    )
-                        : ListView.builder(
-                      itemCount: filteredElevators.length,
-                      itemBuilder: (context, index) {
-                        final elevator = filteredElevators[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewElevatorUnit(
-                                        elevator: elevator,
-                                      searchQuery: searchQuery,),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            elevation: 5,
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 10,
-                            ),
-                            color: suqarBackgroundColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(4.0),
-                            ),
-                            shadowColor: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Elevator ID: ${elevator['LiftID']}',
-                                    style: const TextStyle(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Summary',
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: subTextColor,
+                                      color: customColors.mainTextColor,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Location: ${elevator['Region']} - ${elevator['RTOM']}',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: subTextColor,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Count',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: customColors.mainTextColor,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Building: ${elevator['eBuilding']}',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: subTextColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                            // Table Row for Total Elevators
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Total Elevators',
+                                    style: TextStyle(
+                                      color: customColors.subTextColor,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    '${filteredElevators.length}',
+                                    style: TextStyle(
+                                      color: customColors.subTextColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // List of Elevators
+                      Expanded(
+                        child:
+                            filteredElevators.isEmpty
+                                ? Center(
+                                  child: Text(
+                                    searchQuery.isEmpty
+                                        ? 'No elevators found'
+                                        : 'No results found for "$searchQuery"',
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )
+                                : ListView.builder(
+                                  itemCount: filteredElevators.length,
+                                  itemBuilder: (context, index) {
+                                    final elevator = filteredElevators[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => ViewElevatorUnit(
+                                                  elevator: elevator,
+                                                  searchQuery: searchQuery,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: Card(
+                                        elevation: 5,
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
+                                        color:
+                                            customColors.suqarBackgroundColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            4.0,
+                                          ),
+                                        ),
+                                        shadowColor: customColors.subTextColor,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Elevator ID: ${elevator['LiftID']}',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color:
+                                                      customColors.subTextColor,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Location: ${elevator['Region']} - ${elevator['RTOM']}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      customColors.subTextColor,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Building: ${elevator['eBuilding']}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      customColors.subTextColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
           ],
         ),
       ),
@@ -586,7 +613,7 @@ class ViewElevatorUnit extends StatelessWidget {
     List<String> formats = [
       'yyyy-MM-dd HH:mm:ss',
       'yyyy-MM-ddTHH:mm:ssZ',
-      'dd-MM-yyyy HH:mm'
+      'dd-MM-yyyy HH:mm',
     ];
     for (var format in formats) {
       try {
@@ -603,17 +630,21 @@ class ViewElevatorUnit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appbarColor,
-        title:
-            Text('Elevator Details - ${getFieldValue(elevator, ['LiftID'])}',
-              style: const TextStyle(color: mainTextColor),),
-        iconTheme: IconThemeData(
-          color: mainTextColor,
+        backgroundColor: customColors.appbarColor,
+        title: Text(
+          'Elevator Details - ${getFieldValue(elevator, ['LiftID'])}',
+          style: TextStyle(color: customColors.mainTextColor),
         ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
-      backgroundColor: mainBackgroundColor,
+      backgroundColor: customColors.mainBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -621,46 +652,96 @@ class ViewElevatorUnit extends StatelessWidget {
           children: [
             _buildInfoCard('Elevator Identification', [
               // _buildDetailRow('Lift ID:', getFieldValue(elevator, ['LiftID'])),
-              _buildDetailRow('QR Tag:', getFieldValue(elevator, ['QrTag'])),
-              _buildDetailRow('Region:', getFieldValue(elevator, ['Region'])),
-              _buildDetailRow('RTOM:', getFieldValue(elevator, ['RTOM'])),
-              _buildDetailRow('Station:', getFieldValue(elevator, ['Station'])),
               _buildDetailRow(
-                  'Building:', getFieldValue(elevator, ['eBuilding'])),
-              _buildDetailRow('Number of Floors:',
-                  getFieldValue(elevator, ['eNoOfFloors'])),
+                'QR Tag:',
+                getFieldValue(elevator, ['QrTag']),
+                context,
+              ),
               _buildDetailRow(
-                  'Latitude:', getFieldValue(elevator, ['latitude'])),
+                'Region:',
+                getFieldValue(elevator, ['Region']),
+                context,
+              ),
               _buildDetailRow(
-                  'Longitude:', getFieldValue(elevator, ['longitude'])),
-            ]),
+                'RTOM:',
+                getFieldValue(elevator, ['RTOM']),
+                context,
+              ),
+              _buildDetailRow(
+                'Station:',
+                getFieldValue(elevator, ['Station']),
+                context,
+              ),
+              _buildDetailRow(
+                'Building:',
+                getFieldValue(elevator, ['eBuilding']),
+                context,
+              ),
+              _buildDetailRow(
+                'Number of Floors:',
+                getFieldValue(elevator, ['eNoOfFloors']),
+                context,
+              ),
+              _buildDetailRow(
+                'Latitude:',
+                getFieldValue(elevator, ['latitude']),
+                context,
+              ),
+              _buildDetailRow(
+                'Longitude:',
+                getFieldValue(elevator, ['longitude']),
+                context,
+              ),
+            ], context),
             const SizedBox(height: 16),
             // _buildInfoCard('Location', []),
             const SizedBox(height: 16),
             _buildInfoCard('Specifications', [
               _buildDetailRow(
-                  'Lift Capacity:', getFieldValue(elevator, ['eLiftCapacity'])),
+                'Lift Capacity:',
+                getFieldValue(elevator, ['eLiftCapacity']),
+                context,
+              ),
               _buildDetailRow(
-                  'Lift Type:', getFieldValue(elevator, ['eLiftType'])),
+                'Lift Type:',
+                getFieldValue(elevator, ['eLiftType']),
+                context,
+              ),
               _buildDetailRow(
-                  'Manufacturer:', getFieldValue(elevator, ['eManufacturer'])),
-            ]),
+                'Manufacturer:',
+                getFieldValue(elevator, ['eManufacturer']),
+                context,
+              ),
+            ], context),
             const SizedBox(height: 16),
             _buildInfoCard('Maintenance Details', [
-              _buildDetailRow('Status:', getFieldValue(elevator, ['eStatus'])),
-              _buildDetailRow('Installation Date:',
-                  getFieldValue(elevator, ['eInstallationDate'])),
+              _buildDetailRow(
+                'Status:',
+                getFieldValue(elevator, ['eStatus']),
+                context,
+              ),
+              _buildDetailRow(
+                'Installation Date:',
+                getFieldValue(elevator, ['eInstallationDate']),
+                context,
+              ),
               // _buildDetailRow('Last Maintenance Date:',
               //     getFieldValue(elevator, ['eLastMaintenanceDate'])),
               // _buildDetailRow('Next Maintenance Due:',
               //     getFieldValue(elevator, ['eNextMaintenanceDue'])),
-            ]),
+            ], context),
             const SizedBox(height: 16),
             _buildInfoCard('AMC & Service Provider Details', [
               _buildDetailRow(
-                  'AMC Available:', getFieldValue(elevator, ['eAmcAvailable'])),
-              _buildDetailRow('Service Provider Name:',
-                  getFieldValue(elevator, ['eServiceProvider'])),
+                'AMC Available:',
+                getFieldValue(elevator, ['eAmcAvailable']),
+                context,
+              ),
+              _buildDetailRow(
+                'Service Provider Name:',
+                getFieldValue(elevator, ['eServiceProvider']),
+                context,
+              ),
               // _buildDetailRow('Contact Number:',
               //     getFieldValue(elevator, ['contactNumber'])),
               // _buildDetailRow('Email:', getFieldValue(elevator, ['email'])),
@@ -682,16 +763,18 @@ class ViewElevatorUnit extends StatelessWidget {
               //   ),
               // ),
               _buildDetailRow2(
+                context,
                 'Contact Number:',
                 getFieldValue(elevator, ['contactNumber']),
                 isContact: true,
               ),
               _buildDetailRow2(
+                context,
                 'Email:',
                 getFieldValue(elevator, ['email']),
                 isEmail: true,
               ),
-            ]),
+            ], context),
             const SizedBox(height: 16),
             // _buildInfoCard('Contact Details', []),
             const SizedBox(height: 16),
@@ -699,32 +782,47 @@ class ViewElevatorUnit extends StatelessWidget {
             // ]),
             const SizedBox(height: 16),
             _buildInfoCard('Update Information', [
-              _buildDetailRow('Updated Time:',
-                  formatDateTime(getFieldValue(elevator, ['updatedTime']))),
               _buildDetailRow(
-                  'Updated By:', getFieldValue(elevator, ['updatedBy'])),
-            ]),
+                'Updated Time:',
+                formatDateTime(getFieldValue(elevator, ['updatedTime'])),
+                context,
+              ),
+              _buildDetailRow(
+                'Updated By:',
+                getFieldValue(elevator, ['updatedBy']),
+                context,
+              ),
+            ], context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(String title, List<Widget> details) {
+  Widget _buildInfoCard(
+    String title,
+    List<Widget> details,
+    BuildContext context,
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 5,
-      color: suqarBackgroundColor,
+      color: customColors.suqarBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title,
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: mainTextColor)),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: customColors.mainTextColor,
+              ),
+            ),
             const SizedBox(height: 10),
             const Divider(),
             ...details,
@@ -734,17 +832,25 @@ class ViewElevatorUnit extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildDetailRow(String label, String value, BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (value == 'N/A') return const SizedBox.shrink();
-    final bool isMatch = searchQuery.isNotEmpty &&
+    final bool isMatch =
+        searchQuery.isNotEmpty &&
         value.toLowerCase().contains(searchQuery.toLowerCase());
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-          vertical: 6.0, horizontal: 8.0), // Margins between rows
+        vertical: 6.0,
+        horizontal: 8.0,
+      ), // Margins between rows
       child: Container(
         decoration: BoxDecoration(
-          color: isMatch ? highlightColor : suqarBackgroundColor,
+          color:
+              isMatch
+                  ? customColors.highlightColor
+                  : customColors.suqarBackgroundColor,
           borderRadius: BorderRadius.circular(8.0), // Rounded corners
         ),
         padding: const EdgeInsets.all(12.0), // Inner padding for content
@@ -756,7 +862,7 @@ class ViewElevatorUnit extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: mainTextColor, // Label color
+                color: customColors.mainTextColor, // Label color
               ),
             ),
             Expanded(
@@ -766,8 +872,8 @@ class ViewElevatorUnit extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: subTextColor,
-                  backgroundColor: isMatch ? highlightColor : null,
+                  color: customColors.subTextColor,
+                  backgroundColor: isMatch ? customColors.highlightColor : null,
                 ),
               ),
             ),
@@ -777,18 +883,29 @@ class ViewElevatorUnit extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow2(String label, String value,
-      {bool isContact = false, bool isEmail = false}) {
+  Widget _buildDetailRow2(
+    BuildContext context,
+    String label,
+    String value, {
+    bool isContact = false,
+    bool isEmail = false,
+  }) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (value == 'N/A') return const SizedBox.shrink();
 
-    final bool isMatch = searchQuery.isNotEmpty &&
+    final bool isMatch =
+        searchQuery.isNotEmpty &&
         value.toLowerCase().contains(searchQuery.toLowerCase());
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: isMatch ? highlightColor : suqarBackgroundColor,
+          color:
+              isMatch
+                  ? customColors.highlightColor
+                  : customColors.suqarBackgroundColor,
           borderRadius: BorderRadius.circular(8.0), // Rounded corners
         ),
         padding: const EdgeInsets.all(12.0), // Inner padding for content
@@ -800,7 +917,7 @@ class ViewElevatorUnit extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: mainTextColor, // Label color
+                color: customColors.mainTextColor, // Label color
               ),
             ),
             Expanded(
@@ -820,11 +937,15 @@ class ViewElevatorUnit extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
-                    color: isContact || isEmail ? const Color.fromARGB(255, 5, 129, 231) : mainTextColor,
-                    decoration: isContact || isEmail
-                        ? TextDecoration.underline
-                        : TextDecoration.none,
-                    backgroundColor: isMatch ? highlightColor : null,
+                    color:
+                        isContact || isEmail
+                            ? const Color.fromARGB(255, 5, 129, 231)
+                            : customColors.mainTextColor,
+                    decoration:
+                        isContact || isEmail
+                            ? TextDecoration.underline
+                            : TextDecoration.none,
+                    backgroundColor: isMatch ? customColors.highlightColor : null,
                   ),
                 ),
               ),
