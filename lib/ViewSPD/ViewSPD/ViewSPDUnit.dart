@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 
 import '../../utils/utils/colors.dart';
 
@@ -28,9 +29,8 @@ class ViewSPDUnit extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: customColors.subTextColor,
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
+            spreadRadius: 1,
+            blurRadius:1,
           ),
         ],
       ),
@@ -66,6 +66,10 @@ class ViewSPDUnit extends StatelessWidget {
         title: Text('SPD Unit Details', style: TextStyle(color: customColors.mainTextColor)),
         iconTheme: IconThemeData(color: customColors.mainTextColor),
         backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+
       ),
       body: Container(
         decoration: BoxDecoration(color: customColors.suqarBackgroundColor),
@@ -130,9 +134,9 @@ class ViewSPDUnit extends StatelessWidget {
                         'Neutral 10 to 350 Impulse Discharge',
                         SPDUnit["N10to350ImpD"],context
                       ),
-                      buildListTile('MCB Rating', SPDUnit["mcbRating"]),
-                      buildListTile('Response Time', SPDUnit["responseTime"]),
-                      buildListTile('Submitted By', SPDUnit["Submitter"]),
+                      buildListTile('MCB Rating', SPDUnit["mcbRating"],context),
+                      buildListTile('Response Time', SPDUnit["responseTime"],context),
+                      buildListTile('Submitted By', SPDUnit["Submitter"],context),
                     ],
                   )
                 else
@@ -140,20 +144,20 @@ class ViewSPDUnit extends StatelessWidget {
                     children: [
                       buildListTile(
                         'Voltage Protection Level DC',
-                        SPDUnit["UpDCVolt"],
+                        SPDUnit["UpDCVolt"],context
                       ),
                       buildListTile(
                         'Nominal Discharge Current 8/20',
-                        SPDUnit["Nom_Dis8_20"],
+                        SPDUnit["Nom_Dis8_20"],context
                       ),
                       buildListTile(
                         'Impulse Current 10/350',
-                        SPDUnit["Nom_Dis10_350"],
+                        SPDUnit["Nom_Dis10_350"],context
                       ),
-                      buildListTile('Nominal Voltage Un', SPDUnit["nom_volt"]),
+                      buildListTile('Nominal Voltage Un', SPDUnit["nom_volt"],context),
                       buildListTile(
                         'Max Continuous Operating Voltage DC',
-                        SPDUnit["UcDCVolt"],
+                        SPDUnit["UcDCVolt"],context
                       ),
                     ],
                   ),
