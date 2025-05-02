@@ -143,94 +143,99 @@ class _ViewTransformerDataState extends State<ViewTransformerData> {
           FocusScope.of(context).unfocus();
         },
         behavior: HitTestBehavior.opaque,
+        // ...existing code...
         child: Container(
           color: customColors.mainBackgroundColor,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SearchWidget(
-                  onSearch: handleSearch,
-                  hintText: 'Search...',
-                ),
-              ),
-              // Row for Region and RTOM Dropdowns
+              // Combine Search Bar and Dropdowns in a Row
+              // ...existing code...
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    // Region Dropdown
+                    // Left side: Region and RTOM dropdowns (now stacked vertically)
                     Expanded(
-                      flex: 5,
-                      child: _buildFormFieldWithSpacing(
-                        context,
-                        _buildFieldLabel(context, 'Region'),
-                        FormBuilderDropdown<String>(
-                          name: 'Region',
-                          decoration: _inputDecoration(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          _buildFormFieldWithSpacing(
                             context,
-                            'Select Region',
+                            _buildFieldLabel(context, 'Region'),
+                            FormBuilderDropdown<String>(
+                              name: 'Region',
+                              decoration: _inputDecoration(
+                                context,
+                                'Select Region',
+                              ),
+                              initialValue: selectedRegion,
+                              isExpanded: true,
+                              dropdownColor: customColors.suqarBackgroundColor,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedRegion = value;
+                                  filterTransformers();
+                                });
+                              },
+                              items:
+                                  regionList.map((region) {
+                                    return DropdownMenuItem<String>(
+                                      value: region,
+                                      child: Text(
+                                        region,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                            ),
                           ),
-                          initialValue: selectedRegion,
-                          isExpanded: true,
-                          dropdownColor:
-                              customColors
-                                  .suqarBackgroundColor, // Set dropdown color to black
-                          onChanged: (value) {
-                            setState(() {
-                              selectedRegion = value;
-                              filterTransformers();
-                            });
-                          },
-                          items:
-                              regionList.map((region) {
-                                return DropdownMenuItem<String>(
-                                  value: region,
-                                  child: Text(
-                                    region,
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                        ),
+                          _buildFormFieldWithSpacing(
+                            context,
+                            _buildFieldLabel(context, 'RTOM'),
+                            FormBuilderDropdown<String>(
+                              name: 'RTOM',
+                              decoration: _inputDecoration(
+                                context,
+                                'Select RTOM',
+                              ),
+                              initialValue: selectedRTOM,
+                              isExpanded: true,
+                              dropdownColor: customColors.suqarBackgroundColor,
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedRTOM = value;
+                                  filterTransformers();
+                                });
+                              },
+                              items:
+                                  rtomList.map((rtom) {
+                                    return DropdownMenuItem<String>(
+                                      value: rtom,
+                                      child: Text(
+                                        rtom,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 16.0),
-                    // RTOM Dropdown
+                    // Right side: Search bar
                     Expanded(
-                      flex: 5,
-                      child: _buildFormFieldWithSpacing(
-                        context,
-                        _buildFieldLabel(context, 'RTOM'),
-                        FormBuilderDropdown<String>(
-                          name: 'RTOM',
-                          decoration: _inputDecoration(context, 'Select RTOM'),
-                          initialValue: selectedRTOM,
-                          isExpanded: true,
-                          dropdownColor: customColors.suqarBackgroundColor,
-                          style: TextStyle(color: customColors.mainTextColor),
-
-                          onChanged: (value) {
-                            setState(() {
-                              selectedRTOM = value;
-                              filterTransformers();
-                            });
-                          },
-                          items:
-                              rtomList.map((rtom) {
-                                return DropdownMenuItem<String>(
-                                  value: rtom,
-                                  child: Text(
-                                    rtom,
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                        ),
+                      flex: 4,
+                      child: SearchWidget(
+                        onSearch: handleSearch,
+                        hintText: 'Search...',
                       ),
                     ),
                   ],

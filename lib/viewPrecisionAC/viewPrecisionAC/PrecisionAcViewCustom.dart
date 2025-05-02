@@ -404,29 +404,29 @@ class _PrecisionACListState extends State<PrecisionACList> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              SearchWidget(onSearch: handleSearch, hintText: 'Search...'),
-              SizedBox(height: 16),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Left side: Status (top) and Region (bottom)
                   Expanded(
-                    child: DropdownButton<String>(
-                      hint: Text(
-                        'Select Status',
-                        style: TextStyle(color: customColors.subTextColor),
-                      ),
-                      value: selectedStatus,
-                      isExpanded: true,
-                      dropdownColor:
-                          customColors
-                              .suqarBackgroundColor, // Set dropdown background color to black
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedStatus = newValue;
-                        });
-                      },
-                      items:
-                          statuses.map((String status) {
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DropdownButton<String>(
+                          hint: Text(
+                            'Select Status',
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                          value: selectedStatus,
+                          isExpanded: true,
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedStatus = newValue;
+                            });
+                          },
+                          items: statuses.map((String status) {
                             return DropdownMenuItem<String>(
                               value: status,
                               child: Text(
@@ -437,37 +437,31 @@ class _PrecisionACListState extends State<PrecisionACList> {
                               ),
                             );
                           }).toList(),
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: FutureBuilder<List<String>>(
-                      future: futureRegions,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Text(
-                            'Error: ${snapshot.error}',
-                            style: TextStyle(color: customColors.subTextColor),
-                          );
-                        } else {
-                          return DropdownButton<String>(
-                            hint: Text(
-                              'Select Region',
-                              style: TextStyle(
-                                color: customColors.subTextColor,
-                              ),
-                            ),
-                            value: selectedRegion,
-                            isExpanded: true,
-                            dropdownColor:
-                                customColors
-                                    .suqarBackgroundColor, // Set dropdown background color to black
-                            onChanged: _onRegionChanged,
-                            items:
-                                ['All', ...snapshot.data!].map((String region) {
+                        ),
+                        SizedBox(height: 12),
+                        FutureBuilder<List<String>>(
+                          future: futureRegions,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                'Error: ${snapshot.error}',
+                                style: TextStyle(color: customColors.subTextColor),
+                              );
+                            } else {
+                              return DropdownButton<String>(
+                                hint: Text(
+                                  'Select Region',
+                                  style: TextStyle(
+                                    color: customColors.subTextColor,
+                                  ),
+                                ),
+                                value: selectedRegion,
+                                isExpanded: true,
+                                dropdownColor: customColors.suqarBackgroundColor,
+                                onChanged: _onRegionChanged,
+                                items: ['All', ...snapshot.data!].map((String region) {
                                   return DropdownMenuItem<String>(
                                     value: region,
                                     child: Text(
@@ -478,13 +472,31 @@ class _PrecisionACListState extends State<PrecisionACList> {
                                     ),
                                   );
                                 }).toList(),
-                          );
-                        }
-                      },
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  // Right side: Search bar
+                  Expanded(
+                    flex: 2,
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: SizedBox(
+                        width: 300, // Adjust width as needed
+                        child: SearchWidget(
+                          onSearch: handleSearch,
+                          hintText: 'Search...',
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
+              SizedBox(height: 16),
               SizedBox(height: 16),
               Container(
                 height: MediaQuery.of(context).size.height * 0.15,
