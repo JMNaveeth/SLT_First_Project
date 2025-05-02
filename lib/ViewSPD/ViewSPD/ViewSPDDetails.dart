@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import '../../utils/utils/colors.dart';
 import '../../widgets/searchWidget.dart';
 import 'ViewSPDUnit.dart';
@@ -38,7 +40,7 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
 
   String selectedRegion = 'ALL'; // Initial selected region
@@ -77,17 +79,22 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
   void applyFilters() {
     setState(() {
       // First filter by region
-      var tempFiltered = selectedRegion == 'ALL'
-          ? SPDSystems
-          : SPDSystems.where((system) => system['province'] == selectedRegion)
-              .toList();
+      var tempFiltered =
+          selectedRegion == 'ALL'
+              ? SPDSystems
+              : SPDSystems.where(
+                (system) => system['province'] == selectedRegion,
+              ).toList();
 
       // Then filter by search query if it exists
       if (searchQuery.isNotEmpty) {
-        tempFiltered = tempFiltered
-            .where((system) =>
-                SearchHelperSPD.matchesSPDQuery(system, searchQuery))
-            .toList();
+        tempFiltered =
+            tempFiltered
+                .where(
+                  (system) =>
+                      SearchHelperSPD.matchesSPDQuery(system, searchQuery),
+                )
+                .toList();
       }
 
       filteredSPDSystems = tempFiltered;
@@ -119,16 +126,20 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('SPD Details'),
-        iconTheme: IconThemeData(
-          color: mainTextColor,
-        ),
-        backgroundColor: appbarColor,
-        foregroundColor: Colors.white,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+
+        backgroundColor: customColors.appbarColor,
+        foregroundColor: customColors.mainTextColor,
       ),
-      backgroundColor: mainBackgroundColor,
+      backgroundColor: customColors.mainBackgroundColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -144,35 +155,43 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
                     flex: 2,
                     child: DropdownButtonFormField<String>(
                       value: selectedRegion,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Select Region',
-                        labelStyle: TextStyle(color: subTextColor),
+                        labelStyle: TextStyle(color: customColors.subTextColor),
                         filled: true,
-                        fillColor: mainBackgroundColor,
+                        fillColor: customColors.mainBackgroundColor,
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                            width: 2.0,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey, width: 2.0),
+                          borderSide: BorderSide(
+                            color: customColors.subTextColor,
+                            width: 2.0,
+                          ),
                         ),
                       ),
-                      style: const TextStyle(
-                        color: mainTextColor,
+                      style: TextStyle(color: customColors.mainTextColor),
+                      dropdownColor: customColors.suqarBackgroundColor,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: customColors.mainTextColor,
                       ),
-                      dropdownColor: suqarBackgroundColor,
-                      icon: const Icon(Icons.arrow_drop_down,
-                          color: Colors.white),
                       onChanged: handleRegionChange,
-                      items: regions.map((region) {
-                        return DropdownMenuItem<String>(
-                          value: region,
-                          child: Text(region),
-                        );
-                      }).toList(),
+                      items:
+                          regions.map((region) {
+                            return DropdownMenuItem<String>(
+                              value: region,
+                              child: Text(region),
+                            );
+                          }).toList(),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -188,86 +207,85 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
             ),
             _buildSummaryTable(),
             Expanded(
-              child: isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : filteredSPDSystems.isEmpty
+              child:
+                  isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : filteredSPDSystems.isEmpty
                       ? Center(
-                          child: Text(
-                            searchQuery.isEmpty
-                                ? 'No SPD units found'
-                                : 'No results found for "$searchQuery"',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
+                        child: Text(
+                          searchQuery.isEmpty
+                              ? 'No SPD units found'
+                              : 'No results found for "$searchQuery"',
+                          style: TextStyle(
+                            color: customColors.mainTextColor,
+                            fontSize: 16,
                           ),
-                        )
+                        ),
+                      )
                       : ListView.builder(
-                          itemCount: filteredSPDSystems.length,
-                          itemBuilder: (context, index) {
-                            final system = filteredSPDSystems[index];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ViewSPDUnit(
-                                      SPDUnit: system,
-                                      searchQuery: searchQuery,
+                        itemCount: filteredSPDSystems.length,
+                        itemBuilder: (context, index) {
+                          final system = filteredSPDSystems[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => ViewSPDUnit(
+                                        SPDUnit: system,
+                                        searchQuery: searchQuery,
+                                      ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              elevation: 5,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 10,
+                              ),
+                              color: customColors.suqarBackgroundColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                              shadowColor: customColors.subTextColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Site: ${system['Rtom_name']}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: customColors.subTextColor,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 5,
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 10,
-                                ),
-                                color: suqarBackgroundColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                                shadowColor: Colors.white,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Site: ${system['Rtom_name']}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: subTextColor,
-                                        ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Location: ${system['station']}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: customColors.subTextColor,
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Location: ${system['station']}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: subTextColor,
-                                        ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Type: ${system['DCFlag'] == '0' ? 'AC' : 'DC'}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: customColors.subTextColor,
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Type: ${system['DCFlag'] == '0' ? 'AC' : 'DC'}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: subTextColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
+                      ),
             ),
           ],
         ),
@@ -276,18 +294,15 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
   }
 
   Widget _buildSummaryTable() {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Table(
-        border: TableBorder.all(
-          color: Colors.white,
-          width: 1.0,
-        ),
+        border: TableBorder.all(color: customColors.mainTextColor, width: 1.0),
         children: [
-          const TableRow(
-            decoration: BoxDecoration(
-              color: mainBackgroundColor,
-            ),
+          TableRow(
+            decoration: BoxDecoration(color: customColors.mainBackgroundColor),
             children: [
               Padding(
                 padding: EdgeInsets.all(8.0),
@@ -295,7 +310,7 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
                   'Summary',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: mainTextColor,
+                    color: customColors.mainTextColor,
                   ),
                 ),
               ),
@@ -305,7 +320,7 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
                   'Count',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: mainTextColor,
+                    color: customColors.mainTextColor,
                   ),
                 ),
               ),
@@ -313,66 +328,54 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
           ),
           TableRow(
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   'Total SPD Units',
-                  style: TextStyle(
-                    color: subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   '${filteredSPDSystems.length}',
-                  style: const TextStyle(
-                    color: subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
             ],
           ),
           TableRow(
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   'AC Units',
-                  style: TextStyle(
-                    color: subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   '$acCount',
-                  style: const TextStyle(
-                    color: subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
             ],
           ),
           TableRow(
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   'DC Units',
-                  style: TextStyle(
-                    color: subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   '$dcCount',
-                  style: const TextStyle(
-                    color: subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
             ],
