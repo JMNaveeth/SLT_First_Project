@@ -153,6 +153,8 @@ class _ViewTransformerDataState extends State<ViewTransformerData> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
                     // Left side: Region and RTOM dropdowns (now stacked vertically)
                     Expanded(
@@ -229,10 +231,10 @@ class _ViewTransformerDataState extends State<ViewTransformerData> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 16.0),
+                    SizedBox(width: 16),
                     // Right side: Search bar
                     Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: SearchWidget(
                         onSearch: handleSearch,
                         hintText: 'Search...',

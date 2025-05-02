@@ -229,15 +229,14 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
         ThemeToggleButton(), // Use the reusable widget
         ],
       ),
+       backgroundColor: customColors.mainBackgroundColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
         },
         behavior: HitTestBehavior.opaque,
         child: Container(
-          color:
-              customColors
-                  .mainBackgroundColor, // Set the body background color to black
+        
           child:
               isLoading
                   ? const Center(
@@ -258,127 +257,153 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SearchWidget(
-                          onSearch: handleSearch,
-                          hintText: 'Search...',
-                        ),
-                        const SizedBox(height: 20),
-                        DropdownButtonFormField<String>(
-                          dropdownColor: customColors.suqarBackgroundColor,
-                          value: selectedRegion,
-                          hint: Text(
-                            'ALL',
-                            style: TextStyle(color: customColors.mainTextColor),
-                          ),
-                          items:
-                              regions.map((String region) {
-                                return DropdownMenuItem<String>(
-                                  value: region,
-                                  child: Text(
-                                    region,
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
+                         // --- Begin: Filter Row ---
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Left side: Dropdowns in a column
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Top: ALL (Region)
+                                    DropdownButtonFormField<String>(
+                                      dropdownColor: customColors.suqarBackgroundColor,
+                                      value: selectedRegion,
+                                      hint: Text(
+                                        'ALL',
+                                        style: TextStyle(color: customColors.mainTextColor),
+                                      ),
+                                      items: regions.map((String region) {
+                                        return DropdownMenuItem<String>(
+                                          value: region,
+                                          child: Text(
+                                            region,
+                                            style: TextStyle(
+                                              color: customColors.mainTextColor,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRegion = value;
+                                          selectedStation = null;
+                                          selectedRtom = null;
+                                          stations = [];
+                                          rToms = [];
+                                          if (value != null) {
+                                            filterData();
+                                            if (value != 'ALL') {
+                                              fetchStations(value);
+                                            }
+                                          }
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    // Center: Station
+                                    DropdownButtonFormField<String>(
+                                      dropdownColor: customColors.suqarBackgroundColor,
+                                      value: selectedStation,
+                                      hint: Text(
+                                        'Select Station',
+                                        style: TextStyle(color: customColors.mainTextColor),
+                                      ),
+                                      items: stations.map((String station) {
+                                        return DropdownMenuItem<String>(
+                                          value: station,
+                                          child: Text(
+                                            station,
+                                            style: TextStyle(
+                                              color: customColors.mainTextColor,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedStation = value;
+                                          selectedRtom = null;
+                                          rToms = [];
+                                          if (value != null) {
+                                            filterData();
+                                            fetchRtoms(selectedRegion!, value);
+                                          }
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    // Bottom: RTOM
+                                    DropdownButtonFormField<String>(
+                                      dropdownColor: customColors.suqarBackgroundColor,
+                                      value: selectedRtom,
+                                      hint: Text(
+                                        'Select RTOM',
+                                        style: TextStyle(color: customColors.mainTextColor),
+                                      ),
+                                      items: rToms.map((String rtom) {
+                                        return DropdownMenuItem<String>(
+                                          value: rtom,
+                                          child: Text(
+                                            rtom,
+                                            style: TextStyle(
+                                              color: customColors.mainTextColor,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRtom = value;
+                                          filterData();
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              // Right side: Search bar
+                              Expanded(
+                                flex: 2,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: SizedBox(
+                                    width: 300, // Adjust width as needed
+                                    child: SearchWidget(
+                                      onSearch: handleSearch,
+                                      hintText: 'Search...',
                                     ),
                                   ),
-                                );
-                              }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedRegion = value;
-                              selectedStation = null;
-                              selectedRtom = null;
-                              stations = [];
-                              rToms = [];
-                              if (value != null) {
-                                filterData();
-                                if (value != 'ALL') {
-                                  fetchStations(value);
-                                }
-                              }
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        DropdownButtonFormField<String>(
-                          dropdownColor: customColors.suqarBackgroundColor,
-                          value: selectedStation,
-                          hint: Text(
-                            'Select Station',
-                            style: TextStyle(color: customColors.mainTextColor),
-                          ),
-                          items:
-                              stations.map((String station) {
-                                return DropdownMenuItem<String>(
-                                  value: station,
-                                  child: Text(
-                                    station,
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedStation = value;
-                              selectedRtom = null;
-                              rToms = [];
-                              if (value != null) {
-                                filterData();
-                                fetchRtoms(selectedRegion!, value);
-                              }
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        DropdownButtonFormField<String>(
-                          dropdownColor: customColors.suqarBackgroundColor,
-                          value: selectedRtom,
-                          hint: Text(
-                            'Select RTOM',
-                            style: TextStyle(color: customColors.mainTextColor),
-                          ),
-                          items:
-                              rToms.map((String rtom) {
-                                return DropdownMenuItem<String>(
-                                  value: rtom,
-                                  child: Text(
-                                    rtom,
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedRtom = value;
-                              filterData();
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+                          const SizedBox(height: 20),
+                          // --- End: Filter Row ---
                         if (isLoading)
                           const Center(child: CircularProgressIndicator())
                         else if (filteredSiteData.isEmpty)

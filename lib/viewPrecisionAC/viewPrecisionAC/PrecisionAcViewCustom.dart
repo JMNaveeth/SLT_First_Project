@@ -497,7 +497,6 @@ class _PrecisionACListState extends State<PrecisionACList> {
                 ],
               ),
               SizedBox(height: 16),
-              SizedBox(height: 16),
               Container(
                 height: MediaQuery.of(context).size.height * 0.15,
                 child: GridView.count(
