@@ -125,6 +125,7 @@ class PrecisionAC {
       updatedTime: json['UpdatedTime'] ?? '',
       coolingCapacity: json['Cooling_Capacity'] ?? '',
       powerSupply: json['Power_Supply'] ?? '',
+
       // Added field
       refrigerantType: json['Refrigerant_Type'] ?? '',
       // Added field
@@ -895,12 +896,14 @@ class ACDetailView extends StatelessWidget {
         searchQuery.isNotEmpty &&
         subtitle.toLowerCase().contains(searchQuery.toLowerCase());
 
+  
+
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5),
       elevation: 2,
       color: customColors.suqarBackgroundColor,
       child: ListTile(
-        leading: Icon(icon, color: Colors.grey),
+        leading: Icon(icon, color: customColors.subTextColor),
         title: Text(
           title,
           style: TextStyle(

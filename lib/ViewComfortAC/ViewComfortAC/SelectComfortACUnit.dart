@@ -271,6 +271,7 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
   Widget buildSummaryTable(List<AcIndoorData> filteredIndoorData) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
     final summary = getSummary(filteredIndoorData);
+    final totalAC = filteredIndoorData.length;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -334,6 +335,29 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                 child: Text(
                   '${summary['Non Invertor'] ?? 0}',
                   style: TextStyle(color: customColors.subTextColor),
+                ),
+              ),
+            ],
+          ),
+        // Add Total AC row
+          TableRow(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Total AC',
+                  style: TextStyle(
+                    color: customColors.subTextColor,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '$totalAC',
+                  style: TextStyle(
+                    color: customColors.subTextColor,
+                  ),
                 ),
               ),
             ],
