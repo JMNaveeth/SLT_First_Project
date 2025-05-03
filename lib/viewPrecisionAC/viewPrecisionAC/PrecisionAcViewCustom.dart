@@ -896,8 +896,6 @@ class ACDetailView extends StatelessWidget {
         searchQuery.isNotEmpty &&
         subtitle.toLowerCase().contains(searchQuery.toLowerCase());
 
-  
-
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5),
       elevation: 2,
