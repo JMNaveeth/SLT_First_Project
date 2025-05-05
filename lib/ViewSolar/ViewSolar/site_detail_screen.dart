@@ -149,14 +149,17 @@ class _SiteDetailScreenState extends State<SiteDetailScreen>
                         ),
                       ),
                     )
-                    : Text(
-                      detailText,
-                      style: TextStyle(
-                        color: customColors.subTextColor,
-                        fontSize: 16,
+                    : Container(
+                      color:
+                          isMatch
+                              ? customColors.highlightColor
+                              : Colors.transparent,
+                      child: Text(
+                        detailText,
+                        style: TextStyle(color: customColors.subTextColor),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
                       ),
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
                     ),
           ),
         ],

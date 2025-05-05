@@ -56,6 +56,7 @@ class PrecisionAC {
   final String? amcExpireDate; // Nullable field
   final String latitude; // New field
   final String longitude;
+  final String searchQuery;
 
   final String airflow_type;
 
@@ -100,6 +101,7 @@ class PrecisionAC {
     this.warrantyDetails,
     this.warrantyExpireDate,
     this.amcExpireDate,
+    this.searchQuery = '',
     required this.latitude,
     required this.longitude,
     required this.airflow_type,
@@ -427,28 +429,32 @@ class _PrecisionACListState extends State<PrecisionACList> {
                               selectedStatus = newValue;
                             });
                           },
-                          items: statuses.map((String status) {
-                            return DropdownMenuItem<String>(
-                              value: status,
-                              child: Text(
-                                status,
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                          items:
+                              statuses.map((String status) {
+                                return DropdownMenuItem<String>(
+                                  value: status,
+                                  child: Text(
+                                    status,
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                         ),
                         SizedBox(height: 12),
                         FutureBuilder<List<String>>(
                           future: futureRegions,
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Text(
                                 'Error: ${snapshot.error}',
-                                style: TextStyle(color: customColors.subTextColor),
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
                               );
                             } else {
                               return DropdownButton<String>(
@@ -460,19 +466,23 @@ class _PrecisionACListState extends State<PrecisionACList> {
                                 ),
                                 value: selectedRegion,
                                 isExpanded: true,
-                                dropdownColor: customColors.suqarBackgroundColor,
+                                dropdownColor:
+                                    customColors.suqarBackgroundColor,
                                 onChanged: _onRegionChanged,
-                                items: ['All', ...snapshot.data!].map((String region) {
-                                  return DropdownMenuItem<String>(
-                                    value: region,
-                                    child: Text(
-                                      region,
-                                      style: TextStyle(
-                                        color: customColors.mainTextColor,
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
+                                items:
+                                    ['All', ...snapshot.data!].map((
+                                      String region,
+                                    ) {
+                                      return DropdownMenuItem<String>(
+                                        value: region,
+                                        child: Text(
+                                          region,
+                                          style: TextStyle(
+                                            color: customColors.mainTextColor,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
                               );
                             }
                           },
@@ -868,6 +878,13 @@ class ACDetailView extends StatelessWidget {
     );
   }
 
+  // Add this inside your ACDetailView class:
+  bool _shouldHighlight(String value) {
+    // Example: highlight if the searchQuery is found in the title (case-insensitive)
+    return searchQuery.isNotEmpty &&
+        value.toLowerCase().contains(searchQuery.toLowerCase());
+  }
+
   Widget _buildCategoryHeader(String title, BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
@@ -892,9 +909,8 @@ class ACDetailView extends StatelessWidget {
   ) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    final bool isMatch =
-        searchQuery.isNotEmpty &&
-        subtitle.toLowerCase().contains(searchQuery.toLowerCase());
+    final bool isMatch = searchQuery.isNotEmpty &&
+      subtitle.toLowerCase().contains(searchQuery.toLowerCase());
 
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -907,12 +923,18 @@ class ACDetailView extends StatelessWidget {
           style: TextStyle(
             color: customColors.mainTextColor,
             fontWeight: FontWeight.bold,
+        
           ),
         ),
-        subtitle: Text(
+       subtitle: Container(
+        color: isMatch ? customColors.highlightColor : Colors.transparent,
+        child: Text(
           subtitle,
-          style: TextStyle(color: customColors.subTextColor),
+          style: TextStyle(
+            color: customColors.subTextColor,
+          ),
         ),
+      ),
       ),
     );
   }
@@ -955,7 +977,13 @@ class ACDetailView extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 4.0),
                   child: Text(
                     'Compressor ${index + 1} Serial Code: $value',
-                    style: TextStyle(color: customColors.subTextColor),
+                    style: TextStyle(
+                      color: customColors.subTextColor,
+                      backgroundColor:
+                          _shouldHighlight(title)
+                              ? customColors.highlightColor
+                              : customColors.suqarBackgroundColor,
+                    ),
                   ),
                 );
               }).toList(),
