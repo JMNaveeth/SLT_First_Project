@@ -19,10 +19,10 @@ class ViewTransformerData extends StatefulWidget {
 }
 
 class _ViewTransformerDataState extends State<ViewTransformerData> {
-  String? selectedRegion = 'All';
-  String? selectedRTOM = 'All';
-  List<String> regionList = ['All'];
-  List<String> rtomList = ['All'];
+  String? selectedRegion = 'Select Region';
+  String? selectedRTOM = 'Select RTOM';
+  List<String> regionList = ['Select Region'];
+  List<String> rtomList = ['Select RTOM'];
   List<Map<String, dynamic>> transformerList = [];
   List<Map<String, dynamic>> filteredTransformers = [];
   int dryTypeCount = 0;
@@ -51,14 +51,14 @@ class _ViewTransformerDataState extends State<ViewTransformerData> {
 
     // Filter region and RTOM lists based on the transformer data
     regionList =
-        ['All'] +
+        ['Select Region'] +
         regions
             .where((region) => transformerRegions.contains(region['Region']))
             .map((region) => region['Region'].toString())
             .toList();
 
     rtomList =
-        ['All'] +
+        ['Select RTOM'] +
         rtoms
             .where((rtom) => transformerRTOMs.contains(rtom['RTOM']))
             .map((rtom) => rtom['RTOM'].toString())
@@ -79,10 +79,10 @@ class _ViewTransformerDataState extends State<ViewTransformerData> {
       filteredTransformers =
           transformerList.where((transformer) {
             final regionMatches =
-                selectedRegion == 'All' ||
+                selectedRegion == 'Select Region' ||
                 transformer['Region'] == selectedRegion;
             final rtomMatches =
-                selectedRTOM == 'All' || transformer['RTOM'] == selectedRTOM;
+                selectedRTOM == 'Select RTOM' || transformer['RTOM'] == selectedRTOM;
             final searchMatches =
                 searchQuery.isEmpty ||
                 SearchHelperTransformer.matchesTransformerQuery(
@@ -163,9 +163,10 @@ class _ViewTransformerDataState extends State<ViewTransformerData> {
                         children: [
                           _buildFormFieldWithSpacing(
                             context,
-                            _buildFieldLabel(context, 'Region'),
+                            //_buildFieldLabel(context, 'Region'),
+                            SizedBox.shrink(), // No label
                             FormBuilderDropdown<String>(
-                              name: 'Region',
+                               name: 'Region',
                               decoration: _inputDecoration(
                                 context,
                                 'Select Region',
@@ -195,7 +196,9 @@ class _ViewTransformerDataState extends State<ViewTransformerData> {
                           ),
                           _buildFormFieldWithSpacing(
                             context,
-                            _buildFieldLabel(context, 'RTOM'),
+                            // _buildFieldLabel(context, 'RTOM'),
+                            SizedBox.shrink(), // No label
+
                             FormBuilderDropdown<String>(
                               name: 'RTOM',
                               decoration: _inputDecoration(
