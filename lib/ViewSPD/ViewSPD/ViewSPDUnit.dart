@@ -72,7 +72,7 @@ class ViewSPDUnit extends StatelessWidget {
 
       ),
       body: Container(
-        decoration: BoxDecoration(color: customColors.suqarBackgroundColor),
+        decoration: BoxDecoration(color: customColors.mainBackgroundColor),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

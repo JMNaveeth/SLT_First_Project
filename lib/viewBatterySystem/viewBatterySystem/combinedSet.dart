@@ -231,8 +231,7 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
                   color: customColors.mainTextColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  backgroundColor:
-                      isMatch ? customColors.highlightColor : Colors.transparent,
+                  
                 ),
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/utils/colors.dart';
 
 class LVBreakerDetailPage extends StatelessWidget {
@@ -123,11 +123,14 @@ class LVBreakerDetailPage extends StatelessWidget {
   }
 
   Widget _buildDetailRow(String label, String value, BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     if (value == 'N/A' || value == null) return const SizedBox.shrink();
     final bool isMatch = searchQuery.isNotEmpty &&
         value.toLowerCase().contains(searchQuery.toLowerCase());
+
+    final bool isPhone = label.trim().toLowerCase() == 'supplier contact:';
+    final bool isEmail = label.trim().toLowerCase() == 'supplier email:';
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
@@ -149,16 +152,43 @@ class LVBreakerDetailPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Text(
-                value,
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: customColors.subTextColor,
-                  backgroundColor: isMatch ? customColors.highlightColor : null,
-                ),
-              ),
+              child: (isPhone || isEmail)
+                  ? GestureDetector(
+                      onTap: () async {
+                        if (isPhone) {
+                          final Uri telUri = Uri(scheme: 'tel', path: value);
+                          if (await canLaunchUrl(telUri)) {
+                            await launchUrl(telUri);
+                          }
+                        } else if (isEmail) {
+                          final Uri emailUri = Uri(scheme: 'mailto', path: value);
+                          if (await canLaunchUrl(emailUri)) {
+                            await launchUrl(emailUri);
+                          }
+                        }
+                      },
+                      child: Text(
+                        value,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                          backgroundColor: isMatch ? customColors.highlightColor : null,
+                        ),
+                      ),
+                    )
+                  : Text(
+                      value,
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: customColors.subTextColor,
+                        backgroundColor: isMatch ? customColors.highlightColor : null,
+                      ),
+                    ),
             ),
           ],
         ),

@@ -149,6 +149,28 @@ class _SiteDetailScreenState extends State<SiteDetailScreen>
                         ),
                       ),
                     )
+                    : title == 'Supplier Email' && detail != null
+                    ? GestureDetector(
+                      onTap: () async {
+                        final Uri emailUri = Uri(
+                          scheme: 'mailto',
+                          path: detail.toString(),
+                        );
+                        if (await canLaunchUrl(emailUri)) {
+                          await launchUrl(emailUri);
+                        } else {
+                          print('Could not launch $emailUri');
+                        }
+                      },
+                      child: Text(
+                        detailText,
+                        style: TextStyle(
+                          color: Colors.blue, // Make it look clickable
+                          fontSize: 16,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    )
                     : Container(
                       color:
                           isMatch

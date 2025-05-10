@@ -8,7 +8,7 @@ import 'package:theme_update/theme_toggle_button.dart';
 import '../../utils/utils/colors.dart';
 import '../../widgets/searchWidget.dart';
 import 'search_helper_elevator.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 class ViewElevatorDetails extends StatefulWidget {
@@ -906,9 +906,9 @@ class ViewElevatorUnit extends StatelessWidget {
               isMatch
                   ? customColors.highlightColor
                   : customColors.suqarBackgroundColor,
-          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        padding: const EdgeInsets.all(12.0), // Inner padding for content
+        padding: const EdgeInsets.all(12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -917,18 +917,22 @@ class ViewElevatorUnit extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: customColors.mainTextColor, // Label color
+                color: customColors.mainTextColor,
               ),
             ),
             Expanded(
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if (isContact) {
-                    // Make the number callable
-                    // launchUrl(Uri.parse('tel:$value'));
+                    final Uri telUri = Uri(scheme: 'tel', path: value);
+                    if (await canLaunchUrl(telUri)) {
+                      await launchUrl(telUri);
+                    }
                   } else if (isEmail) {
-                    // Open the default email client
-                    // launchUrl(Uri.parse('mailto:$value'));
+                    final Uri emailUri = Uri(scheme: 'mailto', path: value);
+                    if (await canLaunchUrl(emailUri)) {
+                      await launchUrl(emailUri);
+                    }
                   }
                 },
                 child: Text(
@@ -938,14 +942,15 @@ class ViewElevatorUnit extends StatelessWidget {
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color:
-                        isContact || isEmail
+                        (isContact || isEmail)
                             ? const Color.fromARGB(255, 5, 129, 231)
                             : customColors.mainTextColor,
                     decoration:
-                        isContact || isEmail
+                        (isContact || isEmail)
                             ? TextDecoration.underline
                             : TextDecoration.none,
-                    backgroundColor: isMatch ? customColors.highlightColor : null,
+                    backgroundColor:
+                        isMatch ? customColors.highlightColor : null,
                   ),
                 ),
               ),

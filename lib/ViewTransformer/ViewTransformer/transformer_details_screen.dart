@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customColors;
 import '../../theme_provider.dart';
@@ -36,6 +36,8 @@ class _TransformerDetailScreenState extends State<TransformerDetailScreen> {
         detail.toString().toLowerCase().contains(
           widget.searchQuery.toLowerCase(),
         );
+    bool isEmail = title == 'Supplier Email';
+    bool isPhone = title == 'Supplier Contact';
 
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -56,23 +58,50 @@ class _TransformerDetailScreenState extends State<TransformerDetailScreen> {
               ),
             ),
             Expanded(
-              child: Text(
-                detail != null ? detail.toString() : 'N/A',
-                style: TextStyle(
-                  fontSize: 16,
-                  backgroundColor: isMatch ? highlightColor : null,
-                  color:
-                      title == 'Supplier Email' || title == 'Supplier Contact'
-                          ? Colors.blue
-                          : customColors.subTextColor,
-                  decoration:
-                      title == 'Supplier Email' || title == 'Supplier Contact'
-                          ? TextDecoration.underline
-                          : TextDecoration.none,
-                ),
-                softWrap: true,
-                overflow: TextOverflow.visible,
-              ),
+              child:
+                  (isEmail || isPhone) && detail != null
+                      ? GestureDetector(
+                        onTap: () async {
+                          if (isEmail) {
+                            final Uri emailUri = Uri(
+                              scheme: 'mailto',
+                              path: detail.toString(),
+                            );
+                            if (await canLaunchUrl(emailUri)) {
+                              await launchUrl(emailUri);
+                            }
+                          } else if (isPhone) {
+                            final Uri telUri = Uri(
+                              scheme: 'tel',
+                              path: detail.toString(),
+                            );
+                            if (await canLaunchUrl(telUri)) {
+                              await launchUrl(telUri);
+                            }
+                          }
+                        },
+                        child: Text(
+                          detail.toString(),
+                          style: TextStyle(
+                            fontSize: 16,
+                            backgroundColor: isMatch ? highlightColor : null,
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                        ),
+                      )
+                      : Text(
+                        detail != null ? detail.toString() : 'N/A',
+                        style: TextStyle(
+                          fontSize: 16,
+                          backgroundColor: isMatch ? highlightColor : null,
+                          color: customColors.subTextColor,
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
             ),
           ],
         ),

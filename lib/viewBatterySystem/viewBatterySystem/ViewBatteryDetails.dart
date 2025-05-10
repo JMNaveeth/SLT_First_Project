@@ -364,77 +364,65 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                                     false);
 
                             return Card(
-                              color: customColors.mainBackgroundColor,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                  horizontal: 16.0,
+                              elevation: 5,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              color: customColors.suqarBackgroundColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: ListTile(
+                                title: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                    // White text
+                                    children: [
+                                      TextSpan(text: 'Rack ID: '),
+                                      TextSpan(
+                                        text:
+                                            system['SystemID']?.toString() ??
+                                            'N/A',
+                                        style: TextStyle(
+                                          backgroundColor:
+                                              isRackIdMatch
+                                                  ? customColors.highlightColor
+                                                  : customColors
+                                                      .suqarBackgroundColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: customColors.suqarBackgroundColor,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  boxShadow: [
-                                    BoxShadow(
+                                subtitle: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
                                       color: customColors.subTextColor,
-                                      blurRadius: 4.0,
-                                      spreadRadius: 1.0,
-                                      offset: Offset(2.0, 2.0),
                                     ),
-                                  ],
-                                ),
-                                child: ListTile(
-                                  title: RichText(
-                                    text: TextSpan(
-                                      style: TextStyle(
-                                        color: customColors.mainTextColor,
-                                      ),
-                                      // White text
-                                      children: [
-                                        TextSpan(text: 'Rack ID: '),
-                                        TextSpan(
-                                          text:
-                                              system['SystemID']?.toString() ??
-                                              'N/A',
-                                          style: TextStyle(
-                                            backgroundColor:
-                                                isRackIdMatch
-                                                    ? customColors
-                                                        .highlightColor
-                                                    : customColors
-                                                        .suqarBackgroundColor,
-                                          ),
+                                    // Light gray text
+                                    children: [
+                                      TextSpan(text: 'Location: '),
+                                      TextSpan(
+                                        text:
+                                            system['Location']?.toString() ??
+                                            'N/A',
+                                        style: TextStyle(
+                                          backgroundColor:
+                                              isLocationMatch
+                                                  ? customColors.highlightColor
+                                                  : customColors
+                                                      .suqarBackgroundColor,
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: RichText(
-                                    text: TextSpan(
-                                      style: TextStyle(
-                                        color: customColors.subTextColor,
                                       ),
-                                      // Light gray text
-                                      children: [
-                                        TextSpan(text: 'Location: '),
-                                        TextSpan(
-                                          text:
-                                              system['Location']?.toString() ??
-                                              'N/A',
-                                          style: TextStyle(
-                                            backgroundColor:
-                                                isLocationMatch
-                                                    ? customColors
-                                                        .highlightColor
-                                                    : customColors
-                                                        .suqarBackgroundColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    ],
                                   ),
-                                  onTap: () {
-                                    navigateToBatteryUnitDetails(system);
-                                  },
                                 ),
+                                onTap: () {
+                                  navigateToBatteryUnitDetails(system);
+                                },
                               ),
                             );
                           },

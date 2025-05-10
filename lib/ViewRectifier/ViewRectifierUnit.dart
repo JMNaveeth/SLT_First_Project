@@ -173,65 +173,66 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
     );
   }
 
- ListTile makeListTile(String subjectName, String? variable) {
-  final customColors = Theme.of(context).extension<CustomColors>()!;
+  ListTile makeListTile(String subjectName, String? variable) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
-  return ListTile(
-    contentPadding: const EdgeInsets.symmetric(
-      horizontal: 20.0,
-      vertical: 10.0,
-    ),
-    leading: Container(
-      padding: const EdgeInsets.only(right: 12.0),
-      decoration: BoxDecoration(
-        border: Border(
-          right: BorderSide(width: 2.5, color: customColors.mainTextColor),
-        ),
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+        vertical: 10.0,
       ),
-      child: Text(
-        subjectName,
-        style: TextStyle(
-          color: customColors.mainTextColor,
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
-        ),
-      ),
-    ),
-    title: Text(
-      variable ?? 'N/A',
-      style: TextStyle(
-        color: customColors.subTextColor,
-      ),
-    ),
-  );
-}
-
-Card makeCard(Lesson lesson) {
-  final customColors = Theme.of(context).extension<CustomColors>()!;
-  final bool isMatch = widget.searchQuery.isNotEmpty &&
-      lesson.variable != null &&
-      lesson.variable.toString().toLowerCase().contains(
-            widget.searchQuery.toLowerCase(),
-          );
-
-  return Card(
-    elevation: 4.0,
-    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-    child: SizedBox(
-      height: 75.0,
-      child: Container(
+      leading: Container(
+        padding: const EdgeInsets.only(right: 12.0),
         decoration: BoxDecoration(
-          color: isMatch
-              ? customColors.highlightColor // Highlight color for search match
-              : customColors.suqarBackgroundColor, // Dynamic color
-          borderRadius: BorderRadius.circular(8.0),
+          border: Border(
+            right: BorderSide(width: 2.5, color: customColors.mainTextColor),
+          ),
         ),
-        child: makeListTile(lesson.subjectName, lesson.variable),
+        child: Text(
+          subjectName,
+          style: TextStyle(
+            color: customColors.mainTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
       ),
-    ),
-  );
-}
+      title: Text(
+        variable ?? 'N/A',
+        style: TextStyle(color: customColors.subTextColor),
+      ),
+    );
+  }
+
+  Card makeCard(Lesson lesson) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    final bool isMatch =
+        widget.searchQuery.isNotEmpty &&
+        lesson.variable != null &&
+        lesson.variable.toString().toLowerCase().contains(
+          widget.searchQuery.toLowerCase(),
+        );
+
+    return Card(
+      elevation: 4.0,
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      child: SizedBox(
+        height: 75.0,
+        child: Container(
+          decoration: BoxDecoration(
+            color:
+                isMatch
+                    ? customColors
+                        .highlightColor // Highlight color for search match
+                    : customColors.suqarBackgroundColor, // Dynamic color
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: makeListTile(lesson.subjectName, lesson.variable),
+        ),
+      ),
+    );
+  }
 
   // Card makeCard(Lesson lesson) => Card(
   //   elevation: 4.0,
@@ -281,189 +282,144 @@ Card makeCard(Lesson lesson) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Displaying rectifier details
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
-                    Lesson(
-                      subjectName: 'Rectifier ID',
-                      variable: widget.RectifierUnit['RecID'] ?? 'N/A',
-                    ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Rectifier ID',
+                    variable: widget.RectifierUnit['RecID'] ?? 'N/A',
                   ),
                 ),
 
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
-                    Lesson(
-                      subjectName: 'Region',
-                      variable: widget.RectifierUnit['Region'] ?? 'N/A',
-                    ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Region',
+                    variable: widget.RectifierUnit['Region'] ?? 'N/A',
                   ),
                 ),
 
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
-                    Lesson(
-                      subjectName: 'RTOM',
-                      variable: widget.RectifierUnit['RTOM'] ?? 'N/A',
-                    ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'RTOM',
+                    variable: widget.RectifierUnit['RTOM'] ?? 'N/A',
                   ),
                 ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
-                    Lesson(
-                      subjectName: 'Station',
-                      variable: widget.RectifierUnit['Station'] ?? 'N/A',
-                    ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Station',
+                    variable: widget.RectifierUnit['Station'] ?? 'N/A',
                   ),
                 ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
-                    Lesson(
-                      subjectName: 'Brand',
-                      variable: widget.RectifierUnit['Brand'] ?? 'N/A',
-                    ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Brand',
+                    variable: widget.RectifierUnit['Brand'] ?? 'N/A',
                   ),
                 ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+
+              makeCard(
                     Lesson(
                       subjectName: 'Model',
                       variable: widget.RectifierUnit['Model'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+           
+               makeCard(
                     Lesson(
                       subjectName: 'Frame Capacity Type',
                       variable: widget.RectifierUnit['FrameCapType'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor, 
-                  child: makeCard(
-                  Lesson(
-                    subjectName: 'Frame Capacity',
-                    variable: widget.RectifierUnit['FrameCap'] ?? 'N/A',
+               makeCard(
+                    Lesson(
+                      subjectName: 'Frame Capacity',
+                      variable: widget.RectifierUnit['FrameCap'] ?? 'N/A',
+                    ),
                   ),
-                  ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+              
+                 makeCard(
                     Lesson(
                       subjectName: 'Type',
                       variable: widget.RectifierUnit['Type'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+            
+            makeCard(
                     Lesson(
                       subjectName: 'Serial Number',
                       variable: widget.RectifierUnit['Serial'] ?? 'N/A',
                     ),
                   ),
-                ),
+              
 
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+                makeCard(
                     Lesson(
                       subjectName: 'Installed Date',
                       variable: widget.RectifierUnit['InstalledDate'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+               
+              makeCard(
                     Lesson(
                       subjectName: 'Power Module Model',
                       variable: widget.RectifierUnit['PWModModel'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+            
+             makeCard(
                     Lesson(
                       subjectName: 'Ampere Rating',
                       variable: widget.RectifierUnit['AmpRating'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+               makeCard(
                     Lesson(
                       subjectName: 'Power Module Slots',
                       variable: widget.RectifierUnit['PWModsUsed'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+            
+               
+              makeCard(
                     Lesson(
                       subjectName: 'Power Modules Available',
                       variable: widget.RectifierUnit['PWModsAvai'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+               
+             makeCard(
                     Lesson(
                       subjectName: 'Control Module Model',
                       variable: widget.RectifierUnit['CtrModModel'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+            
+               makeCard(
                     Lesson(
                       subjectName: 'Control Modules Slots',
                       variable: widget.RectifierUnit['CtrModsUsed'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+             
+                 makeCard(
                     Lesson(
                       subjectName: 'Control Modules Available',
                       variable: widget.RectifierUnit['CtrModsAvail'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+             makeCard(
                     Lesson(
                       subjectName: 'Last Updated',
                       variable: widget.RectifierUnit['LastUpdated'] ?? 'N/A',
                     ),
                   ),
-                ),
-                Card(
-                  color: customColors.suqarBackgroundColor,
-                  child: makeCard(
+               
+               makeCard(
                     Lesson(
                       subjectName: 'Updated By',
                       variable: widget.RectifierUnit['Updated_By'] ?? 'N/A',
                     ),
                   ),
-                ),
+               
 
                 const SizedBox(height: 25),
                 // Loading and displaying module details

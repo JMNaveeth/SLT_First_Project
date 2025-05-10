@@ -10,6 +10,7 @@ import 'package:theme_update/utils/utils/colors.dart';
 import '../../theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customColors;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/searchWidget.dart';
 import 'search_helper.dart';

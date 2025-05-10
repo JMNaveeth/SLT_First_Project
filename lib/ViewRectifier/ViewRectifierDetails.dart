@@ -386,46 +386,36 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                             itemBuilder: (context, index) {
                               final system = filteredRectifierSystems[index];
                               return Card(
-                                color: customColors.mainBackgroundColor,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 8.0,
-                                    horizontal: 16.0,
+                                elevation: 5,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                color: customColors.suqarBackgroundColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(
+                                    Icons.battery_charging_full,
+                                    color: customColors.subTextColor,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: customColors.suqarBackgroundColor,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Color(0xFF918F8F),
-                                        blurRadius: 4.0,
-                                        spreadRadius: 1.0,
-                                        offset: Offset(2.0, 2.0),
-                                      ),
-                                    ],
-                                  ),
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.battery_charging_full,
+                                  title: Text(
+                                    '${system['Brand']} - ${system['Model']}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                       color: customColors.subTextColor,
                                     ),
-                                    title: Text(
-                                      '${system['Brand']} - ${system['Model']}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: customColors.subTextColor,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      'Location: ${system['Region']} - ${system['RTOM']}',
-                                      style: TextStyle(
-                                        color: customColors.subTextColor,
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      navigateToRectifierUnitDetails(system);
-                                    },
                                   ),
+                                  subtitle: Text(
+                                    'Location: ${system['Region']} - ${system['RTOM']}',
+                                    style: TextStyle(
+                                      color: customColors.subTextColor,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    navigateToRectifierUnitDetails(system);
+                                  },
                                 ),
                               );
                             },

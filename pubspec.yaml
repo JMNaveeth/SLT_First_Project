@@ -41,6 +41,7 @@ dependencies:
   form_builder_validators: any
   provider: ^6.0.5
   url_launcher: ^6.1.7
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

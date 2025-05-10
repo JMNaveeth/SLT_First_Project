@@ -41,13 +41,13 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
 
   String selectedRegion = 'ALL'; // Initial selected region
   List<dynamic> allUPSSystems = []; // Original list of all systems
   List<dynamic> filteredUPSSystems =
-  []; // Filtered list based on search and region
+      []; // Filtered list based on search and region
   bool isLoading = true; // Flag to track if data is being loaded
   String searchQuery = ''; // Store the current search query
 
@@ -79,19 +79,23 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
   void applyFilters() {
     setState(() {
       // First filter by region
-      var tempFiltered = selectedRegion == 'ALL'
-          ? allUPSSystems
-          : allUPSSystems.where((system) {
-        return (system['Region'] ?? '').toString().toUpperCase() ==
-            selectedRegion.toUpperCase();
-      }).toList();
+      var tempFiltered =
+          selectedRegion == 'ALL'
+              ? allUPSSystems
+              : allUPSSystems.where((system) {
+                return (system['Region'] ?? '').toString().toUpperCase() ==
+                    selectedRegion.toUpperCase();
+              }).toList();
 
       // Then filter by search query if it exists
       if (searchQuery.isNotEmpty) {
-        tempFiltered = tempFiltered
-            .where((system) =>
-            SearchHelperUPS.matchesUPSQuery(system, searchQuery))
-            .toList();
+        tempFiltered =
+            tempFiltered
+                .where(
+                  (system) =>
+                      SearchHelperUPS.matchesUPSQuery(system, searchQuery),
+                )
+                .toList();
       }
 
       filteredUPSSystems = tempFiltered;
@@ -120,10 +124,9 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ViewUPSUnit(
-          UPSUnit: batteryUnit,
-          searchQuery: searchQuery,
-        ),
+        builder:
+            (context) =>
+                ViewUPSUnit(UPSUnit: batteryUnit, searchQuery: searchQuery),
       ),
     );
   }
@@ -157,7 +160,7 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     final summary = getSummary();
 
@@ -167,14 +170,11 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
           'UPS Details',
           style: TextStyle(color: customColors.mainTextColor),
         ),
-        iconTheme: IconThemeData(
-          color: customColors.mainTextColor,
-        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
         backgroundColor: customColors.appbarColor,
         actions: [
           ThemeToggleButton(), // Use the reusable widget
         ],
-
       ),
       body: Container(
         color: customColors.mainBackgroundColor,
@@ -195,20 +195,27 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                         value: selectedRegion,
                         decoration: InputDecoration(
                           labelText: 'Select Region',
-                          labelStyle: TextStyle(color: customColors.subTextColor),
+                          labelStyle: TextStyle(
+                            color: customColors.subTextColor,
+                          ),
                           filled: true,
                           fillColor: customColors.mainBackgroundColor,
                         ),
                         dropdownColor: customColors.suqarBackgroundColor,
                         style: TextStyle(color: customColors.mainTextColor),
                         onChanged: handleRegionChange,
-                        items: regions.map((region) {
-                          return DropdownMenuItem<String>(
-                            value: region,
-                            child: Text(region,
-                                style: TextStyle(color: customColors.mainTextColor)),
-                          );
-                        }).toList(),
+                        items:
+                            regions.map((region) {
+                              return DropdownMenuItem<String>(
+                                value: region,
+                                child: Text(
+                                  region,
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                       ),
                     ),
                     SizedBox(width: 16),
@@ -231,162 +238,187 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                     TableRow(
                       children: [
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Summary',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: customColors.mainTextColor)),
-                            )),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Summary',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+                          ),
+                        ),
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Count',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: customColors.mainTextColor)),
-                            )),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Count',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     TableRow(
                       children: [
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Total Systems',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Total Systems',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${summary['Total Systems']}',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${summary['Total Systems']}',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     TableRow(
                       children: [
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Less than 10 kVA',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Less than 10 kVA',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${summary['Less than 10 kVA']}',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${summary['Less than 10 kVA']}',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     TableRow(
                       children: [
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '10-100 kVA',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '10-100 kVA',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${summary['10-100 kVA']}',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${summary['10-100 kVA']}',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     TableRow(
                       children: [
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'More than 100 kVA',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'More than 100 kVA',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                         TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${summary['More than 100 kVA']}',
-                                style: TextStyle(color: customColors.subTextColor),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${summary['More than 100 kVA']}',
+                              style: TextStyle(
+                                color: customColors.subTextColor,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
               Expanded(
-                child: isLoading
-                    ? const Center(
-                  child: CircularProgressIndicator(
-                    color: qrcodeiconColor1,
-                  ), // Show loading indicator
-                )
-                    : filteredUPSSystems.isEmpty
-                    ? Center(
-                  child: Text(
-                    'No UPS systems found.',
-                    style: TextStyle(color: customColors.subTextColor),
-                  ),
-                )
-                    : ListView.builder(
-                  itemCount: filteredUPSSystems.length,
-                  itemBuilder: (context, index) {
-                    final system = filteredUPSSystems[index];
-                    return Card(
-                      color: customColors.mainBackgroundColor,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 8.0,
-                          horizontal: 16.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: customColors.suqarBackgroundColor,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow:  [
-                            BoxShadow(
-                              color: Color(0xFF918F8F),
-                              blurRadius: 4.0,
-                              spreadRadius: 1.0,
-                              offset: Offset(2.0, 2.0),
-                            ),
-                          ], // Set border color to black
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            'Model: ${system['Model']}',
-                            style:
-                            TextStyle(color: customColors.mainTextColor),
+                child:
+                    isLoading
+                        ? const Center(
+                          child: CircularProgressIndicator(
+                            color: qrcodeiconColor1,
+                          ), // Show loading indicator
+                        )
+                        : filteredUPSSystems.isEmpty
+                        ? Center(
+                          child: Text(
+                            'No UPS systems found.',
+                            style: TextStyle(color: customColors.subTextColor),
                           ),
-                          subtitle: Text(
-                            'Location: ${system['Region']}-${system['RTOM']}',
-                            style:
-                            TextStyle(color: customColors.subTextColor),
-                          ),
-                          onTap: () {
-                            navigateToBatteryUnitDetails(system);
+                        )
+                        : ListView.builder(
+                          itemCount: filteredUPSSystems.length,
+                          itemBuilder: (context, index) {
+                            final system = filteredUPSSystems[index];
+                            return Card(
+                              elevation: 5,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              color: customColors.suqarBackgroundColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  'Model: ${system['Model']}',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Location: ${system['Region']}-${system['RTOM']}',
+                                  style: TextStyle(
+                                    color: customColors.subTextColor,
+                                  ),
+                                ),
+                                onTap: () {
+                                  navigateToBatteryUnitDetails(system);
+                                },
+                              ),
+                            );
                           },
                         ),
-                      ),
-                    );
-                  },
-                ),
               ),
             ],
           ),

@@ -17,6 +17,58 @@ class ViewUPSUnit extends StatelessWidget {
     BuildContext context,
   ) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
+ // Highlight only the matching part of the variable
+    InlineSpan getHighlightedText(String text) {
+      if (searchQuery.isEmpty) {
+        return TextSpan(
+          text: text,
+          style: TextStyle(
+            color: customColors.subTextColor,
+            backgroundColor: customColors.suqarBackgroundColor,
+          ),
+        );
+      }
+      final lowerText = text.toLowerCase();
+      final lowerQuery = searchQuery.toLowerCase();
+      final start = lowerText.indexOf(lowerQuery);
+      if (start == -1) {
+        return TextSpan(
+          text: text,
+          style: TextStyle(
+            color: customColors.subTextColor,
+            backgroundColor: customColors.suqarBackgroundColor,
+          ),
+        );
+      }
+      final end = start + lowerQuery.length;
+      return TextSpan(
+        children: [
+          if (start > 0)
+            TextSpan(
+              text: text.substring(0, start),
+              style: TextStyle(
+                color: customColors.subTextColor,
+                backgroundColor: customColors.suqarBackgroundColor,
+              ),
+            ),
+          TextSpan(
+            text: text.substring(start, end),
+            style: TextStyle(
+              color: customColors.subTextColor,
+              backgroundColor: customColors.highlightColor,
+            ),
+          ),
+          if (end < text.length)
+            TextSpan(
+              text: text.substring(end),
+              style: TextStyle(
+                color: customColors.subTextColor,
+                backgroundColor: customColors.suqarBackgroundColor,
+              ),
+            ),
+        ],
+      );
+    }
 
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -36,15 +88,8 @@ class ViewUPSUnit extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(
-        variable ?? 'N/A',
-        style: TextStyle(
-          color: customColors.subTextColor,
-          backgroundColor:
-              _shouldHighlight(variable)
-                  ? customColors.highlightColor
-                  : customColors.suqarBackgroundColor,
-        ),
+      title: Text.rich(
+        getHighlightedText(variable ?? 'N/A'),
       ),
     );
   }

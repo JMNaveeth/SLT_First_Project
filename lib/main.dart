@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/settings_screen.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
@@ -47,7 +48,7 @@ class HomePage extends StatelessWidget {
           'Search',
           style: TextStyle(color: customColors.mainTextColor),
         ),
-        
+
         backgroundColor: customColors.appbarColor,
         actions: [
           ThemeToggleButton(), // Use the reusable widget
@@ -86,11 +87,19 @@ class RectifierMenu extends StatelessWidget {
           'Search Menu',
           style: TextStyle(color: customColors.mainTextColor),
         ),
-                iconTheme: IconThemeData(color: customColors.mainTextColor),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
 
         backgroundColor: customColors.appbarColor,
         actions: [
-          ThemeToggleButton(), // Use the reusable widget
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
+          ),
         ],
       ),
 

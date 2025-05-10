@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:theme_update/utils/utils/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ThemeProvider extends ChangeNotifier {
   bool isDarkMode = true;
 
-  void toggleTheme() {
+ ThemeProvider() {
+    loadTheme();
+  }
+
+  void toggleTheme() async {
     isDarkMode = !isDarkMode;
+    notifyListeners();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', isDarkMode);
+  }
+
+  void loadTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isDarkMode = prefs.getBool('isDarkMode') ?? true;
     notifyListeners();
   }
 
-  ThemeData get currentTheme {
-    return isDarkMode ? darkTheme : lightTheme;
+  ThemeData get currentTheme => isDarkMode ? darkTheme : lightTheme;
   }
 
   ThemeData get lightTheme => ThemeData(
@@ -107,7 +119,7 @@ class ThemeProvider extends ChangeNotifier {
           ),
         ],
       );
-}
+
 
 class CustomColors extends ThemeExtension<CustomColors> {
   final Color mainBackgroundColor;
