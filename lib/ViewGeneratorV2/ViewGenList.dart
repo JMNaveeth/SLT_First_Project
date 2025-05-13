@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/ViewGeneratorV2/search_helper_generator.dart';
+import 'package:theme_update/utils/utils/colors.dart';
+import 'package:theme_update/widgets/searchWidget.dart';
 import 'dart:convert';
-import 'package:powerprox/Screens/Generators/ViewGeneratorV2/search_helper_generator.dart';
+//import 'package:powerprox/Screens/Generators/ViewGeneratorV2/search_helper_generator.dart';
 
-import '../../../Widgets/SearchWidget/searchWidget.dart';
-import '../../HomePage/widgets/colors.dart';
+//import '../../../Widgets/SearchWidget/searchWidget.dart';
+//import '../../HomePage/widgets/colors.dart';
 import 'GenInfoPage.dart';
-
-
-
 
 class ViewGenerator extends StatefulWidget {
   @override
@@ -74,18 +74,24 @@ class _ViewGeneratorState extends State<ViewGenerator> {
   void applyFilters() {
     setState(() {
       // First filter by province
-      var tempFiltered = selectedProvince == 'All'
-          ? generators
-          : generators
-          .where((gen) => gen['province'] == selectedProvince)
-          .toList();
+      var tempFiltered =
+          selectedProvince == 'All'
+              ? generators
+              : generators
+                  .where((gen) => gen['province'] == selectedProvince)
+                  .toList();
 
       // Then filter by search query if it exists
       if (searchQuery.isNotEmpty) {
-        tempFiltered = tempFiltered
-            .where((gen) =>
-            SearchHelperGenerator.matchesGeneratorQuery(gen, searchQuery))
-            .toList();
+        tempFiltered =
+            tempFiltered
+                .where(
+                  (gen) => SearchHelperGenerator.matchesGeneratorQuery(
+                    gen,
+                    searchQuery,
+                  ),
+                )
+                .toList();
       }
 
       filteredGenerators = tempFiltered;
@@ -134,10 +140,7 @@ class _ViewGeneratorState extends State<ViewGenerator> {
             const SizedBox(height: 8),
             Text(
               'Total Number of Generators: ${filteredGenerators.length}',
-              style: const TextStyle(
-                fontSize: 16,
-                color: subTextColor,
-              ),
+              style: const TextStyle(fontSize: 16, color: subTextColor),
             ),
             const SizedBox(height: 16),
             Table(
@@ -147,27 +150,33 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                   children: [
                     Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Text('Fixed',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: mainTextColor,
-                          )),
+                      child: Text(
+                        'Fixed',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: mainTextColor,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Text('Mobile',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: mainTextColor,
-                          )),
+                      child: Text(
+                        'Mobile',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: mainTextColor,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Text('Portable',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: mainTextColor,
-                          )),
+                      child: Text(
+                        'Portable',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: mainTextColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -176,20 +185,23 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                          '${filteredGenerators.where((gen) => gen['category'] == 'Fixed').length}',
-                          style: const TextStyle(color: subTextColor)),
+                        '${filteredGenerators.where((gen) => gen['category'] == 'Fixed').length}',
+                        style: const TextStyle(color: subTextColor),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                          '${filteredGenerators.where((gen) => gen['category'] == 'Mobile').length}',
-                          style: const TextStyle(color: subTextColor)),
+                        '${filteredGenerators.where((gen) => gen['category'] == 'Mobile').length}',
+                        style: const TextStyle(color: subTextColor),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                          '${filteredGenerators.where((gen) => gen['category'] == 'Portable').length}',
-                          style: const TextStyle(color: subTextColor)),
+                        '${filteredGenerators.where((gen) => gen['category'] == 'Portable').length}',
+                        style: const TextStyle(color: subTextColor),
+                      ),
                     ),
                   ],
                 ),
@@ -208,10 +220,7 @@ class _ViewGeneratorState extends State<ViewGenerator> {
       return Center(
         child: Text(
           'No ${category.toLowerCase()} generators found',
-          style: const TextStyle(
-            color: mainTextColor,
-            fontSize: 16,
-          ),
+          style: const TextStyle(color: mainTextColor, fontSize: 16),
         ),
       );
     }
@@ -250,18 +259,12 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                   const SizedBox(height: 8),
                   Text(
                     '${generator['Rtom_name'] ?? 'Unknown Location'} (${generator['province'] ?? ''})',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: subTextColor,
-                    ),
+                    style: const TextStyle(fontSize: 16, color: subTextColor),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Capacity: ${generator['set_cap'] ?? 'N/A'} kVA',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: subTextColor,
-                    ),
+                    style: const TextStyle(fontSize: 14, color: subTextColor),
                   ),
                 ],
               ),
@@ -276,8 +279,10 @@ class _ViewGeneratorState extends State<ViewGenerator> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Generator View Page',
-            style: TextStyle(color: mainTextColor)),
+        title: const Text(
+          'Generator View Page',
+          style: TextStyle(color: mainTextColor),
+        ),
         iconTheme: const IconThemeData(color: mainTextColor),
         backgroundColor: appbarColor,
         foregroundColor: mainTextColor,
@@ -290,8 +295,10 @@ class _ViewGeneratorState extends State<ViewGenerator> {
           child: Column(
             children: [
               Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: Row(
                   children: [
                     Expanded(
@@ -303,8 +310,10 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                           labelStyle: TextStyle(color: subTextColor),
                           filled: true,
                           fillColor: mainBackgroundColor,
-                          contentPadding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 8,
+                          ),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
@@ -312,21 +321,26 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                            BorderSide(color: Colors.grey, width: 2.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 2.0,
+                            ),
                           ),
                         ),
                         style: const TextStyle(color: mainTextColor),
                         dropdownColor: suqarBackgroundColor,
-                        icon: const Icon(Icons.arrow_drop_down,
-                            color: Colors.white),
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.white,
+                        ),
                         onChanged: handleProvinceChange,
-                        items: provinces.map((String province) {
-                          return DropdownMenuItem<String>(
-                            value: province,
-                            child: Text(province),
-                          );
-                        }).toList(),
+                        items:
+                            provinces.map((String province) {
+                              return DropdownMenuItem<String>(
+                                value: province,
+                                child: Text(province),
+                              );
+                            }).toList(),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -342,60 +356,60 @@ class _ViewGeneratorState extends State<ViewGenerator> {
               ),
               isLoading
                   ? const Expanded(
-                  child: Center(child: CircularProgressIndicator()))
+                    child: Center(child: CircularProgressIndicator()),
+                  )
                   : Expanded(
-                child: DefaultTabController(
-                  length: tabs.length,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: SingleChildScrollView(
-                          child: _buildSummaryCard(),
-                        ),
-                      ),
-                      Container(
-                        margin:
-                        const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey,
-                              width: 1.0,
+                    child: DefaultTabController(
+                      length: tabs.length,
+                      child: Column(
+                        children: [
+                          Flexible(
+                            flex: 2,
+                            child: SingleChildScrollView(
+                              child: _buildSummaryCard(),
                             ),
                           ),
-                        ),
-                        child: TabBar(
-                          indicator: UnderlineTabIndicator(
-                            borderSide: BorderSide(
-                              color: Colors.blueAccent,
-                              width: 2.0,
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            child: TabBar(
+                              indicator: UnderlineTabIndicator(
+                                borderSide: BorderSide(
+                                  color: Colors.blueAccent,
+                                  width: 2.0,
+                                ),
+                              ),
+                              labelColor: Colors.blueAccent,
+                              unselectedLabelColor: subTextColor,
+                              tabs: tabs.map((tab) => Tab(text: tab)).toList(),
+                              onTap: (index) {
+                                setState(() {
+                                  _selectedTabIndex = index;
+                                });
+                              },
                             ),
                           ),
-                          labelColor: Colors.blueAccent,
-                          unselectedLabelColor: subTextColor,
-                          tabs:
-                          tabs.map((tab) => Tab(text: tab)).toList(),
-                          onTap: (index) {
-                            setState(() {
-                              _selectedTabIndex = index;
-                            });
-                          },
-                        ),
+                          const SizedBox(height: 4),
+                          Expanded(
+                            flex: 3,
+                            child: TabBarView(
+                              children:
+                                  tabs.map((tab) {
+                                    return _buildGeneratorList(tab);
+                                  }).toList(),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      Expanded(
-                        flex: 3,
-                        child: TabBarView(
-                          children: tabs.map((tab) {
-                            return _buildGeneratorList(tab);
-                          }).toList(),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
             ],
           ),
         ),
@@ -403,10 +417,6 @@ class _ViewGeneratorState extends State<ViewGenerator> {
     );
   }
 }
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
