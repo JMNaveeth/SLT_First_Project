@@ -215,7 +215,7 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'View Data',
+          'Solar View Details',
           style: TextStyle(
             color: customColors.mainTextColor,
             fontFamily: 'outfit',
@@ -313,7 +313,7 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   // Center: Station
                                   DropdownButtonFormField<String>(
                                     dropdownColor:
@@ -357,7 +357,7 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 10),
                                   // Bottom: RTOM
                                   DropdownButtonFormField<String>(
                                     dropdownColor:

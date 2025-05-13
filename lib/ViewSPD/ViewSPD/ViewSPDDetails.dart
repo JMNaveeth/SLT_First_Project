@@ -71,10 +71,10 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
     }
   }
 
-  void _calculateSummary() {
-    acCount = SPDSystems.where((system) => system['DCFlag'] == '0').length;
-    dcCount = SPDSystems.where((system) => system['DCFlag'] == '1').length;
-  }
+ void _calculateSummary() {
+  acCount = filteredSPDSystems.where((system) => system['DCFlag'] == '0').length;
+  dcCount = filteredSPDSystems.where((system) => system['DCFlag'] == '1').length;
+}
 
   void applyFilters() {
     setState(() {

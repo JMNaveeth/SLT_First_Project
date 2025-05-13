@@ -424,7 +424,7 @@ InputDecoration _inputDecoration(BuildContext context, String labelText) {
   return InputDecoration(
     filled: true,
     // Fill color for better contrast
-    fillColor: customColors.suqarBackgroundColor,
+    fillColor: customColors.mainBackgroundColor,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       // borderSide: const BorderSide(color: Colors.blue),

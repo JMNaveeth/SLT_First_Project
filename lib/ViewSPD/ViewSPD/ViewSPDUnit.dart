@@ -7,30 +7,67 @@ import '../../utils/utils/colors.dart';
 class ViewSPDUnit extends StatelessWidget {
   final dynamic SPDUnit;
   final String searchQuery;
+  InlineSpan getHighlightedText(
+    String text,
+    String searchQuery,
+    Color textColor,
+    Color highlightColor,
+  ) {
+    if (searchQuery.isEmpty || text.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final lowerText = text.toLowerCase();
+    final lowerQuery = searchQuery.toLowerCase();
+    final start = lowerText.indexOf(lowerQuery);
+    if (start == -1) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final end = start + lowerQuery.length;
+    return TextSpan(
+      children: [
+        if (start > 0)
+          TextSpan(
+            text: text.substring(0, start),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+        TextSpan(
+          text: text.substring(start, end),
+          style: TextStyle(
+            color: textColor,
+            backgroundColor: highlightColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        if (end < text.length)
+          TextSpan(
+            text: text.substring(end),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+      ],
+    );
+  }
 
   ViewSPDUnit({required this.SPDUnit, this.searchQuery = ''});
 
   Widget buildListTile(String title, String? value, BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    final bool isMatch =
-        searchQuery.isNotEmpty &&
-        value != null &&
-        value.toLowerCase().contains(searchQuery.toLowerCase());
-
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
-        color:
-            isMatch
-                ? customColors.highlightColor
-                : customColors.suqarBackgroundColor,
+        color: customColors.suqarBackgroundColor, // Always normal background
         boxShadow: [
           BoxShadow(
             color: customColors.subTextColor,
             spreadRadius: 1,
-            blurRadius:1,
+            blurRadius: 1,
           ),
         ],
       ),
@@ -45,12 +82,12 @@ class ViewSPDUnit extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        subtitle: Text(
-          value ?? 'N/A',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: customColors.subTextColor,
-            backgroundColor: isMatch ? customColors.highlightColor : null,
+        subtitle: Text.rich(
+          getHighlightedText(
+            value ?? 'N/A',
+            searchQuery,
+            customColors.subTextColor,
+            customColors.highlightColor,
           ),
         ),
       ),
@@ -59,17 +96,19 @@ class ViewSPDUnit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
-    
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('SPD Unit Details', style: TextStyle(color: customColors.mainTextColor)),
+        title: Text(
+          'SPD Unit Details',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
         iconTheme: IconThemeData(color: customColors.mainTextColor),
         backgroundColor: customColors.appbarColor,
         actions: [
           ThemeToggleButton(), // Use the reusable widget
         ],
-
       ),
       body: Container(
         decoration: BoxDecoration(color: customColors.mainBackgroundColor),
@@ -79,64 +118,99 @@ class ViewSPDUnit extends StatelessWidget {
             child: Column(
               children: [
                 // SPD Unit details, dynamically rendered
-                buildListTile('SPDid', SPDUnit['SPDid'],context),
-                buildListTile('Province', SPDUnit['province'],context),
-                buildListTile('Rtom_name', SPDUnit['Rtom_name'],context),
-                buildListTile('Station', SPDUnit['station'],context),
-                buildListTile('SPD Location', SPDUnit['SPDLoc'],context),
-                buildListTile('DCFlag', SPDUnit['DCFlag'],context),
-                buildListTile('Poles', SPDUnit['poles'],context),
-                buildListTile('SPD Type', SPDUnit['SPDType'],context),
-                buildListTile('SPD Manufacture', SPDUnit['SPD_Manu'],context),
-                buildListTile('SPD Model', SPDUnit['model_SPD'],context),
-                buildListTile('Status', SPDUnit['Status'],context),
-                buildListTile('Installed Date', SPDUnit['installDt'],context),
-                buildListTile('Warranty Date', SPDUnit['warrentyDt'],context),
-                buildListTile('Notes', SPDUnit['Notes'],context),
-                buildListTile('Response Time', SPDUnit['responseTime'],context),
-                buildListTile('Submitter', SPDUnit['Submitter'],context),
-                buildListTile('Last Updated', SPDUnit['LastUpdated'],context),
+                buildListTile('SPDid', SPDUnit['SPDid'], context),
+                buildListTile('Province', SPDUnit['province'], context),
+                buildListTile('Rtom_name', SPDUnit['Rtom_name'], context),
+                buildListTile('Station', SPDUnit['station'], context),
+                buildListTile('SPD Location', SPDUnit['SPDLoc'], context),
+                buildListTile('DCFlag', SPDUnit['DCFlag'], context),
+                buildListTile('Poles', SPDUnit['poles'], context),
+                buildListTile('SPD Type', SPDUnit['SPDType'], context),
+                buildListTile('SPD Manufacture', SPDUnit['SPD_Manu'], context),
+                buildListTile('SPD Model', SPDUnit['model_SPD'], context),
+                buildListTile('Status', SPDUnit['Status'], context),
+                buildListTile('Installed Date', SPDUnit['installDt'], context),
+                buildListTile('Warranty Date', SPDUnit['warrentyDt'], context),
+                buildListTile('Notes', SPDUnit['Notes'], context),
+                buildListTile(
+                  'Response Time',
+                  SPDUnit['responseTime'],
+                  context,
+                ),
+                buildListTile('Submitter', SPDUnit['Submitter'], context),
+                buildListTile('Last Updated', SPDUnit['LastUpdated'], context),
 
                 // Additional details based on DCFlag
                 if (SPDUnit["DCFlag"] == "0")
                   Column(
                     children: [
-                      buildListTile('Modular', SPDUnit["modular"],context),
-                      buildListTile('Phase', SPDUnit["phase"],context),
+                      buildListTile('Modular', SPDUnit["modular"], context),
+                      buildListTile('Phase', SPDUnit["phase"], context),
                       buildListTile(
                         'Max continuous operating voltage live-type',
-                        SPDUnit["UcLiveMode"],context
+                        SPDUnit["UcLiveMode"],
+                        context,
                       ),
                       buildListTile(
                         'Max continuous operating voltage live - reading',
-                        SPDUnit["UcLiveVolt"],context
+                        SPDUnit["UcLiveVolt"],
+                        context,
                       ),
                       buildListTile(
                         'Max continuous operating voltage-neutral',
-                        SPDUnit["UcNeutralVolt"],context
+                        SPDUnit["UcNeutralVolt"],
+                        context,
                       ),
-                      buildListTile('UpLiveVolt', SPDUnit["UpLiveVolt"],context),
-                      buildListTile('UpNeutralVolt', SPDUnit["UpNeutralVolt"],context),
-                      buildListTile('Discharge Type', SPDUnit["dischargeType"],context),
+                      buildListTile(
+                        'UpLiveVolt',
+                        SPDUnit["UpLiveVolt"],
+                        context,
+                      ),
+                      buildListTile(
+                        'UpNeutralVolt',
+                        SPDUnit["UpNeutralVolt"],
+                        context,
+                      ),
+                      buildListTile(
+                        'Discharge Type',
+                        SPDUnit["dischargeType"],
+                        context,
+                      ),
                       buildListTile(
                         'Line 8 to 20 Nominal Discharge',
-                        SPDUnit["L8to20NomD"],context
+                        SPDUnit["L8to20NomD"],
+                        context,
                       ),
                       buildListTile(
                         'Neutral 8 to 20 Nominal Discharge',
-                        SPDUnit["N8to20NomD"],context
+                        SPDUnit["N8to20NomD"],
+                        context,
                       ),
                       buildListTile(
                         'Line 10 to 350 Impulse Discharge',
-                        SPDUnit["L10to350ImpD"],context
+                        SPDUnit["L10to350ImpD"],
+                        context,
                       ),
                       buildListTile(
                         'Neutral 10 to 350 Impulse Discharge',
-                        SPDUnit["N10to350ImpD"],context
+                        SPDUnit["N10to350ImpD"],
+                        context,
                       ),
-                      buildListTile('MCB Rating', SPDUnit["mcbRating"],context),
-                      buildListTile('Response Time', SPDUnit["responseTime"],context),
-                      buildListTile('Submitted By', SPDUnit["Submitter"],context),
+                      buildListTile(
+                        'MCB Rating',
+                        SPDUnit["mcbRating"],
+                        context,
+                      ),
+                      buildListTile(
+                        'Response Time',
+                        SPDUnit["responseTime"],
+                        context,
+                      ),
+                      buildListTile(
+                        'Submitted By',
+                        SPDUnit["Submitter"],
+                        context,
+                      ),
                     ],
                   )
                 else
@@ -144,20 +218,28 @@ class ViewSPDUnit extends StatelessWidget {
                     children: [
                       buildListTile(
                         'Voltage Protection Level DC',
-                        SPDUnit["UpDCVolt"],context
+                        SPDUnit["UpDCVolt"],
+                        context,
                       ),
                       buildListTile(
                         'Nominal Discharge Current 8/20',
-                        SPDUnit["Nom_Dis8_20"],context
+                        SPDUnit["Nom_Dis8_20"],
+                        context,
                       ),
                       buildListTile(
                         'Impulse Current 10/350',
-                        SPDUnit["Nom_Dis10_350"],context
+                        SPDUnit["Nom_Dis10_350"],
+                        context,
                       ),
-                      buildListTile('Nominal Voltage Un', SPDUnit["nom_volt"],context),
+                      buildListTile(
+                        'Nominal Voltage Un',
+                        SPDUnit["nom_volt"],
+                        context,
+                      ),
                       buildListTile(
                         'Max Continuous Operating Voltage DC',
-                        SPDUnit["UcDCVolt"],context
+                        SPDUnit["UcDCVolt"],
+                        context,
                       ),
                     ],
                   ),

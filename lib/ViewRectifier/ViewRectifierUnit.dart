@@ -48,6 +48,52 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
     }
   }
 
+  InlineSpan getHighlightedText(
+    String text,
+    String searchQuery,
+    Color textColor,
+    Color highlightColor,
+  ) {
+    if (searchQuery.isEmpty || text.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final lowerText = text.toLowerCase();
+    final lowerQuery = searchQuery.toLowerCase();
+    final start = lowerText.indexOf(lowerQuery);
+    if (start == -1) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final end = start + lowerQuery.length;
+    return TextSpan(
+      children: [
+        if (start > 0)
+          TextSpan(
+            text: text.substring(0, start),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+        TextSpan(
+          text: text.substring(start, end),
+          style: TextStyle(
+            color: textColor,
+            backgroundColor: highlightColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        if (end < text.length)
+          TextSpan(
+            text: text.substring(end),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+      ],
+    );
+  }
+
   Widget buildModuleTable(
     List<Map<String, dynamic>> modules,
     String title,
@@ -62,20 +108,15 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
       if (value != null &&
           value != 'null' &&
           value.toString().trim().isNotEmpty) {
-        final bool isMatch =
-            widget.searchQuery.isNotEmpty &&
-            value.toString().toLowerCase().contains(
-              widget.searchQuery.toLowerCase(),
-            );
+    
 
         rows.add(
           DataRow(
-            color: MaterialStateProperty.resolveWith<Color?>((
-              Set<MaterialState> states,
-            ) {
-              if (isMatch) return highlightColor;
-              return i.isEven ? Colors.grey[500] : null;
-            }),
+            color: MaterialStateProperty.resolveWith<Color?>(
+              (Set<MaterialState> states) {
+                return i.isEven ? Colors.grey[200] : null;
+              },
+            ),
             cells: [
               DataCell(
                 Text(
@@ -88,14 +129,14 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
                 ),
               ),
               DataCell(
-                Text(
-                  value.toString(),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: customColors.suqarBackgroundColor,
-                    backgroundColor: isMatch ? highlightColor : null,
+                Text.rich(
+                  getHighlightedText(
+                    value.toString(),
+                    widget.searchQuery,
+                    customColors.suqarBackgroundColor,
+                    customColors.highlightColor,
                   ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ),
             ],
@@ -197,23 +238,21 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
           ),
         ),
       ),
-      title: Text(
-        variable ?? 'N/A',
-        style: TextStyle(color: customColors.subTextColor),
+      title: Text.rich(
+        getHighlightedText(
+          variable ?? 'N/A',
+          widget.searchQuery,
+          customColors.subTextColor,
+          customColors.highlightColor,
+        ),
       ),
     );
   }
 
   Card makeCard(Lesson lesson) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
-    final bool isMatch =
-        widget.searchQuery.isNotEmpty &&
-        lesson.variable != null &&
-        lesson.variable.toString().toLowerCase().contains(
-          widget.searchQuery.toLowerCase(),
-        );
-
-    return Card(
+ 
+   return Card(
       elevation: 4.0,
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
@@ -221,11 +260,7 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
         height: 75.0,
         child: Container(
           decoration: BoxDecoration(
-            color:
-                isMatch
-                    ? customColors
-                        .highlightColor // Highlight color for search match
-                    : customColors.suqarBackgroundColor, // Dynamic color
+            color: Theme.of(context).extension<CustomColors>()!.suqarBackgroundColor,
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: makeListTile(lesson.subjectName, lesson.variable),
@@ -233,6 +268,7 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
       ),
     );
   }
+
 
   // Card makeCard(Lesson lesson) => Card(
   //   elevation: 4.0,
@@ -316,110 +352,107 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
                   ),
                 ),
 
-              makeCard(
-                    Lesson(
-                      subjectName: 'Model',
-                      variable: widget.RectifierUnit['Model'] ?? 'N/A',
-                    ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Model',
+                    variable: widget.RectifierUnit['Model'] ?? 'N/A',
                   ),
-           
-               makeCard(
-                    Lesson(
-                      subjectName: 'Frame Capacity Type',
-                      variable: widget.RectifierUnit['FrameCapType'] ?? 'N/A',
-                    ),
-                  ),
-               makeCard(
-                    Lesson(
-                      subjectName: 'Frame Capacity',
-                      variable: widget.RectifierUnit['FrameCap'] ?? 'N/A',
-                    ),
-                  ),
-              
-                 makeCard(
-                    Lesson(
-                      subjectName: 'Type',
-                      variable: widget.RectifierUnit['Type'] ?? 'N/A',
-                    ),
-                  ),
-            
-            makeCard(
-                    Lesson(
-                      subjectName: 'Serial Number',
-                      variable: widget.RectifierUnit['Serial'] ?? 'N/A',
-                    ),
-                  ),
-              
+                ),
 
                 makeCard(
-                    Lesson(
-                      subjectName: 'Installed Date',
-                      variable: widget.RectifierUnit['InstalledDate'] ?? 'N/A',
-                    ),
+                  Lesson(
+                    subjectName: 'Frame Capacity Type',
+                    variable: widget.RectifierUnit['FrameCapType'] ?? 'N/A',
                   ),
-               
-              makeCard(
-                    Lesson(
-                      subjectName: 'Power Module Model',
-                      variable: widget.RectifierUnit['PWModModel'] ?? 'N/A',
-                    ),
+                ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Frame Capacity',
+                    variable: widget.RectifierUnit['FrameCap'] ?? 'N/A',
                   ),
-            
-             makeCard(
-                    Lesson(
-                      subjectName: 'Ampere Rating',
-                      variable: widget.RectifierUnit['AmpRating'] ?? 'N/A',
-                    ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Type',
+                    variable: widget.RectifierUnit['Type'] ?? 'N/A',
                   ),
-               makeCard(
-                    Lesson(
-                      subjectName: 'Power Module Slots',
-                      variable: widget.RectifierUnit['PWModsUsed'] ?? 'N/A',
-                    ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Serial Number',
+                    variable: widget.RectifierUnit['Serial'] ?? 'N/A',
                   ),
-            
-               
-              makeCard(
-                    Lesson(
-                      subjectName: 'Power Modules Available',
-                      variable: widget.RectifierUnit['PWModsAvai'] ?? 'N/A',
-                    ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Installed Date',
+                    variable: widget.RectifierUnit['InstalledDate'] ?? 'N/A',
                   ),
-               
-             makeCard(
-                    Lesson(
-                      subjectName: 'Control Module Model',
-                      variable: widget.RectifierUnit['CtrModModel'] ?? 'N/A',
-                    ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Power Module Model',
+                    variable: widget.RectifierUnit['PWModModel'] ?? 'N/A',
                   ),
-            
-               makeCard(
-                    Lesson(
-                      subjectName: 'Control Modules Slots',
-                      variable: widget.RectifierUnit['CtrModsUsed'] ?? 'N/A',
-                    ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Ampere Rating',
+                    variable: widget.RectifierUnit['AmpRating'] ?? 'N/A',
                   ),
-             
-                 makeCard(
-                    Lesson(
-                      subjectName: 'Control Modules Available',
-                      variable: widget.RectifierUnit['CtrModsAvail'] ?? 'N/A',
-                    ),
+                ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Power Module Slots',
+                    variable: widget.RectifierUnit['PWModsUsed'] ?? 'N/A',
                   ),
-             makeCard(
-                    Lesson(
-                      subjectName: 'Last Updated',
-                      variable: widget.RectifierUnit['LastUpdated'] ?? 'N/A',
-                    ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Power Modules Available',
+                    variable: widget.RectifierUnit['PWModsAvai'] ?? 'N/A',
                   ),
-               
-               makeCard(
-                    Lesson(
-                      subjectName: 'Updated By',
-                      variable: widget.RectifierUnit['Updated_By'] ?? 'N/A',
-                    ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Control Module Model',
+                    variable: widget.RectifierUnit['CtrModModel'] ?? 'N/A',
                   ),
-               
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Control Modules Slots',
+                    variable: widget.RectifierUnit['CtrModsUsed'] ?? 'N/A',
+                  ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Control Modules Available',
+                    variable: widget.RectifierUnit['CtrModsAvail'] ?? 'N/A',
+                  ),
+                ),
+                makeCard(
+                  Lesson(
+                    subjectName: 'Last Updated',
+                    variable: widget.RectifierUnit['LastUpdated'] ?? 'N/A',
+                  ),
+                ),
+
+                makeCard(
+                  Lesson(
+                    subjectName: 'Updated By',
+                    variable: widget.RectifierUnit['Updated_By'] ?? 'N/A',
+                  ),
+                ),
 
                 const SizedBox(height: 25),
                 // Loading and displaying module details

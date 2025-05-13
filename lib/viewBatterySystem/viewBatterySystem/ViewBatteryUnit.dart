@@ -27,6 +27,52 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
     super.initState();
   }
 
+  InlineSpan getHighlightedText(
+    String text,
+    String searchQuery,
+    Color textColor,
+    Color highlightColor,
+  ) {
+    if (searchQuery.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor),
+      );
+    }
+    final lowerText = text.toLowerCase();
+    final lowerQuery = searchQuery.toLowerCase();
+    final start = lowerText.indexOf(lowerQuery);
+    if (start == -1) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor),
+      );
+    }
+    final end = start + lowerQuery.length;
+    return TextSpan(
+      children: [
+        if (start > 0)
+          TextSpan(
+            text: text.substring(0, start),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+          ),
+        TextSpan(
+          text: text.substring(start, end),
+          style: TextStyle(
+            color: textColor,
+            backgroundColor: highlightColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        if (end < text.length)
+          TextSpan(
+            text: text.substring(end),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+          ),
+      ],
+    );
+  }
+
   ListTile makeListTile(String subjectName, String? variable) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
@@ -36,7 +82,10 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
         padding: EdgeInsets.only(right: 12.0),
         decoration: new BoxDecoration(
           border: new Border(
-            right: new BorderSide(width: 1.0, color: customColors.mainTextColor),
+            right: new BorderSide(
+              width: 1.0,
+              color: customColors.mainTextColor,
+            ),
           ),
         ),
         child: Text(
@@ -50,61 +99,64 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
       ),
     );
   }
-    Card makeCard(Lesson lesson) {
-      final isMatch =
-          widget.searchQuery.isNotEmpty &&
-          (lesson.variable?.toString().toLowerCase().contains(
-                widget.searchQuery.toLowerCase(),
-              ) ??
-              false);
-                  final customColors = Theme.of(context).extension<CustomColors>()!;
 
+  Card makeCard(Lesson lesson) {
+    final isMatch =
+        widget.searchQuery.isNotEmpty &&
+        (lesson.variable?.toString().toLowerCase().contains(
+              widget.searchQuery.toLowerCase(),
+            ) ??
+            false);
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
-      return Card(
-        elevation: 8.0,
-        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-        child: SizedBox(
-          height: 60.0,
-          child: Container(
-            decoration: BoxDecoration(
-              color: customColors.suqarBackgroundColor,
-              borderRadius: BorderRadius.circular(12.0),
+    return Card(
+      elevation: 8.0,
+      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: SizedBox(
+        height: 60.0,
+        child: Container(
+          decoration: BoxDecoration(
+            color: customColors.suqarBackgroundColor,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: ListTile(
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 10.0,
             ),
-            child: ListTile(
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 10.0,
-              ),
-              leading: Container(
-                padding: EdgeInsets.only(right: 12.0),
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(width: 1.0, color: customColors.subTextColor),
-                  ),
-                ),
-                child: Text(
-                  lesson.subjectName,
-                  style: TextStyle(
-                    color: customColors.mainTextColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+            leading: Container(
+              padding: EdgeInsets.only(right: 12.0),
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(
+                    width: 1.0,
+                    color: customColors.subTextColor,
                   ),
                 ),
               ),
-              title: Text(
-                lesson.variable ?? 'N/A',
+              child: Text(
+                lesson.subjectName,
                 style: TextStyle(
-                  color: customColors.subTextColor,
-                  backgroundColor:
-                      isMatch ? customColors.highlightColor : customColors.suqarBackgroundColor,
+                  color: customColors.mainTextColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+            ),
+            title: Text.rich(
+              getHighlightedText(
+                lesson.variable ?? 'N/A',
+                widget.searchQuery,
+                customColors.subTextColor,
+                customColors.highlightColor,
               ),
             ),
           ),
         ),
-      );
-    }
-  
+      ),
+    );
+  }
+
   // Card makeCard(Lesson lesson) => Card(
   //   elevation: 8.0,
   //   margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -140,17 +192,17 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
-      
+
       body:
-           _dataLoaded
-    ? SingleChildScrollView(
-        child: Container(
-          color: customColors.mainBackgroundColor,
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Column(
-            children: [
+          _dataLoaded
+              ? SingleChildScrollView(
+                child: Container(
+                  color: customColors.mainBackgroundColor,
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height,
+                  ),
+                  child: Column(
+                    children: [
                       makeCard(
                         Lesson(
                           subjectName: 'Rack ID',

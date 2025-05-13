@@ -417,33 +417,6 @@ class _PrecisionACListState extends State<PrecisionACList> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DropdownButton<String>(
-                          hint: Text(
-                            'Select Status',
-                            style: TextStyle(color: customColors.subTextColor),
-                          ),
-                          value: selectedStatus,
-                          isExpanded: true,
-                          dropdownColor: customColors.suqarBackgroundColor,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedStatus = newValue;
-                            });
-                          },
-                          items:
-                              statuses.map((String status) {
-                                return DropdownMenuItem<String>(
-                                  value: status,
-                                  child: Text(
-                                    status,
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                        ),
-                        SizedBox(height: 12),
                         FutureBuilder<List<String>>(
                           future: futureRegions,
                           builder: (context, snapshot) {
@@ -488,6 +461,33 @@ class _PrecisionACListState extends State<PrecisionACList> {
                             }
                           },
                         ),
+                        SizedBox(height: 12),
+                        DropdownButton<String>(
+                          hint: Text(
+                            'Select Status',
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                          value: selectedStatus,
+                          isExpanded: true,
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedStatus = newValue;
+                            });
+                          },
+                          items:
+                              statuses.map((String status) {
+                                return DropdownMenuItem<String>(
+                                  value: status,
+                                  child: Text(
+                                    status,
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                        ),
                       ],
                     ),
                   ),
@@ -509,25 +509,6 @@ class _PrecisionACListState extends State<PrecisionACList> {
                 ],
               ),
               SizedBox(height: 16),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.5,
-                  children: [
-                    _buildCard(
-                      'UpBlow Units',
-                      UpblowUnits.toString(),
-                      const Color.fromARGB(255, 97, 176, 240),
-                    ),
-                    _buildCard(
-                      'DownBlow Units',
-                      DownBlowUnits.toString(),
-                      const Color.fromARGB(255, 105, 228, 105),
-                    ),
-                  ],
-                ),
-              ),
               Expanded(
                 child: FutureBuilder<List<PrecisionAC>>(
                   future: futurePrecisionAC,
@@ -544,64 +525,102 @@ class _PrecisionACListState extends State<PrecisionACList> {
                     } else {
                       final precisionACs = snapshot.data!;
                       List<PrecisionAC> filteredACs = _filterACs(precisionACs);
-                      return ListView.builder(
-                        itemCount: filteredACs.length,
-                        itemBuilder: (context, index) {
-                          final ac = filteredACs[index];
-                          return Card(
-                            color: customColors.suqarBackgroundColor,
-                            margin: EdgeInsets.all(10),
-                            child: ListTile(
-                              title: Text(
-                                ac.model,
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
+
+                      // Count UpBlow and DownBlow units in the filtered list
+                      int filteredUpblowUnits =
+                          filteredACs
+                              .where((ac) => ac.airflow_type == 'Upblow')
+                              .length;
+                      int filteredDownBlowUnits =
+                          filteredACs
+                              .where((ac) => ac.airflow_type == 'DownBlow')
+                              .length;
+
+                      return Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1.5,
+                              children: [
+                                _buildCard(
+                                  'UpBlow Units',
+                                  filteredUpblowUnits.toString(),
+                                  const Color.fromARGB(255, 97, 176, 240),
                                 ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Status: ${ac.status}',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
+                                _buildCard(
+                                  'DownBlow Units',
+                                  filteredDownBlowUnits.toString(),
+                                  const Color.fromARGB(255, 105, 228, 105),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: filteredACs.length,
+                              itemBuilder: (context, index) {
+                                final ac = filteredACs[index];
+
+                                return Card(
+                                  color: customColors.suqarBackgroundColor,
+                                  margin: EdgeInsets.all(10),
+                                  child: ListTile(
+                                    title: Text(
+                                      ac.model,
+                                      style: TextStyle(
+                                        color: customColors.mainTextColor,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Region: ${ac.region}',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Installation Date: ${ac.installationDate}',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Cooling Capacity: ${ac.coolingCapacity} BTU',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => ACDetailView(
-                                          ac: ac,
-                                          searchQuery: searchQuery,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Status: ${ac.status}',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
                                         ),
+                                        Text(
+                                          'Region: ${ac.region}',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Installation Date: ${ac.installationDate}',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Cooling Capacity: ${ac.coolingCapacity} BTU',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => ACDetailView(
+                                                ac: ac,
+                                                searchQuery: searchQuery,
+                                              ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 );
                               },
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       );
                     }
                   },
@@ -620,6 +639,52 @@ class ACDetailView extends StatelessWidget {
   final String searchQuery;
 
   ACDetailView({required this.ac, this.searchQuery = ''});
+
+  InlineSpan getHighlightedText(
+    String text,
+    String searchQuery,
+    Color textColor,
+    Color highlightColor,
+  ) {
+    if (searchQuery.isEmpty || text.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final lowerText = text.toLowerCase();
+    final lowerQuery = searchQuery.toLowerCase();
+    final start = lowerText.indexOf(lowerQuery);
+    if (start == -1) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final end = start + lowerQuery.length;
+    return TextSpan(
+      children: [
+        if (start > 0)
+          TextSpan(
+            text: text.substring(0, start),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+        TextSpan(
+          text: text.substring(start, end),
+          style: TextStyle(
+            color: textColor,
+            backgroundColor: highlightColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        if (end < text.length)
+          TextSpan(
+            text: text.substring(end),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -910,9 +975,6 @@ class ACDetailView extends StatelessWidget {
   ) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    final bool isMatch = searchQuery.isNotEmpty &&
-      subtitle.toLowerCase().contains(searchQuery.toLowerCase());
-
     return Card(
       margin: EdgeInsets.symmetric(vertical: 5),
       elevation: 2,
@@ -924,18 +986,16 @@ class ACDetailView extends StatelessWidget {
           style: TextStyle(
             color: customColors.mainTextColor,
             fontWeight: FontWeight.bold,
-        
           ),
         ),
-       subtitle: Container(
-        color: isMatch ? customColors.highlightColor : Colors.transparent,
-        child: Text(
-          subtitle,
-          style: TextStyle(
-            color: customColors.subTextColor,
+        subtitle: Text.rich(
+          getHighlightedText(
+            subtitle,
+            searchQuery,
+            customColors.subTextColor,
+            customColors.highlightColor,
           ),
         ),
-      ),
       ),
     );
   }
@@ -946,9 +1006,7 @@ class ACDetailView extends StatelessWidget {
     String title,
     String serialNumbers,
   ) {
-    final bool hasMatch = searchQuery.isNotEmpty;
     final customColors = Theme.of(context).extension<CustomColors>()!;
-
     List<String> serialList =
         serialNumbers.split(',').map((s) => s.trim()).toList();
 
@@ -971,19 +1029,14 @@ class ACDetailView extends StatelessWidget {
               serialList.asMap().entries.map((entry) {
                 int index = entry.key;
                 String value = entry.value;
-                bool isMatch =
-                    hasMatch &&
-                    value.toLowerCase().contains(searchQuery.toLowerCase());
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Text(
-                    'Compressor ${index + 1} Serial Code: $value',
-                    style: TextStyle(
-                      color: customColors.subTextColor,
-                      backgroundColor:
-                          _shouldHighlight(title)
-                              ? customColors.highlightColor
-                              : customColors.suqarBackgroundColor,
+                  child: Text.rich(
+                    getHighlightedText(
+                      'Compressor ${index + 1} Serial Code: $value',
+                      searchQuery,
+                      customColors.subTextColor,
+                      customColors.highlightColor,
                     ),
                   ),
                 );

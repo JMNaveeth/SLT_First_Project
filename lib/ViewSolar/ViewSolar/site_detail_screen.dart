@@ -68,6 +68,52 @@ class _SiteDetailScreenState extends State<SiteDetailScreen>
     }
   }
 
+  InlineSpan getHighlightedText(
+    String text,
+    String searchQuery,
+    Color textColor,
+    Color highlightColor,
+  ) {
+    if (searchQuery.isEmpty || text.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontSize: 16),
+      );
+    }
+    final lowerText = text.toLowerCase();
+    final lowerQuery = searchQuery.toLowerCase();
+    final start = lowerText.indexOf(lowerQuery);
+    if (start == -1) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontSize: 16),
+      );
+    }
+    final end = start + lowerQuery.length;
+    return TextSpan(
+      children: [
+        if (start > 0)
+          TextSpan(
+            text: text.substring(0, start),
+            style: TextStyle(color: textColor, fontSize: 16),
+          ),
+        TextSpan(
+          text: text.substring(start, end),
+          style: TextStyle(
+            color: textColor,
+            backgroundColor: highlightColor,
+            fontSize: 16,
+          ),
+        ),
+        if (end < text.length)
+          TextSpan(
+            text: text.substring(end),
+            style: TextStyle(color: textColor, fontSize: 16),
+          ),
+      ],
+    );
+  }
+
   Widget buildSectionHeader(String title) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
@@ -86,71 +132,66 @@ class _SiteDetailScreenState extends State<SiteDetailScreen>
     );
   }
 
-  Widget buildDetailContainer(
-    String title,
-    dynamic detail, {
-    String? searchQuery,
-  }) {
-    final customColors = Theme.of(context).extension<CustomColors>()!;
+ Widget buildDetailContainer(
+  String title,
+  dynamic detail, {
+  String? searchQuery,
+}) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    final String detailText = detail != null ? detail.toString() : 'N/A';
-    final bool isMatch =
-        searchQuery != null &&
-        searchQuery.isNotEmpty &&
-        detailText.toLowerCase().contains(searchQuery.toLowerCase());
+  final String detailText = detail != null ? detail.toString() : 'N/A';
+  final bool isPhone = title == 'Telephone number';
+  final bool isEmail = title == 'Supplier Email';
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        color: customColors.suqarBackgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: customColors.subTextColor.withOpacity(
-              0.2,
-            ), // Dynamic shadow color
-            offset: const Offset(0, 2),
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 8.0),
+    padding: const EdgeInsets.all(12.0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8.0),
+      color: customColors.suqarBackgroundColor,
+      boxShadow: [
+        BoxShadow(
+          color: customColors.subTextColor.withOpacity(0.2),
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$title:   ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: customColors.mainTextColor,
           ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$title:   ',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: customColors.mainTextColor,
-            ),
-          ),
-          Expanded(
-            child:
-                title == 'Telephone number' && detail != null
-                    ? GestureDetector(
-                      onTap: () async {
-                        final Uri telUri = Uri(
-                          scheme: 'tel',
-                          path: detail.toString(),
-                        );
-                        if (await canLaunchUrl(telUri)) {
-                          await launchUrl(telUri);
-                        } else {
-                          print('Could not launch $telUri');
-                        }
-                      },
-                      child: Text(
-                        detailText,
-                        style: TextStyle(
-                          color: Colors.blue, // Make it look clickable
-                          fontSize: 16,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    )
-                    : title == 'Supplier Email' && detail != null
-                    ? GestureDetector(
+        ),
+        Expanded(
+          child: isPhone && detail != null
+              ? GestureDetector(
+                  onTap: () async {
+                    final Uri telUri = Uri(
+                      scheme: 'tel',
+                      path: detail.toString(),
+                    );
+                    if (await canLaunchUrl(telUri)) {
+                      await launchUrl(telUri);
+                    } else {
+                      print('Could not launch $telUri');
+                    }
+                  },
+                  child: Text(
+                    detailText,
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                )
+              : isEmail && detail != null
+                  ? GestureDetector(
                       onTap: () async {
                         final Uri emailUri = Uri(
                           scheme: 'mailto',
@@ -165,29 +206,27 @@ class _SiteDetailScreenState extends State<SiteDetailScreen>
                       child: Text(
                         detailText,
                         style: TextStyle(
-                          color: Colors.blue, // Make it look clickable
+                          color: Colors.blue,
                           fontSize: 16,
                           decoration: TextDecoration.underline,
                         ),
                       ),
                     )
-                    : Container(
-                      color:
-                          isMatch
-                              ? customColors.highlightColor
-                              : Colors.transparent,
-                      child: Text(
+                  : Text.rich(
+                      getHighlightedText(
                         detailText,
-                        style: TextStyle(color: customColors.subTextColor),
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
+                        searchQuery ?? '',
+                        customColors.subTextColor,
+                        customColors.highlightColor,
                       ),
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
                     ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
   Widget buildSiteInformation() {
     final customColors = Theme.of(context).extension<CustomColors>()!;

@@ -28,14 +28,54 @@ class _TransformerDetailScreenState extends State<TransformerDetailScreen> {
     super.initState();
   }
 
+  InlineSpan getHighlightedText(
+    String text,
+    String searchQuery,
+    Color textColor,
+    Color highlightColor,
+  ) {
+    if (searchQuery.isEmpty || text.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontSize: 16),
+      );
+    }
+    final lowerText = text.toLowerCase();
+    final lowerQuery = searchQuery.toLowerCase();
+    final start = lowerText.indexOf(lowerQuery);
+    if (start == -1) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontSize: 16),
+      );
+    }
+    final end = start + lowerQuery.length;
+    return TextSpan(
+      children: [
+        if (start > 0)
+          TextSpan(
+            text: text.substring(0, start),
+            style: TextStyle(color: textColor, fontSize: 16),
+          ),
+        TextSpan(
+          text: text.substring(start, end),
+          style: TextStyle(
+            color: textColor,
+            backgroundColor: highlightColor,
+            fontSize: 16,
+          ),
+        ),
+        if (end < text.length)
+          TextSpan(
+            text: text.substring(end),
+            style: TextStyle(color: textColor, fontSize: 16),
+          ),
+      ],
+    );
+  }
+
   Widget buildDetailContainer(String title, dynamic detail) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
-    final bool isMatch =
-        widget.searchQuery.isNotEmpty &&
-        detail != null &&
-        detail.toString().toLowerCase().contains(
-          widget.searchQuery.toLowerCase(),
-        );
     bool isEmail = title == 'Supplier Email';
     bool isPhone = title == 'Supplier Contact';
 
@@ -80,25 +120,29 @@ class _TransformerDetailScreenState extends State<TransformerDetailScreen> {
                             }
                           }
                         },
-                        child: Text(
-                          detail.toString(),
+                        child: Text.rich(
+                          getHighlightedText(
+                            detail.toString(),
+                            widget.searchQuery,
+                            Colors.blue,
+                            customColors.highlightColor,
+                          ),
                           style: TextStyle(
                             fontSize: 16,
-                            backgroundColor: isMatch ? highlightColor : null,
-                            color: Colors.blue,
                             decoration: TextDecoration.underline,
                           ),
                           softWrap: true,
                           overflow: TextOverflow.visible,
                         ),
                       )
-                      : Text(
-                        detail != null ? detail.toString() : 'N/A',
-                        style: TextStyle(
-                          fontSize: 16,
-                          backgroundColor: isMatch ? highlightColor : null,
-                          color: customColors.subTextColor,
+                      : Text.rich(
+                        getHighlightedText(
+                          detail != null ? detail.toString() : 'N/A',
+                          widget.searchQuery,
+                          customColors.subTextColor,
+                          customColors.highlightColor,
                         ),
+                        style: TextStyle(fontSize: 16),
                         softWrap: true,
                         overflow: TextOverflow.visible,
                       ),

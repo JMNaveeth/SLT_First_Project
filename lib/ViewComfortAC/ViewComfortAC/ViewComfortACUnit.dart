@@ -225,6 +225,48 @@ class _CustomOneDetailsCardState extends State<CustomOneDetailsCard> {
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
+    final searchQuery =
+        (context
+                .findAncestorStateOfType<_ViewComfortACUnitState>()
+                ?.widget
+                .searchQuery ??
+            '');
+
+    InlineSpan getHighlightedText(
+      String text,
+      String searchQuery,
+      Color textColor,
+      Color highlightColor,
+    ) {
+      if (searchQuery.isEmpty) {
+        return TextSpan(text: text, style: TextStyle(color: textColor));
+      }
+      final lowerText = text.toLowerCase();
+      final lowerQuery = searchQuery.toLowerCase();
+      final start = lowerText.indexOf(lowerQuery);
+      if (start == -1) {
+        return TextSpan(text: text, style: TextStyle(color: textColor));
+      }
+      final end = start + lowerQuery.length;
+      return TextSpan(
+        children: [
+          if (start > 0)
+            TextSpan(
+              text: text.substring(0, start),
+              style: TextStyle(color: textColor),
+            ),
+          TextSpan(
+            text: text.substring(start, end),
+            style: TextStyle(color: textColor, backgroundColor: highlightColor),
+          ),
+          if (end < text.length)
+            TextSpan(
+              text: text.substring(end),
+              style: TextStyle(color: textColor),
+            ),
+        ],
+      );
+    }
 
     return Card(
       color: customColors.suqarBackgroundColor,
@@ -238,38 +280,38 @@ class _CustomOneDetailsCardState extends State<CustomOneDetailsCard> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.title, style: TextStyle(color: customColors.mainTextColor)),
+            Text(
+              widget.title,
+              style: TextStyle(color: customColors.mainTextColor),
+            ),
             widget.title == "Condition ID Unit"
-                ? widget.titleResponse == "Good"
-                    ? Row(
-                      children: [
-                        Container(
-                          color: widget.shouldHighlight ? customColors.highlightColor : null,
-                          child: Text(
-                            widget.titleResponse ?? "",
-                            style: TextStyle(color: customColors.mainTextColor),
-                          ),
-                        ),
-                        const Icon(Icons.check_circle, color: Colors.green),
-                      ],
-                    )
-                    : Row(
-                      children: [
-                        Container(
-                          color: widget.shouldHighlight ? customColors.highlightColor : null,
-                          child: Text(
-                            widget.titleResponse ?? "",
-                            style: TextStyle(color: customColors.mainTextColor),
-                          ),
-                        ),
-                        const Icon(Icons.cancel, color: Colors.red),
-                      ],
-                    )
-                : Container(
-                  color: widget.shouldHighlight ? customColors.highlightColor : null,
-                  child: Text(
+                ? Row(
+                  children: [
+                    Text.rich(
+                      getHighlightedText(
+                        widget.titleResponse ?? "",
+                        widget.shouldHighlight ? searchQuery : '',
+                        customColors.mainTextColor,
+                        customColors.highlightColor,
+                      ),
+                    ),
+                    Icon(
+                      widget.titleResponse == "Good"
+                          ? Icons.check_circle
+                          : Icons.cancel,
+                      color:
+                          widget.titleResponse == "Good"
+                              ? Colors.green
+                              : Colors.red,
+                    ),
+                  ],
+                )
+                : Text.rich(
+                  getHighlightedText(
                     widget.titleResponse ?? "",
-                    style: TextStyle(color: customColors.mainTextColor),
+                    widget.shouldHighlight ? searchQuery : '',
+                    customColors.mainTextColor,
+                    customColors.highlightColor,
                   ),
                 ),
           ],

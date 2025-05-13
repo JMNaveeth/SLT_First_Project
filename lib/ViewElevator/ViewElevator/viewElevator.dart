@@ -628,6 +628,52 @@ class ViewElevatorUnit extends StatelessWidget {
     return dateTimeStr;
   }
 
+  InlineSpan getHighlightedText(
+    String text,
+    String searchQuery,
+    Color textColor,
+    Color highlightColor,
+  ) {
+    if (searchQuery.isEmpty) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final lowerText = text.toLowerCase();
+    final lowerQuery = searchQuery.toLowerCase();
+    final start = lowerText.indexOf(lowerQuery);
+    if (start == -1) {
+      return TextSpan(
+        text: text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      );
+    }
+    final end = start + lowerQuery.length;
+    return TextSpan(
+      children: [
+        if (start > 0)
+          TextSpan(
+            text: text.substring(0, start),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+        TextSpan(
+          text: text.substring(start, end),
+          style: TextStyle(
+            color: textColor,
+            backgroundColor: highlightColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        if (end < text.length)
+          TextSpan(
+            text: text.substring(end),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
@@ -836,24 +882,15 @@ class ViewElevatorUnit extends StatelessWidget {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
     if (value == 'N/A') return const SizedBox.shrink();
-    final bool isMatch =
-        searchQuery.isNotEmpty &&
-        value.toLowerCase().contains(searchQuery.toLowerCase());
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 6.0,
-        horizontal: 8.0,
-      ), // Margins between rows
+      padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color:
-              isMatch
-                  ? customColors.highlightColor
-                  : customColors.suqarBackgroundColor,
-          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+          color: customColors.suqarBackgroundColor,
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        padding: const EdgeInsets.all(12.0), // Inner padding for content
+        padding: const EdgeInsets.all(12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -862,19 +899,18 @@ class ViewElevatorUnit extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: customColors.mainTextColor, // Label color
+                color: customColors.mainTextColor,
               ),
             ),
             Expanded(
-              child: Text(
-                value,
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: customColors.subTextColor,
-                  backgroundColor: isMatch ? customColors.highlightColor : null,
+              child: Text.rich(
+                getHighlightedText(
+                  value,
+                  searchQuery,
+                  customColors.subTextColor,
+                  customColors.highlightColor,
                 ),
+                textAlign: TextAlign.right,
               ),
             ),
           ],
@@ -894,18 +930,13 @@ class ViewElevatorUnit extends StatelessWidget {
 
     if (value == 'N/A') return const SizedBox.shrink();
 
-    final bool isMatch =
-        searchQuery.isNotEmpty &&
-        value.toLowerCase().contains(searchQuery.toLowerCase());
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
       child: Container(
         decoration: BoxDecoration(
           color:
-              isMatch
-                  ? customColors.highlightColor
-                  : customColors.suqarBackgroundColor,
+              customColors
+                  .suqarBackgroundColor, // Always background, not highlight
           borderRadius: BorderRadius.circular(8.0),
         ),
         padding: const EdgeInsets.all(12.0),
@@ -935,22 +966,23 @@ class ViewElevatorUnit extends StatelessWidget {
                     }
                   }
                 },
-                child: Text(
-                  value,
+                child: Text.rich(
+                  getHighlightedText(
+                    value,
+                    searchQuery,
+                    (isContact || isEmail)
+                        ? const Color.fromARGB(255, 5, 129, 231)
+                        : customColors.mainTextColor,
+                    customColors.highlightColor,
+                  ),
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
-                    color:
-                        (isContact || isEmail)
-                            ? const Color.fromARGB(255, 5, 129, 231)
-                            : customColors.mainTextColor,
                     decoration:
                         (isContact || isEmail)
                             ? TextDecoration.underline
                             : TextDecoration.none,
-                    backgroundColor:
-                        isMatch ? customColors.highlightColor : null,
                   ),
                 ),
               ),
