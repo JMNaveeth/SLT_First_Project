@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theme_update/ViewGeneratorV2/search_helper_generator.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:theme_update/widgets/searchWidget.dart';
 import 'dart:convert';
@@ -121,32 +123,37 @@ class _ViewGeneratorState extends State<ViewGenerator> {
   }
 
   Widget _buildSummaryCard() {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
-      color: suqarBackgroundColor,
+      color: customColors.suqarBackgroundColor,
       margin: const EdgeInsets.all(16),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Generator Info',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: mainTextColor,
+                color: customColors.mainTextColor,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Total Number of Generators: ${filteredGenerators.length}',
-              style: const TextStyle(fontSize: 16, color: subTextColor),
+              style: TextStyle(fontSize: 16, color: customColors.subTextColor),
             ),
             const SizedBox(height: 16),
             Table(
-              border: TableBorder.all(color: Colors.white, width: 1.0),
+              border: TableBorder.all(
+                color: customColors.mainTextColor,
+                width: 1.0,
+              ),
               children: [
-                const TableRow(
+                TableRow(
                   children: [
                     Padding(
                       padding: EdgeInsets.all(8.0),
@@ -154,7 +161,7 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                         'Fixed',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
                     ),
@@ -164,7 +171,7 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                         'Mobile',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
                     ),
@@ -174,7 +181,7 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                         'Portable',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
                     ),
@@ -186,21 +193,21 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         '${filteredGenerators.where((gen) => gen['category'] == 'Fixed').length}',
-                        style: const TextStyle(color: subTextColor),
+                        style: TextStyle(color: customColors.subTextColor),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         '${filteredGenerators.where((gen) => gen['category'] == 'Mobile').length}',
-                        style: const TextStyle(color: subTextColor),
+                        style: TextStyle(color: customColors.subTextColor),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         '${filteredGenerators.where((gen) => gen['category'] == 'Portable').length}',
-                        style: const TextStyle(color: subTextColor),
+                        style: TextStyle(color: customColors.subTextColor),
                       ),
                     ),
                   ],
@@ -214,13 +221,15 @@ class _ViewGeneratorState extends State<ViewGenerator> {
   }
 
   Widget _buildGeneratorList(String category) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     final categoryGenerators = _getGeneratorsByCategory(category);
 
     if (categoryGenerators.isEmpty) {
       return Center(
         child: Text(
           'No ${category.toLowerCase()} generators found',
-          style: const TextStyle(color: mainTextColor, fontSize: 16),
+          style: TextStyle(color: customColors.mainTextColor, fontSize: 16),
         ),
       );
     }
@@ -236,13 +245,17 @@ class _ViewGeneratorState extends State<ViewGenerator> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => GenInfoPage(data: generator),
+                builder:
+                    (context) => GenInfoPage(
+                      data: generator,
+                      searchQuery: searchQuery, // <-- pass the search query
+                    ),
               ),
             );
           },
           child: Card(
             margin: const EdgeInsets.only(bottom: 16),
-            color: suqarBackgroundColor,
+            color: customColors.suqarBackgroundColor,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -250,21 +263,27 @@ class _ViewGeneratorState extends State<ViewGenerator> {
                 children: [
                   Text(
                     generator['station'] ?? 'Unknown Station',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: mainTextColor,
+                      color: customColors.mainTextColor,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     '${generator['Rtom_name'] ?? 'Unknown Location'} (${generator['province'] ?? ''})',
-                    style: const TextStyle(fontSize: 16, color: subTextColor),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: customColors.subTextColor,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Capacity: ${generator['set_cap'] ?? 'N/A'} kVA',
-                    style: const TextStyle(fontSize: 14, color: subTextColor),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: customColors.subTextColor,
+                    ),
                   ),
                 ],
               ),
@@ -277,140 +296,157 @@ class _ViewGeneratorState extends State<ViewGenerator> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Generator View Page',
-          style: TextStyle(color: mainTextColor),
+          style: TextStyle(color: customColors.mainTextColor),
         ),
-        iconTheme: const IconThemeData(color: mainTextColor),
-        backgroundColor: appbarColor,
-        foregroundColor: mainTextColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        foregroundColor: customColors.mainTextColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
-      backgroundColor: mainBackgroundColor,
+
       body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          behavior: HitTestBehavior.opaque,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: DropdownButtonFormField<String>(
-                        value: selectedProvince,
-                        decoration: const InputDecoration(
-                          labelText: 'Select Province',
-                          labelStyle: TextStyle(color: subTextColor),
-                          filled: true,
-                          fillColor: mainBackgroundColor,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 8,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                        style: const TextStyle(color: mainTextColor),
-                        dropdownColor: suqarBackgroundColor,
-                        icon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.white,
-                        ),
-                        onChanged: handleProvinceChange,
-                        items:
-                            provinces.map((String province) {
-                              return DropdownMenuItem<String>(
-                                value: province,
-                                child: Text(province),
-                              );
-                            }).toList(),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      flex: 3,
-                      child: SearchWidget(
-                        onSearch: handleSearch,
-                        hintText: 'Search Generator...',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              isLoading
-                  ? const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                  : Expanded(
-                    child: DefaultTabController(
-                      length: tabs.length,
-                      child: Column(
-                        children: [
-                          Flexible(
-                            flex: 2,
-                            child: SingleChildScrollView(
-                              child: _buildSummaryCard(),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                            child: TabBar(
-                              indicator: UnderlineTabIndicator(
-                                borderSide: BorderSide(
-                                  color: Colors.blueAccent,
-                                  width: 2.0,
-                                ),
-                              ),
-                              labelColor: Colors.blueAccent,
-                              unselectedLabelColor: subTextColor,
-                              tabs: tabs.map((tab) => Tab(text: tab)).toList(),
-                              onTap: (index) {
-                                setState(() {
-                                  _selectedTabIndex = index;
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Expanded(
-                            flex: 3,
-                            child: TabBarView(
-                              children:
-                                  tabs.map((tab) {
-                                    return _buildGeneratorList(tab);
-                                  }).toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+        child: Container(
+          color: customColors.mainBackgroundColor,
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            behavior: HitTestBehavior.opaque,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
                   ),
-            ],
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: DropdownButtonFormField<String>(
+                          value: selectedProvince,
+                          decoration: InputDecoration(
+                            labelText: 'Select Province',
+                            labelStyle: TextStyle(
+                              color: customColors.subTextColor,
+                            ),
+                            filled: true,
+                            fillColor: customColors.mainBackgroundColor,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: customColors.subTextColor,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: customColors.subTextColor,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: customColors.subTextColor,
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
+                          style: TextStyle(color: customColors.mainTextColor),
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: customColors.mainTextColor,
+                          ),
+                          onChanged: handleProvinceChange,
+                          items:
+                              provinces.map((String province) {
+                                return DropdownMenuItem<String>(
+                                  value: province,
+                                  child: Text(province),
+                                );
+                              }).toList(),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        flex: 3,
+                        child: SearchWidget(
+                          onSearch: handleSearch,
+                          hintText: 'Search Generator...',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                isLoading
+                    ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                    : Expanded(
+                      child: DefaultTabController(
+                        length: tabs.length,
+                        child: Column(
+                          children: [
+                            Flexible(
+                              flex: 2,
+                              child: SingleChildScrollView(
+                                child: _buildSummaryCard(),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: customColors.subTextColor,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              child: TabBar(
+                                indicator: UnderlineTabIndicator(
+                                  borderSide: BorderSide(
+                                    color: Colors.blueAccent,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                labelColor: Colors.blueAccent,
+                                unselectedLabelColor: customColors.subTextColor,
+                                tabs:
+                                    tabs.map((tab) => Tab(text: tab)).toList(),
+                                onTap: (index) {
+                                  setState(() {
+                                    _selectedTabIndex = index;
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Expanded(
+                              flex: 3,
+                              child: TabBarView(
+                                children:
+                                    tabs.map((tab) {
+                                      return _buildGeneratorList(tab);
+                                    }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+              ],
+            ),
           ),
         ),
       ),
