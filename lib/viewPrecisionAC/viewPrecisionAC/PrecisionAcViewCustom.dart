@@ -417,77 +417,84 @@ class _PrecisionACListState extends State<PrecisionACList> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FutureBuilder<List<String>>(
-                          future: futureRegions,
+                        FutureBuilder<List<PrecisionAC>>(
+                          future: futurePrecisionAC,
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Text(
-                                'Error: ${snapshot.error}',
-                                style: TextStyle(
-                                  color: customColors.subTextColor,
-                                ),
-                              );
-                            } else {
-                              return DropdownButton<String>(
-                                hint: Text(
-                                  'Select Region',
-                                  style: TextStyle(
-                                    color: customColors.subTextColor,
-                                  ),
-                                ),
-                                value: selectedRegion,
-                                isExpanded: true,
-                                dropdownColor:
-                                    customColors.suqarBackgroundColor,
-                                onChanged: _onRegionChanged,
-                                items:
-                                    ['All', ...snapshot.data!].map((
-                                      String region,
-                                    ) {
-                                      return DropdownMenuItem<String>(
-                                        value: region,
-                                        child: Text(
-                                          region,
-                                          style: TextStyle(
-                                            color: customColors.mainTextColor,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                              );
-                            }
+                            if (!snapshot.hasData) return SizedBox();
+                            final filteredACs = _filterACs(snapshot.data!);
+
+                            // Get unique regions and statuses from filtered cards
+                            final regions = [
+                              'All',
+                              ...filteredACs.map((ac) => ac.region).toSet(),
+                            ];
+                            final statuses = [
+                              'All',
+                              ...filteredACs.map((ac) => ac.status).toSet(),
+                            ];
+
+                           return filteredACs.isNotEmpty
+    ? Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DropdownButton<String>(
+            hint: Text(
+              'Select Region',
+              style: TextStyle(color: customColors.subTextColor),
+            ),
+            value: selectedRegion,
+            isExpanded: true,
+            dropdownColor: customColors.suqarBackgroundColor,
+            onChanged: (v) => setState(() => selectedRegion = v),
+            items: [
+              'All',
+              ...filteredACs
+                  .map((ac) => ac.region)
+                  .where((region) => region.trim().isNotEmpty)
+                  .toSet()
+                  .toList()
+            ].map((r) => DropdownMenuItem(
+                  value: r,
+                  child: Text(
+                    r,
+                    style: TextStyle(color: customColors.mainTextColor),
+                  ),
+                ))
+                .toList(),
+          ),
+          SizedBox(height: 12),
+          DropdownButton<String>(
+            hint: Text(
+              'Select Status',
+              style: TextStyle(color: customColors.subTextColor),
+            ),
+            value: selectedStatus,
+            isExpanded: true,
+            dropdownColor: customColors.suqarBackgroundColor,
+            onChanged: (v) => setState(() => selectedStatus = v),
+            items: [
+              'All',
+              ...filteredACs
+                  .map((ac) => ac.status)
+                  .where((status) => status.trim().isNotEmpty)
+                  .toSet()
+                  .toList()
+            ].map((s) => DropdownMenuItem(
+                  value: s,
+                  child: Text(
+                    s,
+                    style: TextStyle(color: customColors.mainTextColor),
+                  ),
+                ))
+                .toList(),
+          ),
+        ],
+      )
+    : SizedBox.shrink();
                           },
                         ),
                         SizedBox(height: 12),
-                        DropdownButton<String>(
-                          hint: Text(
-                            'Select Status',
-                            style: TextStyle(color: customColors.subTextColor),
-                          ),
-                          value: selectedStatus,
-                          isExpanded: true,
-                          dropdownColor: customColors.suqarBackgroundColor,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedStatus = newValue;
-                            });
-                          },
-                          items:
-                              statuses.map((String status) {
-                                return DropdownMenuItem<String>(
-                                  value: status,
-                                  child: Text(
-                                    status,
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                        ),
+                       
                       ],
                     ),
                   ),

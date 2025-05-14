@@ -165,45 +165,63 @@ class _ViewElevatorDetailsState extends State<ViewElevatorDetails> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: DropdownButtonFormField<String>(
-                      value: selectedRegion,
-                      decoration: InputDecoration(
-                        labelText: 'Select Region',
-                        labelStyle: TextStyle(color: customColors.subTextColor),
-                        filled: true,
-                        fillColor: customColors.mainBackgroundColor,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: customColors.subTextColor,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: customColors.subTextColor,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: customColors.subTextColor,
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                      style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: customColors.mainTextColor,
-                      ),
-                      onChanged: handleRegionChange,
-                      items:
-                          regions.map((String region) {
-                            return DropdownMenuItem<String>(
-                              value: region,
-                              child: Text(region),
-                            );
-                          }).toList(),
-                    ),
+                    child:
+                        elevators.isNotEmpty
+                            ? DropdownButtonFormField<String>(
+                              value: selectedRegion,
+                              decoration: InputDecoration(
+                                labelText: 'Select Region',
+                                labelStyle: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                                filled: true,
+                                fillColor: customColors.mainBackgroundColor,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: customColors.subTextColor,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: customColors.subTextColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: customColors.subTextColor,
+                                    width: 2.0,
+                                  ),
+                                ),
+                              ),
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
+                              dropdownColor: customColors.suqarBackgroundColor,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: customColors.mainTextColor,
+                              ),
+                              onChanged: handleRegionChange,
+                              items:
+                                  [
+                                    'ALL',
+                                    ...elevators
+                                        .map(
+                                          (e) => (e['Region'] ?? '').toString(),
+                                        )
+                                        .where(
+                                          (region) => region.trim().isNotEmpty,
+                                        )
+                                        .toSet()
+                                        .toList(),
+                                  ].map((region) {
+                                    return DropdownMenuItem<String>(
+                                      value: region,
+                                      child: Text(region),
+                                    );
+                                  }).toList(),
+                            )
+                            : SizedBox.shrink(),
                   ),
                   const SizedBox(width: 16),
                   Expanded(

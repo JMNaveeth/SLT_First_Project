@@ -14,34 +14,41 @@ class ViewRectifierModuleDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     List<DataRow> buildModuleRows(List<String> keys) {
       List<DataRow> rows = [];
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         var value = RectifierUnit[key];
-        if (value != null && value != 'null' && value.toString().trim().isNotEmpty) {
-          final bool isMatch = searchQuery.isNotEmpty &&
-              value.toString().toLowerCase().contains(searchQuery.toLowerCase());
+        if (value != null &&
+            value != 'null' &&
+            value.toString().trim().isNotEmpty) {
+          final bool isMatch =
+              searchQuery.isNotEmpty &&
+              value.toString().toLowerCase().contains(
+                searchQuery.toLowerCase(),
+              );
 
           rows.add(
             DataRow(
-              color: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                  if (isMatch) return highlightColor;
-                  return null;
-                },
-              ),
+              color: MaterialStateProperty.resolveWith<Color?>((
+                Set<MaterialState> states,
+              ) {
+                if (isMatch) return highlightColor;
+                return null;
+              }),
               cells: [
                 DataCell(Text('Module ${i + 1}')),
-                DataCell(Text(
-                  value.toString(),
-                  style: TextStyle(
-                    color: customColors.subTextColor,
-                    backgroundColor: isMatch ? highlightColor : null,
+                DataCell(
+                  Text(
+                    value.toString(),
+                    style: TextStyle(
+                      color: customColors.subTextColor,
+                      backgroundColor: isMatch ? highlightColor : null,
+                    ),
                   ),
-                )),
+                ),
               ],
             ),
           );
@@ -52,13 +59,15 @@ class ViewRectifierModuleDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Rectifier Unit Details',style: TextStyle(color: customColors.mainTextColor),),
-        backgroundColor: customColors.appbarColor,
-        iconTheme:  IconThemeData(color: customColors.mainTextColor),
+        title: Text(
+          'Rectifier Unit Details',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+         backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
         actions: [
           ThemeToggleButton(), // Use the reusable widget
         ],
-
       ),
       body: Container(
         color: customColors.mainBackgroundColor,

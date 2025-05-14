@@ -209,32 +209,53 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: DropdownButtonFormField<String>(
-                        value: selectedRegion,
-                        decoration: InputDecoration(
-                          labelText: 'Select Region',
-                          labelStyle: TextStyle(
-                            color: customColors.subTextColor,
-                          ),
-                          filled: true,
-                          fillColor: customColors.mainBackgroundColor,
-                        ),
-                        dropdownColor: customColors.suqarBackgroundColor,
-                        style: TextStyle(color: customColors.mainTextColor),
-                        onChanged: handleRegionChange,
-                        items:
-                            regions.map((region) {
-                              return DropdownMenuItem<String>(
-                                value: region,
-                                child: Text(
-                                  region,
-                                  style: TextStyle(
-                                    color: customColors.mainTextColor,
+                      child:
+                          allBatterySystems.isNotEmpty
+                              ? DropdownButtonFormField<String>(
+                                value: selectedRegion,
+                                decoration: InputDecoration(
+                                  labelText: 'Select Region',
+                                  labelStyle: TextStyle(
+                                    color: customColors.subTextColor,
                                   ),
+                                  filled: true,
+                                  fillColor: customColors.mainBackgroundColor,
                                 ),
-                              );
-                            }).toList(),
-                      ),
+                                dropdownColor:
+                                    customColors.suqarBackgroundColor,
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                                onChanged: handleRegionChange,
+                                items:
+                                    [
+                                      'ALL',
+                                      ...allBatterySystems
+                                          .map(
+                                            (system) =>
+                                                (system['Region'] ?? '')
+                                                    .toString()
+                                                    .toUpperCase(),
+                                          )
+                                          .where(
+                                            (region) =>
+                                                region.trim().isNotEmpty,
+                                          )
+                                          .toSet()
+                                          .toList(),
+                                    ].map((region) {
+                                      return DropdownMenuItem<String>(
+                                        value: region,
+                                        child: Text(
+                                          region,
+                                          style: TextStyle(
+                                            color: customColors.mainTextColor,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                              )
+                              : SizedBox.shrink(),
                     ),
                     SizedBox(width: 16),
                     Expanded(

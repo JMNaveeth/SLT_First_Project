@@ -43,13 +43,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Search',
           style: TextStyle(color: customColors.mainTextColor),
         ),
-
+        centerTitle: true,
         backgroundColor: customColors.appbarColor,
         actions: [
           ThemeToggleButton(), // Use the reusable widget
@@ -89,7 +91,6 @@ class RectifierMenu extends StatelessWidget {
           style: TextStyle(color: customColors.mainTextColor),
         ),
         iconTheme: IconThemeData(color: customColors.mainTextColor),
-
         backgroundColor: customColors.appbarColor,
         actions: [
           IconButton(
@@ -104,129 +105,135 @@ class RectifierMenu extends StatelessWidget {
         ],
       ),
 
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewRectifierDetails(),
-                  ),
-                );
-              },
-              child: const Text('View Rectifier'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewUPShighend()),
-                );
-              },
-              child: const Text('View UPS'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SelectComfortACUnit(),
-                  ),
-                );
-              },
-              child: const Text('View Comfort AC'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewBatteryDetails()),
-                );
-              },
-              child: const Text('View Battery System'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewLVBreaker()),
-                );
-              },
-              child: const Text('View LV Panel'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewElevatorDetails(),
-                  ),
-                );
-              },
-              child: const Text('View Elevator'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewSPDDetails()),
-                );
-              },
-              child: const Text('View SPD'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewTransformerData(),
-                  ),
-                );
-              },
-              child: const Text('View Transformer'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PrecisionACList()),
-                );
-              },
-              child: const Text('View Precision AC'),
-            ),
-            ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewDataScreen()),
-                );
-              },
-              child: const Text('View Solar'),
-            ),
-             ElevatedButton(
-              style: buttonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewGenerator()),
-                );
-              },
-              child: const Text('View Generator'),
-            ),
-          ],
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        width: double.infinity, // Make sure background fills the width
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Center vertically
+            children: [
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewRectifierDetails(),
+                    ),
+                  );
+                },
+                child: const Text('View Rectifier'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewUPShighend()),
+                  );
+                },
+                child: const Text('View UPS'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SelectComfortACUnit(),
+                    ),
+                  );
+                },
+                child: const Text('View Comfort AC'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewBatteryDetails(),
+                    ),
+                  );
+                },
+                child: const Text('View Battery System'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewLVBreaker()),
+                  );
+                },
+                child: const Text('View LV Panel'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewElevatorDetails(),
+                    ),
+                  );
+                },
+                child: const Text('View Elevator'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewSPDDetails()),
+                  );
+                },
+                child: const Text('View SPD'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewTransformerData(),
+                    ),
+                  );
+                },
+                child: const Text('View Transformer'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PrecisionACList()),
+                  );
+                },
+                child: const Text('View Precision AC'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewDataScreen()),
+                  );
+                },
+                child: const Text('View Solar'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewGenerator()),
+                  );
+                },
+                child: const Text('View Generator'),
+              ),
+            ],
+          ),
         ),
       ),
     );

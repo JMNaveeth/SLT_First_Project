@@ -267,135 +267,210 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Top: ALL (Region)
-                                  DropdownButtonFormField<String>(
-                                    dropdownColor:
-                                        customColors.suqarBackgroundColor,
-                                    value: selectedRegion,
-                                    hint: Text(
-                                      'ALL',
-                                      style: TextStyle(
-                                        color: customColors.mainTextColor,
+                                  // Region Dropdown
+                                  if (filteredSiteData.isNotEmpty)
+                                    DropdownButtonFormField<String>(
+                                      dropdownColor:
+                                          customColors.suqarBackgroundColor,
+                                      value: selectedRegion,
+                                      hint: Text(
+                                        'Select Region',
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
                                       ),
-                                    ),
-                                    items:
-                                        regions.map((String region) {
-                                          return DropdownMenuItem<String>(
-                                            value: region,
-                                            child: Text(
-                                              region,
-                                              style: TextStyle(
-                                                color:
-                                                    customColors.mainTextColor,
+                                      items:
+                                          [
+                                            'ALL',
+                                            ...filteredSiteData
+                                                .map(
+                                                  (site) =>
+                                                      (site['region'] ?? '')
+                                                          .toString(),
+                                                )
+                                                .where(
+                                                  (region) =>
+                                                      region.trim().isNotEmpty,
+                                                )
+                                                .toSet()
+                                                .toList(),
+                                          ].map((region) {
+                                            return DropdownMenuItem<String>(
+                                              value: region,
+                                              child: Text(
+                                                region,
+                                                style: TextStyle(
+                                                  color:
+                                                      customColors
+                                                          .mainTextColor,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedRegion = value;
-                                        selectedStation = null;
-                                        selectedRtom = null;
-                                        stations = [];
-                                        rToms = [];
-                                        if (value != null) {
-                                          filterData();
-                                          if (value != 'ALL') {
-                                            fetchStations(value);
+                                            );
+                                          }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRegion = value;
+                                          selectedStation = null;
+                                          selectedRtom = null;
+                                          stations = [];
+                                          rToms = [];
+                                          if (value != null) {
+                                            filterData();
+                                            if (value != 'ALL') {
+                                              fetchStations(value);
+                                            }
                                           }
-                                        }
-                                      });
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  // Center: Station
-                                  DropdownButtonFormField<String>(
-                                    dropdownColor:
-                                        customColors.suqarBackgroundColor,
-                                    value: selectedStation,
-                                    hint: Text(
-                                      'Select Station',
-                                      style: TextStyle(
-                                        color: customColors.mainTextColor,
+                                    )
+                                  else
+                                    SizedBox(height: 10,),
+
+                                  // Station Dropdown
+                                  if (filteredSiteData.isNotEmpty)
+                                    DropdownButtonFormField<String>(
+                                      dropdownColor:
+                                          customColors.suqarBackgroundColor,
+                                      value: selectedStation,
+                                      hint: Text(
+                                        'Select Station',
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
                                       ),
-                                    ),
-                                    items:
-                                        stations.map((String station) {
-                                          return DropdownMenuItem<String>(
-                                            value: station,
-                                            child: Text(
-                                              station,
-                                              style: TextStyle(
-                                                color:
-                                                    customColors.mainTextColor,
+                                      items:
+                                          [
+                                            ...filteredSiteData
+                                                .where(
+                                                  (site) =>
+                                                      selectedRegion == null ||
+                                                      selectedRegion == 'ALL' ||
+                                                      site['region'] ==
+                                                          selectedRegion,
+                                                )
+                                                .map(
+                                                  (site) =>
+                                                      (site['station'] ?? '')
+                                                          .toString(),
+                                                )
+                                                .where(
+                                                  (station) =>
+                                                      station.trim().isNotEmpty,
+                                                )
+                                                .toSet()
+                                                .toList(),
+                                          ].map((station) {
+                                            return DropdownMenuItem<String>(
+                                              value: station,
+                                              child: Text(
+                                                station,
+                                                style: TextStyle(
+                                                  color:
+                                                      customColors
+                                                          .mainTextColor,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedStation = value;
-                                        selectedRtom = null;
-                                        rToms = [];
-                                        if (value != null) {
+                                            );
+                                          }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedStation = value;
+                                          selectedRtom = null;
+                                          rToms = [];
+                                          if (value != null) {
+                                            filterData();
+                                            fetchRtoms(
+                                              selectedRegion ?? '',
+                                              value,
+                                            );
+                                          }
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                      ),
+                                    )
+                                  else
+                                    SizedBox(height: 10,),
+
+                                  // RTOM Dropdown
+                                  if (filteredSiteData.isNotEmpty)
+                                    DropdownButtonFormField<String>(
+                                      dropdownColor:
+                                          customColors.suqarBackgroundColor,
+                                      value: selectedRtom,
+                                      hint: Text(
+                                        'Select RTOM',
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                      items:
+                                          [
+                                            ...filteredSiteData
+                                                .where(
+                                                  (site) =>
+                                                      (selectedRegion == null ||
+                                                          selectedRegion ==
+                                                              'ALL' ||
+                                                          site['region'] ==
+                                                              selectedRegion) &&
+                                                      (selectedStation ==
+                                                              null ||
+                                                          site['station'] ==
+                                                              selectedStation),
+                                                )
+                                                .map(
+                                                  (site) =>
+                                                      (site['rtom'] ?? '')
+                                                          .toString(),
+                                                )
+                                                .where(
+                                                  (rtom) =>
+                                                      rtom.trim().isNotEmpty,
+                                                )
+                                                .toSet()
+                                                .toList(),
+                                          ].map((rtom) {
+                                            return DropdownMenuItem<String>(
+                                              value: rtom,
+                                              child: Text(
+                                                rtom,
+                                                style: TextStyle(
+                                                  color:
+                                                      customColors
+                                                          .mainTextColor,
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRtom = value;
                                           filterData();
-                                          fetchRtoms(selectedRegion!, value);
-                                        }
-                                      });
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  // Bottom: RTOM
-                                  DropdownButtonFormField<String>(
-                                    dropdownColor:
-                                        customColors.suqarBackgroundColor,
-                                    value: selectedRtom,
-                                    hint: Text(
-                                      'Select RTOM',
-                                      style: TextStyle(
-                                        color: customColors.mainTextColor,
-                                      ),
-                                    ),
-                                    items:
-                                        rToms.map((String rtom) {
-                                          return DropdownMenuItem<String>(
-                                            value: rtom,
-                                            child: Text(
-                                              rtom,
-                                              style: TextStyle(
-                                                color:
-                                                    customColors.mainTextColor,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedRtom = value;
-                                        filterData();
-                                      });
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
-                                      ),
-                                    ),
-                                  ),
+                                    )
+                                  else
+                                    SizedBox(height: 10),
                                 ],
                               ),
                             ),

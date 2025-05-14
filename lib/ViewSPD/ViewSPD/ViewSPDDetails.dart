@@ -71,10 +71,12 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
     }
   }
 
- void _calculateSummary() {
-  acCount = filteredSPDSystems.where((system) => system['DCFlag'] == '0').length;
-  dcCount = filteredSPDSystems.where((system) => system['DCFlag'] == '1').length;
-}
+  void _calculateSummary() {
+    acCount =
+        filteredSPDSystems.where((system) => system['DCFlag'] == '0').length;
+    dcCount =
+        filteredSPDSystems.where((system) => system['DCFlag'] == '1').length;
+  }
 
   void applyFilters() {
     setState(() {
@@ -153,46 +155,65 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: DropdownButtonFormField<String>(
-                      value: selectedRegion,
-                      decoration: InputDecoration(
-                        labelText: 'Select Region',
-                        labelStyle: TextStyle(color: customColors.subTextColor),
-                        filled: true,
-                        fillColor: customColors.mainBackgroundColor,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: customColors.subTextColor,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: customColors.subTextColor,
-                            width: 2.0,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: customColors.subTextColor,
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                      style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: customColors.mainTextColor,
-                      ),
-                      onChanged: handleRegionChange,
-                      items:
-                          regions.map((region) {
-                            return DropdownMenuItem<String>(
-                              value: region,
-                              child: Text(region),
-                            );
-                          }).toList(),
-                    ),
+                    child:
+                        SPDSystems.isNotEmpty
+                            ? DropdownButtonFormField<String>(
+                              value: selectedRegion,
+                              decoration: InputDecoration(
+                                labelText: 'Select Region',
+                                labelStyle: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                                filled: true,
+                                fillColor: customColors.mainBackgroundColor,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: customColors.subTextColor,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: customColors.subTextColor,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: customColors.subTextColor,
+                                    width: 2.0,
+                                  ),
+                                ),
+                              ),
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
+                              dropdownColor: customColors.suqarBackgroundColor,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: customColors.mainTextColor,
+                              ),
+                              onChanged: handleRegionChange,
+                              items:
+                                  [
+                                    'ALL',
+                                    ...SPDSystems.map(
+                                          (system) =>
+                                              (system['province'] ?? '')
+                                                  .toString(),
+                                        )
+                                        .where(
+                                          (region) => region.trim().isNotEmpty,
+                                        )
+                                        .toSet()
+                                        .toList(),
+                                  ].map((region) {
+                                    return DropdownMenuItem<String>(
+                                      value: region,
+                                      child: Text(region),
+                                    );
+                                  }).toList(),
+                            )
+                            : SizedBox.shrink(),
                   ),
                   const SizedBox(width: 16),
                   Expanded(

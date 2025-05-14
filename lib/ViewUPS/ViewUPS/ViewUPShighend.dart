@@ -205,7 +205,18 @@ class _ViewUPShighendState extends State<ViewUPShighend> {
                         style: TextStyle(color: customColors.mainTextColor),
                         onChanged: handleRegionChange,
                         items:
-                            regions.map((region) {
+                            [
+                              'ALL',
+                              ...allUPSSystems
+                                  .map(
+                                    (system) =>
+                                        (system['Region'] ?? '')
+                                            .toString()
+                                            .toUpperCase(),
+                                  )
+                                  .toSet()
+                                  .toList(),
+                            ].map((region) {
                               return DropdownMenuItem<String>(
                                 value: region,
                                 child: Text(

@@ -35,48 +35,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Theme Settings")),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            const Text("Choose your theme:", style: TextStyle(fontSize: 18)),
-
-            RadioListTile<bool>(
-              title:  Text(
-                "Light Theme",
-                style: TextStyle(color: customColors.suqarBackgroundColor),
+      appBar: AppBar(
+        backgroundColor: customColors.appbarColor, 
+        title: Text(
+          "Theme Settings",
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+      ),
+  
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Text(
+                "Choose your theme:",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: customColors.mainTextColor,
+                ),
               ),
-              value: false,
-              groupValue: _isDarkMode,
-              activeColor: customColors.suqarBackgroundColor,
-              onChanged: (value) {
-                setState(() {
-                  _isDarkMode = value!;
-                });
-              },
-            ),
-            RadioListTile<bool>(
-              title:  Text(
-                "Dark Theme",
-                style: TextStyle(color: customColors.suqarBackgroundColor),
-              ),
-              value: true,
-              groupValue: _isDarkMode,
-              activeColor: customColors.suqarBackgroundColor,
-              onChanged: (value) {
-                setState(() {
-                  _isDarkMode = value!;
-                });
-              },
-            ),
 
-            const SizedBox(height: 20),
-            ElevatedButton(onPressed: _saveTheme, child: const Text("Save")),
-          ],
+              RadioListTile<bool>(
+                title: Text(
+                  "Light Theme",
+                  style: TextStyle(color: customColors.mainTextColor),
+                ),
+                value: false,
+                groupValue: _isDarkMode,
+                activeColor: customColors.mainTextColor,
+                onChanged: (value) {
+                  setState(() {
+                    _isDarkMode = value!;
+                  });
+                },
+              ),
+              RadioListTile<bool>(
+                title: Text(
+                  "Dark Theme",
+                  style: TextStyle(color: customColors.mainTextColor),
+                ),
+                value: true,
+                groupValue: _isDarkMode,
+                activeColor: customColors.mainTextColor,
+                onChanged: (value) {
+                  setState(() {
+                    _isDarkMode = value!;
+                  });
+                },
+              ),
+
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: _saveTheme, child: const Text("Save")),
+            ],
+          ),
         ),
       ),
     );

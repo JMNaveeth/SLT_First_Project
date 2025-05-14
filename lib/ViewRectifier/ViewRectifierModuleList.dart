@@ -60,12 +60,11 @@ class _ViewRectifierModuleListState extends State<ViewRectifierModuleList> {
     return Scaffold(
       backgroundColor: customColors.mainBackgroundColor,
       appBar: AppBar(
+        backgroundColor: customColors.appbarColor,
         title: Text(
           'Rectifier Details',
           style: TextStyle(color: customColors.mainTextColor),
         ),
-        centerTitle: true,
-        backgroundColor: customColors.appbarColor,
         iconTheme: IconThemeData(color: customColors.mainTextColor),
         actions: [
           ThemeToggleButton(), // Use the reusable widget

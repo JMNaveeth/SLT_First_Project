@@ -169,13 +169,13 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
       },
       child: Scaffold(
         backgroundColor: customColors.mainBackgroundColor,
+
         appBar: AppBar(
+          backgroundColor: customColors.appbarColor,
           title: Text(
             'Rectifier Details',
             style: TextStyle(color: customColors.mainTextColor),
           ),
-          centerTitle: true,
-          backgroundColor: customColors.appbarColor,
           iconTheme: IconThemeData(color: customColors.mainTextColor),
           actions: [
             ThemeToggleButton(), // Use the reusable widget
@@ -196,48 +196,69 @@ class _ViewRectifierDetailsState extends State<ViewRectifierDetails> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: DropdownButtonFormField<String>(
-                        value: selectedRegion,
-                        decoration: InputDecoration(
-                          labelText: 'Region',
-                          labelStyle: TextStyle(
-                            color: customColors.mainTextColor,
-                          ),
-                          filled: true,
-                          fillColor: customColors.mainBackgroundColor,
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                        dropdownColor: customColors.suqarBackgroundColor,
-                        style: TextStyle(color: customColors.mainTextColor),
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: customColors.mainTextColor,
-                        ),
-                        onChanged: handleRegionChange,
-                        items:
-                            regions.map((region) {
-                              return DropdownMenuItem<String>(
-                                value: region,
-                                child: Text(
-                                  region,
-                                  style: TextStyle(
+                      child:
+                          allRectifierSystems.isNotEmpty
+                              ? DropdownButtonFormField<String>(
+                                value: selectedRegion,
+                                decoration: InputDecoration(
+                                  labelText: 'Region',
+                                  labelStyle: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
+                                  filled: true,
+                                  fillColor: customColors.mainBackgroundColor,
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 2.0,
+                                    ),
+                                  ),
                                 ),
-                              );
-                            }).toList(),
-                      ),
+                                dropdownColor:
+                                    customColors.suqarBackgroundColor,
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                                icon: Icon(
+                                  Icons.arrow_drop_down,
+                                  color: customColors.mainTextColor,
+                                ),
+                                onChanged: handleRegionChange,
+                                items:
+                                    [
+                                      'ALL',
+                                      ...allRectifierSystems
+                                          .map(
+                                            (system) =>
+                                                (system['Region'] ?? '')
+                                                    .toString()
+                                                    .toUpperCase(),
+                                          )
+                                          .where(
+                                            (region) =>
+                                                region.trim().isNotEmpty,
+                                          )
+                                          .toSet()
+                                          .toList(),
+                                    ].map((region) {
+                                      return DropdownMenuItem<String>(
+                                        value: region,
+                                        child: Text(
+                                          region,
+                                          style: TextStyle(
+                                            color: customColors.mainTextColor,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                              )
+                              : SizedBox.shrink(),
                     ),
                     const SizedBox(width: 16),
                     Expanded(

@@ -255,9 +255,9 @@ class LVBreakerDetailPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
       child: Container(
         decoration: BoxDecoration(
-  color: customColors.suqarBackgroundColor,
-  borderRadius: BorderRadius.circular(8.0),
-),
+          color: customColors.suqarBackgroundColor,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
         padding: const EdgeInsets.all(12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,25 +290,25 @@ class LVBreakerDetailPage extends StatelessWidget {
                             }
                           }
                         },
-                         child: Text.rich(
-                      getHighlightedText(
-                        value,
-                        searchQuery,
-                        Colors.blue,
-                        customColors.highlightColor,
+                        child: Text.rich(
+                          getHighlightedText(
+                            value,
+                            searchQuery,
+                            Colors.blue,
+                            customColors.highlightColor,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      )
+                      : Text.rich(
+                        getHighlightedText(
+                          value,
+                          searchQuery,
+                          customColors.subTextColor,
+                          customColors.highlightColor,
+                        ),
+                        textAlign: TextAlign.right,
                       ),
-                      textAlign: TextAlign.right,
-                    ),
-                  )
-                : Text.rich(
-                    getHighlightedText(
-                      value,
-                      searchQuery,
-                      customColors.subTextColor,
-                      customColors.highlightColor,
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
             ),
           ],
         ),

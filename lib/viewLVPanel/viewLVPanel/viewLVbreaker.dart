@@ -170,7 +170,18 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                       ),
                       onChanged: handleRegionChange,
                       items:
-                          regions.map((String region) {
+                          [
+                            'All',
+                            ...lvBreakers
+                                .map(
+                                  (panel) => (panel['Region'] ?? '').toString(),
+                                )
+                                .where(
+                                  (region) => region.trim().isNotEmpty,
+                                ) // <-- Only non-empty regions
+                                .toSet()
+                                .toList(),
+                          ].map((region) {
                             return DropdownMenuItem<String>(
                               value: region,
                               child: Text(region),
@@ -239,7 +250,9 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                   child: Text(
                                     'Total Panels',
                                     style: TextStyle(
-                                      color: customColors.subTextColor, // White text
+                                      color:
+                                          customColors
+                                              .subTextColor, // White text
                                     ),
                                   ),
                                 ),
@@ -248,7 +261,9 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                   child: Text(
                                     '${filteredLvBreakers.length}',
                                     style: TextStyle(
-                                      color: customColors.subTextColor, // White text
+                                      color:
+                                          customColors
+                                              .subTextColor, // White text
                                     ),
                                   ),
                                 ),
@@ -295,7 +310,8 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                           horizontal: 30,
                                           vertical: 10,
                                         ),
-                                        color: customColors.suqarBackgroundColor,
+                                        color:
+                                            customColors.suqarBackgroundColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
                                             4.0,
@@ -314,7 +330,8 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
-                                                  color: customColors.subTextColor,
+                                                  color:
+                                                      customColors.subTextColor,
                                                 ),
                                               ),
                                               const SizedBox(height: 4),
@@ -322,7 +339,8 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                                 'Location - ${panel['Region']} ${panel['RTOM']}',
                                                 style: TextStyle(
                                                   fontSize: 14,
-                                                  color: customColors.subTextColor,
+                                                  color:
+                                                      customColors.subTextColor,
                                                 ),
                                               ),
                                             ],
