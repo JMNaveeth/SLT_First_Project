@@ -159,11 +159,15 @@ class AcLogData {
   final String? location;
   final String? noAcPlants;
   final String? qrLoc;
+  final String? latitude;
+  final String? longitude;
+  final String uploadedBy;
 
   AcLogData({
     required this.logId,
     required this.acIndoorId,
     required this.acOutdoorId,
+    required this.uploadedBy,
     this.region,
     this.rtom,
     this.station,
@@ -173,6 +177,8 @@ class AcLogData {
     this.location,
     this.noAcPlants,
     this.qrLoc,
+    this.latitude,
+    this.longitude,
   });
 
   factory AcLogData.fromJson(Map<String?, dynamic> json) {
@@ -189,6 +195,7 @@ class AcLogData {
       location: json["location"],
       noAcPlants: json["no_AC_plants"],
       qrLoc: json["QR_loc"],
+      uploadedBy: '',
     );
   }
 }

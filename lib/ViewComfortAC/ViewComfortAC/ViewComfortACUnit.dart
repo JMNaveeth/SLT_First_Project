@@ -49,9 +49,7 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
         ),
         backgroundColor: customColors.appbarColor,
         iconTheme: IconThemeData(color: customColors.mainTextColor),
-        actions: [
-          ThemeToggleButton(), // Use the reusable widget
-        ],
+        actions: [ThemeToggleButton()],
       ),
       body: Container(
         color: customColors.mainBackgroundColor,
@@ -59,6 +57,7 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              // Tab Row with 3 tabs: SITE INFO, INDOOR, OUTDOOR
               Container(
                 height: MediaQuery.of(context).size.height * 0.07,
                 decoration: BoxDecoration(
@@ -68,19 +67,47 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    // SITE INFO tab
                     GestureDetector(
                       onTap: () {
                         setState(() {
                           currentState = 0;
-                          debugPrint(currentState.toString());
                         });
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.055,
-                        width: MediaQuery.of(context).size.width * 0.45,
+                        width: MediaQuery.of(context).size.width * 0.3,
                         decoration: BoxDecoration(
                           color:
                               currentState == 0
+                                  ? Colors.grey
+                                  : customColors.suqarBackgroundColor,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "SITE INFO",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // INDOOR tab
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentState = 1;
+                        });
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.055,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        decoration: BoxDecoration(
+                          color:
+                              currentState == 1
                                   ? Colors.grey
                                   : customColors.suqarBackgroundColor,
                           borderRadius: BorderRadius.circular(18),
@@ -96,19 +123,19 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                         ),
                       ),
                     ),
+                    // OUTDOOR tab
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          currentState = 1;
-                          debugPrint(currentState.toString());
+                          currentState = 2;
                         });
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.055,
-                        width: MediaQuery.of(context).size.width * 0.45,
+                        width: MediaQuery.of(context).size.width * 0.3,
                         decoration: BoxDecoration(
                           color:
-                              currentState == 1
+                              currentState == 2
                                   ? Colors.grey
                                   : customColors.suqarBackgroundColor,
                           borderRadius: BorderRadius.circular(18),
@@ -128,71 +155,70 @@ class _ViewComfortACUnitState extends State<ViewComfortACUnit> {
                 ),
               ),
               const SizedBox(height: 5),
+              // --- Always show this summary card below the tabs ---
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${widget.indoorData?.acIndoorId ?? ''}",
+                        style: TextStyle(color: customColors.mainTextColor),
+                      ),
+                      widget.outdoorData != null
+                          ? Text(
+                            "${widget.outdoorData!.acOutdoorId}",
+                            style: TextStyle(color: customColors.mainTextColor),
+                          )
+                          : const Text(""),
+                    ],
+                  ),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Region: ${widget.logData.region}',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          Text(
+                            'Brand: ${widget.indoorData?.brand ?? ""}',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        'Location: ${widget.logData.location}',
+                        style: TextStyle(color: customColors.mainTextColor),
+                      ),
+                      Text(
+                        "Last Updated: ${widget.indoorData?.lastUpdated ?? ""}",
+                        style: TextStyle(color: customColors.mainTextColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // --- Tab content below the summary card ---
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Card(
-                        color: customColors.suqarBackgroundColor,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${widget.indoorData!.acIndoorId}",
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ),
-                              ),
-                              widget.outdoorData != null
-                                  ? Text(
-                                    "${widget.outdoorData!.acOutdoorId}",
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  )
-                                  : const Text(""),
-                            ],
-                          ),
-                          subtitle: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Region: ${widget.logData.region}',
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Brand: ${widget.indoorData!.brand ?? ""}',
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                'Location: ${widget.logData.location}',
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ),
-                              ),
-                              Text(
-                                "Last Updated: ${widget.indoorData!.lastUpdated ?? ""}",
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      listData[currentState],
+                      if (currentState == 0)
+                        siteInfoCardList(
+                          widget.indoorData,
+                          widget.outdoorData,
+                          widget.logData,
+                          widget.searchQuery,
+                        )
+                      else if (currentState == 1)
+                        listData[0]
+                      else if (currentState == 2)
+                        listData[1],
                     ],
                   ),
                 ),
@@ -319,6 +345,103 @@ class _CustomOneDetailsCardState extends State<CustomOneDetailsCard> {
       ),
     );
   }
+}
+
+Widget siteInfoCardList(
+  AcIndoorData? indoor,
+  AcOutdoorData? outdoor,
+  AcLogData log,
+  String searchQuery,
+) {
+  bool shouldHighlight(String? value) {
+    if (value == null || searchQuery.isEmpty) return false;
+    return value.toLowerCase().contains(searchQuery.toLowerCase());
+  }
+
+  return Column(
+    children: [
+      CustomOneDetailsCard(
+        title: "AC Indoor ID",
+        titleResponse: indoor?.acIndoorId ?? 'N/A',
+        shouldHighlight: shouldHighlight(indoor?.acIndoorId),
+      ),
+      CustomOneDetailsCard(
+        title: "AC Outdoor ID",
+        titleResponse: outdoor?.acOutdoorId ?? 'N/A',
+        shouldHighlight: shouldHighlight(outdoor?.acOutdoorId),
+      ),
+      CustomOneDetailsCard(
+        title: "Building ID",
+        titleResponse: log.rtomBuildingId ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.rtomBuildingId),
+      ),
+      CustomOneDetailsCard(
+        title: "Floor Number",
+        titleResponse: log.floorNumber ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.floorNumber),
+      ),
+      CustomOneDetailsCard(
+        title: "Last Updated",
+        titleResponse: indoor?.lastUpdated ?? 'N/A',
+        shouldHighlight: shouldHighlight(indoor?.lastUpdated),
+      ),
+      CustomOneDetailsCard(
+        title: "Latitude",
+        titleResponse: log.latitude ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.latitude),
+      ),
+      CustomOneDetailsCard(
+        title: "Location",
+        titleResponse: log.location ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.location),
+      ),
+      CustomOneDetailsCard(
+        title: "Log ID",
+        titleResponse: log.logId,
+        shouldHighlight: shouldHighlight(log.logId),
+      ),
+      CustomOneDetailsCard(
+        title: "Longitude",
+        titleResponse: log.longitude ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.longitude),
+      ),
+      CustomOneDetailsCard(
+        title: "Number of AC Plants",
+        titleResponse: log.noAcPlants ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.noAcPlants),
+      ),
+      CustomOneDetailsCard(
+        title: "Office Number",
+        titleResponse: log.officeNumber ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.officeNumber),
+      ),
+      CustomOneDetailsCard(
+        title: "QR Location",
+        titleResponse: indoor?.qrIn ?? 'N/A',
+        shouldHighlight: shouldHighlight(indoor?.qrIn),
+      ),
+      CustomOneDetailsCard(
+        title: "RTOM",
+        titleResponse: log.rtom ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.rtom),
+      ),
+      CustomOneDetailsCard(
+        title: "Region",
+        titleResponse: log.region ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.region),
+      ),
+      CustomOneDetailsCard(
+        title: "Station",
+        titleResponse: log.station ?? 'N/A',
+        shouldHighlight: shouldHighlight(log.station),
+      ),
+      CustomOneDetailsCard(
+        title: "Uploaded By",
+        titleResponse: log.uploadedBy,
+        shouldHighlight: shouldHighlight(log.uploadedBy),
+      ),
+    ],
+  );
 }
 
 Widget indoorList(
