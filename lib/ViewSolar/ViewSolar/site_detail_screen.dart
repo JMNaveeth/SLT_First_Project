@@ -217,7 +217,7 @@ class _SiteDetailScreenState extends State<SiteDetailScreen>
                         detailText,
                         searchQuery ?? '',
                         customColors.subTextColor,
-                        customColors.highlightColor,
+                        customColors.hinttColor,
                       ),
                       softWrap: true,
                       overflow: TextOverflow.visible,

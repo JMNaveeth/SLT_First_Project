@@ -926,7 +926,7 @@ class ViewElevatorUnit extends StatelessWidget {
                   value,
                   searchQuery,
                   customColors.subTextColor,
-                  customColors.highlightColor,
+                  customColors.hinttColor,
                 ),
                 textAlign: TextAlign.right,
               ),
@@ -991,7 +991,7 @@ class ViewElevatorUnit extends StatelessWidget {
                     (isContact || isEmail)
                         ? const Color.fromARGB(255, 5, 129, 231)
                         : customColors.mainTextColor,
-                    customColors.highlightColor,
+                    customColors.hinttColor,
                   ),
                   textAlign: TextAlign.right,
                   style: TextStyle(

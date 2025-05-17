@@ -1000,7 +1000,7 @@ class ACDetailView extends StatelessWidget {
             subtitle,
             searchQuery,
             customColors.subTextColor,
-            customColors.highlightColor,
+            customColors.hinttColor,
           ),
         ),
       ),
@@ -1043,7 +1043,7 @@ class ACDetailView extends StatelessWidget {
                       'Compressor ${index + 1} Serial Code: $value',
                       searchQuery,
                       customColors.subTextColor,
-                      customColors.highlightColor,
+                      customColors.hinttColor,
                     ),
                   ),
                 );

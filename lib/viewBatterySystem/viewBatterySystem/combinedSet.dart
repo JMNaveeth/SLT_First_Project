@@ -237,7 +237,7 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
           variable ?? 'N/A',
           widget.searchQuery,
           customColors.mainTextColor,
-          customColors.highlightColor,
+          customColors.hinttColor,
         ),
       ),
     );
@@ -291,7 +291,7 @@ class _CombinedSetPageState extends State<CombinedSetPage> {
         lesson.variable ?? 'N/A',
         widget.searchQuery,
         customColors.mainTextColor,
-        customColors.highlightColor,
+        customColors.hinttColor,
       ),
     ),
           ),

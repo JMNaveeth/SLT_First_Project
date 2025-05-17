@@ -55,7 +55,7 @@ class ViewUPSUnit extends StatelessWidget {
             text: text.substring(start, end),
             style: TextStyle(
               color: customColors.subTextColor,
-              backgroundColor: customColors.highlightColor,
+              backgroundColor: customColors.hinttColor,
             ),
           ),
           if (end < text.length)

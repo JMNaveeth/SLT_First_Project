@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/utils/utils/colors.dart';
 
 import '../../../Widgets/GPSGrab/gps_location_widget.dart';
 import '../../../Widgets/ThemeToggle/theme_provider.dart';
@@ -84,32 +86,32 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
       _error = ''; // Reset error message when starting to fetch location
     });
 
-    try {
-      GPSLocationFetcher locationFetcher = GPSLocationFetcher();
-      Map<String, String> location = await locationFetcher.fetchLocation();
+    // try {
+    //   GPSLocationFetcher locationFetcher = GPSLocationFetcher();
+    //   Map<String, String> location = await locationFetcher.fetchLocation();
 
-      // Debug print to check the location map
-      debugPrint("Fetched location data: $location");
+    //   // Debug print to check the location map
+    //   debugPrint("Fetched location data: $location");
 
-      if (location.containsKey('latitude') && location.containsKey('longitude')) {
-        setState(() {
-          _latitude = location['latitude'] ?? '';
-          _longitude = location['longitude'] ?? '';
-          updatedValues['Latitude'] = _latitude; // Ensure you use 'Latitude' if it needs to be uppercase
-          updatedValues['Longitude'] = _longitude; // Ensure you use 'Longitude' if it needs to be uppercase
-          _isLoading = false;
-          debugPrint("Location $_latitude, $_longitude");
-        });
-      } else {
-        throw Exception('Location data is missing');
-      }
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-        debugPrint("Error: $_error");
-        _isLoading = false;
-      });
-    }
+    //   if (location.containsKey('latitude') && location.containsKey('longitude')) {
+    //     setState(() {
+    //       _latitude = location['latitude'] ?? '';
+    //       _longitude = location['longitude'] ?? '';
+    //       updatedValues['Latitude'] = _latitude; // Ensure you use 'Latitude' if it needs to be uppercase
+    //       updatedValues['Longitude'] = _longitude; // Ensure you use 'Longitude' if it needs to be uppercase
+    //       _isLoading = false;
+    //       debugPrint("Location $_latitude, $_longitude");
+    //     });
+    //   } else {
+    //     throw Exception('Location data is missing');
+    //   }
+    // } catch (e) {
+    //   setState(() {
+    //     _error = e.toString();
+    //     debugPrint("Error: $_error");
+    //     _isLoading = false;
+    //   });
+    // }
   }
 
 

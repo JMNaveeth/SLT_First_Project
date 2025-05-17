@@ -62,7 +62,7 @@ class _GenInfoPageState extends State<GenInfoPage> {
         TextSpan(
           text: text.substring(idx, idx + query.length),
           style: TextStyle(
-            backgroundColor: customColors.highlightColor,
+            backgroundColor: customColors.hinttColor,
             color: customColors.mainTextColor,
             fontWeight: FontWeight.bold,
           ),

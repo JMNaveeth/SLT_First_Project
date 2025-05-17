@@ -125,7 +125,7 @@ class _TransformerDetailScreenState extends State<TransformerDetailScreen> {
                             detail.toString(),
                             widget.searchQuery,
                             Colors.blue,
-                            customColors.highlightColor,
+                            customColors.hinttColor,
                           ),
                           style: TextStyle(
                             fontSize: 16,
@@ -140,7 +140,7 @@ class _TransformerDetailScreenState extends State<TransformerDetailScreen> {
                           detail != null ? detail.toString() : 'N/A',
                           widget.searchQuery,
                           customColors.subTextColor,
-                          customColors.highlightColor,
+                          customColors.hinttColor,
                         ),
                         style: TextStyle(fontSize: 16),
                         softWrap: true,

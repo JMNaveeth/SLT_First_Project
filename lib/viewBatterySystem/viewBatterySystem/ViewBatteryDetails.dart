@@ -410,7 +410,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                                         style: TextStyle(
                                           backgroundColor:
                                               isRackIdMatch
-                                                  ? customColors.highlightColor
+                                                  ? customColors.hinttColor
                                                   : customColors
                                                       .suqarBackgroundColor,
                                         ),
@@ -433,7 +433,7 @@ class _ViewBatteryDetailsState extends State<ViewBatteryDetails> {
                                         style: TextStyle(
                                           backgroundColor:
                                               isLocationMatch
-                                                  ? customColors.highlightColor
+                                                  ? customColors.hinttColor
                                                   : customColors
                                                       .suqarBackgroundColor,
                                         ),

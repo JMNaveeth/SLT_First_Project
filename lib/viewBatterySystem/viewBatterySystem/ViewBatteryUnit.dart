@@ -148,7 +148,7 @@ class ViewBatteryUnitState extends State<ViewBatteryUnit> {
                 lesson.variable ?? 'N/A',
                 widget.searchQuery,
                 customColors.subTextColor,
-                customColors.highlightColor,
+                customColors.hinttColor,
               ),
             ),
           ),

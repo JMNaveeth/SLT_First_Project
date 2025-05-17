@@ -87,7 +87,7 @@ class ViewSPDUnit extends StatelessWidget {
             value ?? 'N/A',
             searchQuery,
             customColors.subTextColor,
-            customColors.highlightColor,
+            customColors.hinttColor,
           ),
         ),
       ),

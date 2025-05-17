@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../Screens/HomePage/widgets/colors.dart';
+import 'package:theme_update/utils/utils/colors.dart';
+//import '../../Screens/HomePage/widgets/colors.dart';
 
 class ThemeProvider extends ChangeNotifier {
   bool isDarkMode = false;
