@@ -1,33 +1,27 @@
-
 import 'package:flutter/material.dart';
-// import 'package:flutter_application_1/widgets/UserAccess.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+// import 'package:flutter_application_1/widgets/UserAccess.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 
-import '../../../Widgets/GPSGrab/gps_location_widget.dart';
-import '../../../Widgets/ThemeToggle/theme_provider.dart';
-import '../../HomePage/utils/colors.dart';
-import '../../../Widgets/ThemeAdaptiveDropDown/ThemeAdaptiveDropDownWidget.dart';
+// import '../../../Widgets/GPSGrab/gps_location_widget.dart';
+// import '../../../Widgets/ThemeToggle/theme_provider.dart';
+// import '../../HomePage/utils/colors.dart';
+// import '../../../Widgets/ThemeAdaptiveDropDown/ThemeAdaptiveDropDownWidget.dart';
 
-
-class GeneratorDetailAddPage  extends StatefulWidget {
-
-
-
+class GeneratorDetailAddPage extends StatefulWidget {
   GeneratorDetailAddPage({Key? key}) : super(key: key);
-
 
   @override
   _GeneratorDetailAddPageState createState() => _GeneratorDetailAddPageState();
-
 }
 
 class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-  String updator="";
+  String updator = "";
   //late Map<String, dynamic> originalValues;
   Map<String, dynamic> updatedValues = {};
   bool _isLoading = false;
@@ -41,7 +35,6 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
   bool isAtsFieldsEnabled = true;
   bool isDayTankSizeEnabled = true;
   bool _areFieldsDisabled = false;
-
 
   var Regions = [
     'CPN',
@@ -69,16 +62,101 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
     'WPSE',
     'WPSW',
     'UVA',
-    'Other'
+    'Other',
   ];
 
-  List<String> brandeng = ['Caterpillar', 'Chana', 'Cummins', 'Deutz', 'Detroit', 'Denyo', 'Greaves', 'Honda', 'Hyundai', 'Isuzu', 'John Deere', 'Komatsu', 'Kohler', 'Kubota', 'Lester', 'Mitsubishi', 'Onan', 'Perkins', 'Rusten', 'Unknown', 'Valmet', 'Volvo', 'Yanmar','Other'];
-  List<String> contBrand = ['DSE', 'HMI', 'Unknown','Other'];
-  List<String> brandset = ['Caterpillar', 'Cummins', 'Dale', 'Denyo', 'F.G.Wilson', 'Foracity', 'Greaves', 'John Deere', 'Jubilee', 'Kohler', 'Mitsui - Deutz', 'Mosa', 'Olympian', 'Onan', 'Pramac', 'Sanyo Denki', 'Siemens', 'Tempest', 'Unknown', 'Wega', 'Welland Power','Other'];
-  List<String> brandAlt=['Alsthom', 'Aulturdyne', 'Bosch', 'Caterpillar', 'Denyo', 'Greaves', 'Iskra', 'Kohler', 'Leroy Somer', 'Marelli', 'Mecc Alte', 'Mitsubishi', 'Perkins', 'Sanyo Denki', 'Siemens', 'Stamford', 'Taiyo', 'Tempest', 'Unknown', 'Wega','Other'];
-  List<String> brandAts=['Schnider', 'Cummins', 'Socomec','Unknown','Other'];
-  List<String> batBrand=['Amaron', 'Exide', 'Luminous','Volta','Okaya','LivGuard','Su-Kam','Shield','Other'];
-
+  List<String> brandeng = [
+    'Caterpillar',
+    'Chana',
+    'Cummins',
+    'Deutz',
+    'Detroit',
+    'Denyo',
+    'Greaves',
+    'Honda',
+    'Hyundai',
+    'Isuzu',
+    'John Deere',
+    'Komatsu',
+    'Kohler',
+    'Kubota',
+    'Lester',
+    'Mitsubishi',
+    'Onan',
+    'Perkins',
+    'Rusten',
+    'Unknown',
+    'Valmet',
+    'Volvo',
+    'Yanmar',
+    'Other',
+  ];
+  List<String> contBrand = ['DSE', 'HMI', 'Unknown', 'Other'];
+  List<String> brandset = [
+    'Caterpillar',
+    'Cummins',
+    'Dale',
+    'Denyo',
+    'F.G.Wilson',
+    'Foracity',
+    'Greaves',
+    'John Deere',
+    'Jubilee',
+    'Kohler',
+    'Mitsui - Deutz',
+    'Mosa',
+    'Olympian',
+    'Onan',
+    'Pramac',
+    'Sanyo Denki',
+    'Siemens',
+    'Tempest',
+    'Unknown',
+    'Wega',
+    'Welland Power',
+    'Other',
+  ];
+  List<String> brandAlt = [
+    'Alsthom',
+    'Aulturdyne',
+    'Bosch',
+    'Caterpillar',
+    'Denyo',
+    'Greaves',
+    'Iskra',
+    'Kohler',
+    'Leroy Somer',
+    'Marelli',
+    'Mecc Alte',
+    'Mitsubishi',
+    'Perkins',
+    'Sanyo Denki',
+    'Siemens',
+    'Stamford',
+    'Taiyo',
+    'Tempest',
+    'Unknown',
+    'Wega',
+    'Other',
+  ];
+  List<String> brandAts = [
+    'Schnider',
+    'Cummins',
+    'Socomec',
+    'Unknown',
+    'Other',
+  ];
+  List<String> batBrand = [
+    'Amaron',
+    'Exide',
+    'Luminous',
+    'Volta',
+    'Okaya',
+    'LivGuard',
+    'Su-Kam',
+    'Shield',
+    'Other',
+  ];
 
   void _fetchLocation() async {
     setState(() {
@@ -114,8 +192,6 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
     // }
   }
 
-
-
   @override
   void initState() {
     super.initState();
@@ -124,7 +200,10 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
   }
 
   void _onChanged(
-      dynamic val, Map<String, dynamic> formData, String fieldName) {
+    dynamic val,
+    Map<String, dynamic> formData,
+    String fieldName,
+  ) {
     setState(() {
       formData[fieldName] = val;
 
@@ -210,6 +289,7 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
   }) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     final customColors = Theme.of(context).extension<CustomColors>()!;
+    final TextEditingController customBrandController = TextEditingController();
 
     showDialog(
       context: context,
@@ -219,9 +299,13 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
             dialogBackgroundColor: customColors.suqarBackgroundColor,
             inputDecorationTheme: InputDecorationTheme(
               labelStyle: TextStyle(color: customColors.mainTextColor),
-              hintStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7)),
+              hintStyle: TextStyle(
+                color: customColors.mainTextColor.withOpacity(0.7),
+              ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: customColors.mainTextColor.withOpacity(0.5)),
+                borderSide: BorderSide(
+                  color: customColors.mainTextColor.withOpacity(0.5),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
@@ -229,15 +313,19 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
             ),
           ),
           child: AlertDialog(
+            backgroundColor: customColors.suqarBackgroundColor,
             title: Text(
               "Add Custom Brand",
               style: TextStyle(color: customColors.mainTextColor),
             ),
             content: TextField(
+              controller: customBrandController,
               style: TextStyle(color: customColors.mainTextColor),
               decoration: InputDecoration(
                 hintText: "Enter your brand name",
-                hintStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7)),
+                hintStyle: TextStyle(
+                  color: customColors.mainTextColor.withOpacity(0.7),
+                ),
               ),
               onChanged: (value) {
                 // You can add validation or other logic here if needed
@@ -254,13 +342,24 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                 },
               ),
               TextButton(
-                child: Text(
-                  "OK",
-                  style: TextStyle(color: customColors.mainTextColor),
-                ),
+                child: const Text("OK"),
                 onPressed: () {
-                  // Existing logic for adding custom brand
-                  // ...
+                  String customBrand = customBrandController.text.trim();
+                  if (customBrand.isNotEmpty) {
+                    setState(() {
+                      // Remove if already exists (avoid duplicates)
+                      brandList.remove(customBrand);
+                      // Insert before "Other" if present, else add to end
+                      int otherIndex = brandList.indexOf("Other");
+                      if (otherIndex != -1) {
+                        brandList.insert(otherIndex, customBrand);
+                      } else {
+                        brandList.add(customBrand);
+                      }
+                      formData[formKey] = customBrand; // Set as selected
+                    });
+                  }
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -269,7 +368,6 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +379,16 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
       backgroundColor: customColors.mainBackgroundColor,
       appBar: AppBar(
         backgroundColor: customColors.appbarColor,
-        title: Center(child: Text('Add DEG Details',style: TextStyle(              color: customColors.mainTextColor , fontSize: 20),)),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+        title: Center(
+          child: Text(
+            'Add DEG Details',
+            style: TextStyle(color: customColors.mainTextColor, fontSize: 20),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(30.0, 0, 30.0, 8.0),
@@ -290,12 +397,15 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "Location",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
@@ -307,34 +417,48 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Province :",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      SizedBox(width:10,),// Add some space between the label and the dropdown
+                      SizedBox(
+                        width: 10,
+                      ), // Add some space between the label and the dropdown
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: Regions.contains(updatedValues["Province"])
-                              ? updatedValues["Province"]
-                              : null, // Default value
-
+                          value:
+                              Regions.contains(updatedValues["Province"])
+                                  ? updatedValues["Province"]
+                                  : null, // Default value
 
                           items: [
-                            ...Regions.where((String value) => value != "Other").map((String value) {
+                            ...Regions.where(
+                              (String value) => value != "Other",
+                            ).map((String value) {
                               return DropdownMenuItem<String>(
-
                                 value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 12, color: mainTextColor),),
-
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
                               );
                             }).toList(),
-                            const DropdownMenuItem<String>(
+                            DropdownMenuItem<String>(
                               value: "Other",
-                              child: Text("Other",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Other",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ],
                           onChanged: (val) {
@@ -353,16 +477,24 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             // Uncomment or add validators as needed
                             // FormBuilderValidators.required(),
                           ]),
-                         // customColors.suqarBackgroundColor,
-                          decoration: const InputDecoration(
+                          // customColors.suqarBackgroundColor,
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xFF252525),
+                            fillColor: customColors.suqarBackgroundColor,
                             border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderSide: BorderSide(
+                                color: customColors.suqarBackgroundColor,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
                             ),
                             isDense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 12,
+                            ),
                           ),
                         ),
                       ),
@@ -370,39 +502,133 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                   ),
                 ),
               ),
-              //Rtom
-              CustomTextField(
-                textTitle: "Rtom Name :",
-                isWantEdit: true,
-                onChanged: (val) => _onChanged(val, updatedValues, "Rtom Name"),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-                keyboardType: TextInputType.name,
+              // Rtom Name
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Rtom Name :",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: FormBuilderTextField(
+                          name: "Rtom Name",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: customColors.mainTextColor,
+                          ),
+                          enabled: true, // <-- This is your "isWantEdit: true,"
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: customColors.suqarBackgroundColor,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 12,
+                            ),
+                          ),
+                          onChanged:
+                              (val) =>
+                                  _onChanged(val, updatedValues, "Rtom Name"),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                          keyboardType: TextInputType.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              //Station
-              CustomTextField(
-                textTitle: "Station :",
-                isWantEdit: true,
-                onChanged: (val) => _onChanged(val, updatedValues, "Station"),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-                keyboardType: TextInputType.name,
+
+              // Station
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Station :",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: FormBuilderTextField(
+                          name: "Station",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: customColors.mainTextColor,
+                          ),
+                          enabled: true, // <-- This is your "isWantEdit: true,"
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: customColors.suqarBackgroundColor,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 12,
+                            ),
+                          ),
+                          onChanged:
+                              (val) =>
+                                  _onChanged(val, updatedValues, "Station"),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                          keyboardType: TextInputType.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               // GPS Location Card
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         "Location Set As :",
                         style: TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 12,color: mainTextColor,),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
                       ),
-                      SizedBox(width:10,),
+                      SizedBox(width: 10),
                       Row(
                         children: [
                           Checkbox(
@@ -411,11 +637,18 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                               setState(() {
                                 _isManual = value!;
                                 if (value == true) _isAuto = false;
-                                if (_isAuto) _fetchLocation(); // Fetch location only if auto is true
+                                if (_isAuto)
+                                  _fetchLocation(); // Fetch location only if auto is true
                               });
                             },
                           ),
-                          const Text("Manual",style: TextStyle(fontSize: 12,color: mainTextColor,),),
+                          Text(
+                            "Manual",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
                         ],
                       ),
 
@@ -427,144 +660,189 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                               setState(() {
                                 _isAuto = value!;
                                 if (value == true) _isManual = false;
-                                if (_isAuto) _fetchLocation(); // Fetch location only if auto is true
+                                if (_isAuto)
+                                  _fetchLocation(); // Fetch location only if auto is true
                               });
                             },
                           ),
-                          const Text("Auto",style: TextStyle(fontSize: 12,color: mainTextColor,),),
+                          Text(
+                            "Auto",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
                         ],
                       ),
-
                     ],
                   ),
                 ),
               ),
 
-// Display Location or Manual Entry
+              // Display Location or Manual Entry
               _isManual
                   ? Column(
-                children: [
-                  CustomTextField(
-                    textTitle: "Latitude",
-                    isWantEdit: true,
-                    keyboardType: TextInputType.number,
-                    onChanged: (val) {
-                      _onChanged(val, updatedValues, "Latitude");
-                    },
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.numeric()
-                    ]),
-                  ),
-                  CustomTextField(
-                    textTitle: "Longitude",
-                    isWantEdit: true,
-                    keyboardType: TextInputType.number,
-                    onChanged: (val) {
-                      _onChanged(val, updatedValues, "Longitude");
-                    },
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.numeric()
-                    ]),
-                  ),
-                ],
-              )
-                  : Card(
-                color: suqarBackgroundColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
                     children: [
-                      const Text(
-                        "Location :",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 12,color: mainTextColor,),
+                      CustomTextField(
+                        textTitle: "Latitude",
+                        isWantEdit: true,
+                        keyboardType: TextInputType.number,
+                        onChanged: (val) {
+                          _onChanged(val, updatedValues, "Latitude");
+                        },
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.numeric(),
+                        ]),
                       ),
-                      Spacer(),
-                      Column(
+                      CustomTextField(
+                        textTitle: "Longitude",
+                        isWantEdit: true,
+                        keyboardType: TextInputType.number,
+                        onChanged: (val) {
+                          _onChanged(val, updatedValues, "Longitude");
+                        },
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.numeric(),
+                        ]),
+                      ),
+                    ],
+                  )
+                  : Card(
+                    color: customColors.suqarBackgroundColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
                         children: [
-                          Text("Latitude : ${updatedValues['Latitude'] ?? 'N/A'}",style: TextStyle(fontSize: 12,color: mainTextColor,)),
-                          Text("Longitude : ${updatedValues['Longitude'] ?? 'N/A'}",style: TextStyle(fontSize: 12,color: mainTextColor,)),
+                          Text(
+                            "Location :",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                          Spacer(),
+                          Column(
+                            children: [
+                              Text(
+                                "Latitude : ${updatedValues['Latitude'] ?? 'N/A'}",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                "Longitude : ${updatedValues['Longitude'] ?? 'N/A'}",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 30),
+
+                          if (_isLoading)
+                            const CircularProgressIndicator(), // Show progress indicator when loading
+                          if (_error.isNotEmpty)
+                            Text(
+                              "Error turn on location",
+                              style: const TextStyle(color: Colors.red),
+                            ),
                         ],
                       ),
-                      SizedBox(width:30,),
-
-                      if (_isLoading)
-                        const CircularProgressIndicator(), // Show progress indicator when loading
-                      if (_error.isNotEmpty)
-                        Text(
-                          "Error turn on location",
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
 
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 20, 8.0, 8.0),
                 child: Text(
                   "Genaral Details",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
               //Available
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         "DEG Available :",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(width: 10),
                       Spacer(),
                       Expanded(
-                        child: FormBuilderChoiceChips<String>(
-                          backgroundColor: Color(0xFF252525),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          name: 'Available',
-                          initialValue: updatedValues['Available'],
-                          selectedColor: Colors.lightBlueAccent,
-                          options: const [
-                            FormBuilderChipOption(
-                              value: 'Yes',
-                              avatar: CircleAvatar(child: Text('')),
-                              child: Text(
-                                'Yes',
-                                style: const TextStyle(
-                                  fontSize: 12, // Adjust text size
-                                  color: mainTextColor, // Adjust text color
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            name: 'Available',
+                            initialValue: updatedValues['Available'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: 'Yes',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Yes',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
                                 ),
                               ),
-
-                            ),
-                            FormBuilderChipOption(
-                              value: 'No',
-                              avatar: CircleAvatar(child: Text('')),
-                              child: Text(
-                                'No',
-                                style: const TextStyle(
-                                  fontSize: 12, // Adjust text size
-                                  color: mainTextColor, // Adjust text color
+                              FormBuilderChipOption(
+                                value: 'No',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'No',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                          onChanged: (val) {
-                            setState(() {
-                              _onChanged(val, updatedValues, 'Available');
-                              _areFieldsDisabled = val == 'No'; // Disable fields if 'No' is selected
-                            });
-                          },
+                            ],
+                            onChanged: (val) {
+                              setState(() {
+                                _onChanged(val, updatedValues, 'Available');
+                                _areFieldsDisabled =
+                                    val ==
+                                    'No'; // Disable fields if 'No' is selected
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -573,71 +851,101 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               ),
               //Category
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         "DEG Category :",
                         style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 12, color: mainTextColor),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
                       ),
                       const Spacer(),
                       Expanded(
-                        child: FormBuilderChoiceChips<String>(
-                          backgroundColor:Color(0xFF252525),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          //decoration: const InputDecoration(labelText: 'Type'),
-                          name: 'Category',
-                          initialValue: updatedValues['Category'],
-                          selectedColor: Colors.lightBlueAccent,
-                          options: const [
-                            FormBuilderChipOption(
-                              value: 'Fixed',
-                              avatar: CircleAvatar(child: Text('')),
-                              child: Text(
-                                'Fixed',
-                                style: const TextStyle(
-                                  fontSize: 12, // Adjust text size
-                                  color: mainTextColor, // Adjust text color
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            //decoration: const InputDecoration(labelText: 'Type'),
+                            name: 'Category',
+                            initialValue: updatedValues['Category'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: 'Fixed',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Fixed',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
                                 ),
                               ),
-
-                            ),
-                            FormBuilderChipOption(
-                              value: 'Mobile',
-                              avatar: CircleAvatar(child: Text('')),
-                              child: Text(
-                                'Mobile',
-                                style: const TextStyle(
-                                  fontSize: 12, // Adjust text size
-                                  color:mainTextColor, // Adjust text color
+                              FormBuilderChipOption(
+                                value: 'Mobile',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Mobile',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
                                 ),
                               ),
-
-                            ),
-                            FormBuilderChipOption(
-                              value: 'Portable',
-                              avatar: CircleAvatar(child: Text('')),
-                              child: Text(
-                                'Portable',
-                                style: const TextStyle(
-                                  fontSize: 12, // Adjust text size
-                                  color: mainTextColor, // Adjust text color
+                              FormBuilderChipOption(
+                                value: 'Portable',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Portable',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                          // onChanged: _onChanged,
+                            ],
 
-                          onChanged: _areFieldsDisabled ? null : (val) { // Disable onChanged if fields are disabled
-                            setState(() {
-                              _onChanged(val, updatedValues, 'Category');
-                              print(updatedValues['Category']);
-                            });
-                          },
-                          enabled: !_areFieldsDisabled,
+                            // onChanged: _onChanged,
+                            onChanged:
+                                _areFieldsDisabled
+                                    ? null
+                                    : (val) {
+                                      // Disable onChanged if fields are disabled
+                                      setState(() {
+                                        _onChanged(
+                                          val,
+                                          updatedValues,
+                                          'Category',
+                                        );
+                                        print(updatedValues['Category']);
+                                      });
+                                    },
+                            enabled: !_areFieldsDisabled,
+                          ),
                         ),
                       ),
                     ],
@@ -646,46 +954,82 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               ),
               //Mode
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         "Mode :",
                         style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 12, color: mainTextColor),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
                       ),
                       const Spacer(),
                       Expanded(
-                        child: FormBuilderChoiceChips<String>(
-                          backgroundColor: Color(0xFF252525),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          //decoration: const InputDecoration(labelText: 'Type'),
-                          name: 'Mode',
-                          initialValue: updatedValues['Mode'],
-                          selectedColor: Colors.lightBlueAccent,
-                          options: const [
-                            FormBuilderChipOption(
-                              value: 'A',
-                              child: Text('Auto',style: TextStyle(color: mainTextColor,fontSize: 12),),
-                              // avatar: CircleAvatar(child: Text('')),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
                             ),
-                            FormBuilderChipOption(
-                              value: 'M',
-                              child: Text('Manual',style: TextStyle(color: mainTextColor,fontSize: 12)),
-                              //avatar: CircleAvatar(child: Text('')),
-                            ),
-                          ],
-                          // onChanged: _onChanged,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            //decoration: const InputDecoration(labelText: 'Type'),
+                            name: 'Mode',
+                            initialValue: updatedValues['Mode'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: 'A',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Auto',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                // avatar: CircleAvatar(child: Text('')),
+                              ),
+                              FormBuilderChipOption(
+                                value: 'M',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Manual',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                //avatar: CircleAvatar(child: Text('')),
+                              ),
+                            ],
 
-                          onChanged: _areFieldsDisabled ? null : (val) { // Disable onChanged if fields are disabled
-                            setState(() {
-                              _onChanged(val, updatedValues, 'Mode');
-                              print(updatedValues['Mode']);
-                            });
-                          },
-                          enabled: !_areFieldsDisabled,
+                            // onChanged: _onChanged,
+                            onChanged:
+                                _areFieldsDisabled
+                                    ? null
+                                    : (val) {
+                                      // Disable onChanged if fields are disabled
+                                      setState(() {
+                                        _onChanged(val, updatedValues, 'Mode');
+                                        print(updatedValues['Mode']);
+                                      });
+                                    },
+                            enabled: !_areFieldsDisabled,
+                          ),
                         ),
                       ),
                     ],
@@ -694,58 +1038,88 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               ),
               //Phase
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         "Phase Eng :",
                         style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 12, color: mainTextColor),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
                       ),
                       const Spacer(),
                       Expanded(
-                        child: FormBuilderChoiceChips<String>(
-                          backgroundColor: Color(0xFF252525),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          //decoration: const InputDecoration(labelText: 'Type'),
-                          name: 'Phase Eng',
-                          initialValue: updatedValues['Phase Eng'],
-                          selectedColor: Colors.lightBlueAccent,
-                          options: const [
-                            FormBuilderChipOption(
-                              value: '1',
-                              avatar: CircleAvatar(child: Text('')),
-                              child: Text(
-                                '1',
-                                style: const TextStyle(
-                                  fontSize: 12, // Adjust text size
-                                  color: mainTextColor, // Adjust text color
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            //decoration: const InputDecoration(labelText: 'Type'),
+                            name: 'Phase Eng',
+                            initialValue: updatedValues['Phase Eng'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: '1',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  '1',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
                                 ),
                               ),
-                            ),
-                            FormBuilderChipOption(
-                              value: '3',
-                              avatar: CircleAvatar(child: Text('')),
-                              child: Text(
-                                '3',
-                                style: const TextStyle(
-                                  fontSize: 12, // Adjust text size
-                                  color: mainTextColor, // Adjust text color
+                              FormBuilderChipOption(
+                                value: '3',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  '3',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                          // onChanged: _onChanged,
+                            ],
 
-                          onChanged: _areFieldsDisabled ? null : (val) { // Disable onChanged if fields are disabled
-                            setState(() {
-                              _onChanged(val, updatedValues, 'Phase Eng');
-                              print(updatedValues['Phase Eng']);
-                            });
-                          },
-                          enabled: !_areFieldsDisabled,
+                            // onChanged: _onChanged,
+                            onChanged:
+                                _areFieldsDisabled
+                                    ? null
+                                    : (val) {
+                                      // Disable onChanged if fields are disabled
+                                      setState(() {
+                                        _onChanged(
+                                          val,
+                                          updatedValues,
+                                          'Phase Eng',
+                                        );
+                                        print(updatedValues['Phase Eng']);
+                                      });
+                                    },
+                            enabled: !_areFieldsDisabled,
+                          ),
                         ),
                       ),
                     ],
@@ -756,7 +1130,14 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "Year of Manufacture :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Year of Manufacture"),
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(
+                          val,
+                          updatedValues,
+                          "Year of Manufacture",
+                        ),
                 validator: (value) {
                   if (_areFieldsDisabled) {
                     return null; // Disable validation when fields are disabled
@@ -790,7 +1171,11 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "Year of Install :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Year of Install"),
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) =>
+                            _onChanged(val, updatedValues, "Year of Install"),
                 validator: (value) {
                   if (_areFieldsDisabled) {
                     return null; // Disable validation when fields are disabled
@@ -823,82 +1208,128 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               //Set Capacity
               CustomTextField(
                 textTitle: "Set Capacity(kVA) :",
-                isWantEdit: !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Set Cap"),
-                validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                isWantEdit:
+                    !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(val, updatedValues, "Set Cap"),
+                validator:
+                    _areFieldsDisabled
+                        ? null
+                        : FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                 keyboardType: TextInputType.number,
-
               ),
 
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 20, 8.0, 8.0),
                 child: Text(
                   "Generator Specifications",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
               //Brand Alt
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Alternator Brand :",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      const SizedBox(width: 10), // Add some space between the label and the dropdown
+                      const SizedBox(
+                        width: 10,
+                      ), // Add some space between the label and the dropdown
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: brandAlt.contains(updatedValues["Brand Alt"])
-                              ? updatedValues["Brand Alt"]
-                              : null, // Default value
+                          value:
+                              brandAlt.contains(updatedValues["Brand Alt"])
+                                  ? updatedValues["Brand Alt"]
+                                  : null, // Default value
                           items: [
-                            ...brandAlt.where((String value) => value != "Other").map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 12, color: mainTextColor),),
-                              );
-                            }).toList(),
-                            const DropdownMenuItem<String>(
+                            ...brandAlt
+                                .where((String value) => value != "Other")
+                                .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                })
+                                .toList(),
+                            DropdownMenuItem<String>(
                               value: "Other",
-                              child: Text("Other",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Other",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ],
-                          onChanged: _areFieldsDisabled ? null : (val) {
-                            if (val == "Other") {
-                              _showCustomBrandDialog(
-                                key: "Brand Alt",
-                                brandList: brandAlt,
-                                formData: updatedValues,
-                                formKey: "Brand Alt",
-                              );
-                            } else {
-                              _onChanged(val, updatedValues, "Brand Alt");
-                            }
-                          },
-                          validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                            // Uncomment or add validators as needed
-                            FormBuilderValidators.required(),
-                          ]),
-                          dropdownColor: Colors.grey,
-                          decoration: const InputDecoration(
+                          onChanged:
+                              _areFieldsDisabled
+                                  ? null
+                                  : (val) {
+                                    if (val == "Other") {
+                                      _showCustomBrandDialog(
+                                        key: "Brand Alt",
+                                        brandList: brandAlt,
+                                        formData: updatedValues,
+                                        formKey: "Brand Alt",
+                                      );
+                                    } else {
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "Brand Alt",
+                                      );
+                                    }
+                                  },
+                          validator:
+                              _areFieldsDisabled
+                                  ? null
+                                  : FormBuilderValidators.compose([
+                                    // Uncomment or add validators as needed
+                                    FormBuilderValidators.required(),
+                                  ]),
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xFF252525),
-                            isDense: true, // Reduce vertical padding of the field
-                            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                            fillColor: customColors.suqarBackgroundColor,
+                            isDense:
+                                true, // Reduce vertical padding of the field
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 10,
+                            ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
                             ), // Add a border around the dropdown
                           ),
                         ),
@@ -910,83 +1341,132 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               //Model Alt
               CustomTextField(
                 textTitle: "Alternator Model :",
-                isWantEdit: !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Model Alt"),
-                validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                isWantEdit:
+                    !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(val, updatedValues, "Model Alt"),
+                validator:
+                    _areFieldsDisabled
+                        ? null
+                        : FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                 keyboardType: TextInputType.name,
               ),
               //Serial Alt
               CustomTextField(
                 textTitle: "Alternator serial :",
-                isWantEdit: !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Serial Alt"),
-                validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                isWantEdit:
+                    !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(val, updatedValues, "Serial Alt"),
+                validator:
+                    _areFieldsDisabled
+                        ? null
+                        : FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                 keyboardType: TextInputType.number,
               ),
 
               //Brand Eng
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Engine Brand :",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      const SizedBox(width:10,), // Add some space between the label and the dropdown
+                      const SizedBox(
+                        width: 10,
+                      ), // Add some space between the label and the dropdown
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: brandeng.contains(updatedValues["Brand Eng"])
-                              ? updatedValues["Brand Eng"]
-                              : null, // Default value
+                          value:
+                              brandeng.contains(updatedValues["Brand Eng"])
+                                  ? updatedValues["Brand Eng"]
+                                  : null, // Default value
                           items: [
-                            ...brandeng.where((String value) => value != "Other").map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 12, color: mainTextColor),),
-                              );
-                            }).toList(),
-                            const DropdownMenuItem<String>(
+                            ...brandeng
+                                .where((String value) => value != "Other")
+                                .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                })
+                                .toList(),
+                            DropdownMenuItem<String>(
                               value: "Other",
-                              child: Text("Other",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Other",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ],
-                          onChanged: _areFieldsDisabled ? null : (val){
-                            if (val == "Other") {
-                              _showCustomBrandDialog(
-                                key: "Brand Eng",
-                                brandList: brandeng,
-                                formData: updatedValues,
-                                formKey: "Brand Eng",
-                              );
-                            } else {
-                              _onChanged(val, updatedValues, "Brand Eng");
-                            }
-                          },
-                          validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                          ]),
-                          dropdownColor: Colors.grey,
-                          decoration: const InputDecoration(
+                          onChanged:
+                              _areFieldsDisabled
+                                  ? null
+                                  : (val) {
+                                    if (val == "Other") {
+                                      _showCustomBrandDialog(
+                                        key: "Brand Eng",
+                                        brandList: brandeng,
+                                        formData: updatedValues,
+                                        formKey: "Brand Eng",
+                                      );
+                                    } else {
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "Brand Eng",
+                                      );
+                                    }
+                                  },
+                          validator:
+                              _areFieldsDisabled
+                                  ? null
+                                  : FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                  ]),
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xFF252525),
+                            fillColor: customColors.suqarBackgroundColor,
                             border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
                             ),
                             isDense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 12,
+                            ),
                           ),
                         ),
                       ),
@@ -997,82 +1477,131 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               //Model eng
               CustomTextField(
                 textTitle: "Engine Model :",
-                isWantEdit: !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Model Eng"),
-                validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                isWantEdit:
+                    !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(val, updatedValues, "Model Eng"),
+                validator:
+                    _areFieldsDisabled
+                        ? null
+                        : FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                 keyboardType: TextInputType.name,
               ),
               //Serial Eng
               CustomTextField(
                 textTitle: "Engine Serial :",
-                isWantEdit: !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Serial Eng"),
-                validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                isWantEdit:
+                    !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(val, updatedValues, "Serial Eng"),
+                validator:
+                    _areFieldsDisabled
+                        ? null
+                        : FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                 keyboardType: TextInputType.number,
               ),
 
               //Brand Set
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Set Brand :",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      const SizedBox(width:10,), // Add some space between the label and the dropdown
+                      const SizedBox(
+                        width: 10,
+                      ), // Add some space between the label and the dropdown
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: brandset.contains(updatedValues["Brand Set"])
-                              ? updatedValues["Brand Set"]
-                              : null, // Default value
+                          value:
+                              brandset.contains(updatedValues["Brand Set"])
+                                  ? updatedValues["Brand Set"]
+                                  : null, // Default value
                           items: [
-                            ...brandset.where((String value) => value != "Other").map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 12, color: mainTextColor),),
-                              );
-                            }).toList(),
-                            const DropdownMenuItem<String>(
+                            ...brandset
+                                .where((String value) => value != "Other")
+                                .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                })
+                                .toList(),
+                            DropdownMenuItem<String>(
                               value: "Other",
-                              child: Text("Other",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Other",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ],
-                          onChanged: _areFieldsDisabled ? null : (val) {
-                            if (val == "Other") {
-                              _showCustomBrandDialog(
-                                key: "Brand Set",
-                                brandList: brandset,
-                                formData: updatedValues,
-                                formKey: "Brand Set",
-                              );
-                            } else {
-                              _onChanged(val, updatedValues, "Brand Set");
-                            }
-                          },
-                          validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                          ]),
-                          dropdownColor: Colors.grey,
-                          decoration: const InputDecoration(
+                          onChanged:
+                              _areFieldsDisabled
+                                  ? null
+                                  : (val) {
+                                    if (val == "Other") {
+                                      _showCustomBrandDialog(
+                                        key: "Brand Set",
+                                        brandList: brandset,
+                                        formData: updatedValues,
+                                        formKey: "Brand Set",
+                                      );
+                                    } else {
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "Brand Set",
+                                      );
+                                    }
+                                  },
+                          validator:
+                              _areFieldsDisabled
+                                  ? null
+                                  : FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                  ]),
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xFF252525),
+                            fillColor: customColors.suqarBackgroundColor,
                             isDense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 12,
+                            ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
                             ),
                           ),
                         ),
@@ -1084,111 +1613,177 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               //Model Set
               CustomTextField(
                 textTitle: "Set Model :",
-                isWantEdit: !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Model Set"),
-                validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                isWantEdit:
+                    !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(val, updatedValues, "Model Set"),
+                validator:
+                    _areFieldsDisabled
+                        ? null
+                        : FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                 keyboardType: TextInputType.name,
               ),
               //Serial Set
               CustomTextField(
                 textTitle: "Set Serial :",
-                isWantEdit: !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
-                onChanged: _areFieldsDisabled ? null : (val) => _onChanged(val, updatedValues, "Serial Set"),
-                validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+                isWantEdit:
+                    !_areFieldsDisabled, // Disable the field if _areFieldsDisabled is true
+                onChanged:
+                    _areFieldsDisabled
+                        ? null
+                        : (val) => _onChanged(val, updatedValues, "Serial Set"),
+                validator:
+                    _areFieldsDisabled
+                        ? null
+                        : FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
                 keyboardType: TextInputType.number,
               ),
 
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 20, 8.0, 8.0),
                 child: Text(
                   "Controller Details",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
               //Controller
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Controller Brand :",
                         style: TextStyle(
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      const SizedBox(width:10,), // Add some space between the label and the dropdown
+                      const SizedBox(
+                        width: 10,
+                      ), // Add some space between the label and the dropdown
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: contBrand.contains(updatedValues["Controller"])
-                              ? updatedValues["Controller"]
-                              : null, // Default value
+                          value:
+                              contBrand.contains(updatedValues["Controller"])
+                                  ? updatedValues["Controller"]
+                                  : null, // Default value
                           items: [
-                            ...contBrand.where((String value) => value != "Other").map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 12, color: mainTextColor),),
-                              );
-                            }).toList(),
-                            const DropdownMenuItem<String>(
+                            ...contBrand
+                                .where((String value) => value != "Other")
+                                .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                })
+                                .toList(),
+                            DropdownMenuItem<String>(
                               value: "Other",
-                              child: Text("Other",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Other",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
-                            const DropdownMenuItem<String>(
+                            DropdownMenuItem<String>(
                               value: "Not Available",
-                              child: Text("Not Available",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Not Available",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ],
-                          onChanged: _areFieldsDisabled ? null : (val) {
-                            if (val == "Not Available") {
-                              setState(() {
-                                isControllerModelEnabled = false;
-                              });
-                              _onChanged(null, updatedValues, "Controller Model"); // Clear the model value if disabled
-                            } else {
-                              setState(() {
-                                isControllerModelEnabled = true;
-                              });
-                              _onChanged(val, updatedValues, "Controller");
-                            }
+                          onChanged:
+                              _areFieldsDisabled
+                                  ? null
+                                  : (val) {
+                                    if (val == "Not Available") {
+                                      setState(() {
+                                        isControllerModelEnabled = false;
+                                      });
+                                      _onChanged(
+                                        null,
+                                        updatedValues,
+                                        "Controller Model",
+                                      ); // Clear the model value if disabled
+                                    } else {
+                                      setState(() {
+                                        isControllerModelEnabled = true;
+                                      });
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "Controller",
+                                      );
+                                    }
 
-                            if (val == "Other") {
-                              _showCustomBrandDialog(
-                                key: "Controller",
-                                brandList: contBrand,
-                                formData: updatedValues,
-                                formKey: "Controller",
-                              );
-                            } else {
-                              _onChanged(val, updatedValues, "Controller");
-                            }
-                          },
-                          validator: _areFieldsDisabled ? null : FormBuilderValidators.compose([
-                            // Uncomment or add validators as needed
-                            //FormBuilderValidators.required(),
-                          ]),
-                          dropdownColor: Colors.grey,
-                          decoration: const InputDecoration(
+                                    if (val == "Other") {
+                                      _showCustomBrandDialog(
+                                        key: "Controller",
+                                        brandList: contBrand,
+                                        formData: updatedValues,
+                                        formKey: "Controller",
+                                      );
+                                    } else {
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "Controller",
+                                      );
+                                    }
+                                  },
+                          validator:
+                              _areFieldsDisabled
+                                  ? null
+                                  : FormBuilderValidators.compose([
+                                    // Uncomment or add validators as needed
+                                    //FormBuilderValidators.required(),
+                                  ]),
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xFF252525),
+                            fillColor: customColors.suqarBackgroundColor,
                             isDense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 12,
+                            ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
                             ),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -1197,23 +1792,28 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "Controller Model :",
                 isWantEdit: isControllerModelEnabled,
-                onChanged: (val) =>
-                    _onChanged(val, updatedValues, "Controller Model"),
-                validator: isControllerModelEnabled
-                    ? FormBuilderValidators.compose([
-                  //FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    (val) => _onChanged(val, updatedValues, "Controller Model"),
+                validator:
+                    isControllerModelEnabled
+                        ? FormBuilderValidators.compose([
+                          //FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.name,
-                enabled: isControllerModelEnabled, // This will disable the field if false
+                enabled:
+                    isControllerModelEnabled, // This will disable the field if false
               ),
 
-
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 20, 8.0, 8.0),
                 child: Text(
                   "Tank Details",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
@@ -1221,64 +1821,108 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "Day Tank Capacity(L) :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Tank Prime")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? FormBuilderValidators.compose([
-                  // FormBuilderValidators.required(),
-                  // Add other validators here if needed
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) => _onChanged(val, updatedValues, "Tank Prime")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? FormBuilderValidators.compose([
+                          // FormBuilderValidators.required(),
+                          // Add other validators here if needed
+                        ])
+                        : null,
                 keyboardType: TextInputType.number,
-                enabled: !_areFieldsDisabled, // Ensure this field respects the disabled state
+                enabled:
+                    !_areFieldsDisabled, // Ensure this field respects the disabled state
               ),
-
-
 
               //Bulk tank Available
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         "Bulk Tank Available :",
                         style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 12, color: mainTextColor),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
                       ),
                       const Spacer(),
                       Expanded(
-                        child: FormBuilderChoiceChips<String>(
-                          backgroundColor: Color(0xFF252525),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          name: 'Bulk Tank',
-                          initialValue: updatedValues['Bulk Tank'],
-                          selectedColor: Colors.lightBlueAccent,
-                          options: const [
-                            FormBuilderChipOption(
-                              value: '1',
-                              child: Text('Yes',style: TextStyle(fontSize: 12,color: mainTextColor),),
-
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
                             ),
-                            FormBuilderChipOption(
-                              value: '0',
-                              child: Text('No',style: TextStyle(fontSize: 12,color: mainTextColor)),
-                            ),
-                          ],
-                          onChanged: !_areFieldsDisabled ? (val) {
-                            setState(() {
-                              if (val == '0') {
-                                isDayTankSizeEnabled = false;
-                                _onChanged(null, updatedValues, 'Day Tank Size');
-                              } else {
-                                isDayTankSizeEnabled = true;
-                              }
-                              _onChanged(val, updatedValues, 'Day Tank');
-                            });
-                          } : null, // Disable onChanged if fields are disabled
-                          enabled: !_areFieldsDisabled, // Disable the chip if fields are disabled
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            name: 'Bulk Tank',
+                            initialValue: updatedValues['Bulk Tank'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: '1',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Yes',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                              ),
+                              FormBuilderChipOption(
+                                value: '0',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'No',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            onChanged:
+                                !_areFieldsDisabled
+                                    ? (val) {
+                                      setState(() {
+                                        if (val == '0') {
+                                          isDayTankSizeEnabled = false;
+                                          _onChanged(
+                                            null,
+                                            updatedValues,
+                                            'Day Tank Size',
+                                          );
+                                        } else {
+                                          isDayTankSizeEnabled = true;
+                                        }
+                                        _onChanged(
+                                          val,
+                                          updatedValues,
+                                          'Day Tank',
+                                        );
+                                      });
+                                    }
+                                    : null, // Disable onChanged if fields are disabled
+                            enabled:
+                                !_areFieldsDisabled, // Disable the chip if fields are disabled
+                          ),
                         ),
                       ),
                     ],
@@ -1286,114 +1930,168 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                 ),
               ),
 
-
               //Bulk Tank Size(L)
               CustomTextField(
                 textTitle: "Bulk Tank Size(L) :",
                 isWantEdit: !_areFieldsDisabled && isDayTankSizeEnabled,
-                onChanged: (!_areFieldsDisabled && isDayTankSizeEnabled)
-                    ? (val) => _onChanged(val, updatedValues, "Bulk Tank Size")
-                    : null,
-                validator: (!_areFieldsDisabled && isDayTankSizeEnabled)
-                    ? FormBuilderValidators.compose([
-                  // FormBuilderValidators.required(),
-                  // Add other validators here if needed
-                ])
-                    : null,
+                onChanged:
+                    (!_areFieldsDisabled && isDayTankSizeEnabled)
+                        ? (val) =>
+                            _onChanged(val, updatedValues, "Bulk Tank Size")
+                        : null,
+                validator:
+                    (!_areFieldsDisabled && isDayTankSizeEnabled)
+                        ? FormBuilderValidators.compose([
+                          // FormBuilderValidators.required(),
+                          // Add other validators here if needed
+                        ])
+                        : null,
                 keyboardType: TextInputType.number,
-                enabled: !_areFieldsDisabled && isDayTankSizeEnabled, // Ensure this field respects both states
+                enabled:
+                    !_areFieldsDisabled &&
+                    isDayTankSizeEnabled, // Ensure this field respects both states
               ),
 
-
-
-
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 20, 8.0, 8.0),
                 child: Text(
                   "ATS and Cabling",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
               //Brand ATS
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "ATS Brand :",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      const  SizedBox(width:10,), // Add some space between the label and the dropdown
+                      const SizedBox(
+                        width: 10,
+                      ), // Add some space between the label and the dropdown
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: brandAts.contains(updatedValues["BrandATS"])
-                              ? updatedValues["BrandATS"]
-                              : null, // Default value
+                          value:
+                              brandAts.contains(updatedValues["BrandATS"])
+                                  ? updatedValues["BrandATS"]
+                                  : null, // Default value
                           items: [
-                            ...brandAts.where((String value) => value != "Other").map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 12, color: mainTextColor),),
-                              );
-                            }).toList(),
-                            const DropdownMenuItem<String>(
+                            ...brandAts
+                                .where((String value) => value != "Other")
+                                .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                })
+                                .toList(),
+                            DropdownMenuItem<String>(
                               value: "Other",
-                              child: Text("Other",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Other",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
-                            const DropdownMenuItem<String>(
+                            DropdownMenuItem<String>(
                               value: "Not Available",
-                              child: Text("Not Available",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Not Available",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ],
-                          onChanged: !_areFieldsDisabled
-                              ? (val) {
-                            setState(() {
-                              if (val == "Not Available") {
-                                isAtsFieldsEnabled = false;
-                                // Clear the values and validators for the disabled fields
-                                _onChanged(null, updatedValues, "Rating ATS");
-                                _onChanged(null, updatedValues, "Model ATS");
-                              } else {
-                                isAtsFieldsEnabled = true;
-                              }
-                              _onChanged(val, updatedValues, "BrandATS");
-                            });
+                          onChanged:
+                              !_areFieldsDisabled
+                                  ? (val) {
+                                    setState(() {
+                                      if (val == "Not Available") {
+                                        isAtsFieldsEnabled = false;
+                                        // Clear the values and validators for the disabled fields
+                                        _onChanged(
+                                          null,
+                                          updatedValues,
+                                          "Rating ATS",
+                                        );
+                                        _onChanged(
+                                          null,
+                                          updatedValues,
+                                          "Model ATS",
+                                        );
+                                      } else {
+                                        isAtsFieldsEnabled = true;
+                                      }
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "BrandATS",
+                                      );
+                                    });
 
-                            if (val == "Other") {
-                              _showCustomBrandDialog(
-                                key: "BrandATS",
-                                brandList: brandAts,
-                                formData: updatedValues,
-                                formKey: "BrandATS",
-                              );
-                            } else {
-                              _onChanged(val, updatedValues, "BrandATS");
-                            }
-                          }
-                              : null, // Disable onChanged if _areFieldsDisabled is true
-                          validator: !_areFieldsDisabled
-                              ? FormBuilderValidators.compose([
-                            // Uncomment or add validators as needed
-                            // FormBuilderValidators.required(),
-                          ])
-                              : null, // Disable validators if _areFieldsDisabled is true
-                          dropdownColor: Colors.grey,
-                          decoration: const InputDecoration(
+                                    if (val == "Other") {
+                                      _showCustomBrandDialog(
+                                        key: "BrandATS",
+                                        brandList: brandAts,
+                                        formData: updatedValues,
+                                        formKey: "BrandATS",
+                                      );
+                                    } else {
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "BrandATS",
+                                      );
+                                    }
+                                  }
+                                  : null, // Disable onChanged if _areFieldsDisabled is true
+                          validator:
+                              !_areFieldsDisabled
+                                  ? FormBuilderValidators.compose([
+                                    // Uncomment or add validators as needed
+                                    // FormBuilderValidators.required(),
+                                  ])
+                                  : null, // Disable validators if _areFieldsDisabled is true
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xFF252525),
+                            fillColor: customColors.suqarBackgroundColor,
                             isDense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 12,
+                            ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
                             ),
                           ),
                           disabledHint: const Text(""),
@@ -1408,14 +2106,16 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "ATS Rating(A) :",
                 isWantEdit: !_areFieldsDisabled && isAtsFieldsEnabled,
-                onChanged: !_areFieldsDisabled && isAtsFieldsEnabled
-                    ? (val) => _onChanged(val, updatedValues, "Rating ATS")
-                    : null,
-                validator: !_areFieldsDisabled && isAtsFieldsEnabled
-                    ? FormBuilderValidators.compose([
-                  // FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled && isAtsFieldsEnabled
+                        ? (val) => _onChanged(val, updatedValues, "Rating ATS")
+                        : null,
+                validator:
+                    !_areFieldsDisabled && isAtsFieldsEnabled
+                        ? FormBuilderValidators.compose([
+                          // FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.number,
                 enabled: !_areFieldsDisabled && isAtsFieldsEnabled,
               ),
@@ -1424,30 +2124,36 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "ATS Model :",
                 isWantEdit: !_areFieldsDisabled && isAtsFieldsEnabled,
-                onChanged: !_areFieldsDisabled && isAtsFieldsEnabled
-                    ? (val) => _onChanged(val, updatedValues, "Model ATS")
-                    : null,
-                validator: !_areFieldsDisabled && isAtsFieldsEnabled
-                    ? FormBuilderValidators.compose([
-                  // FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled && isAtsFieldsEnabled
+                        ? (val) => _onChanged(val, updatedValues, "Model ATS")
+                        : null,
+                validator:
+                    !_areFieldsDisabled && isAtsFieldsEnabled
+                        ? FormBuilderValidators.compose([
+                          // FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.name,
-                enabled: !_areFieldsDisabled && isAtsFieldsEnabled, // Ensure this field respects the enabled state
+                enabled:
+                    !_areFieldsDisabled &&
+                    isAtsFieldsEnabled, // Ensure this field respects the enabled state
               ),
 
               //Feeder Cable
               CustomTextField(
                 textTitle: "Feeder Cable Size(mm^2) :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Feeder Size")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) => _onChanged(val, updatedValues, "Feeder Size")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.number,
               ),
 
@@ -1455,23 +2161,28 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "MCCB Rating(A) :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Rating MCCB")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) => _onChanged(val, updatedValues, "Rating MCCB")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.number,
               ),
 
-
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 20, 8.0, 8.0),
                 child: Text(
                   "Battery Details",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
@@ -1479,79 +2190,113 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "Battery Count :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Battery Count")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) =>
+                            _onChanged(val, updatedValues, "Battery Count")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.number,
               ),
 
               //Bat Brand
               Card(
-                color: suqarBackgroundColor,
+                color: customColors.suqarBackgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Battery Brand :",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12,
-                          color: mainTextColor,
+                          color: customColors.mainTextColor,
                         ),
                       ),
-                      const SizedBox(width:10,), // Add some space between the label and the dropdown
+                      const SizedBox(
+                        width: 10,
+                      ), // Add some space between the label and the dropdown
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: batBrand.contains(updatedValues["Battery Brand"])
-                              ? updatedValues["Battery Brand"]
-                              : null, // Default value
+                          value:
+                              batBrand.contains(updatedValues["Battery Brand"])
+                                  ? updatedValues["Battery Brand"]
+                                  : null, // Default value
                           items: [
-                            ...batBrand.where((String value) => value != "Other").map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 12, color: mainTextColor),),
-                              );
-                            }).toList(),
-                            const DropdownMenuItem<String>(
+                            ...batBrand
+                                .where((String value) => value != "Other")
+                                .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: customColors.mainTextColor,
+                                      ),
+                                    ),
+                                  );
+                                })
+                                .toList(),
+                            DropdownMenuItem<String>(
                               value: "Other",
-                              child: Text("Other",style: const TextStyle(fontSize: 12, color: mainTextColor),),
+                              child: Text(
+                                "Other",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
                             ),
                           ],
-                          onChanged: !_areFieldsDisabled
-                              ? (val) {
-                            if (val == "Other") {
-                              _showCustomBrandDialog(
-                                key: "Battery Brand",
-                                brandList: batBrand,
-                                formData: updatedValues,
-                                formKey: "Battery Brand",
-                              );
-                            } else {
-                              _onChanged(val, updatedValues, "Battery Brand");
-                            }
-                          }
-                              : null, // Disable onChanged if _areFieldsDisabled is true
-                          validator: !_areFieldsDisabled
-                              ? FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                          ])
-                              : null, // Disable validators if _areFieldsDisabled is true
-                          dropdownColor: Colors.grey,
-                          decoration: const InputDecoration(
+                          onChanged:
+                              !_areFieldsDisabled
+                                  ? (val) {
+                                    if (val == "Other") {
+                                      _showCustomBrandDialog(
+                                        key: "Battery Brand",
+                                        brandList: batBrand,
+                                        formData: updatedValues,
+                                        formKey: "Battery Brand",
+                                      );
+                                    } else {
+                                      _onChanged(
+                                        val,
+                                        updatedValues,
+                                        "Battery Brand",
+                                      );
+                                    }
+                                  }
+                                  : null, // Disable onChanged if _areFieldsDisabled is true
+                          validator:
+                              !_areFieldsDisabled
+                                  ? FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                  ])
+                                  : null, // Disable validators if _areFieldsDisabled is true
+                          dropdownColor: customColors.suqarBackgroundColor,
+                          decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color(0xFF252525),
+                            fillColor: customColors.suqarBackgroundColor,
                             isDense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                              horizontal: 12,
+                            ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
                             ),
                           ),
                           disabledHint: const Text(""),
@@ -1566,75 +2311,85 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               CustomTextField(
                 textTitle: "Battery Capacity(Ah) :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Battery Capacity")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) =>
+                            _onChanged(val, updatedValues, "Battery Capacity")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.number,
               ),
 
-
-              const Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 20, 8.0, 8.0),
                 child: Text(
                   "Service Provider",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: mainTextColor),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: customColors.mainTextColor,
+                  ),
                 ),
               ),
 
               CustomTextField(
                 textTitle: "Local Agent :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Local Agent")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) => _onChanged(val, updatedValues, "Local Agent")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.name,
               ),
 
               CustomTextField(
                 textTitle: "Agent Address :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Agent Addr")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ])
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) => _onChanged(val, updatedValues, "Agent Addr")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ])
+                        : null,
                 keyboardType: TextInputType.name,
               ),
 
               CustomTextField(
                 textTitle: "Agent Telephone :",
                 isWantEdit: !_areFieldsDisabled,
-                onChanged: !_areFieldsDisabled
-                    ? (val) => _onChanged(val, updatedValues, "Agent Tel")
-                    : null,
-                validator: !_areFieldsDisabled
-                    ? (value) {
-                  if (value == null || value.isEmpty) {
-                    return null; // No validation error if the field is empty
-                  }
-                  if (value.length < 10) {
-                    return 'Please enter between\n 1 and 10 digits';
-                  }
-                  return null; // Valid input
-                }
-                    : null,
+                onChanged:
+                    !_areFieldsDisabled
+                        ? (val) => _onChanged(val, updatedValues, "Agent Tel")
+                        : null,
+                validator:
+                    !_areFieldsDisabled
+                        ? (value) {
+                          if (value == null || value.isEmpty) {
+                            return null; // No validation error if the field is empty
+                          }
+                          if (value.length < 10) {
+                            return 'Please enter between\n 1 and 10 digits';
+                          }
+                          return null; // Valid input
+                        }
+                        : null,
                 keyboardType: TextInputType.number,
               ),
-
-
 
               // Center(
               //   child: Text(
@@ -1677,23 +2432,11 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
               //     ),
               //   ),
               // ),
-
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                      WidgetStatePropertyAll(mainTextColor),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6), // Customize the radius
-                        ),
-                      ),
-
-
-                    ),
                     onPressed: () {
                       if (_formKey.currentState!.saveAndValidate()) {
                         print(updatedValues.toString());
@@ -1709,10 +2452,14 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                         // );
                       }
                     },
-                    child: const Text(
-                      'Submit',
-                      style: TextStyle(color: Color.fromARGB(255, 122, 76, 146)),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          8,
+                        ), // Adjust the value for roundness
+                      ),
                     ),
+                    child: Text('Submit'),
                   ),
                 ],
               ),
@@ -1723,17 +2470,17 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
     );
   }
 
-// Map<String, dynamic> _getEditedFields(
-//     Map<String, dynamic> updatedGeneratorDetails) {
-//   final editedFields = <String, dynamic>{};
-//   updatedGeneratorDetails.forEach((key, value) {
-//     if (originalValues[key] != value) {
-//       editedFields[key] = value;
-//     }
-//   });
-//   print(editedFields.toString());
-//   return editedFields;
-// }
+  // Map<String, dynamic> _getEditedFields(
+  //     Map<String, dynamic> updatedGeneratorDetails) {
+  //   final editedFields = <String, dynamic>{};
+  //   updatedGeneratorDetails.forEach((key, value) {
+  //     if (originalValues[key] != value) {
+  //       editedFields[key] = value;
+  //     }
+  //   });
+  //   print(editedFields.toString());
+  //   return editedFields;
+  // }
 }
 
 class CustomTextField extends StatelessWidget {
@@ -1756,8 +2503,10 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
-      color: suqarBackgroundColor,
+      color: customColors.suqarBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -1765,22 +2514,39 @@ class CustomTextField extends StatelessWidget {
           children: [
             Text(
               textTitle,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12,color: mainTextColor),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+                color: customColors.mainTextColor,
+              ),
             ),
-            SizedBox(width:10,),
+            SizedBox(width: 10),
             Expanded(
               child: FormBuilderTextField(
-                name: textTitle, style: TextStyle(fontSize: 12,color: mainTextColor),
+                name: textTitle,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: customColors.mainTextColor,
+                ),
                 enabled: isWantEdit,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   filled: true, // Enables background color
-                  fillColor: Color(0xFF252525), // Background color of the input field
+                  fillColor:
+                      customColors
+                          .suqarBackgroundColor, // Background color of the input field
                   border: OutlineInputBorder(
-                    borderSide: BorderSide.none, // Removes the border
-                    borderRadius: BorderRadius.all(Radius.circular(5)), // Optional: Rounded corners
+                    borderSide: BorderSide(
+                      color: customColors.mainTextColor,
+                    ), // Removes the border
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ), // Optional: Rounded corners
                   ),
                   isDense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
                   // Adjust padding if needed
                 ),
                 onChanged: onChanged,
@@ -1788,7 +2554,6 @@ class CustomTextField extends StatelessWidget {
                 keyboardType: keyboardType,
 
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-
               ),
             ),
           ],
