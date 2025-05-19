@@ -618,3 +618,299 @@ class _HttpGeneratorGetPostPageState
 //       ),
 //     );
 // }
+           Spacer(),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            name: 'Available',
+                            initialValue: updatedValues['Available'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: 'Yes',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Yes',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
+                                ),
+                              ),
+                              FormBuilderChipOption(
+                                value: 'No',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'No',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
+                                ),
+                              ),
+                            ],
+                            onChanged: (val) {
+                              setState(() {
+                                _onChanged(val, updatedValues, 'Available');
+                                _areFieldsDisabled =
+                                    val ==
+                                    'No'; // Disable fields if 'No' is selected
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              //Category
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "DEG Category :",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            //decoration: const InputDecoration(labelText: 'Type'),
+                            name: 'Category',
+                            initialValue: updatedValues['Category'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: 'Fixed',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Fixed',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
+                                ),
+                              ),
+                              FormBuilderChipOption(
+                                value: 'Mobile',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Mobile',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
+                                ),
+                              ),
+                              FormBuilderChipOption(
+                                value: 'Portable',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Portable',
+                                  style: TextStyle(
+                                    fontSize: 12, // Adjust text size
+                                    color:
+                                        customColors
+                                            .mainTextColor, // Adjust text color
+                                  ),
+                                ),
+                              ),
+                            ],
+
+                            // onChanged: _onChanged,
+                            onChanged:
+                                _areFieldsDisabled
+                                    ? null
+                                    : (val) {
+                                      // Disable onChanged if fields are disabled
+                                      setState(() {
+                                        _onChanged(
+                                          val,
+                                          updatedValues,
+                                          'Category',
+                                        );
+                                        print(updatedValues['Category']);
+                                      });
+                                    },
+                            enabled: !_areFieldsDisabled,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              //Mode
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Mode :",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            //decoration: const InputDecoration(labelText: 'Type'),
+                            name: 'Mode',
+                            initialValue: updatedValues['Mode'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: 'A',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Auto',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                // avatar: CircleAvatar(child: Text('')),
+                              ),
+                              FormBuilderChipOption(
+                                value: 'M',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  'Manual',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                //avatar: CircleAvatar(child: Text('')),
+                              ),
+                            ],
+
+                            // onChanged: _onChanged,
+                            onChanged:
+                                _areFieldsDisabled
+                                    ? null
+                                    : (val) {
+                                      // Disable onChanged if fields are disabled
+                                      setState(() {
+                                        _onChanged(val, updatedValues, 'Mode');
+                                        print(updatedValues['Mode']);
+                                      });
+                                    },
+                            enabled: !_areFieldsDisabled,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              //Phase
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Phase Eng :",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: customColors.suqarBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Always visible border color
+                              width: 2,
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: FormBuilderChoiceChips<String>(
+                            backgroundColor: customColors.suqarBackgroundColor,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            //decoration: const InputDecoration(labelText: 'Type'),
+                            name: 'Phase Eng',
+                            initialValue: updatedValues['Phase Eng'],
+                            selectedColor: Colors.lightBlueAccent,
+                            options: [
+                              FormBuilderChipOption(
+                                value: '1',
+                                avatar: const CircleAvatar(child: Text('')),
+                                child: Text(
+                                  '1',
