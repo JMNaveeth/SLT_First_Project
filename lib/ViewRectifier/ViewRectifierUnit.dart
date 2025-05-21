@@ -134,7 +134,7 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
                     value.toString(),
                     widget.searchQuery,
                     customColors.suqarBackgroundColor,
-                    customColors.hinttColor,
+                    highlightColor,
                   ),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -243,7 +243,7 @@ class _ViewRectifierUnitState extends State<ViewRectifierUnit> {
           variable ?? 'N/A',
           widget.searchQuery,
           customColors.subTextColor,
-          customColors.hinttColor,
+          highlightColor,
         ),
       ),
     );

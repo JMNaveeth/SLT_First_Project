@@ -318,7 +318,7 @@ class _CustomOneDetailsCardState extends State<CustomOneDetailsCard> {
                         widget.titleResponse ?? "",
                         widget.shouldHighlight ? searchQuery : '',
                         customColors.mainTextColor,
-                        customColors.hinttColor,
+                        highlightColor,
                       ),
                     ),
                     Icon(
@@ -337,7 +337,7 @@ class _CustomOneDetailsCardState extends State<CustomOneDetailsCard> {
                     widget.titleResponse ?? "",
                     widget.shouldHighlight ? searchQuery : '',
                     customColors.mainTextColor,
-                    customColors.hinttColor,
+                    highlightColor,
                   ),
                 ),
           ],

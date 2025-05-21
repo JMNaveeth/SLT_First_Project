@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
+import 'package:theme_update/utils/utils/colors.dart';
 
 import '../../utils/utils/colors.dart';
 
@@ -87,7 +88,7 @@ class ViewSPDUnit extends StatelessWidget {
             value ?? 'N/A',
             searchQuery,
             customColors.subTextColor,
-            customColors.hinttColor,
+            highlightColor,
           ),
         ),
       ),

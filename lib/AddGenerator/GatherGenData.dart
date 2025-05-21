@@ -613,6 +613,63 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                   ),
                 ),
               ),
+
+                 // QR tag
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Qr tag :",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: FormBuilderTextField(
+                          name: "Qr tag",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: customColors.mainTextColor,
+                          ),
+                          enabled: true, // <-- This is your "isWantEdit: true,"
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: customColors.suqarBackgroundColor,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: customColors.mainTextColor,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 12,
+                            ),
+                          ),
+                          onChanged:
+                              (val) =>
+                                  _onChanged(val, updatedValues, "Qr tag"),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                          keyboardType: TextInputType.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
               // GPS Location Card
               Card(
                 color: customColors.suqarBackgroundColor,
@@ -791,21 +848,39 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             color: customColors.suqarBackgroundColor,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: Colors.grey, // Always visible border color
-                              width: 2,
+                              color:
+                                  customColors
+                                      .subTextColor, // Always visible border color
+                              width: 1,
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
-                            vertical: 8,
+                            vertical: 20,
                             horizontal: 8,
                           ),
                           child: FormBuilderChoiceChips<String>(
+                            // Remove FormBuilder's own decoration that might add variable padding
+                            decoration: const InputDecoration(
+                              contentPadding:
+                                  EdgeInsets
+                                      .zero, // No internal padding from decoration
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
                             backgroundColor: customColors.suqarBackgroundColor,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             name: 'Available',
                             initialValue: updatedValues['Available'],
                             selectedColor: Colors.lightBlueAccent,
+                            // Padding within FormBuilderChoiceChips, around the actual chip widgets
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                              vertical: 10.0,
+                            ), // Adjust as needed for alignment
+                            spacing: 8.0, // Horizontal space between chips
+                            runSpacing: 0,
                             options: [
                               FormBuilderChipOption(
                                 value: 'Yes',
@@ -871,8 +946,10 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             color: customColors.suqarBackgroundColor,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: Colors.grey, // Always visible border color
-                              width: 2,
+                              color:
+                                  customColors
+                                      .subTextColor, // Always visible border color
+                              width: 1,
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
@@ -880,13 +957,29 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             horizontal: 8,
                           ),
                           child: FormBuilderChoiceChips<String>(
+                            // Remove FormBuilder's own decoration that might add variable padding
+                            decoration: const InputDecoration(
+                              contentPadding:
+                                  EdgeInsets
+                                      .zero, // No internal padding from decoration
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
                             backgroundColor: customColors.suqarBackgroundColor,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            //decoration: const InputDecoration(labelText: 'Type'),
                             name: 'Category',
                             initialValue: updatedValues['Category'],
+
                             selectedColor: Colors.lightBlueAccent,
+                            // Padding within FormBuilderChoiceChips, around the actual chip widgets
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                              vertical: 10.0,
+                            ), // Adjust as needed for alignment
+                            spacing: 8.0, // Horizontal space between chips
+                            runSpacing: 0,
                             options: [
                               FormBuilderChipOption(
                                 value: 'Fixed',
@@ -966,7 +1059,7 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                           fontSize: 12,
                           color: customColors.mainTextColor,
                         ),
-                      ),
+                      ),SizedBox(width: 50),
                       const Spacer(),
                       Expanded(
                         child: Container(
@@ -974,8 +1067,10 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             color: customColors.suqarBackgroundColor,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: Colors.grey, // Always visible border color
-                              width: 2,
+                              color:
+                                  customColors
+                                      .subTextColor, // Always visible border color
+                              width: 1,
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
@@ -983,13 +1078,28 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             horizontal: 8,
                           ),
                           child: FormBuilderChoiceChips<String>(
+                            // Remove FormBuilder's own decoration that might add variable padding
+                            decoration: const InputDecoration(
+                              contentPadding:
+                                  EdgeInsets
+                                      .zero, // No internal padding from decoration
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
                             backgroundColor: customColors.suqarBackgroundColor,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            //decoration: const InputDecoration(labelText: 'Type'),
                             name: 'Mode',
                             initialValue: updatedValues['Mode'],
                             selectedColor: Colors.lightBlueAccent,
+                            // Padding within FormBuilderChoiceChips, around the actual chip widgets
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                              vertical: 10.0,
+                            ), // Adjust as needed for alignment
+                            spacing: 8.0, // Horizontal space between chips
+                            runSpacing: 0,
                             options: [
                               FormBuilderChipOption(
                                 value: 'A',
@@ -1050,7 +1160,7 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                           fontSize: 12,
                           color: customColors.mainTextColor,
                         ),
-                      ),
+                      ), SizedBox(width: 40),
                       const Spacer(),
                       Expanded(
                         child: Container(
@@ -1058,22 +1168,39 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             color: customColors.suqarBackgroundColor,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: Colors.grey, // Always visible border color
-                              width: 2,
+                               color:
+                                  customColors
+                                      .subTextColor, // Always visible border color
+                              width: 1,
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
                             vertical: 8,
                             horizontal: 8,
                           ),
-                          child: FormBuilderChoiceChips<String>(
+                         child: FormBuilderChoiceChips<String>(
+                            // Remove FormBuilder's own decoration that might add variable padding
+                            decoration: const InputDecoration(
+                              contentPadding:
+                                  EdgeInsets
+                                      .zero, // No internal padding from decoration
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
                             backgroundColor: customColors.suqarBackgroundColor,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            //decoration: const InputDecoration(labelText: 'Type'),
-                            name: 'Phase Eng',
+                           name: 'Phase Eng',
                             initialValue: updatedValues['Phase Eng'],
                             selectedColor: Colors.lightBlueAccent,
+                            // Padding within FormBuilderChoiceChips, around the actual chip widgets
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                              vertical: 10.0,
+                            ), // Adjust as needed for alignment
+                            spacing: 8.0, // Horizontal space between chips
+                            runSpacing: 0,
                             options: [
                               FormBuilderChipOption(
                                 value: '1',
@@ -1859,8 +1986,10 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             color: customColors.suqarBackgroundColor,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: Colors.grey, // Always visible border color
-                              width: 2,
+                             color:
+                                  customColors
+                                      .subTextColor, // Always visible border color
+                              width: 1,
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
@@ -1868,12 +1997,28 @@ class _GeneratorDetailAddPageState extends State<GeneratorDetailAddPage> {
                             horizontal: 8,
                           ),
                           child: FormBuilderChoiceChips<String>(
+                            // Remove FormBuilder's own decoration that might add variable padding
+                            decoration: const InputDecoration(
+                              contentPadding:
+                                  EdgeInsets
+                                      .zero, // No internal padding from decoration
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
                             backgroundColor: customColors.suqarBackgroundColor,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             name: 'Bulk Tank',
                             initialValue: updatedValues['Bulk Tank'],
                             selectedColor: Colors.lightBlueAccent,
+                            // Padding within FormBuilderChoiceChips, around the actual chip widgets
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                              vertical: 10.0,
+                            ), // Adjust as needed for alignment
+                            spacing: 8.0, // Horizontal space between chips
+                            runSpacing: 0,
                             options: [
                               FormBuilderChipOption(
                                 value: '1',
