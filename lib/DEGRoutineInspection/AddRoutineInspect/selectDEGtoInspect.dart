@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 
 //import '../../../UserAccess.dart';
@@ -10,8 +11,7 @@ import 'DEGRoutineInspection.dart';
 
 class selectDEGToInspect extends StatefulWidget {
   @override
-  _selectDEGToInspectState createState() =>
-      _selectDEGToInspectState();
+  _selectDEGToInspectState createState() => _selectDEGToInspectState();
 }
 
 class _selectDEGToInspectState extends State<selectDEGToInspect> {
@@ -41,7 +41,7 @@ class _selectDEGToInspectState extends State<selectDEGToInspect> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
 
   String selectedRegion = 'ALL'; // Initial selected region
@@ -75,79 +75,105 @@ class _selectDEGToInspectState extends State<selectDEGToInspect> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            DEGRoutineInspection(DEGUnit: DEGUnit),
+        builder: (context) => DEGRoutineInspection(DEGUnit: DEGUnit),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-  //  UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
+    //  UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Generator Details'),
+        backgroundColor: customColors.appbarColor,
+        title: Text(
+          'Generator Details',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
         actions: [
           ThemeToggleButton(), // Use the reusable widget
         ],
-
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButtonFormField<String>(
-              value: selectedRegion,
-              decoration: InputDecoration(
-                labelText: 'Select Region',
+      body: Container(
+        // Add Container widget
+        color:
+            customColors.mainBackgroundColor, // Set background color to white
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButtonFormField<String>(
+                value: selectedRegion,
+                style: TextStyle(color: customColors.mainTextColor),
+                decoration: InputDecoration(labelText: 'Select Region'),
+                dropdownColor: customColors.suqarBackgroundColor,
+                onChanged: (value) {
+                  setState(() {
+                    selectedRegion = value!;
+                  });
+                },
+                items:
+                    regions.map((region) {
+                      return DropdownMenuItem<String>(
+                        value: region,
+                        child: Text(region),
+                      );
+                    }).toList(),
               ),
-              onChanged: (value) {
-                setState(() {
-                  selectedRegion = value!;
-                });
-              },
-              items: regions.map((region) {
-                return DropdownMenuItem<String>(
-                  value: region,
-                  child: Text(region),
-                );
-              }).toList(),
             ),
-          ),
-          Expanded(
-            child: isLoading
-                ? Center(
+            Expanded(
               child:
-              CircularProgressIndicator(), // Show loading indicator
-            )
-                : ListView.builder(
-              itemCount: DEGSystems.length,
-              itemBuilder: (context, index) {
-                final system = DEGSystems[index];
-                if (selectedRegion == 'ALL' ||
-                    system['province'] == selectedRegion) {
-                  return ListTile(
-                    title:
-                    Text('${system['brand_set']} - ${system['model_set']}'),
-                    subtitle: Text(
-                        'Location: ${system['station']}'),
-                    onTap: () {
-                      navigateToDEGUnitDetails(
-                          DEGUnit: system,
-                          region: "${system['province']}-${system['Rtom_name']}");
-                    },
-                  );
-                } else {
-                  return SizedBox
-                      .shrink(); // Return an empty SizedBox for non-matching regions
-                }
-              },
+                  isLoading
+                      ? Center(
+                        child:
+                            CircularProgressIndicator(), // Show loading indicator
+                      )
+                      : ListView.builder(
+                        itemCount: DEGSystems.length,
+                        itemBuilder: (context, index) {
+                          final system = DEGSystems[index];
+                          if (selectedRegion == 'ALL' ||
+                              system['province'] == selectedRegion) {
+                            return Card( // This is our new pretty box!
+                              elevation: 5, // A little shadow
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16, // Space on the sides
+                                vertical: 8,    // Space top and bottom
+                              ),
+                              color: customColors.suqarBackgroundColor, // Background color from your theme
+                              shape: RoundedRectangleBorder( // Rounded corners
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  '${system['brand_set']} - ${system['model_set']}',
+                                  style: TextStyle(color: customColors.mainTextColor), // Text color for the title
+                                ),
+                                subtitle: Text(
+                                  'Location: ${system['station']}',
+                                  style: TextStyle(color: customColors.subTextColor), // Text color for the subtitle
+                                ),
+                                onTap: () {
+                                  navigateToDEGUnitDetails(
+                                    DEGUnit: system,
+                                    region:
+                                        "${system['province']}-${system['Rtom_name']}",
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            return SizedBox.shrink(); // Return an empty SizedBox for non-matching regions
+                          }
+                        },
+                      ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
-
