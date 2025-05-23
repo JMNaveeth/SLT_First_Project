@@ -2001,23 +2001,23 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                   validator: FormBuilderValidators.compose([
                                     _validateAtLeastOneBattery,
                                     _validateIndividualBatteryField,
-                                    FormBuilderValidators.numeric(
-                                      errorText: "Value must be \n numeric",
-                                    ),
-                                    FormBuilderValidators.max(
-                                      100,
-                                      inclusive: false,
-                                      errorText:
-                                          "Value should be \n less than 100",
-                                    ),
-                                    (val) {
-                                      if (val == null || val.isEmpty)
-                                        return null;
-                                      final number = num.tryParse(val);
-                                      if (number == null)
-                                        return 'Must be a number';
-                                      return null;
-                                    },
+                                    // FormBuilderValidators.numeric(
+                                    //   errorText: "Value must be \n numeric",
+                                    // ),
+                                    // FormBuilderValidators.max(
+                                    //   100,
+                                    //   inclusive: false,
+                                    //   errorText:
+                                    //       "Value should be \n less than 100",
+                                    // ),
+                                    // (val) {
+                                    //   if (val == null || val.isEmpty)
+                                    //     return null;
+                                    //   final number = num.tryParse(val);
+                                    //   if (number == null)
+                                    //     return 'Must be a number';
+                                    //   return null;
+                                    // },
                                   ]),
                                 ),
                               ),
@@ -2058,23 +2058,23 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                     // FormBuilderValidators.required(),
                                      _validateAtLeastOneBattery,
                                     _validateIndividualBatteryField,
-                                    FormBuilderValidators.numeric(
-                                      errorText: "Value must be \n numeric",
-                                    ),
-                                    FormBuilderValidators.max(
-                                      100,
-                                      inclusive: false,
-                                      errorText:
-                                          "Value should be \n less than 100",
-                                    ),
-                                    (val) {
-                                      if (val == null || val.isEmpty)
-                                        return null;
-                                      final number = num.tryParse(val);
-                                      if (number == null)
-                                        return 'Must be a number';
-                                      return null;
-                                    },
+                                    // FormBuilderValidators.numeric(
+                                    //   errorText: "Value must be \n numeric",
+                                    // ),
+                                    // FormBuilderValidators.max(
+                                    //   100,
+                                    //   inclusive: false,
+                                    //   errorText:
+                                    //       "Value should be \n less than 100",
+                                    // ),
+                                    // (val) {
+                                    //   if (val == null || val.isEmpty)
+                                    //     return null;
+                                    //   final number = num.tryParse(val);
+                                    //   if (number == null)
+                                    //     return 'Must be a number';
+                                    //   return null;
+                                    // },
                                   ]),
                                 ),
                               ),
@@ -2115,23 +2115,23 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                     // FormBuilderValidators.required(),
                                      _validateAtLeastOneBattery,
                                     _validateIndividualBatteryField,
-                                    FormBuilderValidators.numeric(
-                                      errorText: "Value must be \n numeric",
-                                    ),
-                                    FormBuilderValidators.max(
-                                      100,
-                                      inclusive: false,
-                                      errorText:
-                                          "Value should be \n less than 100",
-                                    ),
-                                    (val) {
-                                      if (val == null || val.isEmpty)
-                                        return null;
-                                      final number = num.tryParse(val);
-                                      if (number == null)
-                                        return 'Must be a number';
-                                      return null;
-                                    },
+                                    // FormBuilderValidators.numeric(
+                                    //   errorText: "Value must be \n numeric",
+                                    // ),
+                                    // FormBuilderValidators.max(
+                                    //   100,
+                                    //   inclusive: false,
+                                    //   errorText:
+                                    //       "Value should be \n less than 100",
+                                    // ),
+                                    // (val) {
+                                    //   if (val == null || val.isEmpty)
+                                    //     return null;
+                                    //   final number = num.tryParse(val);
+                                    //   if (number == null)
+                                    //     return 'Must be a number';
+                                    //   return null;
+                                    // },
                                   ]),
                                 ),
                               ),
@@ -2171,23 +2171,23 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                     // FormBuilderValidators.required(),
                                      _validateAtLeastOneBattery,
                                     _validateIndividualBatteryField,
-                                    FormBuilderValidators.numeric(
-                                      errorText: "Value must be \n numeric",
-                                    ),
-                                    FormBuilderValidators.max(
-                                      100,
-                                      inclusive: false,
-                                      errorText:
-                                          "Value should be \n less than 100",
-                                    ),
-                                    (val) {
-                                      if (val == null || val.isEmpty)
-                                        return null;
-                                      final number = num.tryParse(val);
-                                      if (number == null)
-                                        return 'Must be a number';
-                                      return null;
-                                    },
+                                    // FormBuilderValidators.numeric(
+                                    //   errorText: "Value must be \n numeric",
+                                    // ),
+                                    // FormBuilderValidators.max(
+                                    //   100,
+                                    //   inclusive: false,
+                                    //   errorText:
+                                    //       "Value should be \n less than 100",
+                                    // ),
+                                    // (val) {
+                                    //   if (val == null || val.isEmpty)
+                                    //     return null;
+                                    //   final number = num.tryParse(val);
+                                    //   if (number == null)
+                                    //     return 'Must be a number';
+                                    //   return null;
+                                    // },
                                   ]),
                                 ),
                               ),
