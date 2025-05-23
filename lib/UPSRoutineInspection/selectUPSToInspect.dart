@@ -101,65 +101,87 @@ class _selectUPSToInspectState extends State<selectUPSToInspect> {
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
-      body: Container( // Wrap Column with a Container
-        color: customColors.mainBackgroundColor, // Set the background color to white
+      body: Container(
+        // Wrap Column with a Container
+        color:
+            customColors
+                .mainBackgroundColor, // Set the background color to white
         child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButtonFormField<String>(
-              value: selectedprovince,
-              decoration: InputDecoration(labelText: 'Select province'),
-              onChanged: (value) {
-                setState(() {
-                  selectedprovince = value!;
-                });
-              },
-              items:
-                  Region.map((province) {
-                    return DropdownMenuItem<String>(
-                      value: province,
-                      child: Text(province),
-                    );
-                  }).toList(),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButtonFormField<String>(
+                value: selectedprovince,
+                style: TextStyle(color: customColors.mainTextColor),
+                decoration: InputDecoration(
+                  labelText: 'Select province',
+                  labelStyle: TextStyle(color: customColors.mainTextColor),
+                ),
+                 dropdownColor: customColors.suqarBackgroundColor,
+                onChanged: (value) {
+                  setState(() {
+                    selectedprovince = value!;
+                  });
+                },
+                items:
+                    Region.map((province) {
+                      return DropdownMenuItem<String>(
+                        value: province,
+                        child: Text(province),
+                      );
+                    }).toList(),
+              ),
             ),
-          ),
-          Expanded(
-            child:
-                isLoading
-                    ? Center(
-                      child:
-                          CircularProgressIndicator(), // Show loading indicator
-                    )
-                    : ListView.builder(
-                      itemCount: UPSSystems.length,
-                      itemBuilder: (context, index) {
-                        final system = UPSSystems[index];
-                        if (selectedprovince == 'ALL' ||
-                            system['Region'] == selectedprovince) {
-                          return ListTile(
-                            title: Text(
-                              '${system['Brand']} - ${system['Model']}',
+            Expanded(
+              child:
+                  isLoading
+                      ? Center(
+                        child:
+                            CircularProgressIndicator(), // Show loading indicator
+                      )
+                      : ListView.builder(
+                        itemCount: UPSSystems.length,
+                        itemBuilder: (context, index) {
+                          final system = UPSSystems[index];
+                          if (selectedprovince == 'ALL' ||
+                              system['Region'] == selectedprovince) {
+                            return Card( // Wrap ListTile with Card
+                            elevation: 5,
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
                             ),
-                            subtitle: Text(
-                              'Location: ${system['Region']}-${system['RTOM']}',
+                            color: customColors.suqarBackgroundColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            onTap: () {
-                              navigateToUPSUnitDetails(
-                                UPSUnit: system,
-                                region: "${system['Region']}-${system['RTOM']}",
-                              );
-                            },
-                          );
-                        } else {
-                          return SizedBox.shrink(); // Return an empty SizedBox for non-matching Region
-                        }
-                      },
-                    ),
-          ),
-        ],
+                            child: ListTile(
+                              title: Text(
+                                '${system['Brand']} - ${system['Model']}', 
+                                style: TextStyle(color: customColors.mainTextColor),
+                              ),
+                              subtitle: Text(
+                                'Location: ${system['Region']}-${system['RTOM']}',
+                                 style: TextStyle(color: customColors.mainTextColor),
+                              ),
+                              onTap: () {
+                                navigateToUPSUnitDetails(
+                                  UPSUnit: system,
+                                  region:
+                                      "${system['Region']}-${system['RTOM']}",
+                                );
+                              },
+                            ),
+                            );
+                          } else {
+                            return SizedBox.shrink(); // Return an empty SizedBox for non-matching Region
+                          }
+                        },
+                      ),
+            ),
+          ],
+        ),
       ),
-      )
     );
   }
 }

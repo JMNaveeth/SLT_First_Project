@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 
 //import '../../UserAccess.dart';
 import 'httpPostUPSInspection.dart';
@@ -119,13 +121,27 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
     (context,
         listen:
         true); // Use listen: true to rebuild the widget when the data changes
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Daily Routine Checklist"),
+          backgroundColor: customColors.appbarColor,
+          title: Text(
+            "Daily Routine Checklist",
+            style: TextStyle(color: customColors.mainTextColor),
           ),
-          body: SingleChildScrollView(
+          actions: [
+            ThemeToggleButton(), // Use the reusable widget
+          ],
+          iconTheme: IconThemeData(color: customColors.mainTextColor),
+        ),
+          body:Container(
+          // Wrap SingleChildScrollView with a Container
+          color:
+              customColors
+                  .mainBackgroundColor, // Set your desired background color here
+          child: SingleChildScrollView(
             child: FormBuilder(
                 key: _formKey,
                 onChanged: () {
@@ -143,10 +159,10 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                               Text(
                                 "NOW ON :",
                                 style: TextStyle(
-                                    color: Colors.black,
+                            color: customColors.mainTextColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15),
                               ),
@@ -158,7 +174,8 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                                 height: 30,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey.shade300),
+                            color: customColors.suqarBackgroundColor,
+                            ),
                                 child: Center(
                                   child: Text(
                                     _shift,
@@ -177,17 +194,17 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
+                              Text(
                                 "LOCATION :",
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: customColors.mainTextColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15),
                               ),
                               Spacer(),
                               Text(
                                 widget.region,
-                                style: const TextStyle(
+                                style: TextStyle( color: customColors.mainTextColor,
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
                             ],
@@ -224,7 +241,7 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
 
                           //Check ventilation of the room
 
-                          const customText(
+                           customText(
                             title: "Check ventilation of the room",
                           ),
                           FormBuilderChoiceChips<String>(
@@ -1228,7 +1245,9 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                           ),
                         ]))),
           ),
-        ));
+        ),
+        ),
+        );
   }
 }
 
