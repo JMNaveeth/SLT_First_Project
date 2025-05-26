@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:theme_update/AddGenerator/GatherGenData.dart';
 import 'package:theme_update/DEGRoutineInspection/AddRoutineInspect/selectDEGtoInspect.dart';
 import 'package:theme_update/DEGRoutineInspection/RoutineInspectionView/DEGInspectionViewSelect.dart';
+import 'package:theme_update/Rectifier/RectifierInspectionView/rectifierInspectionViewSelect.dart';
+import 'package:theme_update/Rectifier/RectifierRoutineInspection/selectRectifierToInspect.dart';
 import 'package:theme_update/UPSRoutineInspection/selectUPSToInspect.dart';
 import 'package:theme_update/ViewGeneratorV2/ViewGenList.dart';
 import 'package:theme_update/settings_screen.dart';
@@ -275,6 +277,26 @@ class RectifierMenu extends StatelessWidget {
                   );
                 },
                 child: const Text('UPSRoutineInspection'),
+              ),
+               ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RectifierInspectionViewSelect()),
+                  );
+                },
+                child: const Text('RectifierInspectionView'),
+              ),
+               ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => selectRectifierToInspect()),
+                  );
+                },
+                child: const Text('RectifierRoutineInspection'),
               ),
             ],
           ),

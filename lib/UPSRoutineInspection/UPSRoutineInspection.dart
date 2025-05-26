@@ -1197,12 +1197,12 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                           (value) =>
                               _onChanged(value, upsFormData, 'accept_terms'),
                       title: RichText(
-                        text: const TextSpan(
+                        text:  TextSpan(
                           children: [
                             TextSpan(
                               text:
                                   'I Verify that submitted details are true and correct ',
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: customColors.mainTextColor),
                             ),
                           ],
                         ),
