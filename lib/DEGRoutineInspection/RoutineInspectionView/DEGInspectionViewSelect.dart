@@ -283,6 +283,7 @@ class _DEGInspectionViewSelectState extends State<DEGInspectionViewSelect> {
                   }
 
                   return ListView.builder(
+                    key: PageStorageKey('degInspectionListView'),
                     itemCount: inspectionDataList.length,
                     itemBuilder: (context, index) {
                       DegInspectionData data = inspectionDataList[index];

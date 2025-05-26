@@ -254,7 +254,7 @@ class RectifierMenu extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => DEGInspectionViewSelect()),
                   );
                 },
-                child: const Text('View DEGInspection'),
+                child: const Text('RoutineInspection View'),
               ),
                ElevatedButton(
                 style: buttonStyle(),

@@ -282,9 +282,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none,
                           errorMaxLines: 2,
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'degClean',
                         initialValue: '',
@@ -386,9 +386,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none,
                           errorMaxLines: 2,
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'surroundClean',
                         initialValue: '',
@@ -488,9 +488,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none,
                           errorMaxLines: 2,
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'vbelt',
                         initialValue: '',
@@ -604,9 +604,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none,
                           errorMaxLines: 2,
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'alarm',
                         initialValue: '',
@@ -705,9 +705,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none,
                           errorMaxLines: 2,
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'warning',
                         initialValue: '',
@@ -805,9 +805,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'issue',
                         initialValue: '',
@@ -923,9 +923,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'leak',
                         initialValue: '',
@@ -1024,9 +1024,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'waterLevel',
                         initialValue: '',
@@ -1125,9 +1125,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'exterior',
                         initialValue: '',
@@ -1236,9 +1236,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'fuelLeak',
                         initialValue: '',
@@ -1349,9 +1349,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'airFilter',
                         initialValue: '',
@@ -1461,9 +1461,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'gasEmission',
                         initialValue: '',
@@ -1574,9 +1574,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'oilLeak',
                         initialValue: '',
@@ -1687,9 +1687,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'batClean',
                         initialValue: '',
@@ -1788,9 +1788,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none, errorMaxLines: 2,
 
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'batVoltage',
                         initialValue: '',
@@ -1884,9 +1884,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           focusedBorder: InputBorder.none,
                           errorMaxLines: 2,
                         ),
-                        backgroundColor:
-                            Colors
-                                .transparent, // Let the Container handle background
+                        // backgroundColor:
+                        //     Colors
+                        //         .transparent, // Let the Container handle background
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         name: 'batCharger',
                         initialValue: '',
