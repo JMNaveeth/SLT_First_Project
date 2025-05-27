@@ -148,1197 +148,1266 @@ class _InspectionRecState extends State<InspectionRec> {
             "Daily Routine Checklist",
             style: TextStyle(color: customColors.mainTextColor),
           ),
-        actions: [
+          actions: [
             ThemeToggleButton(), // Use the reusable widget
           ],
           iconTheme: IconThemeData(color: customColors.mainTextColor),
         ),
-        body:Container(
+        body: Container(
           // Wrap SingleChildScrollView with a Container
           color:
               customColors
                   .mainBackgroundColor, // Set your desired background color here
-          child:  SingleChildScrollView(
-          child: FormBuilder(
-            key: _formKey,
-            onChanged: () {
-              _formKey.currentState!.save();
-              // Loop through all the fields and call _onChanged for each field
-              _formKey.currentState!.fields.forEach((fieldKey, fieldState) {
-                _onChanged(fieldState.value, recFormData, fieldKey);
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "NOW ON :",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.1),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey.shade300,
-                        ),
-                        child: Center(
-                          child: Text(
-                            _shift,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
+          child: SingleChildScrollView(
+            child: FormBuilder(
+              key: _formKey,
+              onChanged: () {
+                _formKey.currentState!.save();
+                // Loop through all the fields and call _onChanged for each field
+                _formKey.currentState!.fields.forEach((fieldKey, fieldState) {
+                  _onChanged(fieldState.value, recFormData, fieldKey);
+                });
+              },
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "NOW ON :",
+                          style: TextStyle(
+                            color: customColors.mainTextColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-
-                  //Region
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Region :",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.1,
                         ),
-                      ),
-                      Spacer(),
-                      Text(
-                        widget.region,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  //Get Genaral Inspectin Date
-                  const Text(
-                    'Genaral Inspection',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-
-                  //Cleanliness of Room
-                  const customText(title: "Cleanliness of Room"),
-                  FormBuilderChoiceChips<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    // decoration:
-                    //     const InputDecoration(labelText: 'Cleanliness of Room'),
-                    name: 'roomClean',
-                    initialValue: '',
-                    selectedColor: Colors.lightBlueAccent,
-                    options: const [
-                      FormBuilderChipOption(
-                        value: 'Ok',
-                        child: Text("Clean"),
-                        avatar: CircleAvatar(child: Text('C')),
-                      ),
-                      FormBuilderChipOption(
-                        value: 'Not Ok',
-                        child: Text("Not Clean"),
-                        avatar: CircleAvatar(child: Text('N')),
-                      ),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value == 'Not Ok' &&
-                            (recFormData['roomCleanRemark'] == null ||
-                                recFormData['roomCleanRemark'].isEmpty)) {
-                          return 'Remark is required when the room is not clean';
-                        }
-                        return null;
-                      },
-                    ]),
-                    onChanged:
-                        (val) => _onChanged(val, recFormData, 'roomClean'),
-                  ),
-                  CustomRemarkWidget(
-                    title: "Remark",
-                    formDataKey: "roomCleanRemark",
-                    formData: recFormData,
-                    formKey: _formKey,
-                    onChangedRemark: (p0, p1) {
-                      _onChangedRemark(p0, p1);
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-
-                  ////////////////////////////////////////////////////////////////////////////////
-                  //Cleanliness of Cubicles
-                  const customText(title: "Cleanliness of Cubicles"),
-                  FormBuilderChoiceChips<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    // decoration: const InputDecoration(
-                    //     labelText: 'Cleanliness of Cubicles(Dusting)'),
-                    name: 'cubicleClean',
-                    initialValue: '',
-                    selectedColor: Colors.lightBlueAccent,
-                    options: const [
-                      FormBuilderChipOption(
-                        value: 'Ok',
-                        child: Text("Clean"),
-                        avatar: CircleAvatar(child: Text('C')),
-                      ),
-                      FormBuilderChipOption(
-                        value: 'Not Ok',
-                        child: Text("Not Clean"),
-                        avatar: CircleAvatar(child: Text('N')),
-                      ),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value == 'Not Ok' &&
-                            (recFormData['CubicleCleanRemark'] == null ||
-                                recFormData['CubicleCleanRemark'].isEmpty)) {
-                          return 'Remark is required when the cubicles are not clean';
-                        }
-                        return null;
-                      },
-                    ]),
-                    onChanged:
-                        (val) => _onChanged(val, recFormData, 'cubicleClean'),
-                  ),
-                  CustomRemarkWidget(
-                    title: "Remark",
-                    formDataKey: "CubicleCleanRemark",
-                    formData: recFormData,
-                    formKey: _formKey,
-                    onChangedRemark: (p0, p1) {
-                      _onChangedRemark(p0, p1);
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-
-                  //////////////////////////////////////////////////////////////////////////////////
-                  //Measure Room Temperature
-                  const customText(title: "Measure Room Temperature"),
-                  FormBuilderChoiceChips<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    // decoration: const InputDecoration(
-                    //     labelText: 'Measure Room Temperature'),
-                    name: 'roomTemp',
-                    initialValue: '',
-                    selectedColor: Colors.lightBlueAccent,
-                    options: const [
-                      FormBuilderChipOption(
-                        value: 'high',
-                        child: Text("High"),
-                        avatar: CircleAvatar(child: Text('H')),
-                      ),
-                      FormBuilderChipOption(
-                        value: 'Normal',
-                        child: Text("Normal"),
-                        avatar: CircleAvatar(child: Text('N')),
-                      ),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value == 'high' &&
-                            (recFormData['roomTempRemark'] == null ||
-                                recFormData['roomTempRemark'].isEmpty)) {
-                          return 'Remark is required when the room temperature is High';
-                        }
-                        return null;
-                      },
-                    ]),
-                    onChanged:
-                        (val) => _onChanged(val, recFormData, 'roomTemp'),
-                  ),
-                  CustomRemarkWidget(
-                    title: "Remark",
-                    formDataKey: "roomTempRemark",
-                    formData: recFormData,
-                    formKey: _formKey,
-                    onChangedRemark: (p0, p1) {
-                      _onChangedRemark(p0, p1);
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-
-                  ///////////////////////////////////////////////////////////////////////////////////////////
-                  //Measure Hydrogen Gas Emmission
-                  const customText(title: "Measure Hydrogen Gas Emmission"),
-                  FormBuilderChoiceChips<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    // decoration: const InputDecoration(
-                    //     labelText: 'Measure Hydrogen Gas Emmission'),
-                    name: 'h2gasEmission',
-                    initialValue: '',
-                    selectedColor: Colors.lightBlueAccent,
-                    options: const [
-                      FormBuilderChipOption(
-                        value: 'yes',
-                        child: Text("Yes"),
-                        avatar: CircleAvatar(child: Text('Y')),
-                      ),
-                      FormBuilderChipOption(
-                        value: 'No',
-                        child: Text("No"),
-                        avatar: CircleAvatar(child: Text('N')),
-                      ),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value == 'yes' &&
-                            (recFormData['h2gasEmissionRemark'] == null ||
-                                recFormData['h2gasEmissionRemark'].isEmpty)) {
-                          return 'Remark is required when detect Hydrogen Emmision';
-                        }
-                        return null;
-                      },
-                    ]),
-                    onChanged:
-                        (val) => _onChanged(val, recFormData, 'h2gasEmission'),
-                  ),
-                  CustomRemarkWidget(
-                    title: "Remark",
-                    formDataKey: "h2gasEmissionRemark",
-                    formData: recFormData,
-                    formKey: _formKey,
-                    onChangedRemark: (p0, p1) {
-                      _onChangedRemark(p0, p1);
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-
-                  ////////////////////////////////////////////////////////////////////////////////////////
-                  //Check Main Circuit Breakers
-                  const customText(title: "Check Main Circuit Breakers"),
-                  FormBuilderChoiceChips<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    // decoration: const InputDecoration(
-                    //     labelText: 'Check Main Circuit Breakers'),
-                    name: 'checkMCB',
-                    initialValue: '',
-                    selectedColor: Colors.lightBlueAccent,
-                    options: const [
-                      FormBuilderChipOption(
-                        value: 'ok',
-                        child: Text("ok"),
-                        avatar: CircleAvatar(child: Text('O')),
-                      ),
-                      FormBuilderChipOption(
-                        value: 'Not ok',
-                        child: Text("Not ok"),
-                        avatar: CircleAvatar(child: Text('N')),
-                      ),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value == 'Not ok' &&
-                            (recFormData['checkMCBRemark'] == null ||
-                                recFormData['checkMCBRemark'].isEmpty)) {
-                          return 'Remark is required when MCB is not ok';
-                        }
-                        return null;
-                      },
-                    ]),
-                    onChanged: (val) {
-                      _onChanged(val, recFormData, 'checkMCB');
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-                  CustomRemarkWidget(
-                    title: "Remark",
-                    formDataKey: "checkMCBRemark",
-                    formData: recFormData,
-                    formKey: _formKey,
-                    onChangedRemark: (p0, p1) {
-                      _onChangedRemark(p0, p1);
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-
-                  ///////////////////////////////////////////////////////////////////////////////////
-                  //DC PDB
-                  const customText(title: "DC PDB"),
-                  FormBuilderChoiceChips<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    // decoration: const InputDecoration(labelText: 'DC PDB'),
-                    name: 'dcPDB',
-                    initialValue: '',
-                    selectedColor: Colors.lightBlueAccent,
-                    options: const [
-                      FormBuilderChipOption(
-                        value: 'ok',
-                        child: Text("ok"),
-                        avatar: CircleAvatar(child: Text('O')),
-                      ),
-                      FormBuilderChipOption(
-                        value: 'Not ok',
-                        child: Text("Not ok"),
-                        avatar: CircleAvatar(child: Text('N')),
-                      ),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value == 'Not ok' &&
-                            (recFormData['dcPDBRemark'] == null ||
-                                recFormData['dcPDBRemark'].isEmpty)) {
-                          return 'Remark is required when the DC PDB is not ok';
-                        }
-                        return null;
-                      },
-                    ]),
-
-                    onChanged: (val) => _onChanged(val, recFormData, 'dcPDB'),
-                  ),
-                  CustomRemarkWidget(
-                    title: "Remark",
-                    formDataKey: "dcPDBRemark",
-                    formData: recFormData,
-                    formKey: _formKey,
-                    onChangedRemark: (p0, p1) {
-                      _onChangedRemark(p0, p1);
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-
-                  ////////////////////////////////////////////////////////////////////////////////////////////
-                  //Test Remort Alarm
-                  const customText(title: "Test Remort Alarm"),
-                  FormBuilderChoiceChips<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    // decoration:
-                    //     const InputDecoration(labelText: 'Test Remort Alarm'),
-                    name: 'remoteAlarm',
-                    initialValue: '',
-                    selectedColor: Colors.lightBlueAccent,
-                    options: const [
-                      FormBuilderChipOption(
-                        value: 'ok',
-                        child: Text("ok"),
-                        avatar: CircleAvatar(child: Text('O')),
-                      ),
-                      FormBuilderChipOption(
-                        value: 'Not ok',
-                        child: Text("Not ok"),
-                        avatar: CircleAvatar(child: Text('N')),
-                      ),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value == 'Not ok' &&
-                            (recFormData['remoteAlarmRemark'] == null ||
-                                recFormData['remoteAlarmRemark'].isEmpty)) {
-                          return 'Remark is required when the Remote Alarm is not ok';
-                        }
-                        return null;
-                      },
-                    ]),
-                    onChanged:
-                        (val) => _onChanged(val, recFormData, 'remoteAlarm'),
-                  ),
-                  CustomRemarkWidget(
-                    title: "Remark",
-                    formDataKey: "remoteAlarmRemark",
-                    formData: recFormData,
-                    formKey: _formKey,
-                    onChangedRemark: (p0, p1) {
-                      _onChangedRemark(p0, p1);
-                      _formKey.currentState?.validate();
-                    },
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  //////////////////////////////////////////////////////////////////////////////////////////
-                  const Divider(thickness: 3, color: Colors.black),
-
-                  //No. of Working Line
-                  const Text(
-                    'No of Working Modules',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Available Modules     :',
-                              style: TextStyle(
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: customColors.suqarBackgroundColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              _shift,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
                                 fontSize: 15,
-                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Text(
-                              widget.availableModule,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'No Working Modules at now :',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'noOfWorkingLine',
-                                decoration: const InputDecoration(
-                                  labelText: "Available modules",
-                                ),
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                onChanged: (val) {
-                                  print(
-                                    val,
-                                  ); // Print the text value write into TextField
-                                  _onChanged(
-                                    val,
-                                    recFormData,
-                                    'noOfWorkingLine',
-                                  );
-                                },
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.max(
-                                    int.parse(widget.availableModule),
-                                    inclusive: false,
-                                  ),
-                                ]),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 10),
+                    const SizedBox(height: 5),
 
-                  //Capacity
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Capacity          :',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                    //Region
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Region :",
+                          style: TextStyle(
+                            color: customColors.mainTextColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
                         ),
+                        Spacer(),
+                        Text(
+                          widget.region,
+                          style: TextStyle(
+                            color: customColors.mainTextColor,
+
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    //Get Genaral Inspectin Date
+                    const Text(
+                      'Genaral Inspection',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        "${widget.capacity} ${widget.makeType}",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                    ),
+
+                    //Cleanliness of Room
+                    const customText(title: "Cleanliness of Room"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration:
+                      //     const InputDecoration(labelText: 'Cleanliness of Room'),
+                      name: 'roomClean',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'Ok',
+                          child: Text("Clean"),
+                          avatar: CircleAvatar(child: Text('C')),
                         ),
+                        FormBuilderChipOption(
+                          value: 'Not Ok',
+                          child: Text("Not Clean"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not Ok' &&
+                              (recFormData['roomCleanRemark'] == null ||
+                                  recFormData['roomCleanRemark'].isEmpty)) {
+                            return 'Remark is required when the room is not clean';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, recFormData, 'roomClean'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "roomCleanRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ////////////////////////////////////////////////////////////////////////////////
+                    //Cleanliness of Cubicles
+                    const customText(title: "Cleanliness of Cubicles"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Cleanliness of Cubicles(Dusting)'),
+                      name: 'cubicleClean',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'Ok',
+                          child: Text("Clean"),
+                          avatar: CircleAvatar(child: Text('C')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not Ok',
+                          child: Text("Not Clean"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not Ok' &&
+                              (recFormData['CubicleCleanRemark'] == null ||
+                                  recFormData['CubicleCleanRemark'].isEmpty)) {
+                            return 'Remark is required when the cubicles are not clean';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, recFormData, 'cubicleClean'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "CubicleCleanRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    //////////////////////////////////////////////////////////////////////////////////
+                    //Measure Room Temperature
+                    const customText(title: "Measure Room Temperature"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Measure Room Temperature'),
+                      name: 'roomTemp',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'high',
+                          child: Text("High"),
+                          avatar: CircleAvatar(child: Text('H')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Normal',
+                          child: Text("Normal"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'high' &&
+                              (recFormData['roomTempRemark'] == null ||
+                                  recFormData['roomTempRemark'].isEmpty)) {
+                            return 'Remark is required when the room temperature is High';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, recFormData, 'roomTemp'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "roomTempRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ///////////////////////////////////////////////////////////////////////////////////////////
+                    //Measure Hydrogen Gas Emmission
+                    const customText(title: "Measure Hydrogen Gas Emmission"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Measure Hydrogen Gas Emmission'),
+                      name: 'h2gasEmission',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'yes',
+                          child: Text("Yes"),
+                          avatar: CircleAvatar(child: Text('Y')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'No',
+                          child: Text("No"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'yes' &&
+                              (recFormData['h2gasEmissionRemark'] == null ||
+                                  recFormData['h2gasEmissionRemark'].isEmpty)) {
+                            return 'Remark is required when detect Hydrogen Emmision';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) =>
+                              _onChanged(val, recFormData, 'h2gasEmission'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "h2gasEmissionRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ////////////////////////////////////////////////////////////////////////////////////////
+                    //Check Main Circuit Breakers
+                    const customText(title: "Check Main Circuit Breakers"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Check Main Circuit Breakers'),
+                      name: 'checkMCB',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'ok',
+                          child: Text("ok"),
+                          avatar: CircleAvatar(child: Text('O')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not ok',
+                          child: Text("Not ok"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not ok' &&
+                              (recFormData['checkMCBRemark'] == null ||
+                                  recFormData['checkMCBRemark'].isEmpty)) {
+                            return 'Remark is required when MCB is not ok';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged: (val) {
+                        _onChanged(val, recFormData, 'checkMCB');
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "checkMCBRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ///////////////////////////////////////////////////////////////////////////////////
+                    //DC PDB
+                    const customText(title: "DC PDB"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(labelText: 'DC PDB'),
+                      name: 'dcPDB',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'ok',
+                          child: Text("ok"),
+                          avatar: CircleAvatar(child: Text('O')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not ok',
+                          child: Text("Not ok"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not ok' &&
+                              (recFormData['dcPDBRemark'] == null ||
+                                  recFormData['dcPDBRemark'].isEmpty)) {
+                            return 'Remark is required when the DC PDB is not ok';
+                          }
+                          return null;
+                        },
+                      ]),
+
+                      onChanged: (val) => _onChanged(val, recFormData, 'dcPDB'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "dcPDBRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ////////////////////////////////////////////////////////////////////////////////////////////
+                    //Test Remort Alarm
+                    const customText(title: "Test Remort Alarm"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration:
+                      //     const InputDecoration(labelText: 'Test Remort Alarm'),
+                      name: 'remoteAlarm',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'ok',
+                          child: Text("ok"),
+                          avatar: CircleAvatar(child: Text('O')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not ok',
+                          child: Text("Not ok"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not ok' &&
+                              (recFormData['remoteAlarmRemark'] == null ||
+                                  recFormData['remoteAlarmRemark'].isEmpty)) {
+                            return 'Remark is required when the Remote Alarm is not ok';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, recFormData, 'remoteAlarm'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "remoteAlarmRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    //////////////////////////////////////////////////////////////////////////////////////////
+                    const Divider(thickness: 3, color: Colors.black),
+
+                    //No. of Working Line
+                    const Text(
+                      'No of Working Modules',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-
-                  //Make Type
-                  const SizedBox(height: 15),
-
-                  const Text(
-                    'Rectifier Testing',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-
-                  //////////////////////////////////////////////////////////////////////////
-                  //volatge Reading
-                  const Text(
-                    '1. Voltage Reading',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'voltagePs1',
-                                decoration: const InputDecoration(
-                                  labelText: "Phase 1",
-                                  suffixText: "V",
-                                ),
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.number,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                onChanged: (val) {
-                                  print(
-                                    val,
-                                  ); // Print the text value write into TextField
-                                  _onChanged(val, recFormData, 'voltagePs1');
-                                },
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.numeric(
-                                    errorText: "Value must be \n numeric",
-                                  ),
-                                  FormBuilderValidators.max(
-                                    1000,
-                                    inclusive: false,
-                                    errorText:
-                                        "Value should be \n less than 1000",
-                                  ),
-                                  (val) {
-                                    if (val == null || val.isEmpty) return null;
-                                    final number = num.tryParse(val);
-                                    if (number == null)
-                                      return 'Must be a number';
-                                    return null;
-                                  },
-                                ]),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ), // Add spacing between the text fields
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'voltagePs2',
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                decoration: const InputDecoration(
-                                  labelText: "Phase 2",
-                                  suffixText: "V",
-                                ),
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.number,
-                                onChanged: (val) {
-                                  print(
-                                    val,
-                                  ); // Print the text value write into TextField
-                                  _onChanged(val, recFormData, 'voltagePs2');
-                                },
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.numeric(
-                                    errorText: "Value must be \n numeric",
-                                  ),
-                                  FormBuilderValidators.max(
-                                    1000,
-                                    inclusive: false,
-                                    errorText:
-                                        "Value should be \n less than 1000",
-                                  ),
-                                  (val) {
-                                    if (val == null || val.isEmpty) return null;
-                                    final number = num.tryParse(val);
-                                    if (number == null)
-                                      return 'Must be a number';
-                                    return null;
-                                  },
-                                ]),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ), // Add spacing between the text fields
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'voltagePs3',
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                decoration: const InputDecoration(
-                                  labelText: "Phase 3",
-                                  suffixText: "V",
-                                ),
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.number,
-                                onChanged: (val) {
-                                  print(
-                                    val,
-                                  ); // Print the text value write into TextField
-                                  _onChanged(val, recFormData, 'voltagePs3');
-                                },
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.numeric(
-                                    errorText: "Value must be \n numeric",
-                                  ),
-                                  FormBuilderValidators.max(
-                                    1000,
-                                    inclusive: false,
-                                    errorText:
-                                        "Value should be \n less than 1000",
-                                  ),
-                                  (val) {
-                                    if (val == null || val.isEmpty) return null;
-                                    final number = num.tryParse(val);
-                                    if (number == null)
-                                      return 'Must be a number';
-                                    return null;
-                                  },
-                                ]),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
                     ),
-                  ),
 
-                  const SizedBox(height: 20),
-
-                  /////////////////////////////////////////////////////////////
-                  ///Curren Reading
-                  const Text(
-                    '2. Current Reading',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'currentPs1',
-                                decoration: const InputDecoration(
-                                  labelText: "Phase 1",
-                                  suffixText: "A",
-                                ),
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.number,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                onChanged: (val) {
-                                  print(
-                                    val,
-                                  ); // Print the text value write into TextField
-                                  _onChanged(val, recFormData, 'currentPs1');
-                                },
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.numeric(
-                                    errorText: "Value must be \n numeric",
-                                  ),
-                                  FormBuilderValidators.max(
-                                    10000,
-                                    inclusive: false,
-                                    errorText:
-                                        "Value should be \n less than 10000",
-                                  ),
-                                  (val) {
-                                    if (val == null || val.isEmpty) return null;
-                                    final number = num.tryParse(val);
-                                    if (number == null)
-                                      return 'Must be a number';
-                                    return null;
-                                  },
-                                ]),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ), // Add spacing between the text fields
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'currentPs2',
-                                decoration: const InputDecoration(
-                                  labelText: "Phase 2",
-                                  suffixText: "A",
-                                ),
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                keyboardType: TextInputType.number,
-                                onChanged: (val) {
-                                  print(
-                                    val,
-                                  ); // Print the text value write into TextField
-                                  _onChanged(val, recFormData, 'currentPs2');
-                                },
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.numeric(
-                                    errorText: "Value must be \n numeric",
-                                  ),
-                                  FormBuilderValidators.max(
-                                    10000,
-                                    inclusive: false,
-                                    errorText:
-                                        "Value should be  \n less than 10000",
-                                  ),
-                                  (val) {
-                                    if (val == null || val.isEmpty) return null;
-                                    final number = num.tryParse(val);
-                                    if (number == null)
-                                      return 'Must be a number';
-                                    return null;
-                                  },
-                                ]),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ), // Add spacing between the text fields
-                            Expanded(
-                              child: FormBuilderTextField(
-                                name: 'currentPs3',
-                                decoration: const InputDecoration(
-                                  labelText: "Phase 3",
-                                  suffixText: "A",
-                                ),
-                                textInputAction: TextInputAction.next,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                keyboardType: TextInputType.number,
-                                onChanged: (val) {
-                                  print(
-                                    val,
-                                  ); // Print the text value write into TextField
-                                  _onChanged(val, recFormData, 'currentPs3');
-                                },
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.numeric(
-                                    errorText: "Value must be \n numeric",
-                                  ),
-                                  FormBuilderValidators.max(
-                                    10000,
-                                    inclusive: false,
-                                    errorText:
-                                        "Value should be \n less than 10000",
-                                  ),
-                                  (val) {
-                                    if (val == null || val.isEmpty) return null;
-                                    final number = num.tryParse(val);
-                                    if (number == null)
-                                      return 'Must be a number';
-                                    return null;
-                                  },
-                                ]),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  //////////////////////////////////////////////////////////////////////////
-                  ///DC Output
-                  const Text(
-                    '3. DC Output',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: FormBuilderTextField(
-                            name: 'dcVoltage',
-                            decoration: const InputDecoration(
-                              labelText: "Voltage",
-                              suffixText: "V",
-                            ),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            onChanged: (val) {
-                              print(
-                                val,
-                              ); // Print the text value write into TextField
-                              _onChanged(val, recFormData, 'dcVoltage');
-                            },
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.numeric(),
-                              FormBuilderValidators.max(
-                                100,
-                                inclusive: false,
-                                errorText: "Value should be \nless than 100",
-                              ),
-                              (val) {
-                                if (val == null || val.isEmpty) return null;
-                                final number = num.tryParse(val);
-                                if (number == null) return 'Must be a number';
-                                return null;
-                              },
-                            ]),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ), // Add spacing between the text fields
-                        Expanded(
-                          child: FormBuilderTextField(
-                            name: 'dcCurrent',
-                            decoration: const InputDecoration(
-                              labelText: "Current",
-                              suffixText: "A",
-                            ),
-                            textInputAction: TextInputAction.next,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            keyboardType: TextInputType.number,
-                            onChanged: (val) {
-                              print(
-                                val,
-                              ); // Print the text value write into TextField
-                              _onChanged(val, recFormData, 'dcCurrent');
-                            },
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.numeric(),
-                              FormBuilderValidators.max(
-                                10000,
-                                inclusive: false,
-                                errorText: "Value should be \nless than 10000",
-                              ),
-                              (val) {
-                                if (val == null || val.isEmpty) return null;
-                                final number = num.tryParse(val);
-                                if (number == null) return 'Must be a number';
-                                return null;
-                              },
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /////////////////////////////////////////////////////////////////////
-                  ///capacity
-                  const Text(
-                    '4. Capacity',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      children: [
-                        FormBuilderTextField(
-                          name: 'recCapacity',
-                          decoration: const InputDecoration(
-                            labelText: "Capacity",
-                            suffixText: "A",
-                          ),
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.number,
-                          onChanged: (val) {
-                            print(
-                              val,
-                            ); // Print the text value write into TextField
-                            _onChanged(val, recFormData, 'recCapacity');
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                            FormBuilderValidators.numeric(),
-                            (val) {
-                              if (val == null || val.isEmpty) return null;
-                              final number = num.tryParse(val);
-                              if (number == null) return 'Must be a number';
-                              return null;
-                            },
-                          ]),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  ////////////////////////////////////////////////////////////////////////////////
-                  ///Alarm Status
-                  const Text(
-                    '5. Alarm Status',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      children: [
-                        FormBuilderChoiceChips(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // decoration:
-                          //     const InputDecoration(labelText: 'Alarm Status'),
-                          name: 'recAlarmStatus',
-                          initialValue: '',
-                          selectedColor: Colors.lightBlueAccent,
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                            (value) {
-                              if (value == 'notok' &&
-                                  (recFormData['recAlarmRemark'] == null ||
-                                      recFormData['recAlarmRemark'].isEmpty)) {
-                                return 'Remark is required when the room temperature is High';
-                              }
-                              return null;
-                            },
-                          ]),
-                          onChanged:
-                              (value) => _onChanged(
-                                value,
-                                recFormData,
-                                'recAlarmStatus',
-                              ),
-                          options: const [
-                            FormBuilderChipOption(
-                              value: 'ok',
-                              child: Text("ok"),
-                              avatar: CircleAvatar(child: Text('O')),
-                            ),
-                            FormBuilderChipOption(
-                              value: 'notok',
-                              child: Text("Not ok"),
-                              avatar: CircleAvatar(child: Text('N')),
-                            ),
-                          ],
-                        ),
-                        CustomRemarkWidget(
-                          title: "Remark",
-                          formDataKey: "recAlarmRemark",
-                          formData: recFormData,
-                          formKey: _formKey,
-                          onChangedRemark: (p0, p1) {
-                            _onChangedRemark(p0, p1);
-                            _formKey.currentState?.validate();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  //////////////////////////////////////////////////////////////////////////////
-                  ///Indicator Status
-                  const Text(
-                    '6. Indicator Status',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      children: [
-                        FormBuilderChoiceChips(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // decoration: const InputDecoration(
-                          //     labelText: 'Indicator Status'),
-                          name: 'recIndicatorStatus',
-                          initialValue: '',
-                          selectedColor: Colors.lightBlueAccent,
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                            (value) {
-                              if (value == 'not ok' &&
-                                  (recFormData['indRemark'] == null ||
-                                      recFormData['indRemark'].isEmpty)) {
-                                return 'Remark is required when the room temperature is High';
-                              }
-                              return null;
-                            },
-                          ]),
-                          onChanged:
-                              (value) => _onChanged(
-                                value,
-                                recFormData,
-                                'recIndicatorStatus',
-                              ),
-                          options: const [
-                            FormBuilderChipOption(
-                              value: 'ok',
-                              child: Text("ok"),
-                              avatar: CircleAvatar(child: Text('O')),
-                            ),
-                            FormBuilderChipOption(
-                              value: 'not ok',
-                              child: Text("Not ok"),
-                              avatar: CircleAvatar(child: Text('N')),
-                            ),
-                          ],
-                        ),
-                        CustomRemarkWidget(
-                          title: "Remark",
-                          formDataKey: "indRemark",
-                          formData: recFormData,
-                          formKey: _formKey,
-                          onChangedRemark: (p0, p1) {
-                            _onChangedRemark(p0, p1);
-                            _formKey.currentState?.validate();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  FormBuilderCheckbox(
-                    name: 'accept_terms',
-                    initialValue: false,
-                    onChanged:
-                        (value) =>
-                            _onChanged(value, recFormData, 'accept_terms'),
-                    title: RichText(
-                      text: const TextSpan(
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Column(
                         children: [
-                          TextSpan(
-                            text:
-                                'I Verify that submitted details are true and correct ',
-                            style: TextStyle(color: Colors.black),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Available Modules     :',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                widget.availableModule,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'No Working Modules at now :',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: FormBuilderTextField(
+                                  name: 'noOfWorkingLine', style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    labelText: "Available modules",
+                                  ),
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  onChanged: (val) {
+                                    print(
+                                      val,
+                                    ); // Print the text value write into TextField
+                                    _onChanged(
+                                      val,
+                                      recFormData,
+                                      'noOfWorkingLine',
+                                    );
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  textInputAction: TextInputAction.next,
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.max(
+                                      int.parse(widget.availableModule),
+                                      inclusive: false,
+                                    ),
+                                  ]),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    validator: FormBuilderValidators.equal(
-                      true,
-                      errorText:
-                          'You must accept terms and conditions to continue',
+                    const SizedBox(height: 10),
+
+                    //Capacity
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Capacity          :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "${widget.capacity} ${widget.makeType}",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                    const SizedBox(height: 10),
 
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            _formKey.currentState?.reset();
-                          },
-                          style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(
-                              Colors.green,
-                            ),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.white24,
+                    //Make Type
+                    const SizedBox(height: 15),
+
+                    const Text(
+                      'Rectifier Testing',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    //////////////////////////////////////////////////////////////////////////
+                    //volatge Reading
+                    const Text(
+                      '1. Voltage Reading',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FormBuilderTextField(
+                                  name: 'voltagePs1', style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                  decoration:  InputDecoration(
+                                    labelText: "Phase 1",
+                                    suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  onChanged: (val) {
+                                    print(
+                                      val,
+                                    ); // Print the text value write into TextField
+                                    _onChanged(val, recFormData, 'voltagePs1');
+                                  },
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.numeric(
+                                      errorText: "Value must be \n numeric",
+                                    ),
+                                    FormBuilderValidators.max(
+                                      1000,
+                                      inclusive: false,
+                                      errorText:
+                                          "Value should be \n less than 1000",
+                                    ),
+                                    (val) {
+                                      if (val == null || val.isEmpty)
+                                        return null;
+                                      final number = num.tryParse(val);
+                                      if (number == null)
+                                        return 'Must be a number';
+                                      return null;
+                                    },
+                                  ]),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ), // Add spacing between the text fields
+                              Expanded(
+                                child: FormBuilderTextField(
+                                  name: 'voltagePs2',                                   style: TextStyle( color: customColors.mainTextColor,),
+
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  decoration:  InputDecoration(
+                                    labelText: "Phase 2",
+                                    suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) {
+                                    print(
+                                      val,
+                                    ); // Print the text value write into TextField
+                                    _onChanged(val, recFormData, 'voltagePs2');
+                                  },
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.numeric(
+                                      errorText: "Value must be \n numeric",
+                                    ),
+                                    FormBuilderValidators.max(
+                                      1000,
+                                      inclusive: false,
+                                      errorText:
+                                          "Value should be \n less than 1000",
+                                    ),
+                                    (val) {
+                                      if (val == null || val.isEmpty)
+                                        return null;
+                                      final number = num.tryParse(val);
+                                      if (number == null)
+                                        return 'Must be a number';
+                                      return null;
+                                    },
+                                  ]),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ), // Add spacing between the text fields
+                              Expanded(
+                                child: FormBuilderTextField(
+                                  name: 'voltagePs3',                                   style: TextStyle( color: customColors.mainTextColor,),
+
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  decoration:  InputDecoration(
+                                    labelText: "Phase 3",
+                                    suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) {
+                                    print(
+                                      val,
+                                    ); // Print the text value write into TextField
+                                    _onChanged(val, recFormData, 'voltagePs3');
+                                  },
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.numeric(
+                                      errorText: "Value must be \n numeric",
+                                    ),
+                                    FormBuilderValidators.max(
+                                      1000,
+                                      inclusive: false,
+                                      errorText:
+                                          "Value should be \n less than 1000",
+                                    ),
+                                    (val) {
+                                      if (val == null || val.isEmpty)
+                                        return null;
+                                      final number = num.tryParse(val);
+                                      if (number == null)
+                                        return 'Must be a number';
+                                      return null;
+                                    },
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    /////////////////////////////////////////////////////////////
+                    ///Curren Reading
+                    const Text(
+                      '2. Current Reading',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FormBuilderTextField(
+                                  name: 'currentPs1',style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                  decoration:  InputDecoration(
+                                    labelText: "Phase 1",
+                                    suffixText: "A",suffixStyle: TextStyle(
+                                      color: customColors.mainTextColor
+                                          .withOpacity(0.7),
+                                    ),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  onChanged: (val) {
+                                    print(
+                                      val,
+                                    ); // Print the text value write into TextField
+                                    _onChanged(val, recFormData, 'currentPs1');
+                                  },
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.numeric(
+                                      errorText: "Value must be \n numeric",
+                                    ),
+                                    FormBuilderValidators.max(
+                                      10000,
+                                      inclusive: false,
+                                      errorText:
+                                          "Value should be \n less than 10000",
+                                    ),
+                                    (val) {
+                                      if (val == null || val.isEmpty)
+                                        return null;
+                                      final number = num.tryParse(val);
+                                      if (number == null)
+                                        return 'Must be a number';
+                                      return null;
+                                    },
+                                  ]),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ), // Add spacing between the text fields
+                              Expanded(
+                                child: FormBuilderTextField(
+                                  name: 'currentPs2',                                   style: TextStyle( color: customColors.mainTextColor,),
+
+                                  decoration:  InputDecoration(
+                                    labelText: "Phase 2",
+                                    suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) {
+                                    print(
+                                      val,
+                                    ); // Print the text value write into TextField
+                                    _onChanged(val, recFormData, 'currentPs2');
+                                  },
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.numeric(
+                                      errorText: "Value must be \n numeric",
+                                    ),
+                                    FormBuilderValidators.max(
+                                      10000,
+                                      inclusive: false,
+                                      errorText:
+                                          "Value should be  \n less than 10000",
+                                    ),
+                                    (val) {
+                                      if (val == null || val.isEmpty)
+                                        return null;
+                                      final number = num.tryParse(val);
+                                      if (number == null)
+                                        return 'Must be a number';
+                                      return null;
+                                    },
+                                  ]),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ), // Add spacing between the text fields
+                              Expanded(
+                                child: FormBuilderTextField(
+                                  name: 'currentPs3',                                   style: TextStyle( color: customColors.mainTextColor,),
+
+                                  decoration:  InputDecoration(
+                                    labelText: "Phase 3",
+                                    suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (val) {
+                                    print(
+                                      val,
+                                    ); // Print the text value write into TextField
+                                    _onChanged(val, recFormData, 'currentPs3');
+                                  },
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                    FormBuilderValidators.numeric(
+                                      errorText: "Value must be \n numeric",
+                                    ),
+                                    FormBuilderValidators.max(
+                                      10000,
+                                      inclusive: false,
+                                      errorText:
+                                          "Value should be \n less than 10000",
+                                    ),
+                                    (val) {
+                                      if (val == null || val.isEmpty)
+                                        return null;
+                                      final number = num.tryParse(val);
+                                      if (number == null)
+                                        return 'Must be a number';
+                                      return null;
+                                    },
+                                  ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    //////////////////////////////////////////////////////////////////////////
+                    ///DC Output
+                    const Text(
+                      '3. DC Output',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: FormBuilderTextField(
+                              name: 'dcVoltage',                                   style: TextStyle( color: customColors.mainTextColor,),
+
+                              decoration:  InputDecoration(
+                                labelText: "Voltage",
+                                suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                              ),
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.number,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              onChanged: (val) {
+                                print(
+                                  val,
+                                ); // Print the text value write into TextField
+                                _onChanged(val, recFormData, 'dcVoltage');
+                              },
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.numeric(),
+                                FormBuilderValidators.max(
+                                  100,
+                                  inclusive: false,
+                                  errorText: "Value should be \nless than 100",
+                                ),
+                                (val) {
+                                  if (val == null || val.isEmpty) return null;
+                                  final number = num.tryParse(val);
+                                  if (number == null) return 'Must be a number';
+                                  return null;
+                                },
+                              ]),
                             ),
                           ),
-                          child: const Text(
-                            'Reset',
-                            style: TextStyle(color: Colors.redAccent),
+                          const SizedBox(
+                            width: 10,
+                          ), // Add spacing between the text fields
+                          Expanded(
+                            child: FormBuilderTextField(
+                              name: 'dcCurrent',                                   style: TextStyle( color: customColors.mainTextColor,),
+
+                              decoration:  InputDecoration(
+                                labelText: "Current",
+                                suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                              ),
+                              textInputAction: TextInputAction.next,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              keyboardType: TextInputType.number,
+                              onChanged: (val) {
+                                print(
+                                  val,
+                                ); // Print the text value write into TextField
+                                _onChanged(val, recFormData, 'dcCurrent');
+                              },
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.numeric(),
+                                FormBuilderValidators.max(
+                                  10000,
+                                  inclusive: false,
+                                  errorText:
+                                      "Value should be \nless than 10000",
+                                ),
+                                (val) {
+                                  if (val == null || val.isEmpty) return null;
+                                  final number = num.tryParse(val);
+                                  if (number == null) return 'Must be a number';
+                                  return null;
+                                },
+                              ]),
+                            ),
                           ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    /////////////////////////////////////////////////////////////////////
+                    ///capacity
+                    const Text(
+                      '4. Capacity',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        children: [
+                          FormBuilderTextField(
+                            name: 'recCapacity',                                   style: TextStyle( color: customColors.mainTextColor,),
+
+                            decoration:  InputDecoration(
+                              labelText: "Capacity",
+                              suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                            ),
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.number,
+                            onChanged: (val) {
+                              print(
+                                val,
+                              ); // Print the text value write into TextField
+                              _onChanged(val, recFormData, 'recCapacity');
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.numeric(),
+                              (val) {
+                                if (val == null || val.isEmpty) return null;
+                                final number = num.tryParse(val);
+                                if (number == null) return 'Must be a number';
+                                return null;
+                              },
+                            ]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    ////////////////////////////////////////////////////////////////////////////////
+                    ///Alarm Status
+                    const Text(
+                      '5. Alarm Status',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        children: [
+                          FormBuilderChoiceChips(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            // decoration:
+                            //     const InputDecoration(labelText: 'Alarm Status'),
+                            name: 'recAlarmStatus',
+                            initialValue: '',
+                            selectedColor: Colors.lightBlueAccent,
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              (value) {
+                                if (value == 'notok' &&
+                                    (recFormData['recAlarmRemark'] == null ||
+                                        recFormData['recAlarmRemark']
+                                            .isEmpty)) {
+                                  return 'Remark is required when the room temperature is High';
+                                }
+                                return null;
+                              },
+                            ]),
+                            onChanged:
+                                (value) => _onChanged(
+                                  value,
+                                  recFormData,
+                                  'recAlarmStatus',
+                                ),
+                            options: const [
+                              FormBuilderChipOption(
+                                value: 'ok',
+                                child: Text("ok"),
+                                avatar: CircleAvatar(child: Text('O')),
+                              ),
+                              FormBuilderChipOption(
+                                value: 'notok',
+                                child: Text("Not ok"),
+                                avatar: CircleAvatar(child: Text('N')),
+                              ),
+                            ],
+                          ),
+                          CustomRemarkWidget(
+                            title: "Remark",
+                            formDataKey: "recAlarmRemark",
+                            formData: recFormData,
+                            formKey: _formKey,
+                            onChangedRemark: (p0, p1) {
+                              _onChangedRemark(p0, p1);
+                              _formKey.currentState?.validate();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    //////////////////////////////////////////////////////////////////////////////
+                    ///Indicator Status
+                    const Text(
+                      '6. Indicator Status',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        children: [
+                          FormBuilderChoiceChips(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            // decoration: const InputDecoration(
+                            //     labelText: 'Indicator Status'),
+                            name: 'recIndicatorStatus',
+                            initialValue: '',
+                            selectedColor: Colors.lightBlueAccent,
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              (value) {
+                                if (value == 'not ok' &&
+                                    (recFormData['indRemark'] == null ||
+                                        recFormData['indRemark'].isEmpty)) {
+                                  return 'Remark is required when the room temperature is High';
+                                }
+                                return null;
+                              },
+                            ]),
+                            onChanged:
+                                (value) => _onChanged(
+                                  value,
+                                  recFormData,
+                                  'recIndicatorStatus',
+                                ),
+                            options: const [
+                              FormBuilderChipOption(
+                                value: 'ok',
+                                child: Text("ok"),
+                                avatar: CircleAvatar(child: Text('O')),
+                              ),
+                              FormBuilderChipOption(
+                                value: 'not ok',
+                                child: Text("Not ok"),
+                                avatar: CircleAvatar(child: Text('N')),
+                              ),
+                            ],
+                          ),
+                          CustomRemarkWidget(
+                            title: "Remark",
+                            formDataKey: "indRemark",
+                            formData: recFormData,
+                            formKey: _formKey,
+                            onChangedRemark: (p0, p1) {
+                              _onChangedRemark(p0, p1);
+                              _formKey.currentState?.validate();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    FormBuilderCheckbox(
+                      name: 'accept_terms',
+                      initialValue: false,
+                      onChanged:
+                          (value) =>
+                              _onChanged(value, recFormData, 'accept_terms'),
+                      title: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  'I Verify that submitted details are true and correct ',
+                              style: TextStyle(color: customColors.mainTextColor),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState?.saveAndValidate() ??
-                                false) {
-                              debugPrint(
-                                _formKey.currentState?.value.toString(),
-                              );
-                              Map<String, dynamic>? formData =
-                                  _formKey.currentState?.value;
-                              formData = formData?.map(
-                                (key, value) => MapEntry(key, value ?? ''),
-                              );
+                      validator: FormBuilderValidators.equal(
+                        true,
+                        errorText:
+                            'You must accept terms and conditions to continue',
+                      ),
+                    ),
 
-                              // String rtom = _formKey.currentState?.value['Rtom_name'];
-                              // debugPrint('RTOM value: $rtom');
-                              //pass _formkey.currenState.value to a page called httpPostGen
-
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           httpPostRectifierInspection(
-                              //             formData: recFormData,
-                              //             recId:
-                              //             widget.RectifierUnit['RecID'],
-                              //            // userAccess: userAccess,
-                              //             region: widget.region,
-                              //           )),
-                              // );
-                            } else {
-                              debugPrint(
-                                _formKey.currentState?.value.toString(),
-                              );
-                              debugPrint('validation failed');
-                            }
-                          },
-                          child: const Text(
-                            'Submit',
-                            style: TextStyle(color: Colors.greenAccent),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              _formKey.currentState?.reset();
+                            },
+                           style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.blue,
+                              ), // Set the button color here
+                            ),
+                            child: const Text(
+                              'Reset',
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState?.saveAndValidate() ??
+                                  false) {
+                                debugPrint(
+                                  _formKey.currentState?.value.toString(),
+                                );
+                                Map<String, dynamic>? formData =
+                                    _formKey.currentState?.value;
+                                formData = formData?.map(
+                                  (key, value) => MapEntry(key, value ?? ''),
+                                );
 
-                  // Center(
-                  //   child: ElevatedButton(
-                  //     onPressed: _submitForm,
-                  //     style: ElevatedButton.styleFrom(
-                  //       foregroundColor: Colors.white,
-                  //       backgroundColor: const Color.fromARGB(
-                  //           255, 117, 175, 222), // Text color
-                  //       shadowColor: Colors.blueAccent, // Shadow color
-                  //       elevation: 5, // Elevation of the button
-                  //       padding: const EdgeInsets.symmetric(
-                  //           horizontal: 80,
-                  //           vertical: 16), // Padding inside the button
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius:
-                  //         BorderRadius.circular(12), // Rounded corners
-                  //       ),
-                  //     ),
-                  //     child: const Text('Submit'),
-                  //   ),
-                  // ),
-                ],
+                                // String rtom = _formKey.currentState?.value['Rtom_name'];
+                                // debugPrint('RTOM value: $rtom');
+                                //pass _formkey.currenState.value to a page called httpPostGen
+
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) =>
+                                //           httpPostRectifierInspection(
+                                //             formData: recFormData,
+                                //             recId:
+                                //             widget.RectifierUnit['RecID'],
+                                //            // userAccess: userAccess,
+                                //             region: widget.region,
+                                //           )),
+                                // );
+                              } else {
+                                debugPrint(
+                                  _formKey.currentState?.value.toString(),
+                                );
+                                debugPrint('validation failed');
+                              }
+                            },
+                           style: buttonStyle(),
+                            child: const Text('Submit'),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Center(
+                    //   child: ElevatedButton(
+                    //     onPressed: _submitForm,
+                    //     style: ElevatedButton.styleFrom(
+                    //       foregroundColor: Colors.white,
+                    //       backgroundColor: const Color.fromARGB(
+                    //           255, 117, 175, 222), // Text color
+                    //       shadowColor: Colors.blueAccent, // Shadow color
+                    //       elevation: 5, // Elevation of the button
+                    //       padding: const EdgeInsets.symmetric(
+                    //           horizontal: 80,
+                    //           vertical: 16), // Padding inside the button
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius:
+                    //         BorderRadius.circular(12), // Rounded corners
+                    //       ),
+                    //     ),
+                    //     child: const Text('Submit'),
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
-      ),
     );
   }
 }
+
+
+ButtonStyle buttonStyle() {
+  return ElevatedButton.styleFrom();
+}
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 ///custom remark widget
@@ -1449,11 +1518,13 @@ class customText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Text(
       title,
-      style: const TextStyle(
-        color: Colors.black,
-        fontSize: 15,
+      style:  TextStyle(
+        color: customColors.subTextColor,
+        fontSize: 14,
         fontWeight: FontWeight.w600,
       ),
     );

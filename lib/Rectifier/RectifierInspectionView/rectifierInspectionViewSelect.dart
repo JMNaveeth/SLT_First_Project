@@ -123,7 +123,6 @@ class _RectifierInspectionViewSelectState
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
-      backgroundColor: customColors.mainBackgroundColor,
       appBar: AppBar(
         title: Text(
           'Inspection Data',
@@ -136,7 +135,9 @@ class _RectifierInspectionViewSelectState
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
-      body: Column(
+      body: Container( // Wrap the Column with a Container
+        color: customColors.mainBackgroundColor, // Or Colors.white for a hardcoded white
+        child:Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -367,6 +368,7 @@ class _RectifierInspectionViewSelectState
             ),
           ),
         ],
+      ),
       ),
     );
   }

@@ -846,17 +846,16 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'voltagePs2', style: TextStyle(
-                                    color: customColors.mainTextColor,
-                                  ),
+                                  name: 'voltagePs2',
+
+                                   style: TextStyle( color: customColors.mainTextColor,),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   decoration:  InputDecoration(
                                     labelText: "Phase 2",
-                                    suffixText: "V",suffixStyle: TextStyle(
-                                      color: customColors.mainTextColor
-                                          .withOpacity(0.7),
-                                    ),
+                                    suffixText: "V",
+                                    
+                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.number,

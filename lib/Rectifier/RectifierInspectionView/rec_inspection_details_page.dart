@@ -37,7 +37,9 @@ class RecInspectionDetailPage extends StatelessWidget {
         iconTheme: IconThemeData(color: customColors.mainTextColor),
       ),
 
-      body: Padding(
+      body: Container( // Wrap Padding with a Container
+        color: customColors.mainBackgroundColor, // Or Colors.white, or any other color
+        child:Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
@@ -433,6 +435,7 @@ class RecInspectionDetailPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }
