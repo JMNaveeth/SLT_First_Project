@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/2nd%20sub%20folder/SPD%20Maitenance/AddACSPD/AddacSPD.dart';
+import 'package:theme_update/2nd%20sub%20folder/SPD%20Maitenance/AddDCSPD/AddDCSpd.dart';
+import 'package:theme_update/2nd%20sub%20folder/SPD%20Maitenance/UpdateSPD/UpdateSPDDetails.dart';
+import 'package:theme_update/2nd%20sub%20folder/UpdateGenerator/GatherUpdateGeneratorSelector.dart';
 import 'package:theme_update/AddGenerator/GatherGenData.dart';
 import 'package:theme_update/DEGRoutineInspection/AddRoutineInspect/selectDEGtoInspect.dart';
 import 'package:theme_update/DEGRoutineInspection/RoutineInspectionView/DEGInspectionViewSelect.dart';
@@ -114,6 +118,150 @@ class RectifierMenu extends StatelessWidget {
       body: Container(
         color: customColors.mainBackgroundColor,
         width: double.infinity, // Make sure background fills the width
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Center vertically
+            children: [
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => firstsub_folder()),
+                  );
+                },
+                child: const Text('first sub folder'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => secondsub_folder()),
+                  );
+                },
+                child: const Text('Second sub folder'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+ButtonStyle buttonStyle() {
+  return ElevatedButton.styleFrom();
+}
+
+///////////////////////////2nd sub folder///////////////////////////
+
+class secondsub_folder extends StatelessWidget {
+  const secondsub_folder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'second sub folder',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        centerTitle: true,
+        backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+      ),
+
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Center vertically
+            children: [
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddacSPD(),
+                    ),
+                  );
+                },
+                child: const Text('Add AC SPD'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddDCSpd(),
+                    ),
+                  );
+                },
+                child: const Text('Add DC SPD'),
+              ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpdateSPDDetails(),
+                    ),
+                  );
+                },
+                child: const Text('Update SPD Details'),
+              ),
+            ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GeneratorSelectPage(),
+                    ),
+                  );
+                },
+                child: const Text('Generator Select Page'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+///////////////////////////1st sub folder///////////////////////////
+
+class firstsub_folder extends StatelessWidget {
+  const firstsub_folder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'first sub folder',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        centerTitle: true,
+        backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+      ),
+
+      body: Container(
+        color: customColors.mainBackgroundColor,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min, // Center vertically
@@ -243,57 +391,69 @@ class RectifierMenu extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GeneratorDetailAddPage()),
+                    MaterialPageRoute(
+                      builder: (context) => GeneratorDetailAddPage(),
+                    ),
                   );
                 },
                 child: const Text('Add Generator'),
               ),
-               ElevatedButton(
+              ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DEGInspectionViewSelect()),
+                    MaterialPageRoute(
+                      builder: (context) => DEGInspectionViewSelect(),
+                    ),
                   );
                 },
                 child: const Text('RoutineInspection View'),
               ),
-               ElevatedButton(
+              ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => selectDEGToInspect()),
+                    MaterialPageRoute(
+                      builder: (context) => selectDEGToInspect(),
+                    ),
                   );
                 },
                 child: const Text('Add RoutineInspect'),
               ),
-               ElevatedButton(
+              ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => selectUPSToInspect()),
+                    MaterialPageRoute(
+                      builder: (context) => selectUPSToInspect(),
+                    ),
                   );
                 },
                 child: const Text('UPSRoutineInspection'),
               ),
-               ElevatedButton(
+              ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RectifierInspectionViewSelect()),
+                    MaterialPageRoute(
+                      builder: (context) => RectifierInspectionViewSelect(),
+                    ),
                   );
                 },
                 child: const Text('RectifierInspectionView'),
               ),
-               ElevatedButton(
+              ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => selectRectifierToInspect()),
+                    MaterialPageRoute(
+                      builder: (context) => selectRectifierToInspect(),
+                    ),
                   );
                 },
                 child: const Text('RectifierRoutineInspection'),
@@ -304,8 +464,4 @@ class RectifierMenu extends StatelessWidget {
       ),
     );
   }
-}
-
-ButtonStyle buttonStyle() {
-  return ElevatedButton.styleFrom();
 }
