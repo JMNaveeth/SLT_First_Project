@@ -1712,12 +1712,8 @@
 //   }
 // }
 
-
-
-
 //v1 working as of 25-12-24
 //Gathering of Generator data though user forum
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -1725,11 +1721,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 
 //import '../../../UserAccess.dart';
 import 'httpPostSPD.dart';
-
 
 bool _showDTcapacity = true; // default value
 
@@ -1741,13 +1737,22 @@ class AddacSPD extends StatefulWidget {
 class _AddacSPDState extends State<AddacSPD> {
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add AC SPD Info'),
+        title: Text(
+          'Add AC SPD Info',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
-      body: Center(
-        child: CompleteForm(),
-      ),
+      body: Center(child: CompleteForm()),
     );
   }
 }
@@ -1762,7 +1767,6 @@ class CompleteForm extends StatefulWidget {
 }
 
 class _CompleteFormState extends State<CompleteForm> {
-
   String _status = '';
   String? selectedRTOM;
   String? selectedRegion;
@@ -1773,46 +1777,83 @@ class _CompleteFormState extends State<CompleteForm> {
   bool _regionHasError = false;
   bool _eBrandHasError = false;
   bool _aBrandHasError = false;
-  bool _spdUnitary=false;
-  bool _validator1= false;
-  bool _3phase= false;
-  bool _validator3= false;
-  bool _validator4= false;
-  bool _validator5= false;
-  bool _validator6= false;
-  bool _validator7= false;
-  bool _validator8= false;
-  bool _validator9= false;
-  bool _validator10= false;
-  bool _validator11= false;
-  bool _validator12= false;
-  bool _validator13= false;
-  bool _validator14= false;
-  bool _validator15= false;
-  bool _validator16= false;
+  bool _spdUnitary = false;
+  bool _validator1 = false;
+  bool _3phase = false;
+  bool _validator3 = false;
+  bool _validator4 = false;
+  bool _validator5 = false;
+  bool _validator6 = false;
+  bool _validator7 = false;
+  bool _validator8 = false;
+  bool _validator9 = false;
+  bool _validator10 = false;
+  bool _validator11 = false;
+  bool _validator12 = false;
+  bool _validator13 = false;
+  bool _validator14 = false;
+  bool _validator15 = false;
+  bool _validator16 = false;
 
   double _sliderValue = 0.0;
-  bool _burned=false;
-  bool _dcSPD=false;
-  bool _dischargeAll=false;
-  bool _discharge10_350=false;
-  bool _dicharge8_20=false;
-
-
-
+  bool _burned = false;
+  bool _dcSPD = false;
+  bool _dischargeAll = false;
+  bool _discharge10_350 = false;
+  bool _dicharge8_20 = false;
 
   //string array
   Map<String, String> _selectedValues = {};
 
-  var Regions = [ 'CPN','CPS','EPN','EPS','EPN–TC','HQ','NCP','NPN','NPS','NWPE','NWPW','PITI','SAB','SMW6','SPE','SPW','WEL','WPC','WPE','WPN','WPNE','WPS','WPSE','WPSW','UVA'];
+  var Regions = [
+    'CPN',
+    'CPS',
+    'EPN',
+    'EPS',
+    'EPN–TC',
+    'HQ',
+    'NCP',
+    'NPN',
+    'NPS',
+    'NWPE',
+    'NWPW',
+    'PITI',
+    'SAB',
+    'SMW6',
+    'SPE',
+    'SPW',
+    'WEL',
+    'WPC',
+    'WPE',
+    'WPN',
+    'WPNE',
+    'WPS',
+    'WPSE',
+    'WPSW',
+    'UVA',
+  ];
   var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown'];
-  var SPDBrands = ['Citel','Critec','DEHN','Erico','OBO','XW2','Zone Guard','Other'];
-
-
+  var SPDBrands = [
+    'Citel',
+    'Critec',
+    'DEHN',
+    'Erico',
+    'OBO',
+    'XW2',
+    'Zone Guard',
+    'Other',
+  ];
 
   Map<String, List<String>> regionToDistricts = {
     "CPN": ['Kandy', 'Dambulla', 'Matale'],
-    "CPS": ['Gampola', 'Nuwaraeliya', 'Haton', 'Peradeniya','Nawalapitiya', 'Gampola'],
+    "CPS": [
+      'Gampola',
+      'Nuwaraeliya',
+      'Haton',
+      'Peradeniya',
+      'Nawalapitiya',
+      'Gampola',
+    ],
     "EPN": ['Batticaloa'],
     'EPNTC': ['Trincomalee'],
     'EPS': ['Ampara', 'Kalmunai'],
@@ -1838,8 +1879,10 @@ class _CompleteFormState extends State<CompleteForm> {
   };
 
   String? _validateAtLeastOneInput(Map<String, dynamic> values) {
-    final inLive = values['Nominal Discharge Current rating (In)-Live (8/20µs)'];
-    final iimpLive = values['Impulse Discharge Current rating (Iimp)-Live (10/350µs)'];
+    final inLive =
+        values['Nominal Discharge Current rating (In)-Live (8/20µs)'];
+    final iimpLive =
+        values['Impulse Discharge Current rating (Iimp)-Live (10/350µs)'];
 
     if (inLive != null || iimpLive != null) {
       return null; // At least one field is filled, validation passes.
@@ -1848,19 +1891,22 @@ class _CompleteFormState extends State<CompleteForm> {
     }
   }
 
-
-  List<String> years = List.generate(40, (index) => (DateTime.now().year - index).toString());
+  List<String> years = List.generate(
+    40,
+    (index) => (DateTime.now().year - index).toString(),
+  );
 
   void _onChanged(dynamic val) => debugPrint(val.toString());
 
-
-
   @override
   Widget build(BuildContext context) {
-   // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
-   // String? username = userAccess.username;
+    // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
+    // String? username = userAccess.username;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
+      backgroundColor: customColors.mainBackgroundColor,
+
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: SingleChildScrollView(
@@ -1885,62 +1931,91 @@ class _CompleteFormState extends State<CompleteForm> {
                       name: 'province',
                       decoration: InputDecoration(
                         labelText: 'Region',
-                        suffix: _regionHasError
-                            ? const Icon(Icons.error)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffix:
+                            _regionHasError
+                                ? const Icon(Icons.error)
+                                : const Icon(Icons.check, color: Colors.green),
                         hintText: 'Select Region',
                       ),
-                      validator: FormBuilderValidators.compose(
-                          [FormBuilderValidators.required()]),
-                      items: Regions
-                          .map((Regions) => DropdownMenuItem(
-                        alignment: AlignmentDirectional.center,
-                        value: Regions,
-                        child: Text(Regions),
-                      ))
-                          .toList(),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                      ]),
+                      items:
+                          Regions.map(
+                            (Regions) => DropdownMenuItem(
+                              alignment: AlignmentDirectional.center,
+                              value: Regions,
+                              child: Text(
+                                Regions,
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ), // Reverted to use customColors.mainTextColor
+                              ),
+                            ),
+                          ).toList(),
                       onChanged: (val) {
                         setState(() {
                           _selectedValues['province'] = val!;
                           selectedRegion = val;
-                          selectedRTOM=null;
-                          _regionHasError = !(_formKey.currentState?.fields['province']?.validate() ?? false);
+                          selectedRTOM = null;
+                          _regionHasError =
+                              !(_formKey.currentState?.fields['province']
+                                      ?.validate() ??
+                                  false);
                           // Reset the 'Rtom_name' field value and clear validation errors
-                          _formKey.currentState?.fields['Rtom_name']?.didChange(null);
+                          _formKey.currentState?.fields['Rtom_name']?.didChange(
+                            null,
+                          );
                         });
                         //  print('Region: ' + _selectedValues['Region'].toString());
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
 
+                    SizedBox(height: 10),
 
-                        FormBuilderDropdown<String>(
-                          name: 'Rtom_name',
-                          decoration: InputDecoration(
-                            labelText: 'RTOM',
-                          ),
-                          validator: FormBuilderValidators.required(),
+                    FormBuilderDropdown<String>(
+                      name: 'Rtom_name',
+                      decoration: InputDecoration(labelText: 'RTOM'),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
 
-                          items: (selectedRegion != null) ? (regionToDistricts[selectedRegion] ?? []).map((RTOM) => DropdownMenuItem(
-                            value: RTOM,
-                            child: Text(RTOM),
-                          )).toList() : [],
+                      validator: FormBuilderValidators.required(),
 
+                      items:
+                          (selectedRegion != null)
+                              ? (regionToDistricts[selectedRegion] ?? [])
+                                  .map(
+                                    (RTOM) => DropdownMenuItem(
+                                      value: RTOM,
+                                      child: Text(
+                                        RTOM,
+                                        style: TextStyle(
+                                          color: customColors.mainTextColor,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList()
+                              : [],
 
-                          onChanged: (value) => setState(() {
+                      onChanged:
+                          (value) => setState(() {
                             //  print('RTOM: ' + _selectedValues['RTOM'].toString());
                           }),
-                        ),
-                        // Show tick mark if data is entered
-                        _formKey.currentState?.fields['Rtom_name']?.value?.toString()?.isNotEmpty ?? false
-                            ? Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        )
-                            : SizedBox(),
-
-
-
+                    ),
+                    // Show tick mark if data is entered
+                    _formKey.currentState?.fields['Rtom_name']?.value
+                                ?.toString()
+                                ?.isNotEmpty ??
+                            false
+                        ? Icon(Icons.check, color: Colors.green)
+                        : SizedBox(height: 10),
 
                     //Station Text Field
                     Stack(
@@ -1948,6 +2023,8 @@ class _CompleteFormState extends State<CompleteForm> {
                       children: [
                         FormBuilderTextField(
                           name: 'station',
+                          style: TextStyle(color: customColors.mainTextColor),
+
                           // enabled: false,
                           decoration: InputDecoration(
                             labelText: 'Station (QR Code ID)',
@@ -1956,14 +2033,16 @@ class _CompleteFormState extends State<CompleteForm> {
                           onChanged: (value) => setState(() {}),
                         ),
                         // Show tick mark if data is entered
-                        _formKey.currentState?.fields['station']?.value?.toString()?.isNotEmpty ?? false
-                            ? Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        )
+                        _formKey.currentState?.fields['station']?.value
+                                    ?.toString()
+                                    ?.isNotEmpty ??
+                                false
+                            ? Icon(Icons.check, color: Colors.green)
                             : SizedBox(),
                       ],
                     ),
+
+                    SizedBox(height: 10),
 
                     //SPD Location that is to be typed
                     Stack(
@@ -1971,32 +2050,34 @@ class _CompleteFormState extends State<CompleteForm> {
                       children: [
                         FormBuilderTextField(
                           name: 'SPDLoc',
+                          style: TextStyle(color: customColors.mainTextColor),
+
                           decoration: InputDecoration(
                             labelText: 'SPD Location (DB Location)',
                           ),
                           validator: FormBuilderValidators.required(),
-                          onChanged: (value) => setState(() {
-                            _selectedValues['SPDLoc'] = value!;
-                            //  print('RTOM: ' + _selectedValues['RTOM'].toString());
-                          }),
+                          onChanged:
+                              (value) => setState(() {
+                                _selectedValues['SPDLoc'] = value!;
+                                //  print('RTOM: ' + _selectedValues['RTOM'].toString());
+                              }),
                         ),
                         // Show tick mark if data is entered
-                        _formKey.currentState?.fields['SPDLoc']?.value?.toString()?.isNotEmpty ?? false
-                            ? Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        )
+                        _formKey.currentState?.fields['SPDLoc']?.value
+                                    ?.toString()
+                                    ?.isNotEmpty ??
+                                false
+                            ? Icon(Icons.check, color: Colors.green)
                             : SizedBox(),
                       ],
                     ),
 
-
+                    SizedBox(height: 10),
 
                     //SPD Phase
                     FormBuilderChoiceChips<String>(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: const InputDecoration(
-                          labelText: 'Unit Type'),
+                      decoration: const InputDecoration(labelText: 'Unit Type'),
                       name: 'modular',
                       initialValue: 'N/A',
                       selectedColor: Colors.lightBlueAccent,
@@ -2011,26 +2092,24 @@ class _CompleteFormState extends State<CompleteForm> {
                           child: Text('Unitary'),
                           avatar: CircleAvatar(child: Text('')),
                         ),
-
                       ],
                       onChanged: (val) {
                         _onChanged;
                         setState(() {
-                          _spdUnitary = val=='Unitary'? true:false; // Update the flag based on the selected value
+                          _spdUnitary =
+                              val == 'Unitary'
+                                  ? true
+                                  : false; // Update the flag based on the selected value
                         });
                       },
-
                     ),
 
+                    SizedBox(height: 10),
 
-
-
-
-                  // SPD Type (DC/AC)
+                    // SPD Type (DC/AC)
                     FormBuilderChoiceChips<String>(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: const InputDecoration(
-                          labelText: 'SPD Type'),
+                      decoration: const InputDecoration(labelText: 'SPD Type'),
                       name: 'poles',
                       initialValue: '',
                       enabled: !_spdUnitary,
@@ -2066,11 +2145,12 @@ class _CompleteFormState extends State<CompleteForm> {
                       },
                     ),
 
+                    SizedBox(height: 10),
+
                     //SPD Phase
                     FormBuilderChoiceChips<String>(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: const InputDecoration(
-                          labelText: 'SPD Phase'),
+                      decoration: const InputDecoration(labelText: 'SPD Phase'),
                       name: 'phase',
                       initialValue: 'N/A',
                       selectedColor: Colors.lightBlueAccent,
@@ -2085,86 +2165,105 @@ class _CompleteFormState extends State<CompleteForm> {
                           child: Text('Phase'),
                           avatar: CircleAvatar(child: Text('3')),
                         ),
-
                       ],
                       onChanged: (val) {
                         _onChanged;
                         setState(() {
-                          _3phase = val=='1'? false:true; // Update the flag based on the selected value
+                          _3phase =
+                              val == '1'
+                                  ? false
+                                  : true; // Update the flag based on the selected value
                         });
                       },
-
                     ),
 
+                    SizedBox(height: 10),
 
-
-                    //
-                    //
                     //Alternator Brand
                     FormBuilderDropdown<String>(
                       name: 'SPDType',
                       initialValue: 'Unknown',
                       decoration: InputDecoration(
                         labelText: 'Select SPD Type',
-                        suffix: _aBrandHasError
-                            ? const Icon(Icons.error)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffix:
+                            _aBrandHasError
+                                ? const Icon(Icons.error)
+                                : const Icon(Icons.check, color: Colors.green),
                         hintText: 'Select SPD Type',
                       ),
-                      validator: FormBuilderValidators.compose(
-                          [FormBuilderValidators.required()]),
-                      items: SPDTypes
-                          .map((aBrand) => DropdownMenuItem(
-                        alignment: AlignmentDirectional.center,
-                        value: aBrand,
-                        child: Text(aBrand),
-                      ))
-                          .toList(),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                      ]),
+                      items:
+                          SPDTypes.map(
+                            (aBrand) => DropdownMenuItem(
+                              alignment: AlignmentDirectional.center,
+                              value: aBrand,
+                              child: Text(
+                                aBrand,
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                            ),
+                          ).toList(),
                       onChanged: (val) {
                         setState(() {
-                          _aBrandHasError = !(_formKey
-                              .currentState?.fields['SPDType']
-                              ?.validate() ??
-                              false);
+                          _aBrandHasError =
+                              !(_formKey.currentState?.fields['SPDType']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
 
+                    SizedBox(height: 10),
 
                     //SPD Manufacturer
                     FormBuilderDropdown<String>(
                       name: 'SPD_Manu',
                       decoration: InputDecoration(
                         labelText: 'SPD Manufacturer',
-                        suffix: _eBrandHasError
-                            ? const Icon(Icons.error)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffix:
+                            _eBrandHasError
+                                ? const Icon(Icons.error)
+                                : const Icon(Icons.check, color: Colors.green),
                         hintText: 'Select SPD Model',
                       ),
-                      validator: FormBuilderValidators.compose(
-                          [FormBuilderValidators.required()]),
-                      items: SPDBrands
-                          .map((eBrand) => DropdownMenuItem(
-                        alignment: AlignmentDirectional.center,
-                        value: eBrand,
-                        child: Text(eBrand),
-                      ))
-                          .toList(),
+                      dropdownColor: customColors.suqarBackgroundColor,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                      ]),
+                      items:
+                          SPDBrands.map(
+                            (eBrand) => DropdownMenuItem(
+                              alignment: AlignmentDirectional.center,
+                              value: eBrand,
+                              child: Text(
+                                eBrand,
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                            ),
+                          ).toList(),
                       onChanged: (val) {
                         setState(() {
-                          _eBrandHasError = !(_formKey
-                              .currentState?.fields['SPD_Manu']
-                              ?.validate() ??
-                              false);
+                          _eBrandHasError =
+                              !(_formKey.currentState?.fields['SPD_Manu']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
 
-
-
-
+                    SizedBox(height: 10),
 
                     //SPD Model Text Field
                     Stack(
@@ -2172,29 +2271,29 @@ class _CompleteFormState extends State<CompleteForm> {
                       children: [
                         FormBuilderTextField(
                           name: 'model_SPD',
-                          decoration: InputDecoration(
-                            labelText: 'SPD Model',
-                          ),
+                          style: TextStyle(color: customColors.mainTextColor),
+                          decoration: InputDecoration(labelText: 'SPD Model'),
                           //validator: FormBuilderValidators.required(),
                           onChanged: (value) => setState(() {}),
                         ),
                         // Show tick mark if data is entered
-                        _formKey.currentState?.fields['model_SPD']?.value?.toString()?.isNotEmpty ?? false
-                            ? Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        )
+                        _formKey.currentState?.fields['model_SPD']?.value
+                                    ?.toString()
+                                    ?.isNotEmpty ??
+                                false
+                            ? Icon(Icons.check, color: Colors.green)
                             : SizedBox(),
                       ],
                     ),
 
-
+                    SizedBox(height: 10),
 
                     //SPD Status
                     FormBuilderChoiceChips<String>(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
-                          labelText: 'SPD Status'),
+                        labelText: 'SPD Status',
+                      ),
                       name: 'status',
                       initialValue: '',
                       selectedColor: Colors.lightBlueAccent,
@@ -2208,16 +2307,20 @@ class _CompleteFormState extends State<CompleteForm> {
                           avatar: CircleAvatar(child: Text('')),
                         ),
                       ],
-                      // onChanged: _onChanged,
 
+                      // onChanged: _onChanged,
                       onChanged: (val) {
                         _onChanged;
                         setState(() {
-                          _burned = val=='Burned'? false:true; // Update the flag based on the selected value
+                          _burned =
+                              val == 'Burned'
+                                  ? false
+                                  : true; // Update the flag based on the selected value
                         });
                       },
-
                     ),
+
+                    SizedBox(height: 10),
 
                     FormBuilderSlider(
                       name: 'PercentageR',
@@ -2237,6 +2340,8 @@ class _CompleteFormState extends State<CompleteForm> {
                       ),
                     ),
 
+                    SizedBox(height: 10),
+
                     FormBuilderSlider(
                       name: 'PercentageY',
                       // validator: FormBuilderValidators.compose([
@@ -2254,6 +2359,8 @@ class _CompleteFormState extends State<CompleteForm> {
                         labelText: 'Percentage Level %  (Phase 2)',
                       ),
                     ),
+
+                    SizedBox(height: 10),
 
                     FormBuilderSlider(
                       name: 'PercentageB',
@@ -2277,26 +2384,29 @@ class _CompleteFormState extends State<CompleteForm> {
                       'Nominal Voltage (U_n)',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
-
 
                     //SPD Nominal Voltage Text Field
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'nom_volt',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Nominal Voltage (V)',
-                        suffixIcon: _validator1
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffixIcon:
+                            _validator1
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _validator1 = !(_formKey.currentState?.fields['nom_volt']
-                              ?.validate() ??
-                              false);
+                          _validator1 =
+                              !(_formKey.currentState?.fields['nom_volt']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -2315,16 +2425,19 @@ class _CompleteFormState extends State<CompleteForm> {
                       'Maximum continuous operating voltage (Uc) -Live',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
 
+                    SizedBox(height: 10),
 
                     //SPD Status
                     FormBuilderChoiceChips<String>(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
-                          labelText: 'Uc Live to neutral or Live to earth'),
+                        labelText: 'Uc Live to neutral or Live to earth',
+                      ),
                       name: 'UcLiveMode',
                       initialValue: '',
                       selectedColor: Colors.lightBlueAccent,
@@ -2338,33 +2451,33 @@ class _CompleteFormState extends State<CompleteForm> {
                           avatar: CircleAvatar(child: Text('')),
                         ),
                       ],
+
                       // onChanged: _onChanged,
-
-
                     ),
-
-
-
+                    SizedBox(height: 10),
                     //SPD Voltage Protection Level
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'UcLiveVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Uc (Live) in Volt',
-                        suffixIcon: _validator15
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffixIcon:
+                            _validator15
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _validator15 = !(_formKey.currentState?.fields['UcLiveVolt']
-                              ?.validate() ??
-                              false);
+                          _validator15 =
+                              !(_formKey.currentState?.fields['UcLiveVolt']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
                       validator: FormBuilderValidators.compose([
-                      //  FormBuilderValidators.required(),
+                        //  FormBuilderValidators.required(),
                         FormBuilderValidators.numeric(),
                         FormBuilderValidators.max(500),
                       ]),
@@ -2378,30 +2491,33 @@ class _CompleteFormState extends State<CompleteForm> {
                       'Maximum continuous operating voltage (Uc)- Neutral',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
-
-
+                    SizedBox(height: 10),
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'UcNeutralVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Uc (Neutral) in Volt',
-                        suffixIcon: _validator14
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffixIcon:
+                            _validator14
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _validator14 = !(_formKey.currentState?.fields['UcNeutralVolt']
-                              ?.validate() ??
-                              false);
+                          _validator14 =
+                              !(_formKey.currentState?.fields['UcNeutralVolt']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
                       validator: FormBuilderValidators.compose([
-                     //   FormBuilderValidators.required(),
+                        //   FormBuilderValidators.required(),
                         FormBuilderValidators.numeric(),
                         FormBuilderValidators.max(500),
                       ]),
@@ -2410,33 +2526,35 @@ class _CompleteFormState extends State<CompleteForm> {
                       textInputAction: TextInputAction.next,
                     ),
 
-
                     SizedBox(height: 10),
                     Text(
                       'Voltage Protection Level (Up)- Live',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
 
-
-
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'UpLiveVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Up (Live) in Volt',
-                        suffixIcon: _validator13
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffixIcon:
+                            _validator13
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _validator13 = !(_formKey.currentState?.fields['UpNeutralVolt']
-                              ?.validate() ??
-                              false);
+                          _validator13 =
+                              !(_formKey.currentState?.fields['UpNeutralVolt']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
 
@@ -2456,32 +2574,36 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
-
 
                     SizedBox(height: 10),
                     Text(
                       'Voltage Protection Level- Neutral',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
 
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'UpNeutralVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Up (Neutral) in Volt',
-                        suffixIcon: _validator12
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffixIcon:
+                            _validator12
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _validator12 = !(_formKey.currentState?.fields['Up_Neutral']
-                              ?.validate() ??
-                              false);
+                          _validator12 =
+                              !(_formKey.currentState?.fields['Up_Neutral']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -2501,21 +2623,23 @@ class _CompleteFormState extends State<CompleteForm> {
                       textInputAction: TextInputAction.next,
                     ),
 
-
                     SizedBox(height: 10),
                     Text(
                       'Discharge Current',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
 
+                    SizedBox(height: 10),
 
                     FormBuilderChoiceChips<String>(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
-                          labelText: 'Discharge Current Rating Types Available'),
+                        labelText: 'Discharge Current Rating Types Available',
+                      ),
                       name: 'dischargeType',
                       initialValue: '',
                       selectedColor: Colors.lightBlueAccent,
@@ -2533,36 +2657,37 @@ class _CompleteFormState extends State<CompleteForm> {
                           avatar: CircleAvatar(child: Text('')),
                         ),
                       ],
-                      // onChanged: _onChanged,
 
+                      // onChanged: _onChanged,
                       onChanged: (val) {
                         _onChanged;
                         setState(() {
-                          _dischargeAll = val=='8/20us+10/350us'? true:false;
-                          _dicharge8_20= val=='8/20us'? true:false;
-                          _discharge10_350 = val=='10/350us'? true:false;
+                          _dischargeAll =
+                              val == '8/20us+10/350us' ? true : false;
+                          _dicharge8_20 = val == '8/20us' ? true : false;
+                          _discharge10_350 = val == '10/350us' ? true : false;
                         });
                       },
-
                     ),
-
-
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'L8to20NomD',
                       decoration: InputDecoration(
-                        labelText: 'Nominal Discharge Current rating (In)-Live (8/20µs) (kA)',
-                        suffixIcon: _validator11
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        labelText:
+                            'Nominal Discharge Current rating (In)-Live (8/20µs) (kA)',
+                        suffixIcon:
+                            _validator11
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       enabled: (_dischargeAll || _dicharge8_20),
                       onChanged: (val) {
                         setState(() {
-                          _validator11 = !(_formKey.currentState?.fields['L8to20NomD']
-                              ?.validate() ??
-                              false);
+                          _validator11 =
+                              !(_formKey.currentState?.fields['L8to20NomD']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -2581,24 +2706,25 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
-
-
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'N8to20NomD',
                       decoration: InputDecoration(
-                        labelText: 'Nominal Discharge Current rating (In)-Neutral (8/20µs) (kA)',
-                        suffixIcon: _validator10
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        labelText:
+                            'Nominal Discharge Current rating (In)-Neutral (8/20µs) (kA)',
+                        suffixIcon:
+                            _validator10
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
-                      enabled: (_dischargeAll || _dicharge8_20 ),
+                      enabled: (_dischargeAll || _dicharge8_20),
                       onChanged: (val) {
                         setState(() {
-                          _validator10 = !(_formKey.currentState?.fields['N8to20NomD']
-                              ?.validate() ??
-                              false);
+                          _validator10 =
+                              !(_formKey.currentState?.fields['N8to20NomD']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -2618,24 +2744,24 @@ class _CompleteFormState extends State<CompleteForm> {
                       textInputAction: TextInputAction.next,
                     ),
 
-
-
-
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'L10to350ImpD',
                       decoration: InputDecoration(
-                        labelText: 'Impulse Discharge Current rating (Iimp)-Live (10/350µs) (kA)',
-                        suffixIcon: _validator8
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        labelText:
+                            'Impulse Discharge Current rating (Iimp)-Live (10/350µs) (kA)',
+                        suffixIcon:
+                            _validator8
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
-                      enabled: (_dischargeAll || _discharge10_350 ) ,
+                      enabled: (_dischargeAll || _discharge10_350),
                       onChanged: (val) {
                         setState(() {
-                          _validator8 = !(_formKey.currentState?.fields['L10to350ImpD']
-                              ?.validate() ??
-                              false);
+                          _validator8 =
+                              !(_formKey.currentState?.fields['L10to350ImpD']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -2654,24 +2780,27 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
-                    //
-                    //
 
+                    //
+                    //
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'N10to350ImpD',
                       decoration: InputDecoration(
-                        labelText: 'Impulse Discharge Current rating (Iimp)-Neutral (10/350µs)',
-                        suffixIcon: _validator7
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        labelText:
+                            'Impulse Discharge Current rating (Iimp)-Neutral (10/350µs)',
+                        suffixIcon:
+                            _validator7
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
-                      enabled: (_dischargeAll || _discharge10_350 ),
+                      enabled: (_dischargeAll || _discharge10_350),
                       onChanged: (val) {
                         setState(() {
-                          _validator7 = !(_formKey.currentState?.fields['N10to350ImpD']
-                              ?.validate() ??
-                              false);
+                          _validator7 =
+                              !(_formKey.currentState?.fields['N10to350ImpD']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -2696,30 +2825,34 @@ class _CompleteFormState extends State<CompleteForm> {
                       'Other Ratings',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
-
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'mcbRating',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Backup fuse/mcb rating (A)',
-                        suffixIcon: _validator5
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffixIcon:
+                            _validator5
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _validator5 = !(_formKey.currentState?.fields['mcbRating']
-                              ?.validate() ??
-                              false);
+                          _validator5 =
+                              !(_formKey.currentState?.fields['mcbRating']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
                       validator: FormBuilderValidators.compose([
-                      //  FormBuilderValidators.required(),
+                        //  FormBuilderValidators.required(),
                         FormBuilderValidators.numeric(),
                         FormBuilderValidators.max(200),
                       ]),
@@ -2727,26 +2860,30 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'responseTime',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Response Time (nS)',
-                        suffixIcon: _validator6
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        suffixIcon:
+                            _validator6
+                                ? const Icon(Icons.error, color: Colors.red)
+                                : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _validator6 = !(_formKey.currentState?.fields['responseTime']
-                              ?.validate() ??
-                              false);
+                          _validator6 =
+                              !(_formKey.currentState?.fields['responseTime']
+                                      ?.validate() ??
+                                  false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
                       validator: FormBuilderValidators.compose([
-                       // FormBuilderValidators.required(),
+                        // FormBuilderValidators.required(),
                         FormBuilderValidators.numeric(),
                         FormBuilderValidators.max(1000),
                       ]),
@@ -2755,25 +2892,23 @@ class _CompleteFormState extends State<CompleteForm> {
                       textInputAction: TextInputAction.next,
                     ),
 
-
                     SizedBox(height: 10),
                     Text(
                       'SPD Time Details',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
 
-
-
+                    SizedBox(height: 10),
 
                     //SPD Date of Install
                     FormBuilderDateTimePicker(
                       name: 'installDt',
-                      decoration: InputDecoration(
-                        labelText: 'Date of Install',
-                      ),
+                      style: TextStyle(color: customColors.mainTextColor),
+                      decoration: InputDecoration(labelText: 'Date of Install'),
                       validator: FormBuilderValidators.required(),
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2000),
@@ -2781,9 +2916,12 @@ class _CompleteFormState extends State<CompleteForm> {
                       inputType: InputType.date,
                     ),
 
+                    SizedBox(height: 10),
+
                     //SPD Date of Warrenty
                     FormBuilderDateTimePicker(
                       name: 'warrentyDt',
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
                         labelText: 'Date of Warrenty',
                       ),
@@ -2799,45 +2937,49 @@ class _CompleteFormState extends State<CompleteForm> {
                       'Notes',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold, // Set the fontWeight to bold
+                        fontWeight:
+                            FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
 
+                    SizedBox(height: 10),
 
                     Stack(
                       alignment: Alignment.centerRight,
                       children: [
                         FormBuilderTextField(
                           name: 'Notes',
-                          decoration: InputDecoration(
-                            labelText: 'Remarks',
-                          ),
+                          style: TextStyle(color: customColors.mainTextColor),
+                          decoration: InputDecoration(labelText: 'Remarks'),
                           validator: FormBuilderValidators.required(),
-                          onChanged: (value) => setState(() {
-                            //  print('RTOM: ' + _selectedValues['RTOM'].toString());
-                          }),
+                          onChanged:
+                              (value) => setState(() {
+                                //  print('RTOM: ' + _selectedValues['RTOM'].toString());
+                              }),
                         ),
                         // Show tick mark if data is entered
-                        _formKey.currentState?.fields['Notes']?.value?.toString()?.isNotEmpty ?? false
-                            ? Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        )
+                        _formKey.currentState?.fields['Notes']?.value
+                                    ?.toString()
+                                    ?.isNotEmpty ??
+                                false
+                            ? Icon(Icons.check, color: Colors.green)
                             : SizedBox(),
                       ],
                     ),
-
 
                     FormBuilderCheckbox(
                       name: 'accept_terms',
                       initialValue: false,
                       onChanged: _onChanged,
                       title: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
-                              text: 'I Verify that submitted details are true and correct ',
-                              style: TextStyle(color: Colors.black),
+                              text:
+                                  'I Verify that submitted details are true and correct ',
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
                             ),
                           ],
                         ),
@@ -2845,10 +2987,9 @@ class _CompleteFormState extends State<CompleteForm> {
                       validator: FormBuilderValidators.equal(
                         true,
                         errorText:
-                        'You must accept terms and conditions to continue',
+                            'You must accept terms and conditions to continue',
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -2860,14 +3001,13 @@ class _CompleteFormState extends State<CompleteForm> {
                         _formKey.currentState?.reset();
                       },
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white24),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.blue,
+                        ), // Set the button color here
                       ),
-                      child: Text(
+                      child: const Text(
                         'Reset',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
+                        style: TextStyle(color: Colors.redAccent),
                       ),
                     ),
                   ),
@@ -2878,8 +3018,11 @@ class _CompleteFormState extends State<CompleteForm> {
                       onPressed: () {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
                           debugPrint(_formKey.currentState?.value.toString());
-                          Map<String, dynamic> ? formData = _formKey.currentState?.value;
-                          formData = formData?.map((key, value) => MapEntry(key, value ?? ''));
+                          Map<String, dynamic>? formData =
+                              _formKey.currentState?.value;
+                          formData = formData?.map(
+                            (key, value) => MapEntry(key, value ?? ''),
+                          );
 
                           // String rtom = _formKey.currentState?.value['Rtom_name'];
                           // debugPrint('RTOM value: $rtom');
@@ -2889,22 +3032,16 @@ class _CompleteFormState extends State<CompleteForm> {
                           //   context,
                           //   MaterialPageRoute(builder: (context) => httpPostSPD(formData: formData??{}, dcFlag: false,userAccess: userAccess,)),
                           // );
-
-
-
                         } else {
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint('validation failed');
                         }
                       },
 
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(color: Colors.blue),
-                      ),
+                      style: buttonStyle(),
+                      child: const Text('Submit'),
                     ),
                   ),
-
                 ],
               ),
             ],
@@ -2913,5 +3050,8 @@ class _CompleteFormState extends State<CompleteForm> {
       ),
     );
   }
+}
 
+ButtonStyle buttonStyle() {
+  return ElevatedButton.styleFrom();
 }

@@ -6,6 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 
 //import '../../../UserAccess.dart';
 import '../AddACSPD/httpPostSPD.dart';
@@ -18,8 +20,21 @@ class AddDCSpd extends StatefulWidget {
 class _AddDCSpdState extends State<AddDCSpd> {
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
-      appBar: AppBar(title: Text('Add dc SPD Info')),
+      appBar: AppBar(
+        title: Text(
+          'Add dc SPD Info',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+      ),
       body: Center(child: CompleteForm()),
     );
   }
@@ -126,8 +141,11 @@ class _CompleteFormState extends State<CompleteForm> {
   Widget build(BuildContext context) {
     // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
     // String? username = userAccess.username;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Scaffold(
+      backgroundColor: customColors.mainBackgroundColor,
+
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: SingleChildScrollView(
@@ -771,7 +789,7 @@ class _CompleteFormState extends State<CompleteForm> {
                                   (context) => httpPostSPD(
                                     formData: formData ?? {},
                                     dcFlag: true,
-                                  //  userAccess: userAccess,
+                                    //  userAccess: userAccess,
                                   ),
                             ),
                           );

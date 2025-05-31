@@ -799,12 +799,14 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                             children: [
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'voltagePs1', style: TextStyle(
+                                  name: 'voltagePs1',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 1",
-                                    suffixText: "V", suffixStyle: TextStyle(
+                                    suffixText: "V",
+                                    suffixStyle: TextStyle(
                                       color: customColors.mainTextColor
                                           .withOpacity(0.7),
                                     ),
@@ -848,14 +850,19 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                                 child: FormBuilderTextField(
                                   name: 'voltagePs2',
 
-                                   style: TextStyle( color: customColors.mainTextColor,),
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 2",
                                     suffixText: "V",
-                                    
-                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
+
+                                    suffixStyle: TextStyle(
+                                      color: customColors.mainTextColor
+                                          .withOpacity(0.7),
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.number,
@@ -892,14 +899,16 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'voltagePs3', style: TextStyle(
+                                  name: 'voltagePs3',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 3",
-                                    suffixText: "V",suffixStyle: TextStyle(
+                                    suffixText: "V",
+                                    suffixStyle: TextStyle(
                                       color: customColors.mainTextColor
                                           .withOpacity(0.7),
                                     ),
@@ -959,15 +968,17 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                             children: [
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'currentPs1', style: TextStyle(
+                                  name: 'currentPs1',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 1",
-                                    suffixText: "A", suffixStyle: TextStyle(
+                                    suffixText: "A",
+                                    suffixStyle: TextStyle(
                                       color: customColors.mainTextColor
                                           .withOpacity(0.7),
-                                    ), 
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.number,
@@ -1006,15 +1017,17 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'currentPs2', style: TextStyle(
+                                  name: 'currentPs2',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 2",
-                                    suffixText: "A", suffixStyle: TextStyle(
+                                    suffixText: "A",
+                                    suffixStyle: TextStyle(
                                       color: customColors.mainTextColor
                                           .withOpacity(0.7),
-                                    ), 
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   autovalidateMode:
@@ -1053,15 +1066,17 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'currentPs3', style: TextStyle(
+                                  name: 'currentPs3',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 3",
-                                    suffixText: "A", suffixStyle: TextStyle(
+                                    suffixText: "A",
+                                    suffixStyle: TextStyle(
                                       color: customColors.mainTextColor
                                           .withOpacity(0.7),
-                                    ), 
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   autovalidateMode:
@@ -1117,14 +1132,17 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                       child: Column(
                         children: [
                           FormBuilderTextField(
-                            name: 'upsCapacity',                        style: TextStyle(color: customColors.mainTextColor),
+                            name: 'upsCapacity',
+                            style: TextStyle(color: customColors.mainTextColor),
 
-                            decoration:  InputDecoration(
+                            decoration: InputDecoration(
                               labelText: "Capacity",
-                              suffixText: "A", suffixStyle: TextStyle(
-                                      color: customColors.mainTextColor
-                                          .withOpacity(0.7),
-                                    ), 
+                              suffixText: "A",
+                              suffixStyle: TextStyle(
+                                color: customColors.mainTextColor.withOpacity(
+                                  0.7,
+                                ),
+                              ),
                             ),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
@@ -1196,12 +1214,14 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                           (value) =>
                               _onChanged(value, upsFormData, 'accept_terms'),
                       title: RichText(
-                        text:  TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
                               text:
                                   'I Verify that submitted details are true and correct ',
-                              style: TextStyle(color: customColors.mainTextColor),
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
                             ),
                           ],
                         ),
