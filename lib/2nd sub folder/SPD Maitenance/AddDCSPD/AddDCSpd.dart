@@ -167,6 +167,8 @@ class _CompleteFormState extends State<CompleteForm> {
                     //Region Select
                     FormBuilderDropdown<String>(
                       name: 'province',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Region',
                         suffix:
@@ -175,6 +177,7 @@ class _CompleteFormState extends State<CompleteForm> {
                                 : const Icon(Icons.check, color: Colors.green),
                         hintText: 'Select Region',
                       ),
+                      dropdownColor: customColors.suqarBackgroundColor,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
@@ -199,12 +202,15 @@ class _CompleteFormState extends State<CompleteForm> {
                       valueTransformer: (val) => val?.toString(),
                     ),
 
+                    SizedBox(height: 10),
+
                     //RTOM Entering
                     Stack(
                       alignment: Alignment.centerRight,
                       children: [
                         FormBuilderTextField(
                           name: 'Rtom_name',
+                          style: TextStyle(color: customColors.mainTextColor),
                           decoration: InputDecoration(labelText: 'RTOM'),
                           validator: FormBuilderValidators.required(),
                           onChanged:
@@ -222,6 +228,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             : SizedBox(),
                       ],
                     ),
+                    SizedBox(height: 10),
 
                     //Station Text Field
                     Stack(
@@ -229,6 +236,7 @@ class _CompleteFormState extends State<CompleteForm> {
                       children: [
                         FormBuilderTextField(
                           name: 'station',
+                          style: TextStyle(color: customColors.mainTextColor),
                           // enabled: false,
                           decoration: InputDecoration(
                             labelText: 'Station (QR Code ID)',
@@ -245,6 +253,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             : SizedBox(),
                       ],
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Location that is to be typed
                     Stack(
@@ -252,6 +261,7 @@ class _CompleteFormState extends State<CompleteForm> {
                       children: [
                         FormBuilderTextField(
                           name: 'SPDLoc',
+                          style: TextStyle(color: customColors.mainTextColor),
                           decoration: InputDecoration(
                             labelText: 'SPD Location (DB Location)',
                           ),
@@ -271,6 +281,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             : SizedBox(),
                       ],
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Phase
                     FormBuilderChoiceChips<String>(
@@ -294,10 +305,11 @@ class _CompleteFormState extends State<CompleteForm> {
 
                       // onChanged: _onChanged,
                     ),
-                    //
+                    SizedBox(height: 10),
                     //Alternator Brand
                     FormBuilderDropdown<String>(
                       name: 'SPDType',
+                      style: TextStyle(color: customColors.mainTextColor),
                       initialValue: 'Unknown',
                       decoration: InputDecoration(
                         labelText: 'Select SPD Type',
@@ -307,6 +319,7 @@ class _CompleteFormState extends State<CompleteForm> {
                                 : const Icon(Icons.check, color: Colors.green),
                         hintText: 'Select SPD Type',
                       ),
+                      dropdownColor: customColors.suqarBackgroundColor,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
@@ -328,10 +341,13 @@ class _CompleteFormState extends State<CompleteForm> {
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Manufacturer
                     FormBuilderDropdown<String>(
                       name: 'SPD_Manu',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'SPD Manufacturer',
                         suffix:
@@ -340,6 +356,8 @@ class _CompleteFormState extends State<CompleteForm> {
                                 : const Icon(Icons.check, color: Colors.green),
                         hintText: 'Select SPD Model',
                       ),
+                      dropdownColor: customColors.suqarBackgroundColor,
+
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
@@ -361,6 +379,7 @@ class _CompleteFormState extends State<CompleteForm> {
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Model Text Field
                     Stack(
@@ -368,6 +387,8 @@ class _CompleteFormState extends State<CompleteForm> {
                       children: [
                         FormBuilderTextField(
                           name: 'model_SPD',
+                          style: TextStyle(color: customColors.mainTextColor),
+
                           decoration: InputDecoration(labelText: 'SPD Model'),
                           //validator: FormBuilderValidators.required(),
                           onChanged: (value) => setState(() {}),
@@ -381,6 +402,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             : SizedBox(),
                       ],
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Status
                     FormBuilderChoiceChips<String>(
@@ -413,6 +435,7 @@ class _CompleteFormState extends State<CompleteForm> {
                         });
                       },
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderSlider(
                       name: 'PercentageR',
@@ -441,11 +464,14 @@ class _CompleteFormState extends State<CompleteForm> {
                             FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Nominal Voltage Text Field
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'nom_volt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Nominal Voltage (V)',
                         suffixIcon:
@@ -482,10 +508,12 @@ class _CompleteFormState extends State<CompleteForm> {
                       ),
                     ),
 
-                    //
+                    SizedBox(height: 10),
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'UcDCVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Uc in Volt',
                         suffixIcon:
@@ -524,10 +552,13 @@ class _CompleteFormState extends State<CompleteForm> {
                             FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'UpDCVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Up (DC) in kV',
                         suffixIcon:
@@ -563,10 +594,13 @@ class _CompleteFormState extends State<CompleteForm> {
                             FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'Nom_Dis8_20',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Nominal Current(In) (8/20µs) (kA)',
                         suffixIcon:
@@ -593,10 +627,13 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'Nom_Dis10_350',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Impulse Current (I_imp) (10/350µs) (kA)',
                         suffixIcon:
@@ -632,10 +669,13 @@ class _CompleteFormState extends State<CompleteForm> {
                             FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'responseTime',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Response Time (nS)',
                         suffixIcon:
@@ -661,10 +701,13 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Date of Install
                     FormBuilderDateTimePicker(
                       name: 'installDt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(labelText: 'Date of Install'),
                       validator: FormBuilderValidators.required(),
                       initialDate: DateTime.now(),
@@ -672,10 +715,13 @@ class _CompleteFormState extends State<CompleteForm> {
                       lastDate: DateTime(2100),
                       inputType: InputType.date,
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Date of Warrenty
                     FormBuilderDateTimePicker(
                       name: 'warrentyDt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Date of Warrenty',
                       ),
@@ -695,12 +741,15 @@ class _CompleteFormState extends State<CompleteForm> {
                             FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     Stack(
                       alignment: Alignment.centerRight,
                       children: [
                         FormBuilderTextField(
                           name: 'Notes',
+                          style: TextStyle(color: customColors.mainTextColor),
+
                           decoration: InputDecoration(labelText: 'Remarks'),
                           // validator: FormBuilderValidators.required(),
                           onChanged:
@@ -723,12 +772,12 @@ class _CompleteFormState extends State<CompleteForm> {
                       initialValue: false,
                       onChanged: _onChanged,
                       title: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
                               text:
                                   'I Verify that submitted details are true and correct ',
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: customColors.mainTextColor),
                             ),
                           ],
                         ),
@@ -750,18 +799,13 @@ class _CompleteFormState extends State<CompleteForm> {
                         _formKey.currentState?.reset();
                       },
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                          Colors.green,
-                        ),
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.white24,
-                        ),
+                          Colors.blue,
+                        ), // Set the button color here
                       ),
-                      child: Text(
+                      child: const Text(
                         'Reset',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
+                        style: TextStyle(color: Colors.redAccent),
                       ),
                     ),
                   ),
@@ -799,10 +843,8 @@ class _CompleteFormState extends State<CompleteForm> {
                         }
                       },
 
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(color: Colors.blue),
-                      ),
+                      style: buttonStyle(),
+                      child: const Text('Submit'),
                     ),
                   ),
                 ],
@@ -813,4 +855,8 @@ class _CompleteFormState extends State<CompleteForm> {
       ),
     );
   }
+}
+
+ButtonStyle buttonStyle() {
+  return ElevatedButton.styleFrom();
 }

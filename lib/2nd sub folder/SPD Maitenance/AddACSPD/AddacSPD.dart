@@ -1929,6 +1929,8 @@ class _CompleteFormState extends State<CompleteForm> {
                     //Region Select
                     FormBuilderDropdown<String>(
                       name: 'province',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'Region',
                         suffix:
@@ -1949,12 +1951,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             (Regions) => DropdownMenuItem(
                               alignment: AlignmentDirectional.center,
                               value: Regions,
-                              child: Text(
-                                Regions,
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ), // Reverted to use customColors.mainTextColor
-                              ),
+                              child: Text(Regions),
                             ),
                           ).toList(),
                       onChanged: (val) {
@@ -1980,6 +1977,8 @@ class _CompleteFormState extends State<CompleteForm> {
 
                     FormBuilderDropdown<String>(
                       name: 'Rtom_name',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(labelText: 'RTOM'),
                       dropdownColor:
                           customColors
@@ -1993,12 +1992,7 @@ class _CompleteFormState extends State<CompleteForm> {
                                   .map(
                                     (RTOM) => DropdownMenuItem(
                                       value: RTOM,
-                                      child: Text(
-                                        RTOM,
-                                        style: TextStyle(
-                                          color: customColors.mainTextColor,
-                                        ),
-                                      ),
+                                      child: Text(RTOM),
                                     ),
                                   )
                                   .toList()
@@ -2182,6 +2176,8 @@ class _CompleteFormState extends State<CompleteForm> {
                     //Alternator Brand
                     FormBuilderDropdown<String>(
                       name: 'SPDType',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       initialValue: 'Unknown',
                       decoration: InputDecoration(
                         labelText: 'Select SPD Type',
@@ -2203,12 +2199,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             (aBrand) => DropdownMenuItem(
                               alignment: AlignmentDirectional.center,
                               value: aBrand,
-                              child: Text(
-                                aBrand,
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ),
-                              ),
+                              child: Text(aBrand),
                             ),
                           ).toList(),
                       onChanged: (val) {
@@ -2227,6 +2218,8 @@ class _CompleteFormState extends State<CompleteForm> {
                     //SPD Manufacturer
                     FormBuilderDropdown<String>(
                       name: 'SPD_Manu',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText: 'SPD Manufacturer',
                         suffix:
@@ -2244,12 +2237,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             (eBrand) => DropdownMenuItem(
                               alignment: AlignmentDirectional.center,
                               value: eBrand,
-                              child: Text(
-                                eBrand,
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
-                                ),
-                              ),
+                              child: Text(eBrand),
                             ),
                           ).toList(),
                       onChanged: (val) {
