@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'UpdateSPDACUnit.dart';
 import 'UpdateSPDDCUnit.dart';
 
@@ -36,7 +38,7 @@ class _UpdateSPDDetailsState extends State<UpdateSPDDetails> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
   String selectedRegion = 'ALL';
   List<dynamic> SPDSystems = [];
@@ -75,83 +77,132 @@ class _UpdateSPDDetailsState extends State<UpdateSPDDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update SPD Details'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButtonFormField<String>(
-              value: selectedRegion,
-              decoration: const InputDecoration(
-                labelText: 'Select Region',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  selectedRegion = value!;
-                });
-              },
-              items: regions.map((region) {
-                return DropdownMenuItem<String>(
-                  value: region,
-                  child: Text(region),
-                );
-              }).toList(),
-            ),
-          ),
-          _buildSummaryTable(),
-          Expanded(
-            child: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    itemCount: SPDSystems.length,
-                    itemBuilder: (context, index) {
-                      final system = SPDSystems[index];
-                      if (selectedRegion == 'ALL' ||
-                          system['province'] == selectedRegion) {
-                        return ListTile(
-                          title: Text('Site: ${system['Rtom_name']}'),
-                          subtitle: Text('Location: ${system['station']}'),
-                          trailing: Text(system['DCFlag'] == '0' ? 'AC' : 'DC'),
-                          onTap: () {
-                            if (system['DCFlag'] == '0') {
-                              // Navigate to AC Update Page
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      UpdateACUnit(record: system),
-                                ),
-                              );
-                            } else if (system['DCFlag'] == '1') {
-                              //Navigate to DC Update Page
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      UpdateDCUnit(record: system),
-                                ),
-                              );
-                            } else {
-                              // Handle invalid DCFlag value, if needed
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Invalid DCFlag value')),
-                              );
-                            }
-                          },
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
-                  ),
-          ),
+        title: Text(
+          'Update SPD Details',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
         ],
+      ),
+      body: Container(
+        // Wrap Column with a Container
+        color:
+            customColors
+                .mainBackgroundColor, // Set the background color to white
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButtonFormField<String>(
+                value: selectedRegion,
+                style: TextStyle(color: customColors.mainTextColor),
+
+                decoration: InputDecoration(
+                  labelText: 'Select Region',
+                  labelStyle: TextStyle(color: customColors.mainTextColor),
+                ),
+                dropdownColor: customColors.suqarBackgroundColor,
+
+                onChanged: (value) {
+                  setState(() {
+                    selectedRegion = value!;
+                  });
+                },
+                items:
+                    regions.map((region) {
+                      return DropdownMenuItem<String>(
+                        value: region,
+                        child: Text(region),
+                      );
+                    }).toList(),
+              ),
+            ),
+            _buildSummaryTable(),
+            Expanded(
+              child:
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                        itemCount: SPDSystems.length,
+                        itemBuilder: (context, index) {
+                          final system = SPDSystems[index];
+                          if (selectedRegion == 'ALL' ||
+                              system['province'] == selectedRegion) {
+                            return Card(
+                              // Wrap ListTile with Card
+                              elevation: 5,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              color: customColors.suqarBackgroundColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  'Site: ${system['Rtom_name']}',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Location: ${system['station']}',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                                trailing: Text(
+                                  system['DCFlag'] == '0' ? 'AC' : 'DC',
+                                ),
+                                onTap: () {
+                                  if (system['DCFlag'] == '0') {
+                                    // Navigate to AC Update Page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) =>
+                                                UpdateACUnit(record: system),
+                                      ),
+                                    );
+                                  } else if (system['DCFlag'] == '1') {
+                                    //Navigate to DC Update Page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) =>
+                                                UpdateDCUnit(record: system),
+                                      ),
+                                    );
+                                  } else {
+                                    // Handle invalid DCFlag value, if needed
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Invalid DCFlag value'),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
+                      ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -162,18 +213,24 @@ class _UpdateSPDDetailsState extends State<UpdateSPDDetails> {
       child: Table(
         border: TableBorder.all(color: Colors.grey),
         children: [
-          TableRow(children: [
-            _buildSummaryCell('Total SPD Units'),
-            _buildSummaryCell('${SPDSystems.length}'),
-          ]),
-          TableRow(children: [
-            _buildSummaryCell('AC Units'),
-            _buildSummaryCell('$acCount'),
-          ]),
-          TableRow(children: [
-            _buildSummaryCell('DC Units'),
-            _buildSummaryCell('$dcCount'),
-          ]),
+          TableRow(
+            children: [
+              _buildSummaryCell('Total SPD Units'),
+              _buildSummaryCell('${SPDSystems.length}'),
+            ],
+          ),
+          TableRow(
+            children: [
+              _buildSummaryCell('AC Units'),
+              _buildSummaryCell('$acCount'),
+            ],
+          ),
+          TableRow(
+            children: [
+              _buildSummaryCell('DC Units'),
+              _buildSummaryCell('$dcCount'),
+            ],
+          ),
         ],
       ),
     );
@@ -182,10 +239,7 @@ class _UpdateSPDDetailsState extends State<UpdateSPDDetails> {
   Widget _buildSummaryCell(String label) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text(
-        label,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
+      child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
     );
   }
 }

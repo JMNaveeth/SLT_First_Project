@@ -2376,6 +2376,7 @@ class _CompleteFormState extends State<CompleteForm> {
                             FontWeight.bold, // Set the fontWeight to bold
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     //SPD Nominal Voltage Text Field
                     FormBuilderTextField(
@@ -2657,10 +2658,13 @@ class _CompleteFormState extends State<CompleteForm> {
                         });
                       },
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'L8to20NomD',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText:
                             'Nominal Discharge Current rating (In)-Live (8/20µs) (kA)',
@@ -2694,10 +2698,13 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'N8to20NomD',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText:
                             'Nominal Discharge Current rating (In)-Neutral (8/20µs) (kA)',
@@ -2731,10 +2738,13 @@ class _CompleteFormState extends State<CompleteForm> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'L10to350ImpD',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText:
                             'Impulse Discharge Current rating (Iimp)-Live (10/350µs) (kA)',
@@ -2769,11 +2779,13 @@ class _CompleteFormState extends State<CompleteForm> {
                       textInputAction: TextInputAction.next,
                     ),
 
-                    //
-                    //
+                    SizedBox(height: 10),
+
                     FormBuilderTextField(
                       autovalidateMode: AutovalidateMode.always,
                       name: 'N10to350ImpD',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: InputDecoration(
                         labelText:
                             'Impulse Discharge Current rating (Iimp)-Neutral (10/350µs)',
