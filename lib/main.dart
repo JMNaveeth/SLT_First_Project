@@ -187,9 +187,7 @@ class secondsub_folder extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => AddacSPD(),
-                    ),
+                    MaterialPageRoute(builder: (context) => AddacSPD()),
                   );
                 },
                 child: const Text('Add AC SPD'),
@@ -199,9 +197,7 @@ class secondsub_folder extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => AddDCSpd(),
-                    ),
+                    MaterialPageRoute(builder: (context) => AddDCSpd()),
                   );
                 },
                 child: const Text('Add DC SPD'),
@@ -211,14 +207,12 @@ class secondsub_folder extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => UpdateSPDDetails(),
-                    ),
+                    MaterialPageRoute(builder: (context) => UpdateSPDDetails()),
                   );
                 },
                 child: const Text('Update SPD Details'),
               ),
-            ElevatedButton(
+              ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
                   Navigator.push(
