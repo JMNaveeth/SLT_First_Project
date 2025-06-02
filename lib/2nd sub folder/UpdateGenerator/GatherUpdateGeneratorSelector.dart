@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 // import 'package:flutter_application_1/notification/notificationPage.dart';
 // import 'package:flutter_application_1/utils/colors.dart';
@@ -11,7 +13,6 @@ import 'GatherUpdateGeneratorDetails.dart';
 import 'generator_details_model.dart';
 import 'httpGetGenerators.dart';
 
-
 class GeneratorSelectPage extends StatefulWidget {
   const GeneratorSelectPage({super.key});
 
@@ -21,7 +22,7 @@ class GeneratorSelectPage extends StatefulWidget {
 
 class _GeneratorSelectPageState extends State<GeneratorSelectPage> {
   late Future<List<Generator>> GeneratorData;
-  String updator = "Testuser";// update Updator name
+  String updator = "Testuser"; // update Updator name
 
   Set<String?> brand_engSet = {'Other'};
   List<String?> brand_eng = [];
@@ -70,7 +71,7 @@ class _GeneratorSelectPageState extends State<GeneratorSelectPage> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
 
   List<Generator> recFilterDataByRegion(List<Generator> data, String? region) {
@@ -122,7 +123,8 @@ class _GeneratorSelectPageState extends State<GeneratorSelectPage> {
         BrandATS = BrandATSSet.toList();
 
         for (var element in data) {
-          if (element.Battery_Brand != null && element.Battery_Brand!.isNotEmpty) {
+          if (element.Battery_Brand != null &&
+              element.Battery_Brand!.isNotEmpty) {
             Battery_BrandSet.add(element.Battery_Brand);
           }
         }
@@ -134,12 +136,24 @@ class _GeneratorSelectPageState extends State<GeneratorSelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       key: _scaffoldKey, // Assign the key to the Scaffold
-      backgroundColor: mainBackgroundColor, 
+      backgroundColor: customColors.mainBackgroundColor,
       appBar: AppBar(
-        title: const Text('Update Data'),
+        title: Text(
+          'Update Data',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
+
       // appBar: CommonAppBar(
       //     menuenabled: true,
       //     notificationenabled: true,
@@ -154,39 +168,48 @@ class _GeneratorSelectPageState extends State<GeneratorSelectPage> {
       //   },
       //     title: "Update Data",
       //   ),
-
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             const SizedBox(height: 20),
-            
+
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.grey, // Set the border color
-                  width: 1.0,         // Set the border width
+                  color: customColors.subTextColor, // Set the border color
+                  width: 1.0, // Set the border width
                 ),
-                borderRadius: BorderRadius.circular(8.0), // Set rounded corners if desired
+                borderRadius: BorderRadius.circular(
+                  8.0,
+                ), // Set rounded corners if desired
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB( 20.0,0, 20.0,0),
+                padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     hint: Text('Select Region'),
                     value: selectedRegion,
+                    dropdownColor: customColors.suqarBackgroundColor,
+
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedRegion = newValue;
                       });
                     },
-                    items: regions.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: TextStyle(color: qrcodeiconColor1),),
-                      );
-                    }).toList(),
+                    items:
+                        regions.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+                          );
+                        }).toList(),
                   ),
                 ),
               ),
@@ -203,17 +226,21 @@ class _GeneratorSelectPageState extends State<GeneratorSelectPage> {
                     return Center(child: Text('No data available'));
                   } else {
                     List<Generator> GeneratorDataList = snapshot.data!;
-        
+
                     // Filter data based on selected region
-                    GeneratorDataList =
-                        recFilterDataByRegion(GeneratorDataList, selectedRegion);
-        
+                    GeneratorDataList = recFilterDataByRegion(
+                      GeneratorDataList,
+                      selectedRegion,
+                    );
+
                     if (GeneratorDataList.isEmpty) {
                       return Center(
-                          child:
-                              Text('No data available for the selected region'));
+                        child: Text(
+                          'No data available for the selected region',
+                        ),
+                      );
                     }
-        
+
                     return ListView.builder(
                       itemCount: GeneratorDataList.length,
                       itemBuilder: (context, index) {
@@ -221,43 +248,64 @@ class _GeneratorSelectPageState extends State<GeneratorSelectPage> {
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GeneratorDetailUpdatePage(
-                                    generator: data,
-                                    updator: updator, //update updator name
-                                    brandeng:brand_eng,
-                                    contBrand:Controller,
-                                    brandset:brand_set,
-                                    brandAlt:brand_set,
-                                    brandAts:BrandATS,
-                                    batBrand:Battery_Brand,
-                                  ),
-                                ));
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => GeneratorDetailUpdatePage(
+                                      generator: data,
+                                      updator: updator, //update updator name
+                                      brandeng: brand_eng,
+                                      contBrand: Controller,
+                                      brandset: brand_set,
+                                      brandAlt: brand_set,
+                                      brandAts: BrandATS,
+                                      batBrand: Battery_Brand,
+                                    ),
+                              ),
+                            );
                             // Handle onTap
                           },
-                          
+
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: suqarBackgroundColor,
-                                borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                color: customColors.suqarBackgroundColor,
+                                borderRadius: BorderRadius.circular(
+                                  8.0,
+                                ), // Rounded corners
                                 boxShadow: [
                                   BoxShadow(
-                                    color: mainTextColor, // Set the shadow color and opacity
-                                    blurRadius: 8.0, // Softness of the shadow
-                                    offset: Offset(2, 2), // Position of the shadow (x, y)
+                                    color:
+                                        customColors.subTextColor, // Set the shadow color and opacity
+                                    blurRadius: 3.0, // Softness of the shadow
+                                    offset: Offset(
+                                      1,
+                                      1,
+                                    ), // Position of the shadow (x, y)
                                   ),
                                 ],
                               ),
                               child: ListTile(
-                                title: Text('${data.ID} - ${data.station}',style: TextStyle(color: mainTextColor),),
+                                title: Text(
+                                  '${data.ID} - ${data.station}',
+                                  style: TextStyle(color: customColors.mainTextColor),
+                                ),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Region: ${data.province}',style: TextStyle(color: Color(0xFFBEBCBC))),
-                                    Text('RTom: ${data.Rtom_name}',style: TextStyle(color:Color(0xFFBEBCBC))),
+                                    Text(
+                                      'Region: ${data.province}',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      'RTom: ${data.Rtom_name}',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

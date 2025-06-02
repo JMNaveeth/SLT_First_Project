@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'HttpUpdateSPD.dart';
 
 class UpdateDCUnit extends StatefulWidget {
@@ -42,7 +44,7 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA'
+    'UVA',
   ];
   Map<String, List<String>> regionToDistricts = {
     "CPN": ['Kandy', 'Dambulla', 'Matale'],
@@ -78,7 +80,7 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
     'OBO',
     'XW2',
     'Zone Guard',
-    'Other'
+    'Other',
   ];
   var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown'];
 
@@ -97,9 +99,22 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
+      backgroundColor: customColors.mainBackgroundColor,
+
       appBar: AppBar(
-        title: const Text('Update DC SPD Info'),
+        title: Text(
+          'Update DC SPD Info',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -114,53 +129,78 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                     // SPDid (Read-only field)
                     FormBuilderTextField(
                       name: 'SPDid',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       initialValue: widget.record['SPDid'],
                       enabled: false,
                       decoration: const InputDecoration(
                         labelText: 'SPDid (Read-Only)',
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     // Region Dropdown
                     FormBuilderDropdown<String>(
                       name: 'province',
+                      dropdownColor: customColors.suqarBackgroundColor,
+
+                      style: TextStyle(color: customColors.mainTextColor),
                       decoration: const InputDecoration(labelText: 'Region'),
-                      items: Regions.map((region) => DropdownMenuItem(
-                            value: region,
-                            child: Text(region),
-                          )).toList(),
+                      items:
+                          Regions.map(
+                            (region) => DropdownMenuItem(
+                              value: region,
+                              child: Text(region),
+                            ),
+                          ).toList(),
                       onChanged: (value) {
                         setState(() {
                           selectedRegion = value;
                         });
                       },
                     ),
+                    SizedBox(height: 10),
 
                     // RTOM Dropdown
                     FormBuilderDropdown<String>(
                       name: 'Rtom_name',
+                      style: TextStyle(color: customColors.mainTextColor),
+                      dropdownColor: customColors.suqarBackgroundColor,
+
                       decoration: const InputDecoration(labelText: 'RTOM'),
-                      items: getRtomOptions()
-                          .map((rtom) => DropdownMenuItem(
-                                value: rtom,
-                                child: Text(rtom),
-                              ))
-                          .toList(),
+                      items:
+                          getRtomOptions()
+                              .map(
+                                (rtom) => DropdownMenuItem(
+                                  value: rtom,
+                                  child: Text(rtom),
+                                ),
+                              )
+                              .toList(),
                     ),
+                    SizedBox(height: 10),
 
                     // Station TextField
                     FormBuilderTextField(
                       name: 'station',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
-                          labelText: 'Station (QR Code ID)'),
+                        labelText: 'Station (QR Code ID)',
+                      ),
                     ),
+                    SizedBox(height: 10),
 
                     // SPD Location
                     FormBuilderTextField(
                       name: 'SPDLoc',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
-                          labelText: 'SPD Location (DB Location)'),
+                        labelText: 'SPD Location (DB Location)',
+                      ),
                     ),
+                    SizedBox(height: 10),
 
                     // Unit Type (Poles)
                     FormBuilderChoiceChips<String>(
@@ -181,49 +221,72 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 10),
 
                     // SPD Type Dropdown
                     FormBuilderDropdown<String>(
                       name: 'SPDType',
+                      style: TextStyle(color: customColors.mainTextColor),
+                      dropdownColor: customColors.suqarBackgroundColor,
+
                       decoration: const InputDecoration(labelText: 'SPD Type'),
-                      items: SPDTypes.map((type) => DropdownMenuItem(
-                            value: type,
-                            child: Text(type),
-                          )).toList(),
+                      items:
+                          SPDTypes.map(
+                            (type) => DropdownMenuItem(
+                              value: type,
+                              child: Text(type),
+                            ),
+                          ).toList(),
                     ),
+                    SizedBox(height: 10),
 
                     // Manufacturer Dropdown
                     FormBuilderDropdown<String>(
                       name: 'SPD_Manu',
-                      decoration:
-                          const InputDecoration(labelText: 'SPD Manufacturer'),
-                      items: SPDBrands.map((brand) => DropdownMenuItem(
-                            value: brand,
-                            child: Text(brand),
-                          )).toList(),
+                      style: TextStyle(color: customColors.mainTextColor),
+
+                      dropdownColor: customColors.suqarBackgroundColor,
+
+                      decoration: const InputDecoration(
+                        labelText: 'SPD Manufacturer',
+                      ),
+                      items:
+                          SPDBrands.map(
+                            (brand) => DropdownMenuItem(
+                              value: brand,
+                              child: Text(brand),
+                            ),
+                          ).toList(),
                     ),
+                    SizedBox(height: 10),
 
                     // SPD Model TextField
                     FormBuilderTextField(
                       name: 'model_SPD',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(labelText: 'SPD Model'),
                     ),
+                    SizedBox(height: 10),
 
                     // SPD Status Selection
                     FormBuilderChoiceChips<String>(
                       name: 'status',
-                      decoration:
-                          const InputDecoration(labelText: 'SPD Status'),
+                      decoration: const InputDecoration(
+                        labelText: 'SPD Status',
+                      ),
                       selectedColor: Colors.lightBlueAccent,
                       options: const [
                         FormBuilderChipOption(
-                            value: 'Active',
-                            child: Text('Active'),
-                            avatar: CircleAvatar(child: Text(''))),
+                          value: 'Active',
+                          child: Text('Active'),
+                          avatar: CircleAvatar(child: Text('')),
+                        ),
                         FormBuilderChipOption(
-                            value: 'Burned',
-                            child: Text('Burned'),
-                            avatar: CircleAvatar(child: Text(''))),
+                          value: 'Burned',
+                          child: Text('Burned'),
+                          avatar: CircleAvatar(child: Text('')),
+                        ),
                       ],
                       initialValue: widget.record['status'],
                       onChanged: (val) {
@@ -232,17 +295,20 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                         });
                       },
                     ),
+                    SizedBox(height: 10),
 
                     // Percentage Sliders (Enable only if Active)
                     FormBuilderSlider(
                       name: 'PercentageR',
                       min: 0.0,
                       max: 100.0,
-                      initialValue: widget.record['PercentageR'] != null
-                          ? double.tryParse(
-                                  widget.record['PercentageR'].toString()) ??
-                              0.0
-                          : 0.0,
+                      initialValue:
+                          widget.record['PercentageR'] != null
+                              ? double.tryParse(
+                                    widget.record['PercentageR'].toString(),
+                                  ) ??
+                                  0.0
+                              : 0.0,
                       divisions: 10,
                       activeColor: Colors.red,
                       inactiveColor: Colors.pink[100],
@@ -251,82 +317,115 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                         labelText: 'Percentage Level %',
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     // Nominal Voltage
                     FormBuilderTextField(
                       name: 'nom_volt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
-                          labelText: 'Nominal Voltage (V)'),
+                        labelText: 'Nominal Voltage (V)',
+                      ),
                       keyboardType: TextInputType.number,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       name: 'UcDCVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
                         labelText: 'Uc in Volt',
                       ),
                       keyboardType: TextInputType.number,
                     ),
+                    SizedBox(height: 10),
 
                     // Voltage Protection Level
                     FormBuilderTextField(
                       name: 'UpDCVolt',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
                         labelText: 'Up (DC) in kV',
                       ),
                       keyboardType: TextInputType.number,
                     ),
+                    SizedBox(height: 10),
 
                     // Discharge Current Rating
                     FormBuilderTextField(
                       name: 'Nom_Dis8_20',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
                         labelText: 'Nominal Current (In) (8/20µs) (kA)',
                       ),
                       keyboardType: TextInputType.number,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       name: 'Nom_Dis10_350',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
                         labelText: 'Impulse Current (I_imp) (10/350µs) (kA)',
                       ),
                       keyboardType: TextInputType.number,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderTextField(
                       name: 'responseTime',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(
                         labelText: 'Response Time (nS)',
                       ),
                       keyboardType: TextInputType.number,
                     ),
+                    SizedBox(height: 10),
 
                     // Date Pickers
                     FormBuilderDateTimePicker(
                       name: 'installDt',
-                      decoration:
-                          const InputDecoration(labelText: 'Installation Date'),
-                      initialValue:
-                          DateTime.tryParse(widget.record['installDt']),
+                      style: TextStyle(color: customColors.mainTextColor),
+
+                      decoration: const InputDecoration(
+                        labelText: 'Installation Date',
+                      ),
+                      initialValue: DateTime.tryParse(
+                        widget.record['installDt'],
+                      ),
                       inputType: InputType.date,
                     ),
+                    SizedBox(height: 10),
 
                     FormBuilderDateTimePicker(
                       name: 'warrentyDt',
-                      decoration:
-                          const InputDecoration(labelText: 'Warranty Date'),
-                      initialValue:
-                          DateTime.tryParse(widget.record['warrentyDt']),
+                      style: TextStyle(color: customColors.mainTextColor),
+
+                      decoration: const InputDecoration(
+                        labelText: 'Warranty Date',
+                      ),
+                      initialValue: DateTime.tryParse(
+                        widget.record['warrentyDt'],
+                      ),
                       inputType: InputType.date,
                     ),
+                    SizedBox(height: 10),
 
                     // Notes
                     FormBuilderTextField(
                       name: 'Notes',
+                      style: TextStyle(color: customColors.mainTextColor),
+
                       decoration: const InputDecoration(labelText: 'Remarks'),
                       // maxLines: 4,
                     ),
+                    SizedBox(height: 10),
 
                     // Checkbox for verification
                     FormBuilderCheckbox(
@@ -337,32 +436,36 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                           _isVerified = value ?? false;
                         });
                       },
-                      title: const Text(
+                      title: Text(
                         'I verify that submitted details are true and correct',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: customColors.mainTextColor),
                       ),
                     ),
+                    SizedBox(height: 10),
 
                     // Update Button
                     ElevatedButton(
-                      onPressed: _isVerified
-                          ? () {
-                              if (_formKey.currentState!.saveAndValidate()) {
-                                final updatedData =
-                                    _formKey.currentState!.value;
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        HttpUpdateSPD(updatedData: updatedData),
-                                  ),
-                                );
-                                print('updatedData: $updatedData');
-                              } else {
-                                debugPrint('Validation failed');
+                      onPressed:
+                          _isVerified
+                              ? () {
+                                if (_formKey.currentState!.saveAndValidate()) {
+                                  final updatedData =
+                                      _formKey.currentState!.value;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => HttpUpdateSPD(
+                                            updatedData: updatedData,
+                                          ),
+                                    ),
+                                  );
+                                  print('updatedData: $updatedData');
+                                } else {
+                                  debugPrint('Validation failed');
+                                }
                               }
-                            }
-                          : null,
+                              : null,
                       child: const Text('Update'),
                     ),
                   ],
