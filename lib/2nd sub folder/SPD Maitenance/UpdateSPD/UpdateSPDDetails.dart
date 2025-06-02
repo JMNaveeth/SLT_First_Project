@@ -208,6 +208,16 @@ class _UpdateSPDDetailsState extends State<UpdateSPDDetails> {
   }
 
   Widget _buildSummaryTable() {
+     final List<dynamic> systemsForSummary;
+    if (selectedRegion == 'ALL') {
+      systemsForSummary = SPDSystems;
+    } else {
+      systemsForSummary = SPDSystems.where((system) => system['province'] == selectedRegion).toList();
+    }
+
+    final int currentTotalCount = systemsForSummary.length;
+    final int currentAcCount = systemsForSummary.where((system) => system['DCFlag'] == '0').length;
+    final int currentDcCount = systemsForSummary.where((system) => system['DCFlag'] == '1').length;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Table(
@@ -216,19 +226,19 @@ class _UpdateSPDDetailsState extends State<UpdateSPDDetails> {
           TableRow(
             children: [
               _buildSummaryCell('Total SPD Units'),
-              _buildSummaryCell('${SPDSystems.length}'),
+              _buildSummaryCell('$currentTotalCount'),
             ],
           ),
           TableRow(
             children: [
               _buildSummaryCell('AC Units'),
-              _buildSummaryCell('$acCount'),
+              _buildSummaryCell('$currentAcCount'),
             ],
           ),
           TableRow(
             children: [
               _buildSummaryCell('DC Units'),
-              _buildSummaryCell('$dcCount'),
+              _buildSummaryCell('$currentDcCount'),
             ],
           ),
         ],
