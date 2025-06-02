@@ -2486,7 +2486,7 @@ class _CompleteFormState extends State<CompleteForm> {
                     ),
                     SizedBox(height: 10),
                     FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.always,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'UcNeutralVolt',
                       style: TextStyle(color: customColors.mainTextColor),
                       decoration: InputDecoration(
@@ -2590,7 +2590,7 @@ class _CompleteFormState extends State<CompleteForm> {
                       onChanged: (val) {
                         setState(() {
                           _validator12 =
-                              !(_formKey.currentState?.fields['Up_Neutral']
+                              !(_formKey.currentState?.fields['UpNeutralVolt']
                                       ?.validate() ??
                                   false);
                         });

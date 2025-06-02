@@ -157,6 +157,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     FormBuilderDropdown<String>(
                       name: 'province',
                       style: TextStyle(color: customColors.mainTextColor),
+                      dropdownColor: customColors.suqarBackgroundColor,
 
                       decoration: const InputDecoration(labelText: 'Region'),
                       items:
