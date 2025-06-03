@@ -1830,9 +1830,10 @@ class _CompleteFormState extends State<CompleteForm> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA','Other',
+    'UVA',
+    'Other',
   ];
-  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown','Other',];
+  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown', 'Other'];
   var SPDBrands = [
     'Citel',
     'Critec',
@@ -1898,8 +1899,7 @@ class _CompleteFormState extends State<CompleteForm> {
 
   void _onChanged(dynamic val) => debugPrint(val.toString());
 
-
- void _showCustomBrandDialog({
+  void _showCustomBrandDialog({
     required String key,
     required List<String?> brandList,
     required Map<String, dynamic> formData,
@@ -2035,29 +2035,53 @@ class _CompleteFormState extends State<CompleteForm> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      items:
-                          Regions.map(
-                            (Regions) => DropdownMenuItem(
-                              alignment: AlignmentDirectional.center,
-                              value: Regions,
-                              child: Text(Regions),
-                            ),
-                          ).toList(),
+                      items: [
+                                  ...Regions.where(
+                                    (String value) => value != "Other",
+                                  ).map((String regionValue) {
+                                    return DropdownMenuItem<String>(
+                                      value: regionValue,
+                                      child: Text(
+                                        regionValue,
+                                        // Style is inherited from FormBuilderDropdown's style
+                                      ),
+                                    );
+                                  }).toList(),
+                                  DropdownMenuItem<String>(
+                                    value: "Other",
+                                    child: Text(
+                                      "Other",
+                                      // Style is inherited
+                                    ),
+                                  ),
+                                ],
                       onChanged: (val) {
-                        setState(() {
-                          _selectedValues['province'] = val!;
-                          selectedRegion = val;
-                          selectedRTOM = null;
-                          _regionHasError =
-                              !(_formKey.currentState?.fields['province']
-                                      ?.validate() ??
-                                  false);
-                          // Reset the 'Rtom_name' field value and clear validation errors
-                          _formKey.currentState?.fields['Rtom_name']?.didChange(
-                            null,
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "province", // Matches the dropdown's name
+                            brandList: Regions, // Your list of regions
+                            formData:
+                                _formKey
+                                    .currentState!
+                                    .value, // Current form data
+                            formKey:
+                                "province", // The form field name being affected
                           );
-                        });
-                        //  print('Region: ' + _selectedValues['Region'].toString());
+                        } else {
+                          setState(() {
+                            _selectedValues['province'] = val!;
+                            selectedRegion = val;
+                            selectedRTOM = null;
+                            _regionHasError =
+                                !(_formKey.currentState?.fields['province']
+                                        ?.validate() ??
+                                    false);
+                            // Reset the 'Rtom_name' field value and clear validation errors
+                            _formKey.currentState?.fields['Rtom_name']
+                                ?.didChange(null);
+                          });
+                          //  print('Region: ' + _selectedValues['Region'].toString());
+                        }
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
