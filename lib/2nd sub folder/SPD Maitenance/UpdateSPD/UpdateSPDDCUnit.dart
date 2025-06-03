@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 import 'HttpUpdateSPD.dart';
@@ -45,6 +46,7 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
     'WPSE',
     'WPSW',
     'UVA',
+    'Other',
   ];
   Map<String, List<String>> regionToDistricts = {
     "CPN": ['Kandy', 'Dambulla', 'Matale'],
@@ -82,7 +84,7 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
     'Zone Guard',
     'Other',
   ];
-  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown'];
+  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown', 'Other'];
 
   List<String> getRtomOptions() {
     return selectedRegion != null &&
@@ -95,6 +97,304 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
   void initState() {
     super.initState();
     selectedRegion = widget.record['province'];
+  }
+
+  void _showAddOtherRegionDialog() {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    final TextEditingController customRegionController =
+        TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: themeProvider.currentTheme.copyWith(
+            dialogBackgroundColor: customColors.suqarBackgroundColor,
+            inputDecorationTheme: InputDecorationTheme(
+              labelStyle: TextStyle(color: customColors.mainTextColor),
+              hintStyle: TextStyle(
+                color: customColors.mainTextColor.withOpacity(0.7),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: customColors.mainTextColor.withOpacity(0.5),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: customColors.mainTextColor,
+              ),
+            ),
+          ),
+          child: AlertDialog(
+            backgroundColor: customColors.suqarBackgroundColor,
+            title: Text(
+              "Add Custom Region",
+              style: TextStyle(color: customColors.mainTextColor),
+            ),
+            content: TextField(
+              controller: customRegionController,
+              style: TextStyle(color: customColors.mainTextColor),
+              decoration: InputDecoration(
+                hintText: "Enter your region name",
+                hintStyle: TextStyle(
+                  color: customColors.mainTextColor.withOpacity(0.7),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () {
+                  if (_formKey.currentState?.fields['province']?.value ==
+                      'Other') {
+                    _formKey.currentState?.fields['province']?.didChange(
+                      widget.record['province'] ?? null,
+                    );
+                    setState(() {
+                      selectedRegion = widget.record['province'] ?? null;
+                      _formKey.currentState?.fields['Rtom_name']?.didChange(
+                        widget.record['Rtom_name'] ?? null,
+                      );
+                    });
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text("OK", style: TextStyle(color: Colors.blue)),
+                onPressed: () {
+                  String customRegion = customRegionController.text.trim();
+                  if (customRegion.isNotEmpty) {
+                    setState(() {
+                      if (!Regions.contains(customRegion)) {
+                        int otherIndex = Regions.indexOf("Other");
+                        if (otherIndex != -1) {
+                          Regions.insert(otherIndex, customRegion);
+                        } else {
+                          Regions.add(customRegion);
+                        }
+                      }
+                      selectedRegion = customRegion;
+                      _formKey.currentState?.fields['province']?.didChange(
+                        customRegion,
+                      );
+                      _formKey.currentState?.fields['Rtom_name']?.didChange(
+                        null,
+                      ); // Reset RTOM as region changed
+                    });
+                  } else {
+                    _formKey.currentState?.fields['province']?.didChange(
+                      widget.record['province'] ?? null,
+                    );
+                    setState(() {
+                      selectedRegion = widget.record['province'] ?? null;
+                      _formKey.currentState?.fields['Rtom_name']?.didChange(
+                        widget.record['Rtom_name'] ?? null,
+                      );
+                    });
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showAddOtherSPDTypeDialog() {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    final TextEditingController customSPDTypeController =
+        TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: themeProvider.currentTheme.copyWith(
+            dialogBackgroundColor: customColors.suqarBackgroundColor,
+            inputDecorationTheme: InputDecorationTheme(
+              labelStyle: TextStyle(color: customColors.mainTextColor),
+              hintStyle: TextStyle(
+                color: customColors.mainTextColor.withOpacity(0.7),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: customColors.mainTextColor.withOpacity(0.5),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: customColors.mainTextColor,
+              ),
+            ),
+          ),
+          child: AlertDialog(
+            backgroundColor: customColors.suqarBackgroundColor,
+            title: Text(
+              "Add Custom SPD Type",
+              style: TextStyle(color: customColors.mainTextColor),
+            ),
+            content: TextField(
+              controller: customSPDTypeController,
+              style: TextStyle(color: customColors.mainTextColor),
+              decoration: InputDecoration(
+                hintText: "Enter your SPD Type",
+                hintStyle: TextStyle(
+                  color: customColors.mainTextColor.withOpacity(0.7),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () {
+                  if (_formKey.currentState?.fields['SPDType']?.value ==
+                      'Other') {
+                    _formKey.currentState?.fields['SPDType']?.didChange(
+                      widget.record['SPDType'] ?? 'Unknown',
+                    );
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text("OK", style: TextStyle(color: Colors.blue)),
+                onPressed: () {
+                  String customSPDType = customSPDTypeController.text.trim();
+                  if (customSPDType.isNotEmpty) {
+                    setState(() {
+                      if (!SPDTypes.contains(customSPDType)) {
+                        int otherIndex = SPDTypes.indexOf("Other");
+                        if (otherIndex != -1) {
+                          SPDTypes.insert(otherIndex, customSPDType);
+                        } else {
+                          SPDTypes.add(customSPDType);
+                        }
+                      }
+                      _formKey.currentState?.fields['SPDType']?.didChange(
+                        customSPDType,
+                      );
+                    });
+                  } else {
+                    _formKey.currentState?.fields['SPDType']?.didChange(
+                      widget.record['SPDType'] ?? 'Unknown',
+                    );
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showAddOtherSPDBrandDialog() {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    final TextEditingController customSPDBrandController =
+        TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: themeProvider.currentTheme.copyWith(
+            dialogBackgroundColor: customColors.suqarBackgroundColor,
+            inputDecorationTheme: InputDecorationTheme(
+              labelStyle: TextStyle(color: customColors.mainTextColor),
+              hintStyle: TextStyle(
+                color: customColors.mainTextColor.withOpacity(0.7),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: customColors.mainTextColor.withOpacity(0.5),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: customColors.mainTextColor,
+              ),
+            ),
+          ),
+          child: AlertDialog(
+            backgroundColor: customColors.suqarBackgroundColor,
+            title: Text(
+              "Add Custom SPD Brand/Manufacturer",
+              style: TextStyle(color: customColors.mainTextColor),
+            ),
+            content: TextField(
+              controller: customSPDBrandController,
+              style: TextStyle(color: customColors.mainTextColor),
+              decoration: InputDecoration(
+                hintText: "Enter SPD Brand/Manufacturer",
+                hintStyle: TextStyle(
+                  color: customColors.mainTextColor.withOpacity(0.7),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () {
+                  if (_formKey.currentState?.fields['SPD_Manu']?.value ==
+                      'Other') {
+                    _formKey.currentState?.fields['SPD_Manu']?.didChange(
+                      widget.record['SPD_Manu'] ?? null,
+                    );
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text("OK", style: TextStyle(color: Colors.blue)),
+                onPressed: () {
+                  String customSPDBrand = customSPDBrandController.text.trim();
+                  if (customSPDBrand.isNotEmpty) {
+                    setState(() {
+                      if (!SPDBrands.contains(customSPDBrand)) {
+                        int otherIndex = SPDBrands.indexOf("Other");
+                        if (otherIndex != -1) {
+                          SPDBrands.insert(otherIndex, customSPDBrand);
+                        } else {
+                          SPDBrands.add(customSPDBrand);
+                        }
+                      }
+                      _formKey.currentState?.fields['SPD_Manu']?.didChange(
+                        customSPDBrand,
+                      );
+                    });
+                  } else {
+                    _formKey.currentState?.fields['SPD_Manu']?.didChange(
+                      widget.record['SPD_Manu'] ?? null,
+                    );
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -154,9 +454,13 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                             ),
                           ).toList(),
                       onChanged: (value) {
-                        setState(() {
-                          selectedRegion = value;
-                        });
+                        if (value == 'Other') {
+                          _showAddOtherRegionDialog();
+                        } else {
+                          setState(() {
+                            selectedRegion = value;
+                          });
+                        }
                       },
                     ),
                     SizedBox(height: 10),
@@ -237,6 +541,12 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                               child: Text(type),
                             ),
                           ).toList(),
+                           onChanged: (value) {
+                        if (value == 'Other') {
+                          _showAddOtherSPDTypeDialog();
+                        } else {
+                        }
+                      },
                     ),
                     SizedBox(height: 10),
 
@@ -257,6 +567,12 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                               child: Text(brand),
                             ),
                           ).toList(),
+                           onChanged: (value) {
+                        if (value == 'Other') {
+                          _showAddOtherSPDBrandDialog();
+                        } else {
+                        }
+                      },
                     ),
                     SizedBox(height: 10),
 
