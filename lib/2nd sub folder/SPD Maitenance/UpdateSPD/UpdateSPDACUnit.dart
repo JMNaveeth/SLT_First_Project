@@ -16,7 +16,8 @@ class UpdateACUnit extends StatefulWidget {
 
 class _UpdateACUnitState extends State<UpdateACUnit> {
   final _formKey = GlobalKey<FormBuilderState>();
-  String? selectedRegion;
+  String? selectedRegion;  Map<String, dynamic> updatedValues = {};
+
   bool _spdUnitary = false;
   bool _3phase = false;
   bool _burned = true;
@@ -50,8 +51,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA',
-    'Other',
+    'UVA', 'Other',
   ];
   Map<String, List<String>> regionToDistricts = {
     "CPN": ['Kandy', 'Dambulla', 'Matale'],
@@ -113,11 +113,16 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
     _discharge10_350 = dischargeType == '10/350us';
   }
 
-  void _showAddOtherRegionDialog() {
+
+ void _showCustomBrandDialog({
+    required String key,
+    required List<String?> brandList,
+    required Map<String, dynamic> formData,
+    required String formKey,
+  }) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     final customColors = Theme.of(context).extension<CustomColors>()!;
-    final TextEditingController customRegionController =
-        TextEditingController();
+    final TextEditingController customBrandController = TextEditingController();
 
     showDialog(
       context: context,
@@ -139,76 +144,52 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                 borderSide: BorderSide(color: Colors.blue),
               ),
             ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: customColors.mainTextColor,
-              ),
-            ),
           ),
           child: AlertDialog(
             backgroundColor: customColors.suqarBackgroundColor,
             title: Text(
-              "Add Custom Region",
+              "Add Custom Brand",
               style: TextStyle(color: customColors.mainTextColor),
             ),
             content: TextField(
-              controller: customRegionController,
+              controller: customBrandController,
               style: TextStyle(color: customColors.mainTextColor),
               decoration: InputDecoration(
-                hintText: "Enter your region name",
+                hintText: "Enter your brand name",
                 hintStyle: TextStyle(
                   color: customColors.mainTextColor.withOpacity(0.7),
                 ),
               ),
+              onChanged: (value) {
+                // You can add validation or other logic here if needed
+              },
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text("Cancel"),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: customColors.mainTextColor),
+                ),
                 onPressed: () {
-                  if (_formKey.currentState?.fields['province']?.value ==
-                      'Other') {
-                    _formKey.currentState?.fields['province']?.didChange(null);
-                    setState(() {
-                      selectedRegion = null;
-                      // Reset RTOM dropdown as region changed
-                      _formKey.currentState?.fields['Rtom_name']?.didChange(
-                        null,
-                      );
-                    });
-                  }
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text("OK", style: TextStyle(color: Colors.blue)),
+                child: const Text("OK"),
                 onPressed: () {
-                  String customRegion = customRegionController.text.trim();
-                  if (customRegion.isNotEmpty) {
+                  String customBrand = customBrandController.text.trim();
+                  if (customBrand.isNotEmpty) {
                     setState(() {
-                      if (!Regions.contains(customRegion)) {
-                        int otherIndex = Regions.indexOf("Other");
-                        if (otherIndex != -1) {
-                          Regions.insert(otherIndex, customRegion);
-                        } else {
-                          Regions.add(customRegion);
-                        }
+                      // Remove if already exists (avoid duplicates)
+                      brandList.remove(customBrand);
+                      // Insert before "Other" if present, else add to end
+                      int otherIndex = brandList.indexOf("Other");
+                      if (otherIndex != -1) {
+                        brandList.insert(otherIndex, customBrand);
+                      } else {
+                        brandList.add(customBrand);
                       }
-                      selectedRegion = customRegion;
-                      _formKey.currentState?.fields['province']?.didChange(
-                        customRegion,
-                      );
-                      // Reset RTOM dropdown as region changed
-                      _formKey.currentState?.fields['Rtom_name']?.didChange(
-                        null,
-                      );
-                    });
-                  } else {
-                    _formKey.currentState?.fields['province']?.didChange(null);
-                    setState(() {
-                      selectedRegion = null;
-                      _formKey.currentState?.fields['Rtom_name']?.didChange(
-                        null,
-                      );
+                      formData[formKey] = customBrand; // Set as selected
                     });
                   }
                   Navigator.of(context).pop();
@@ -221,194 +202,6 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
     );
   }
 
-  void _showAddOtherSPDTypeDialog() {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    final customColors = Theme.of(context).extension<CustomColors>()!;
-    final TextEditingController customSPDTypeController =
-        TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Theme(
-          data: themeProvider.currentTheme.copyWith(
-            dialogBackgroundColor: customColors.suqarBackgroundColor,
-            inputDecorationTheme: InputDecorationTheme(
-              labelStyle: TextStyle(color: customColors.mainTextColor),
-              hintStyle: TextStyle(
-                color: customColors.mainTextColor.withOpacity(0.7),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: customColors.mainTextColor.withOpacity(0.5),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
-              ),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: customColors.mainTextColor,
-              ),
-            ),
-          ),
-          child: AlertDialog(
-            backgroundColor: customColors.suqarBackgroundColor,
-            title: Text(
-              "Add Custom SPD Type",
-              style: TextStyle(color: customColors.mainTextColor),
-            ),
-            content: TextField(
-              controller: customSPDTypeController,
-              style: TextStyle(color: customColors.mainTextColor),
-              decoration: InputDecoration(
-                hintText: "Enter your SPD Type",
-                hintStyle: TextStyle(
-                  color: customColors.mainTextColor.withOpacity(0.7),
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text("Cancel"),
-                onPressed: () {
-                  if (_formKey.currentState?.fields['SPDType']?.value ==
-                      'Other') {
-                    // Reset to 'Unknown' or null, depending on desired behavior
-                    _formKey.currentState?.fields['SPDType']?.didChange(
-                      widget.record['SPDType'] ?? 'Unknown',
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text("OK", style: TextStyle(color: Colors.blue)),
-                onPressed: () {
-                  String customSPDType = customSPDTypeController.text.trim();
-                  if (customSPDType.isNotEmpty) {
-                    setState(() {
-                      if (!SPDTypes.contains(customSPDType)) {
-                        int otherIndex = SPDTypes.indexOf("Other");
-                        if (otherIndex != -1) {
-                          SPDTypes.insert(otherIndex, customSPDType);
-                        } else {
-                          SPDTypes.add(customSPDType);
-                        }
-                      }
-                      _formKey.currentState?.fields['SPDType']?.didChange(
-                        customSPDType,
-                      );
-                    });
-                  } else {
-                    _formKey.currentState?.fields['SPDType']?.didChange(
-                      widget.record['SPDType'] ?? 'Unknown',
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _showAddOtherSPDBrandDialog() {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    final customColors = Theme.of(context).extension<CustomColors>()!;
-    final TextEditingController customSPDBrandController =
-        TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Theme(
-          data: themeProvider.currentTheme.copyWith(
-            dialogBackgroundColor: customColors.suqarBackgroundColor,
-            inputDecorationTheme: InputDecorationTheme(
-              labelStyle: TextStyle(color: customColors.mainTextColor),
-              hintStyle: TextStyle(
-                color: customColors.mainTextColor.withOpacity(0.7),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: customColors.mainTextColor.withOpacity(0.5),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
-              ),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: customColors.mainTextColor,
-              ),
-            ),
-          ),
-          child: AlertDialog(
-            backgroundColor: customColors.suqarBackgroundColor,
-            title: Text(
-              "Add Custom SPD Manufacturer",
-              style: TextStyle(color: customColors.mainTextColor),
-            ),
-            content: TextField(
-              controller: customSPDBrandController,
-              style: TextStyle(color: customColors.mainTextColor),
-              decoration: InputDecoration(
-                hintText: "Enter SPD Manufacturer",
-                hintStyle: TextStyle(
-                  color: customColors.mainTextColor.withOpacity(0.7),
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text("Cancel"),
-                onPressed: () {
-                  if (_formKey.currentState?.fields['SPD_Manu']?.value ==
-                      'Other') {
-                    _formKey.currentState?.fields['SPD_Manu']?.didChange(
-                      widget.record['SPD_Manu'] ?? null,
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text("OK", style: TextStyle(color: Colors.blue)),
-                onPressed: () {
-                  String customSPDBrand = customSPDBrandController.text.trim();
-                  if (customSPDBrand.isNotEmpty) {
-                    setState(() {
-                      if (!SPDBrands.contains(customSPDBrand)) {
-                        int otherIndex = SPDBrands.indexOf("Other");
-                        if (otherIndex != -1) {
-                          SPDBrands.insert(otherIndex, customSPDBrand);
-                        } else {
-                          SPDBrands.add(customSPDBrand);
-                        }
-                      }
-                      _formKey.currentState?.fields['SPD_Manu']?.didChange(
-                        customSPDBrand,
-                      );
-                    });
-                  } else {
-                    _formKey.currentState?.fields['SPD_Manu']?.didChange(
-                      widget.record['SPD_Manu'] ?? null,
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -467,13 +260,9 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                             ),
                           ).toList(),
                       onChanged: (value) {
-                        if (value == 'Other') {
-                          _showAddOtherRegionDialog();
-                        } else {
-                          setState(() {
-                            selectedRegion = value;
-                          });
-                        }
+                        setState(() {
+                          selectedRegion = value;
+                        });
                       },
                     ),
                     SizedBox(height: 10),
@@ -590,12 +379,6 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                               child: Text(type),
                             ),
                           ).toList(),
-                           onChanged: (value) {
-                        if (value == 'Other') {
-                          _showAddOtherSPDTypeDialog();
-                        } else {
-                                            }
-                      },
                     ),
                     SizedBox(height: 10),
 
@@ -615,12 +398,6 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                               child: Text(brand),
                             ),
                           ).toList(),
-                           onChanged: (value) {
-                        if (value == 'Other') {
-                          _showAddOtherSPDBrandDialog();
-                        } else {
-                      }
-                      },
                     ),
                     SizedBox(height: 10),
 
@@ -871,7 +648,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     // Nominal Discharge Current - Live (8/20µs)
                     FormBuilderTextField(
                       name: 'L8to20NomD',
-                      style: TextStyle(color: customColors.mainTextColor),
+                                                style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -885,8 +662,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Nominal Discharge Current - Neutral (8/20µs)
                     FormBuilderTextField(
-                      name: 'N8to20NomD',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'N8to20NomD',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -900,8 +676,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Impulse Discharge Current - Live (10/350µs)
                     FormBuilderTextField(
-                      name: 'L10to350ImpD',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'L10to350ImpD',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -915,8 +690,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Impulse Discharge Current - Neutral (10/350µs)
                     FormBuilderTextField(
-                      name: 'N10to350ImpD',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'N10to350ImpD',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -929,8 +703,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     SizedBox(height: 10),
 
                     FormBuilderTextField(
-                      name: 'mcbRating',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'mcbRating',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Backup fuse/mcb rating (A)',
@@ -940,8 +713,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     SizedBox(height: 10),
 
                     FormBuilderTextField(
-                      name: 'responseTime',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'responseTime',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Response Time (nS)',
@@ -952,8 +724,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Date Pickers
                     FormBuilderDateTimePicker(
-                      name: 'installDt',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'installDt',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Installation Date',
@@ -966,8 +737,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     SizedBox(height: 10),
 
                     FormBuilderDateTimePicker(
-                      name: 'warrentyDt',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'warrentyDt',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Warranty Date',
@@ -981,8 +751,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Notes
                     FormBuilderTextField(
-                      name: 'Notes',
-                      style: TextStyle(color: customColors.mainTextColor),
+                      name: 'Notes',                          style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(labelText: 'Remarks'),
                     ),
@@ -997,9 +766,9 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                           _isVerified = value ?? false;
                         });
                       },
-                      title: Text(
+                      title:  Text(
                         'I verify that submitted details are true and correct',
-                        style: TextStyle(color: customColors.mainTextColor),
+                          style: TextStyle(color: customColors.mainTextColor),
                       ),
                     ),
 

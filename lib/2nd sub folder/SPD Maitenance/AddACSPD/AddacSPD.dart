@@ -2300,7 +2300,7 @@ class _CompleteFormState extends State<CompleteForm> {
                       style: TextStyle(color: customColors.mainTextColor),
 
                       initialValue:
-                          Regions.contains(updatedValues["SPDType"])
+                          SPDTypes.contains(updatedValues["SPDType"])
                               ? updatedValues["SPDType"] as String?
                               : null, // Default value
                       decoration: InputDecoration(
@@ -2346,12 +2346,27 @@ class _CompleteFormState extends State<CompleteForm> {
                         ),
                       ],
                       onChanged: (val) {
-                        setState(() {
-                          _aBrandHasError =
-                              !(_formKey.currentState?.fields['SPDType']
-                                      ?.validate() ??
-                                  false);
-                        });
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "SPDType", // Dialog key
+                            brandList: SPDTypes,
+                            formData: updatedValues,
+                            formKey:
+                                "SPDType", // Form field key in updatedValues
+                          );
+                        } else {
+                          setState(() {
+                            updatedValues['SPDType'] =
+                                val; // Update the central map
+                            _selectedValues['SPDType'] =
+                                val!; // If you use this elsewhere
+                            // selectedSPDType = val; // If you have a specific state variable
+                            _aBrandHasError =
+                                !(_formKey.currentState?.fields['SPDType']
+                                        ?.validate() ??
+                                    false);
+                          });
+                        }
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
@@ -2362,7 +2377,12 @@ class _CompleteFormState extends State<CompleteForm> {
                     FormBuilderDropdown<String>(
                       name: 'SPD_Manu',
                       style: TextStyle(color: customColors.mainTextColor),
-
+                      initialValue:
+                          SPDBrands.contains(
+                                updatedValues["SPD_Manu"],
+                              ) // Use SPDBrands list
+                              ? updatedValues["SPD_Manu"] as String?
+                              : null, // Default value
                       decoration: InputDecoration(
                         labelText: 'SPD Manufacturer',
                         suffix:
@@ -2375,21 +2395,51 @@ class _CompleteFormState extends State<CompleteForm> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      items:
-                          SPDBrands.map(
-                            (eBrand) => DropdownMenuItem(
-                              alignment: AlignmentDirectional.center,
-                              value: eBrand,
-                              child: Text(eBrand),
+                      items: [
+                        ...SPDBrands.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle( // Added style for consistency
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
-                          ).toList(),
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
                       onChanged: (val) {
-                        setState(() {
-                          _eBrandHasError =
-                              !(_formKey.currentState?.fields['SPD_Manu']
-                                      ?.validate() ??
-                                  false);
-                        });
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "SPD_Manu", // Dialog key
+                            brandList: SPDBrands,
+                            formData: updatedValues,
+                            formKey: "SPD_Manu", // Form field key in updatedValues
+                          );
+                        } else {
+                          setState(() {
+                            updatedValues['SPD_Manu'] = val; // Update the central map
+                            _selectedValues['SPD_Manu'] = val!; // If you use this elsewhere
+                            // selectedSPDManufacturer = val; // If you have a specific state variable
+                            _eBrandHasError =
+                                !(_formKey.currentState?.fields['SPD_Manu']
+                                        ?.validate() ??
+                                    false);
+                          });
+                        }
                       },
                       valueTransformer: (val) => val?.toString(),
                     ),
