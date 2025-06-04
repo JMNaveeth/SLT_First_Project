@@ -1770,6 +1770,8 @@ class _CompleteFormState extends State<CompleteForm> {
   String _status = '';
   String? selectedRTOM;
   String? selectedRegion;
+  Map<String, dynamic> updatedValues = {};
+
   bool autoValidate = true;
   bool readOnly = false;
   bool showSegmentedControl = true;
@@ -1830,9 +1832,10 @@ class _CompleteFormState extends State<CompleteForm> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA', 'Other',
+    'UVA',
+    'Other',
   ];
-  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown', 'Other',];
+  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown', 'Other'];
   var SPDBrands = [
     'Citel',
     'Critec',
@@ -1898,7 +1901,7 @@ class _CompleteFormState extends State<CompleteForm> {
 
   void _onChanged(dynamic val) => debugPrint(val.toString());
 
- void _showCustomBrandDialog({
+  void _showCustomBrandDialog({
     required String key,
     required List<String?> brandList,
     required Map<String, dynamic> formData,
@@ -1958,37 +1961,22 @@ class _CompleteFormState extends State<CompleteForm> {
                   Navigator.of(context).pop();
                 },
               ),
-            TextButton(
+              TextButton(
                 child: const Text("OK"),
                 onPressed: () {
                   String customBrand = customBrandController.text.trim();
                   if (customBrand.isNotEmpty) {
                     setState(() {
-                      // 1. Add to the list
-                      if (!brandList.contains(customBrand)) { // Avoid duplicates if any
-                        brandList.remove("Other"); // Remove 'Other'
-                        brandList.add(customBrand); // Add the new custom brand
-                        brandList.add("Other"); // Add 'Other' back at the end
+                      // Remove if already exists (avoid duplicates)
+                      brandList.remove(customBrand);
+                      // Insert before "Other" if present, else add to end
+                      int otherIndex = brandList.indexOf("Other");
+                      if (otherIndex != -1) {
+                        brandList.insert(otherIndex, customBrand);
+                      } else {
+                        brandList.add(customBrand);
                       }
-                      
-                      // 2. Update FormBuilder field value
-                      _formKey.currentState?.fields[formKey]?.didChange(customBrand);
-
-                      // 3. Update related state variables and logic
-                      if (formKey == 'province') {
-                        _selectedValues['province'] = customBrand;
-                        selectedRegion = customBrand;
-                        selectedRTOM = null; // Reset dependent field
-                        _regionHasError = !(_formKey.currentState?.fields['province']?.validate() ?? false);
-                        _formKey.currentState?.fields['Rtom_name']?.reset();
-                        _formKey.currentState?.fields['Rtom_name']?.didChange(null);
-                      } else if (formKey == 'SPDType') {
-                        // Assuming 'SPDType' is the formKey for SPDType dropdown
-                        _aBrandHasError = !(_formKey.currentState?.fields['SPDType']?.validate() ?? false);
-                      } else if (formKey == 'SPD_Manu') {
-                        // Assuming 'SPD_Manu' is the formKey for SPD Manufacturer dropdown
-                        _eBrandHasError = !(_formKey.currentState?.fields['SPD_Manu']?.validate() ?? false);
-                      }
+                      formData[formKey] = customBrand; // Set as selected
                     });
                   }
                   Navigator.of(context).pop();
@@ -2000,7 +1988,6 @@ class _CompleteFormState extends State<CompleteForm> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -2033,6 +2020,10 @@ class _CompleteFormState extends State<CompleteForm> {
                     //Region Select
                     FormBuilderDropdown<String>(
                       name: 'province',
+                      initialValue:
+                          Regions.contains(updatedValues["province"])
+                              ? updatedValues["province"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: InputDecoration(
@@ -2050,30 +2041,54 @@ class _CompleteFormState extends State<CompleteForm> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      items: Regions.map(
-                        (Regions) => DropdownMenuItem(
-                          alignment: AlignmentDirectional.center,
-                          value: Regions,
-                          child: Text(Regions),
+                      items: [
+                        ...Regions.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
                         ),
-                      ).toList(),
+                      ],
                       onChanged: (val) {
-                        if (val == 'Other') {
+                        if (val == "Other") {
                           _showCustomBrandDialog(
-                            key: 'province_dialog', // Unique key for the dialog context if needed
+                            key: "province",
                             brandList: Regions,
-                            formData: _formKey.currentState!.value, // Pass current form data
-                            formKey: 'province', // Field name
+                            formData: updatedValues,
+                            formKey: "province",
                           );
                         } else {
                           setState(() {
                             _selectedValues['province'] = val!;
                             selectedRegion = val;
-                            selectedRTOM = null; // Reset dependent field
-                            _regionHasError = !(_formKey.currentState?.fields['province']?.validate() ?? false);
-                            _formKey.currentState?.fields['Rtom_name']?.reset();
-                            _formKey.currentState?.fields['Rtom_name']?.didChange(null); // Clear previous selection and validation
+                            selectedRTOM = null;
+                            _regionHasError =
+                                !(_formKey.currentState?.fields['province']
+                                        ?.validate() ??
+                                    false);
+                            // Reset the 'Rtom_name' field value and clear validation errors
+                            _formKey.currentState?.fields['Rtom_name']
+                                ?.didChange(null);
                           });
+                          //  print('Region: ' + _selectedValues['Region'].toString());
                         }
                       },
                       valueTransformer: (val) => val?.toString(),
@@ -2284,7 +2299,10 @@ class _CompleteFormState extends State<CompleteForm> {
                       name: 'SPDType',
                       style: TextStyle(color: customColors.mainTextColor),
 
-                      initialValue: 'Unknown',
+                      initialValue:
+                          Regions.contains(updatedValues["SPDType"])
+                              ? updatedValues["SPDType"] as String?
+                              : null, // Default value
                       decoration: InputDecoration(
                         labelText: 'Select SPD Type',
                         suffix:
@@ -2300,14 +2318,33 @@ class _CompleteFormState extends State<CompleteForm> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      items:
-                          SPDTypes.map(
-                            (aBrand) => DropdownMenuItem(
-                              alignment: AlignmentDirectional.center,
-                              value: aBrand,
-                              child: Text(aBrand),
+
+                      items: [
+                        ...SPDTypes.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
-                          ).toList(),
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
                       onChanged: (val) {
                         setState(() {
                           _aBrandHasError =
