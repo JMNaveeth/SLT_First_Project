@@ -1830,10 +1830,9 @@ class _CompleteFormState extends State<CompleteForm> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA',
-    'Other',
+    'UVA', 'Other',
   ];
-  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown', 'Other'];
+  var SPDTypes = ['Type 1', 'Type1+2', 'Type 2', 'Type 3', 'Unknown', 'Other',];
   var SPDBrands = [
     'Citel',
     'Critec',
@@ -1899,7 +1898,7 @@ class _CompleteFormState extends State<CompleteForm> {
 
   void _onChanged(dynamic val) => debugPrint(val.toString());
 
-  void _showCustomBrandDialog({
+ void _showCustomBrandDialog({
     required String key,
     required List<String?> brandList,
     required Map<String, dynamic> formData,
@@ -1959,22 +1958,37 @@ class _CompleteFormState extends State<CompleteForm> {
                   Navigator.of(context).pop();
                 },
               ),
-              TextButton(
+            TextButton(
                 child: const Text("OK"),
                 onPressed: () {
                   String customBrand = customBrandController.text.trim();
                   if (customBrand.isNotEmpty) {
                     setState(() {
-                      // Remove if already exists (avoid duplicates)
-                      brandList.remove(customBrand);
-                      // Insert before "Other" if present, else add to end
-                      int otherIndex = brandList.indexOf("Other");
-                      if (otherIndex != -1) {
-                        brandList.insert(otherIndex, customBrand);
-                      } else {
-                        brandList.add(customBrand);
+                      // 1. Add to the list
+                      if (!brandList.contains(customBrand)) { // Avoid duplicates if any
+                        brandList.remove("Other"); // Remove 'Other'
+                        brandList.add(customBrand); // Add the new custom brand
+                        brandList.add("Other"); // Add 'Other' back at the end
                       }
-                      formData[formKey] = customBrand; // Set as selected
+                      
+                      // 2. Update FormBuilder field value
+                      _formKey.currentState?.fields[formKey]?.didChange(customBrand);
+
+                      // 3. Update related state variables and logic
+                      if (formKey == 'province') {
+                        _selectedValues['province'] = customBrand;
+                        selectedRegion = customBrand;
+                        selectedRTOM = null; // Reset dependent field
+                        _regionHasError = !(_formKey.currentState?.fields['province']?.validate() ?? false);
+                        _formKey.currentState?.fields['Rtom_name']?.reset();
+                        _formKey.currentState?.fields['Rtom_name']?.didChange(null);
+                      } else if (formKey == 'SPDType') {
+                        // Assuming 'SPDType' is the formKey for SPDType dropdown
+                        _aBrandHasError = !(_formKey.currentState?.fields['SPDType']?.validate() ?? false);
+                      } else if (formKey == 'SPD_Manu') {
+                        // Assuming 'SPD_Manu' is the formKey for SPD Manufacturer dropdown
+                        _eBrandHasError = !(_formKey.currentState?.fields['SPD_Manu']?.validate() ?? false);
+                      }
                     });
                   }
                   Navigator.of(context).pop();
@@ -1986,6 +2000,7 @@ class _CompleteFormState extends State<CompleteForm> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -2035,52 +2050,30 @@ class _CompleteFormState extends State<CompleteForm> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      items: [
-                                  ...Regions.where(
-                                    (String value) => value != "Other",
-                                  ).map((String regionValue) {
-                                    return DropdownMenuItem<String>(
-                                      value: regionValue,
-                                      child: Text(
-                                        regionValue,
-                                        // Style is inherited from FormBuilderDropdown's style
-                                      ),
-                                    );
-                                  }).toList(),
-                                  DropdownMenuItem<String>(
-                                    value: "Other",
-                                    child: Text(
-                                      "Other",
-                                      // Style is inherited
-                                    ),
-                                  ),
-                                ],
+                      items: Regions.map(
+                        (Regions) => DropdownMenuItem(
+                          alignment: AlignmentDirectional.center,
+                          value: Regions,
+                          child: Text(Regions),
+                        ),
+                      ).toList(),
                       onChanged: (val) {
-                        if (val == "Other") {
+                        if (val == 'Other') {
                           _showCustomBrandDialog(
-                            key: "province", // Matches the dropdown's name
-                            brandList: Regions, // Your list of regions
-                            formData:
-                                _formKey
-                                    .currentState!
-                                    .value, // Current form data
-                            formKey:
-                                "province", // The form field name being affected
+                            key: 'province_dialog', // Unique key for the dialog context if needed
+                            brandList: Regions,
+                            formData: _formKey.currentState!.value, // Pass current form data
+                            formKey: 'province', // Field name
                           );
                         } else {
                           setState(() {
                             _selectedValues['province'] = val!;
                             selectedRegion = val;
-                            selectedRTOM = null;
-                            _regionHasError =
-                                !(_formKey.currentState?.fields['province']
-                                        ?.validate() ??
-                                    false);
-                            // Reset the 'Rtom_name' field value and clear validation errors
-                            _formKey.currentState?.fields['Rtom_name']
-                                ?.didChange(null);
+                            selectedRTOM = null; // Reset dependent field
+                            _regionHasError = !(_formKey.currentState?.fields['province']?.validate() ?? false);
+                            _formKey.currentState?.fields['Rtom_name']?.reset();
+                            _formKey.currentState?.fields['Rtom_name']?.didChange(null); // Clear previous selection and validation
                           });
-                          //  print('Region: ' + _selectedValues['Region'].toString());
                         }
                       },
                       valueTransformer: (val) => val?.toString(),
