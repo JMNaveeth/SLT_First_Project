@@ -2096,41 +2096,31 @@ class _CompleteFormState extends State<CompleteForm> {
 
                     SizedBox(height: 10),
 
-                    FormBuilderDropdown<String>(
-                      name: 'Rtom_name',
-                      style: TextStyle(color: customColors.mainTextColor),
-
-                      decoration: InputDecoration(labelText: 'RTOM'),
-                      dropdownColor:
-                          customColors
-                              .suqarBackgroundColor, // This sets the dropdown menu color
-
-                      validator: FormBuilderValidators.required(),
-
-                      items:
-                          (selectedRegion != null)
-                              ? (regionToDistricts[selectedRegion] ?? [])
-                                  .map(
-                                    (RTOM) => DropdownMenuItem(
-                                      value: RTOM,
-                                      child: Text(RTOM),
-                                    ),
-                                  )
-                                  .toList()
-                              : [],
-
-                      onChanged:
-                          (value) => setState(() {
-                            //  print('RTOM: ' + _selectedValues['RTOM'].toString());
-                          }),
+                  //RTOM Entering
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        FormBuilderTextField(
+                          name: 'Rtom_name',
+                          style: TextStyle(color: customColors.mainTextColor),
+                          decoration: InputDecoration(labelText: 'RTOM'),
+                          validator: FormBuilderValidators.required(),
+                          onChanged:
+                              (value) => setState(() {
+                                _selectedValues['Rtom_name'] = value!;
+                                //  print('RTOM: ' + _selectedValues['RTOM'].toString());
+                              }),
+                        ),
+                        // Show tick mark if data is entered
+                        _formKey.currentState?.fields['Rtom_name']?.value
+                                    ?.toString()
+                                    ?.isNotEmpty ??
+                                false
+                            ? Icon(Icons.check, color: Colors.green)
+                            : SizedBox(),
+                      ],
                     ),
-                    // Show tick mark if data is entered
-                    _formKey.currentState?.fields['Rtom_name']?.value
-                                ?.toString()
-                                ?.isNotEmpty ??
-                            false
-                        ? Icon(Icons.check, color: Colors.green)
-                        : SizedBox(height: 10),
+                    SizedBox(height: 10),
 
                     //Station Text Field
                     Stack(

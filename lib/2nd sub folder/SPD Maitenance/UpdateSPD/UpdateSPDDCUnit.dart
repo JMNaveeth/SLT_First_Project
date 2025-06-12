@@ -17,6 +17,8 @@ class UpdateDCUnit extends StatefulWidget {
 class _UpdateDCUnitState extends State<UpdateDCUnit> {
   final _formKey = GlobalKey<FormBuilderState>();
   String? selectedRegion;
+  Map<String, dynamic> updatedValues = {};
+
   bool _burned = true;
   bool _isVerified = false;
 
@@ -99,11 +101,15 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
     selectedRegion = widget.record['province'];
   }
 
-  void _showAddOtherRegionDialog() {
+  void _showCustomBrandDialog({
+    required String key,
+    required List<String?> brandList,
+    required Map<String, dynamic> formData,
+    required String formKey,
+  }) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     final customColors = Theme.of(context).extension<CustomColors>()!;
-    final TextEditingController customRegionController =
-        TextEditingController();
+    final TextEditingController customBrandController = TextEditingController();
 
     showDialog(
       context: context,
@@ -125,267 +131,53 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                 borderSide: BorderSide(color: Colors.blue),
               ),
             ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: customColors.mainTextColor,
-              ),
-            ),
           ),
           child: AlertDialog(
             backgroundColor: customColors.suqarBackgroundColor,
             title: Text(
-              "Add Custom Region",
+              "Add Custom Brand",
               style: TextStyle(color: customColors.mainTextColor),
             ),
             content: TextField(
-              controller: customRegionController,
+              controller: customBrandController,
               style: TextStyle(color: customColors.mainTextColor),
               decoration: InputDecoration(
-                hintText: "Enter your region name",
+                hintText: "Enter your brand name",
                 hintStyle: TextStyle(
                   color: customColors.mainTextColor.withOpacity(0.7),
                 ),
               ),
+              onChanged: (value) {
+                // You can add validation or other logic here if needed
+              },
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text("Cancel"),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: customColors.mainTextColor),
+                ),
                 onPressed: () {
-                  if (_formKey.currentState?.fields['province']?.value ==
-                      'Other') {
-                    _formKey.currentState?.fields['province']?.didChange(
-                      widget.record['province'] ?? null,
-                    );
-                    setState(() {
-                      selectedRegion = widget.record['province'] ?? null;
-                      _formKey.currentState?.fields['Rtom_name']?.didChange(
-                        widget.record['Rtom_name'] ?? null,
-                      );
-                    });
-                  }
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text("OK", style: TextStyle(color: Colors.blue)),
+                child: const Text("OK"),
                 onPressed: () {
-                  String customRegion = customRegionController.text.trim();
-                  if (customRegion.isNotEmpty) {
+                  String customBrand = customBrandController.text.trim();
+                  if (customBrand.isNotEmpty) {
                     setState(() {
-                      if (!Regions.contains(customRegion)) {
-                        int otherIndex = Regions.indexOf("Other");
-                        if (otherIndex != -1) {
-                          Regions.insert(otherIndex, customRegion);
-                        } else {
-                          Regions.add(customRegion);
-                        }
+                      // Remove if already exists (avoid duplicates)
+                      brandList.remove(customBrand);
+                      // Insert before "Other" if present, else add to end
+                      int otherIndex = brandList.indexOf("Other");
+                      if (otherIndex != -1) {
+                        brandList.insert(otherIndex, customBrand);
+                      } else {
+                        brandList.add(customBrand);
                       }
-                      selectedRegion = customRegion;
-                      _formKey.currentState?.fields['province']?.didChange(
-                        customRegion,
-                      );
-                      _formKey.currentState?.fields['Rtom_name']?.didChange(
-                        null,
-                      ); // Reset RTOM as region changed
+                      formData[formKey] = customBrand; // Set as selected
                     });
-                  } else {
-                    _formKey.currentState?.fields['province']?.didChange(
-                      widget.record['province'] ?? null,
-                    );
-                    setState(() {
-                      selectedRegion = widget.record['province'] ?? null;
-                      _formKey.currentState?.fields['Rtom_name']?.didChange(
-                        widget.record['Rtom_name'] ?? null,
-                      );
-                    });
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _showAddOtherSPDTypeDialog() {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    final customColors = Theme.of(context).extension<CustomColors>()!;
-    final TextEditingController customSPDTypeController =
-        TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Theme(
-          data: themeProvider.currentTheme.copyWith(
-            dialogBackgroundColor: customColors.suqarBackgroundColor,
-            inputDecorationTheme: InputDecorationTheme(
-              labelStyle: TextStyle(color: customColors.mainTextColor),
-              hintStyle: TextStyle(
-                color: customColors.mainTextColor.withOpacity(0.7),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: customColors.mainTextColor.withOpacity(0.5),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
-              ),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: customColors.mainTextColor,
-              ),
-            ),
-          ),
-          child: AlertDialog(
-            backgroundColor: customColors.suqarBackgroundColor,
-            title: Text(
-              "Add Custom SPD Type",
-              style: TextStyle(color: customColors.mainTextColor),
-            ),
-            content: TextField(
-              controller: customSPDTypeController,
-              style: TextStyle(color: customColors.mainTextColor),
-              decoration: InputDecoration(
-                hintText: "Enter your SPD Type",
-                hintStyle: TextStyle(
-                  color: customColors.mainTextColor.withOpacity(0.7),
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text("Cancel"),
-                onPressed: () {
-                  if (_formKey.currentState?.fields['SPDType']?.value ==
-                      'Other') {
-                    _formKey.currentState?.fields['SPDType']?.didChange(
-                      widget.record['SPDType'] ?? 'Unknown',
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text("OK", style: TextStyle(color: Colors.blue)),
-                onPressed: () {
-                  String customSPDType = customSPDTypeController.text.trim();
-                  if (customSPDType.isNotEmpty) {
-                    setState(() {
-                      if (!SPDTypes.contains(customSPDType)) {
-                        int otherIndex = SPDTypes.indexOf("Other");
-                        if (otherIndex != -1) {
-                          SPDTypes.insert(otherIndex, customSPDType);
-                        } else {
-                          SPDTypes.add(customSPDType);
-                        }
-                      }
-                      _formKey.currentState?.fields['SPDType']?.didChange(
-                        customSPDType,
-                      );
-                    });
-                  } else {
-                    _formKey.currentState?.fields['SPDType']?.didChange(
-                      widget.record['SPDType'] ?? 'Unknown',
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _showAddOtherSPDBrandDialog() {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    final customColors = Theme.of(context).extension<CustomColors>()!;
-    final TextEditingController customSPDBrandController =
-        TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Theme(
-          data: themeProvider.currentTheme.copyWith(
-            dialogBackgroundColor: customColors.suqarBackgroundColor,
-            inputDecorationTheme: InputDecorationTheme(
-              labelStyle: TextStyle(color: customColors.mainTextColor),
-              hintStyle: TextStyle(
-                color: customColors.mainTextColor.withOpacity(0.7),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: customColors.mainTextColor.withOpacity(0.5),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
-              ),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: customColors.mainTextColor,
-              ),
-            ),
-          ),
-          child: AlertDialog(
-            backgroundColor: customColors.suqarBackgroundColor,
-            title: Text(
-              "Add Custom SPD Brand/Manufacturer",
-              style: TextStyle(color: customColors.mainTextColor),
-            ),
-            content: TextField(
-              controller: customSPDBrandController,
-              style: TextStyle(color: customColors.mainTextColor),
-              decoration: InputDecoration(
-                hintText: "Enter SPD Brand/Manufacturer",
-                hintStyle: TextStyle(
-                  color: customColors.mainTextColor.withOpacity(0.7),
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text("Cancel"),
-                onPressed: () {
-                  if (_formKey.currentState?.fields['SPD_Manu']?.value ==
-                      'Other') {
-                    _formKey.currentState?.fields['SPD_Manu']?.didChange(
-                      widget.record['SPD_Manu'] ?? null,
-                    );
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text("OK", style: TextStyle(color: Colors.blue)),
-                onPressed: () {
-                  String customSPDBrand = customSPDBrandController.text.trim();
-                  if (customSPDBrand.isNotEmpty) {
-                    setState(() {
-                      if (!SPDBrands.contains(customSPDBrand)) {
-                        int otherIndex = SPDBrands.indexOf("Other");
-                        if (otherIndex != -1) {
-                          SPDBrands.insert(otherIndex, customSPDBrand);
-                        } else {
-                          SPDBrands.add(customSPDBrand);
-                        }
-                      }
-                      _formKey.currentState?.fields['SPD_Manu']?.didChange(
-                        customSPDBrand,
-                      );
-                    });
-                  } else {
-                    _formKey.currentState?.fields['SPD_Manu']?.didChange(
-                      widget.record['SPD_Manu'] ?? null,
-                    );
                   }
                   Navigator.of(context).pop();
                 },
@@ -442,45 +234,144 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                     // Region Dropdown
                     FormBuilderDropdown<String>(
                       name: 'province',
-                      dropdownColor: customColors.suqarBackgroundColor,
-
+                      initialValue:
+                          Regions.contains(updatedValues["province"])
+                              ? updatedValues["province"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-                      decoration: const InputDecoration(labelText: 'Region'),
-                      items:
-                          Regions.map(
-                            (region) => DropdownMenuItem(
-                              value: region,
-                              child: Text(region),
+
+                      decoration: const InputDecoration(
+                        labelText: 'Region',
+                        hintText: 'Select Region',
+                      ),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a region';
+                        }
+                        return null;
+                      },
+                      items: [
+                        ...Regions.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
-                          ).toList(),
-                      onChanged: (value) {
-                        if (value == 'Other') {
-                          _showAddOtherRegionDialog();
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "province",
+                            brandList: Regions,
+                            formData: updatedValues,
+                            formKey: "province",
+                          );
                         } else {
                           setState(() {
-                            selectedRegion = value;
+                            selectedRegion = val;
+                            // Reset related fields if they exist
+                            // selectedRTOM = null; // Uncomment if this variable exists in your class
+
+                            // Reset the 'Rtom_name' field value and clear validation errors
+                            _formKey.currentState?.fields['Rtom_name']
+                                ?.didChange(null);
                           });
                         }
                       },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 
                     // RTOM Dropdown
                     FormBuilderDropdown<String>(
                       name: 'Rtom_name',
+                      initialValue:
+                          getRtomOptions().contains(updatedValues["Rtom_name"])
+                              ? updatedValues["Rtom_name"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
 
-                      decoration: const InputDecoration(labelText: 'RTOM'),
-                      items:
-                          getRtomOptions()
-                              .map(
-                                (rtom) => DropdownMenuItem(
-                                  value: rtom,
-                                  child: Text(rtom),
+                      decoration: const InputDecoration(
+                        labelText: 'RTOM',
+                        hintText: 'Select RTOM',
+                      ),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select an RTOM';
+                        }
+                        return null;
+                      },
+                      items: [
+                        ...getRtomOptions()
+                            .where((String value) => value != "Other")
+                            .map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: customColors.mainTextColor,
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                              );
+                            })
+                            .toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "Rtom_name",
+                            brandList: getRtomOptions(),
+                            formData: updatedValues,
+                            formKey: "Rtom_name",
+                          );
+                        } else {
+                          setState(() {
+                            // Update selected RTOM value
+                            // selectedRTOM = val; // Uncomment if this variable exists in your class
+
+                            // You can add any additional logic here for RTOM selection
+                          });
+                        }
+                      },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 
@@ -530,49 +421,136 @@ class _UpdateDCUnitState extends State<UpdateDCUnit> {
                     // SPD Type Dropdown
                     FormBuilderDropdown<String>(
                       name: 'SPDType',
+                      initialValue:
+                          SPDTypes.contains(updatedValues["SPDType"])
+                              ? updatedValues["SPDType"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
 
-                      decoration: const InputDecoration(labelText: 'SPD Type'),
-                      items:
-                          SPDTypes.map(
-                            (type) => DropdownMenuItem(
-                              value: type,
-                              child: Text(type),
+                      decoration: const InputDecoration(
+                        labelText: 'SPD Type',
+                        hintText: 'Select SPD Type',
+                      ),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select SPD Type';
+                        }
+                        return null;
+                      },
+                      items: [
+                        ...SPDTypes.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
-                          ).toList(),
-                           onChanged: (value) {
-                        if (value == 'Other') {
-                          _showAddOtherSPDTypeDialog();
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "SPDType",
+                            brandList: SPDTypes,
+                            formData: updatedValues,
+                            formKey: "SPDType",
+                          );
                         } else {
+                          setState(() {
+                            // Update selected SPD Type value
+                            // You can add any additional logic here for SPD Type selection
+                          });
                         }
                       },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 
                     // Manufacturer Dropdown
                     FormBuilderDropdown<String>(
                       name: 'SPD_Manu',
+                      initialValue:
+                          SPDBrands.contains(updatedValues["SPD_Manu"])
+                              ? updatedValues["SPD_Manu"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-
-                      dropdownColor: customColors.suqarBackgroundColor,
 
                       decoration: const InputDecoration(
                         labelText: 'SPD Manufacturer',
+                        hintText: 'Select SPD Manufacturer',
                       ),
-                      items:
-                          SPDBrands.map(
-                            (brand) => DropdownMenuItem(
-                              value: brand,
-                              child: Text(brand),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select SPD Manufacturer';
+                        }
+                        return null;
+                      },
+                      items: [
+                        ...SPDBrands.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
-                          ).toList(),
-                           onChanged: (value) {
-                        if (value == 'Other') {
-                          _showAddOtherSPDBrandDialog();
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "SPD_Manu",
+                            brandList: SPDBrands,
+                            formData: updatedValues,
+                            formKey: "SPD_Manu",
+                          );
                         } else {
+                          setState(() {
+                            // Update selected SPD Manufacturer value
+                            // You can add any additional logic here for SPD Manufacturer selection
+                          });
                         }
                       },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 

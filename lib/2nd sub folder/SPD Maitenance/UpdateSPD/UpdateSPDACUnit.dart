@@ -16,7 +16,8 @@ class UpdateACUnit extends StatefulWidget {
 
 class _UpdateACUnitState extends State<UpdateACUnit> {
   final _formKey = GlobalKey<FormBuilderState>();
-  String? selectedRegion;  Map<String, dynamic> updatedValues = {};
+  String? selectedRegion;
+  Map<String, dynamic> updatedValues = {};
 
   bool _spdUnitary = false;
   bool _3phase = false;
@@ -51,7 +52,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
     'WPS',
     'WPSE',
     'WPSW',
-    'UVA', 'Other',
+    'UVA',
+    'Other',
   ];
   Map<String, List<String>> regionToDistricts = {
     "CPN": ['Kandy', 'Dambulla', 'Matale'],
@@ -113,8 +115,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
     _discharge10_350 = dischargeType == '10/350us';
   }
 
-
- void _showCustomBrandDialog({
+  void _showCustomBrandDialog({
     required String key,
     required List<String?> brandList,
     required Map<String, dynamic> formData,
@@ -202,7 +203,6 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
@@ -246,43 +246,147 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     SizedBox(height: 10),
 
                     // Region Dropdown
+                    //Region Select
                     FormBuilderDropdown<String>(
                       name: 'province',
+                      initialValue:
+                          Regions.contains(updatedValues["province"])
+                              ? updatedValues["province"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
 
-                      decoration: const InputDecoration(labelText: 'Region'),
-                      items:
-                          Regions.map(
-                            (region) => DropdownMenuItem(
-                              value: region,
-                              child: Text(region),
-                            ),
-                          ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedRegion = value;
-                        });
+                      decoration: const InputDecoration(
+                        labelText: 'Region',
+                        hintText: 'Select Region',
+                      ),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a region';
+                        }
+                        return null;
                       },
+                      items: [
+                        ...Regions.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "province",
+                            brandList: Regions,
+                            formData: updatedValues,
+                            formKey: "province",
+                          );
+                        } else {
+                          setState(() {
+                            selectedRegion = val;
+                            // Reset related fields if they exist
+                            // selectedRTOM = null; // Uncomment if this variable exists in your class
+
+                            // Reset the 'Rtom_name' field value and clear validation errors
+                            _formKey.currentState?.fields['Rtom_name']
+                                ?.didChange(null);
+                          });
+                        }
+                      },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 
                     // RTOM Dropdown
                     FormBuilderDropdown<String>(
                       name: 'Rtom_name',
+                      initialValue:
+                          getRtomOptions().contains(updatedValues["Rtom_name"])
+                              ? updatedValues["Rtom_name"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
 
-                      decoration: const InputDecoration(labelText: 'RTOM'),
-                      items:
-                          getRtomOptions()
-                              .map(
-                                (rtom) => DropdownMenuItem(
-                                  value: rtom,
-                                  child: Text(rtom),
+                      decoration: const InputDecoration(
+                        labelText: 'RTOM',
+                        hintText: 'Select RTOM',
+                      ),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select an RTOM';
+                        }
+                        return null;
+                      },
+                      items: [
+                        ...getRtomOptions()
+                            .where((String value) => value != "Other")
+                            .map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: customColors.mainTextColor,
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                              );
+                            })
+                            .toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "Rtom_name",
+                            brandList: getRtomOptions(),
+                            formData: updatedValues,
+                            formKey: "Rtom_name",
+                          );
+                        } else {
+                          setState(() {
+                            // Update selected RTOM value
+                            // selectedRTOM = val; // Uncomment if this variable exists in your class
+
+                            // You can add any additional logic here for RTOM selection
+                          });
+                        }
+                      },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 
@@ -368,36 +472,136 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     // SPD Type Dropdown
                     FormBuilderDropdown<String>(
                       name: 'SPDType',
+                      initialValue:
+                          SPDTypes.contains(updatedValues["SPDType"])
+                              ? updatedValues["SPDType"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
 
-                      decoration: const InputDecoration(labelText: 'SPD Type'),
-                      items:
-                          SPDTypes.map(
-                            (type) => DropdownMenuItem(
-                              value: type,
-                              child: Text(type),
+                      decoration: const InputDecoration(
+                        labelText: 'SPD Type',
+                        hintText: 'Select SPD Type',
+                      ),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select SPD Type';
+                        }
+                        return null;
+                      },
+                      items: [
+                        ...SPDTypes.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
-                          ).toList(),
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "SPDType",
+                            brandList: SPDTypes,
+                            formData: updatedValues,
+                            formKey: "SPDType",
+                          );
+                        } else {
+                          setState(() {
+                            // Update selected SPD Type value
+                            // You can add any additional logic here for SPD Type selection
+                          });
+                        }
+                      },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 
                     // Manufacturer Dropdown
                     FormBuilderDropdown<String>(
                       name: 'SPD_Manu',
+                      initialValue:
+                          SPDBrands.contains(updatedValues["SPD_Manu"])
+                              ? updatedValues["SPD_Manu"] as String?
+                              : null, // Default value
                       style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
 
                       decoration: const InputDecoration(
                         labelText: 'SPD Manufacturer',
+                        hintText: 'Select SPD Manufacturer',
                       ),
-                      items:
-                          SPDBrands.map(
-                            (brand) => DropdownMenuItem(
-                              value: brand,
-                              child: Text(brand),
+                      dropdownColor:
+                          customColors
+                              .suqarBackgroundColor, // This sets the dropdown menu color
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select SPD Manufacturer';
+                        }
+                        return null;
+                      },
+                      items: [
+                        ...SPDBrands.where(
+                          (String value) => value != "Other",
+                        ).map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
-                          ).toList(),
+                          );
+                        }).toList(),
+                        DropdownMenuItem<String>(
+                          value: "Other",
+                          child: Text(
+                            "Other",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: customColors.mainTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                      onChanged: (val) {
+                        if (val == "Other") {
+                          _showCustomBrandDialog(
+                            key: "SPD_Manu",
+                            brandList: SPDBrands,
+                            formData: updatedValues,
+                            formKey: "SPD_Manu",
+                          );
+                        } else {
+                          setState(() {
+                            // Update selected SPD Manufacturer value
+                            // You can add any additional logic here for SPD Manufacturer selection
+                          });
+                        }
+                      },
+                      valueTransformer: (val) => val?.toString(),
                     ),
                     SizedBox(height: 10),
 
@@ -648,7 +852,7 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     // Nominal Discharge Current - Live (8/20µs)
                     FormBuilderTextField(
                       name: 'L8to20NomD',
-                                                style: TextStyle(color: customColors.mainTextColor),
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -662,7 +866,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Nominal Discharge Current - Neutral (8/20µs)
                     FormBuilderTextField(
-                      name: 'N8to20NomD',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'N8to20NomD',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -676,7 +881,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Impulse Discharge Current - Live (10/350µs)
                     FormBuilderTextField(
-                      name: 'L10to350ImpD',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'L10to350ImpD',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -690,7 +896,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Impulse Discharge Current - Neutral (10/350µs)
                     FormBuilderTextField(
-                      name: 'N10to350ImpD',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'N10to350ImpD',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText:
@@ -703,7 +910,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     SizedBox(height: 10),
 
                     FormBuilderTextField(
-                      name: 'mcbRating',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'mcbRating',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Backup fuse/mcb rating (A)',
@@ -713,7 +921,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     SizedBox(height: 10),
 
                     FormBuilderTextField(
-                      name: 'responseTime',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'responseTime',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Response Time (nS)',
@@ -724,7 +933,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Date Pickers
                     FormBuilderDateTimePicker(
-                      name: 'installDt',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'installDt',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Installation Date',
@@ -737,7 +947,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                     SizedBox(height: 10),
 
                     FormBuilderDateTimePicker(
-                      name: 'warrentyDt',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'warrentyDt',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(
                         labelText: 'Warranty Date',
@@ -751,7 +962,8 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
 
                     // Notes
                     FormBuilderTextField(
-                      name: 'Notes',                          style: TextStyle(color: customColors.mainTextColor),
+                      name: 'Notes',
+                      style: TextStyle(color: customColors.mainTextColor),
 
                       decoration: const InputDecoration(labelText: 'Remarks'),
                     ),
@@ -766,9 +978,9 @@ class _UpdateACUnitState extends State<UpdateACUnit> {
                           _isVerified = value ?? false;
                         });
                       },
-                      title:  Text(
+                      title: Text(
                         'I verify that submitted details are true and correct',
-                          style: TextStyle(color: customColors.mainTextColor),
+                        style: TextStyle(color: customColors.mainTextColor),
                       ),
                     ),
 
