@@ -13,9 +13,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 
-import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
-import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
-import '../../../../UserAccess.dart';
+// import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
+// import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
+// import '../../../../UserAccess.dart';
 import 'httpPostAc.dart';
 
 
@@ -38,7 +38,7 @@ class _ACFormPageState extends State<ACFormPage> {
   //user variable
 
   String userName = 'testUser';
-
+ bool? _isVerified = false;
   // final Map<String, String> _customValues = {}; // Track custom values
 
 
@@ -54,7 +54,7 @@ class _ACFormPageState extends State<ACFormPage> {
 
 
 
-  final GPSLocationFetcher _locationFetcher = GPSLocationFetcher();
+//  final GPSLocationFetcher _locationFetcher = GPSLocationFetcher();
 
 
 
@@ -64,10 +64,10 @@ class _ACFormPageState extends State<ACFormPage> {
 
   void _fetchLocation() async {
     try {
-      final location = await _locationFetcher.fetchLocation();
+     // final location = await _locationFetcher.fetchLocation();
       setState(() {
-        _latitudeController1.text = location['latitude']!;
-        _longitudeController1.text = location['longitude']!;
+        // _latitudeController1.text = location['latitude']!;
+        // _longitudeController1.text = location['longitude']!;
       });
 
       // Update _formData with fetched location
@@ -107,14 +107,15 @@ class _ACFormPageState extends State<ACFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
-    userName=userAccess.username!;
+   // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
+   // userName=userAccess.username!;
 
     return ChangeNotifierProvider(
       create: (context) => LocationProvider()..loadAllData(),
-      child: Consumer<LocationProvider>(
+      child: Consumer<LocationProvider>
+      (
         builder: (context, locationProvider, child) {
-          var _isVerified;
+         // var _isVerified;
           return Scaffold(
             appBar: AppBar(
               title: Text('Add new AC Unit', style: TextStyle(color: Colors.white)),

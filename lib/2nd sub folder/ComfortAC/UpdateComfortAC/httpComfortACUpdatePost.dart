@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../../ACMaintenancePage.dart';
+//import '../../ACMaintenancePage.dart';
 import 'selectComfortACtoUpdate.dart';
 
 
@@ -242,12 +242,12 @@ class ResultPage extends StatelessWidget {
             CupertinoButton(
               color: const Color(0xFF00AEE4),
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => ACMaintenancePage()
-                )
-                );
+                // Navigator.pushReplacement(
+                //   context,
+                //   CupertinoPageRoute(
+                //       builder: (context) => ACMaintenancePage()
+                // )
+                // );
               },
               child: Text('Go to Comfort AC Main Page'),
             ),
