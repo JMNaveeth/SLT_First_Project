@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../../ACMaintenancePage.dart';
+//import '../../ACMaintenancePage.dart';
 
 class HttpPostPrecisionAc {
   static const String precisionPostUrl =
@@ -242,10 +242,10 @@ class _ResultPageState extends State<ResultPage> with SingleTickerProviderStateM
               child: Text('Return'),
               color: Color(0xFF00AEE4),
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(builder: (context) => ACMaintenancePage()),
-                );
+                // Navigator.pushReplacement(
+                //   context,
+                //   CupertinoPageRoute(builder: (context) => ACMaintenancePage()),
+                // );
               },
             ),
           ],

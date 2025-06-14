@@ -6,19 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
-import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
-import '../../../../UserAccess.dart';
+// import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
+ import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
+// import '../../../../UserAccess.dart';
 import 'httpPostPrecision.dart';
-
-
-
 
 class AddPrecisionAcUnit extends StatefulWidget {
   final Map<String, dynamic>? initialData;
@@ -34,13 +30,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   final Map<String, dynamic> _formData = {};
   int _noOfCompressors = 1; // Default value for number of compressors
   Map<String, String> newValues = {};
-  String userName  = 'testUser';
-
+  String userName = 'testUser';
 
   //user variable
-
-
-
 
   @override
   void initState() {
@@ -56,33 +48,25 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       _formData.clear();
       _serialNumbersList.clear();
       // _serialNumberControllers.clear();
-
     });
   }
 
-
-
-
-  final GPSLocationFetcher _locationFetcher = GPSLocationFetcher();
-
-
+  //final GPSLocationFetcher _locationFetcher = GPSLocationFetcher();
 
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
 
-
   void _fetchLocation() async {
     try {
-      final location = await _locationFetcher.fetchLocation();
+      //final location = await _locationFetcher.fetchLocation();
       setState(() {
-        _latitudeController.text = location['latitude']!;
-        _longitudeController.text = location['longitude']!;
+        // _latitudeController.text = location['latitude']!;
+        // _longitudeController.text = location['longitude']!;
       });
 
       // Update _formData with fetched location
       _formData['Latitude'] = _latitudeController.text;
       _formData['Longitude'] = _longitudeController.text;
-
     } catch (e) {
       // Handle error, show a message to the user
       showCupertinoDialog(
@@ -91,13 +75,17 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           return CupertinoAlertDialog(
             title: Row(
               children: [
-                Icon(CupertinoIcons.exclamationmark_triangle, color: Color(
-                    0xFFFC4C16)),
+                Icon(
+                  CupertinoIcons.exclamationmark_triangle,
+                  color: Color(0xFFFC4C16),
+                ),
                 SizedBox(width: 10),
                 Text('Error'),
               ],
             ),
-            content: Text('Location Service is Disabled. Please Enable them to use auto-location'),
+            content: Text(
+              'Location Service is Disabled. Please Enable them to use auto-location',
+            ),
             actions: <Widget>[
               CupertinoDialogAction(
                 child: Text('OK'),
@@ -112,217 +100,371 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
-    userName=userAccess.username!;
-
+    // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
+    // userName=userAccess.username!;
 
     return ChangeNotifierProvider(
-      create: (context) => LocationProvider()..loadAllData(),
-      child: Consumer<LocationProvider>(
-          builder: (context, locationProvider, child) {
-            var _isVerified;
-            return Scaffold(
-              appBar: AppBar(
-                title: Text('Add Precision AC Unit',style: TextStyle(color:Colors.white)),
-                backgroundColor: Color(0xFF0056A2),
+     create: (context) =>
+    // LocationProvider()
+    //..loadAllData(),
+     // child: Consumer<LocationProvider>(
+      //  builder: (context, locationProvider, child) {
+          var _isVerified;
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Add Precision AC Unit',
+                style: TextStyle(color: Colors.white),
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: FormBuilder(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text('Location Details', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-
-                        // _RegionDropdown('Region', 'Region',locationProvider),
-                        _RegionDropdown('Region', 'Region', locationProvider, _formData, context),
-                        _RtomDropdown('RTOM', 'RTOM',locationProvider, _formData, context),
-                        _StationDropdown('Station', 'Station',locationProvider, _formData, context),
-
-                        _buildTextField('building_id', 'Building Id(eg: Building A)'),
-                        _buildTextField('floor_number', 'Floor Number (eg:OTS-1-AC-No)'),
-                        _buildTextFieldModelValidated('Office_No', 'Office Number (eg: 01)'),
-                        _buildTextFieldLocationValidated('Location', 'Location (eg:OTS UPS room)'),
-
-                        SizedBox(height: 20),
-                        // GPS Location fields
-                        Text('Mark GPS Location of the Unit', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        // GPS Location fields
-                        _buildGPSLatitudeField('Latitude','Latitude(Enter Manually or press Get Location)',_latitudeController),
-                        _buildGPSLongitudeField('Longitude','Longitude(Enter Manually or press Get Location)',_longitudeController),
-
-                        SizedBox(height: 20),
-                        // Fetch Location Button
-                        CupertinoButton(
-                          onPressed: _fetchLocation,
-                          color: Color(0xFF00AEE4),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min, // Keeps the button size compact
-                            children: [
-                              Icon(
-                                Icons.location_on, // choose any icon you prefer
-                                color: Colors.white, // Adjust the color of the icon
-                              ),
-                              SizedBox(width: 8), // space between the icon and text
-                              Text('Get Location'),
-                            ],
-                          ),
+              backgroundColor: Color(0xFF0056A2),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: FormBuilder(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Location Details',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
 
-                        SizedBox(height: 20),
+                      // _RegionDropdown('Region', 'Region',locationProvider),
+                      _RegionDropdown(
+                        'Region',
+                        'Region',
+                        locationProvider,
+                        _formData,
+                        context,
+                      ),
+                      _RtomDropdown(
+                        'RTOM',
+                        'RTOM',
+                        locationProvider,
+                        _formData,
+                        context,
+                      ),
+                      _StationDropdown(
+                        'Station',
+                        'Station',
+                        locationProvider,
+                        _formData,
+                        context,
+                      ),
 
-                        Text('General Details', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 5),
+                      _buildTextField(
+                        'building_id',
+                        'Building Id(eg: Building A)',
+                      ),
+                      _buildTextField(
+                        'floor_number',
+                        'Floor Number (eg:OTS-1-AC-No)',
+                      ),
+                      _buildTextFieldModelValidated(
+                        'Office_No',
+                        'Office Number (eg: 01)',
+                      ),
+                      _buildTextFieldLocationValidated(
+                        'Location',
+                        'Location (eg:OTS UPS room)',
+                      ),
 
-                        _buildTextField('QRTag', 'Tag code(eg:PR:0001)'),
-                        _buildTextFieldModelValidated('Model', 'Model(eg:Brand_Name-model)'),
-                        _buildNumValTextField('Serial_Number', 'Serial Number'),
-                        _ManufacturerDropdown('Manufacturer', 'Manufacturer'),
-                        _buildCustomDateField('Installation_Date', 'Installation Date(YYYY-MM-DD)'),
-                        _StatusDropdown('Status', 'Status'),
-
-                        SizedBox(height: 5),
-
-                        _buildAnnualMaintenanceContractField('AMC_Expire_Date', 'Annual Maintenance Contract'),
-                        // _buildTextField('UpdatedBy', 'Updated By(Officer name)'),
-                        // _buildDatePicker('UpdatedTime', 'Updated Time(YYYY-MM-DD)'),
-
-                        SizedBox(height: 40),
-
-                        Text('Technical Specifications', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-
-                        // More fields
-                        _buildCoolingCapacityTextField('Cooling_Capacity', 'Cooling Capacity (in BTU/hr)'),
-                        _PowerSupplyDropdown('Power_Supply', 'Power Supply'),
-                        _RefrigDropdown('Refrigerant_Type', 'Refrigerant Type'),
-                        _buildDimensionTextField('Dimensions', 'Dimensions (eg:cm x cm x cm)'),
-                        _buildNumWeightTextField('Weight', 'Weight (in Kg)'),
-                        _buildNoiseLevelTextField('Noise_Level', 'Noise Level (in dbm)'),
-
-
-                        SizedBox(height: 20),
-                        Text('Compressor details', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        // Compressor Details Section
-                        _buildAlphanumericTextField('No_of_Compressors', 'No of Compressors'),
-
-                        SizedBox(height: 10),
-
-
-                        _buildSerialNumberDisplayFields(),
-                        _buildEnterSerialNumbersField(),
-                        SizedBox(height: 5),
-
-
-                        _ConditionAirFilterDropdown('Condition_Indoor_Air_Filters', 'Condition of the Indoor Air Filters'),
-                        _ConditionIndoorDropdown('Condition_Indoor_Unit', 'Condition of the Indoor Unit'),
-                        _ConditionIndoorDropdown('Condition_Outdoor_Unit', 'Condition of the Outdoor Unit'),
-                        _buildUnvalidatedTextField('Other_Specifications', 'Other Specifications'),
-                        _buildNumAirflowTextField('Airflow', 'Airflow Rate( In CFM)'),
-                        _AirflowTypeDropdown('Airflow_Type', 'Airflow Type'),
-
-                        //need airflow type
-
-                        _buildNumValueFieldsTextField('No_of_Refrigerant_Circuits', 'No of Refrigerant Circuits'),
-                        _buildNumValueFieldsTextField('No_of_Evaporator_Coils', 'No of Evaporator Coils'),
-                        _buildNumValueFieldsTextField('No_of_Condenser_Circuits', 'No of Condenser Circuits'),
-                        _buildNumValueFieldsTextField('No_of_Condenser_Fans', 'No of Condenser Fans'),
-
-                        _buildNumValueFieldsTextField('No_of_Indoor_Fans', 'No of indoor Fans'),
-
-                        _CondensorMountedDropdown('Condenser_Mounting_Method', 'Condenser Mounting Method'),
-
-
-                        SizedBox(height: 40),
-
-                        Text('Supplier And Warranty', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-
-                        // Supplier details
-                        _buildTextFieldNonValidated('Supplier_Name', 'Supplier Name'),
-                        _buildTextFieldEmailValidated('Supplier_email', 'Supplier Email'),
-                        _buildTextFieldMobileValidated('Supplier_contact_no', 'Supplier Contact no'),
-                        // _buildTextFieldContactDetails('Supplier_Contact_Details', 'Supplier Contact Details'),
-                        _buildWarrantyAvailableField('Warranty_Details', 'Warranty Available ?'),
-                        _buildDatePicker('Warranty_Expire_Date', 'Warranty Expire Date'),
-
-
-                        SizedBox(height: 10),
-
-                        FormBuilderCheckbox(
-                          name: 'verify',
-                          initialValue: _isVerified,
-                          title: Text('I verify that submitted details are true and correct'),
-                          onChanged: (value) {
-                            setState(() {
-                              _isVerified = value;
-                            });
-                          },
-
-                          checkColor: Colors.white,
-                          activeColor: Color(0xFF4FB846),
-
-                          validator: (value) {
-                            if (value != true) {
-                              return 'You must verify the details to proceed.';
-                            }
-                            return null;
-                          },
+                      SizedBox(height: 20),
+                      // GPS Location fields
+                      Text(
+                        'Mark GPS Location of the Unit',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      // GPS Location fields
+                      _buildGPSLatitudeField(
+                        'Latitude',
+                        'Latitude(Enter Manually or press Get Location)',
+                        _latitudeController,
+                      ),
+                      _buildGPSLongitudeField(
+                        'Longitude',
+                        'Longitude(Enter Manually or press Get Location)',
+                        _longitudeController,
+                      ),
 
-                        // Submit Button
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      SizedBox(height: 20),
+                      // Fetch Location Button
+                      CupertinoButton(
+                        onPressed: _fetchLocation,
+                        color: Color(0xFF00AEE4),
+                        child: Row(
+                          mainAxisSize:
+                              MainAxisSize.min, // Keeps the button size compact
                           children: [
-
-                            Expanded(
-                              child: CupertinoButton(
-                                onPressed: _resetForm,
-                                child: const Text('Reset'),
-                                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                color: Color(0xFF4DB146),
-                              ),
+                            Icon(
+                              Icons.location_on, // choose any icon you prefer
+                              color:
+                                  Colors.white, // Adjust the color of the icon
                             ),
-
-                            const SizedBox(width: 10), // Add spacing between buttons
-
-                            Expanded(
-                              child: CupertinoButton(
-                                onPressed: _submitData,
-                                child: const Text('Submit'),
-                                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                color: Color(0xFF00AEE4),
-                              ),
-                            ),
-
-
-                            // ElevatedButton(
-                            //   onPressed: () {
-                            //     print(_formData); // Print collected data to console
-                            //   }, child: null,
-                            // )
+                            SizedBox(
+                              width: 8,
+                            ), // space between the icon and text
+                            Text('Get Location'),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+
+                      SizedBox(height: 20),
+
+                      Text(
+                        'General Details',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+
+                      _buildTextField('QRTag', 'Tag code(eg:PR:0001)'),
+                      _buildTextFieldModelValidated(
+                        'Model',
+                        'Model(eg:Brand_Name-model)',
+                      ),
+                      _buildNumValTextField('Serial_Number', 'Serial Number'),
+                      _ManufacturerDropdown('Manufacturer', 'Manufacturer'),
+                      _buildCustomDateField(
+                        'Installation_Date',
+                        'Installation Date(YYYY-MM-DD)',
+                      ),
+                      _StatusDropdown('Status', 'Status'),
+
+                      SizedBox(height: 5),
+
+                      _buildAnnualMaintenanceContractField(
+                        'AMC_Expire_Date',
+                        'Annual Maintenance Contract',
+                      ),
+
+                      // _buildTextField('UpdatedBy', 'Updated By(Officer name)'),
+                      // _buildDatePicker('UpdatedTime', 'Updated Time(YYYY-MM-DD)'),
+                      SizedBox(height: 40),
+
+                      Text(
+                        'Technical Specifications',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      // More fields
+                      _buildCoolingCapacityTextField(
+                        'Cooling_Capacity',
+                        'Cooling Capacity (in BTU/hr)',
+                      ),
+                      _PowerSupplyDropdown('Power_Supply', 'Power Supply'),
+                      _RefrigDropdown('Refrigerant_Type', 'Refrigerant Type'),
+                      _buildDimensionTextField(
+                        'Dimensions',
+                        'Dimensions (eg:cm x cm x cm)',
+                      ),
+                      _buildNumWeightTextField('Weight', 'Weight (in Kg)'),
+                      _buildNoiseLevelTextField(
+                        'Noise_Level',
+                        'Noise Level (in dbm)',
+                      ),
+
+                      SizedBox(height: 20),
+                      Text(
+                        'Compressor details',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      // Compressor Details Section
+                      _buildAlphanumericTextField(
+                        'No_of_Compressors',
+                        'No of Compressors',
+                      ),
+
+                      SizedBox(height: 10),
+
+                      _buildSerialNumberDisplayFields(),
+                      _buildEnterSerialNumbersField(),
+                      SizedBox(height: 5),
+
+                      _ConditionAirFilterDropdown(
+                        'Condition_Indoor_Air_Filters',
+                        'Condition of the Indoor Air Filters',
+                      ),
+                      _ConditionIndoorDropdown(
+                        'Condition_Indoor_Unit',
+                        'Condition of the Indoor Unit',
+                      ),
+                      _ConditionIndoorDropdown(
+                        'Condition_Outdoor_Unit',
+                        'Condition of the Outdoor Unit',
+                      ),
+                      _buildUnvalidatedTextField(
+                        'Other_Specifications',
+                        'Other Specifications',
+                      ),
+                      _buildNumAirflowTextField(
+                        'Airflow',
+                        'Airflow Rate( In CFM)',
+                      ),
+                      _AirflowTypeDropdown('Airflow_Type', 'Airflow Type'),
+
+                      //need airflow type
+                      _buildNumValueFieldsTextField(
+                        'No_of_Refrigerant_Circuits',
+                        'No of Refrigerant Circuits',
+                      ),
+                      _buildNumValueFieldsTextField(
+                        'No_of_Evaporator_Coils',
+                        'No of Evaporator Coils',
+                      ),
+                      _buildNumValueFieldsTextField(
+                        'No_of_Condenser_Circuits',
+                        'No of Condenser Circuits',
+                      ),
+                      _buildNumValueFieldsTextField(
+                        'No_of_Condenser_Fans',
+                        'No of Condenser Fans',
+                      ),
+
+                      _buildNumValueFieldsTextField(
+                        'No_of_Indoor_Fans',
+                        'No of indoor Fans',
+                      ),
+
+                      _CondensorMountedDropdown(
+                        'Condenser_Mounting_Method',
+                        'Condenser Mounting Method',
+                      ),
+
+                      SizedBox(height: 40),
+
+                      Text(
+                        'Supplier And Warranty',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      // Supplier details
+                      _buildTextFieldNonValidated(
+                        'Supplier_Name',
+                        'Supplier Name',
+                      ),
+                      _buildTextFieldEmailValidated(
+                        'Supplier_email',
+                        'Supplier Email',
+                      ),
+                      _buildTextFieldMobileValidated(
+                        'Supplier_contact_no',
+                        'Supplier Contact no',
+                      ),
+                      // _buildTextFieldContactDetails('Supplier_Contact_Details', 'Supplier Contact Details'),
+                      _buildWarrantyAvailableField(
+                        'Warranty_Details',
+                        'Warranty Available ?',
+                      ),
+                      _buildDatePicker(
+                        'Warranty_Expire_Date',
+                        'Warranty Expire Date',
+                      ),
+
+                      SizedBox(height: 10),
+
+                      FormBuilderCheckbox(
+                        name: 'verify',
+                        initialValue: _isVerified,
+                        title: Text(
+                          'I verify that submitted details are true and correct',
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _isVerified = value;
+                          });
+                        },
+
+                        checkColor: Colors.white,
+                        activeColor: Color(0xFF4FB846),
+
+                        validator: (value) {
+                          if (value != true) {
+                            return 'You must verify the details to proceed.';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      // Submit Button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: CupertinoButton(
+                              onPressed: _resetForm,
+                              child: const Text('Reset'),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 10.0,
+                              ),
+                              color: Color(0xFF4DB146),
+                            ),
+                          ),
+
+                          const SizedBox(
+                            width: 10,
+                          ), // Add spacing between buttons
+
+                          Expanded(
+                            child: CupertinoButton(
+                              onPressed: _submitData,
+                              child: const Text('Submit'),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 10.0,
+                              ),
+                              color: Color(0xFF00AEE4),
+                            ),
+                          ),
+
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     print(_formData); // Print collected data to console
+                          //   }, child: null,
+                          // )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-            );
-          }
-      ),
-    );
-
-
+            ),
+          );
+        //},
+      );
+   // );
   }
 
-  Widget _buildGPSLatitudeField(String name, String label, TextEditingController controller) {
+  Widget _buildGPSLatitudeField(
+    String name,
+    String label,
+    TextEditingController controller,
+  ) {
     return FormBuilderTextField(
       name: name,
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
 
       controller: controller,
       decoration: InputDecoration(labelText: label),
@@ -331,15 +473,17 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
       ]),
-
     );
   }
 
-  Widget _buildGPSLongitudeField(String key, String label, TextEditingController controller) {
+  Widget _buildGPSLongitudeField(
+    String key,
+    String label,
+    TextEditingController controller,
+  ) {
     return FormBuilderTextField(
       name: key,
-      keyboardType:TextInputType.number,
-
+      keyboardType: TextInputType.number,
 
       controller: controller,
       decoration: InputDecoration(labelText: label),
@@ -348,15 +492,16 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
       ]),
-
     );
   }
 
-//===================================
+  //===================================
 
   List<dynamic> _serialNumbersList = []; // List to store serial numbers
-  List<TextEditingController> _serialNumberControllers = []; // List to manage controllers persistently
-  bool _showEnterSerialNumbersField = false; // Toggle for showing Enter Serial Numbers button/field
+  List<TextEditingController> _serialNumberControllers =
+      []; // List to manage controllers persistently
+  bool _showEnterSerialNumbersField =
+      false; // Toggle for showing Enter Serial Numbers button/field
 
   Widget _buildAlphanumericTextField(String key, String label) {
     return FormBuilderTextField(
@@ -366,12 +511,18 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
         FormBuilderValidators.integer(errorText: 'Please enter a valid number'),
-        FormBuilderValidators.min(1, errorText: 'Minimum 1 compressor required'),
-        FormBuilderValidators.max(4, errorText: 'Maximum 4 compressors allowed'),
-
+        FormBuilderValidators.min(
+          1,
+          errorText: 'Minimum 1 compressor required',
+        ),
+        FormBuilderValidators.max(
+          4,
+          errorText: 'Maximum 4 compressors allowed',
+        ),
       ]),
 
-      autovalidateMode: AutovalidateMode.onUserInteraction, // Enable auto-validation
+      autovalidateMode:
+          AutovalidateMode.onUserInteraction, // Enable auto-validation
 
       onChanged: (value) {
         _formData[key] = value ?? '';
@@ -381,13 +532,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
           if (numberOfCompressors > 0) {
             setState(() {
-              _showEnterSerialNumbersField = true; // Show the enter serial numbers field
+              _showEnterSerialNumbersField =
+                  true; // Show the enter serial numbers field
               _serialNumbersList.clear(); // Clear previous serial numbers
               _serialNumberControllers.clear(); // Clear previous controllers
             });
           } else {
             setState(() {
-              _showEnterSerialNumbersField = false; // Hide the enter serial numbers field
+              _showEnterSerialNumbersField =
+                  false; // Hide the enter serial numbers field
               _serialNumbersList.clear();
               _serialNumberControllers.clear();
               _formData['Serial_Number_of_the_Compressors'] = '';
@@ -398,9 +551,10 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-// Method to build the "Enter Serial Numbers" button
+  // Method to build the "Enter Serial Numbers" button
   Widget _buildEnterSerialNumbersField() {
-    if (!_showEnterSerialNumbersField) return Container(); // Return empty container if field is hidden
+    if (!_showEnterSerialNumbersField)
+      return Container(); // Return empty container if field is hidden
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -415,13 +569,18 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   }
 
   Future<void> _showSerialNumbersDialog() async {
-    int numberOfCompressors = int.tryParse(_formData['No_of_Compressors'] ?? '0') ?? 0;
+    int numberOfCompressors =
+        int.tryParse(_formData['No_of_Compressors'] ?? '0') ?? 0;
 
     if (_serialNumberControllers.length != numberOfCompressors) {
       _serialNumberControllers = List.generate(
         numberOfCompressors,
-            (index) => TextEditingController(
-            text: _serialNumbersList.length > index ? _serialNumbersList[index] : ''),
+        (index) => TextEditingController(
+          text:
+              _serialNumbersList.length > index
+                  ? _serialNumbersList[index]
+                  : '',
+        ),
       );
     }
 
@@ -432,14 +591,16 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           title: Text('Enter Serial Numbers'),
           content: SingleChildScrollView(
             child: Column(
-              children: _serialNumberControllers.map((controller) {
-                return TextFormField(
-                  controller: controller,
-                  decoration: InputDecoration(
-                    labelText: 'Serial Number ${_serialNumberControllers.indexOf(controller) + 1}',
-                  ),
-                );
-              }).toList(),
+              children:
+                  _serialNumberControllers.map((controller) {
+                    return TextFormField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        labelText:
+                            'Serial Number ${_serialNumberControllers.indexOf(controller) + 1}',
+                      ),
+                    );
+                  }).toList(),
             ),
           ),
           actions: <Widget>[
@@ -454,8 +615,10 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
               onPressed: () {
                 // Update the serial numbers list based on user input
                 setState(() {
-                  _serialNumbersList = _serialNumberControllers.map((c) => c.text).toList();
-                  _formData['Serial_Number_of_the_Compressors'] = _serialNumbersList.join(', ');
+                  _serialNumbersList =
+                      _serialNumberControllers.map((c) => c.text).toList();
+                  _formData['Serial_Number_of_the_Compressors'] =
+                      _serialNumbersList.join(', ');
                 });
                 Navigator.of(context).pop();
               },
@@ -466,9 +629,10 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-// Method to build uneditable text fields to display serial numbers
+  // Method to build uneditable text fields to display serial numbers
   Widget _buildSerialNumberDisplayFields() {
-    if (_serialNumbersList.isEmpty) return Container(); // Return an empty container if there are no serial numbers
+    if (_serialNumbersList.isEmpty)
+      return Container(); // Return an empty container if there are no serial numbers
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -497,9 +661,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
   //=====================================
-
 
   Widget _buildUnvalidatedTextField(String key, String label) {
     return FormBuilderTextField(
@@ -516,10 +678,12 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   Widget _buildDimensionTextField(String key, String label) {
     return FormBuilderTextField(
       name: key,
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(labelText: label),
-      validator: FormBuilderValidators.required(errorText: 'Please enter $label'),
+      validator: FormBuilderValidators.required(
+        errorText: 'Please enter $label',
+      ),
       onChanged: (value) {
         _formData[key] = value ?? '';
       },
@@ -530,10 +694,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   Widget _buildCoolingCapacityTextField(String key, String label) {
     return FormBuilderTextField(
       name: key,
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(labelText: label),
-
 
       onChanged: (value) {
         _formData[key] = value ?? '';
@@ -541,17 +704,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormBuilderValidators.compose([
         // Max length of 25 characters
-    FormBuilderValidators.required(errorText: 'Please enter $label'),
+        FormBuilderValidators.required(errorText: 'Please enter $label'),
         // Allow only English capital letters and colons
         FormBuilderValidators.match(
-
           RegExp(r'^[a-zA-Z0-9&_: ]+$'),
           errorText: 'Only English capital letters and Numbers are allowed',
         ),
       ]),
     );
   }
-
 
   Widget _buildDatePicker(String key, String label) {
     return FormBuilderDateTimePicker(
@@ -560,9 +721,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       firstDate: DateTime(1950),
       lastDate: DateTime(2101),
       inputType: InputType.date,
-      decoration: InputDecoration(
-        labelText: label,
-      ),
+      decoration: InputDecoration(labelText: label),
       onChanged: (value) {
         setState(() {
           _formData[key] = value?.toString().split(' ')[0];
@@ -570,7 +729,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
 
   Widget _buildAnnualMaintenanceContractField(String key, String label) {
     return Stack(
@@ -588,14 +746,16 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
             // Add gap between label and choice chips
             FormBuilderChoiceChips(
               name: key, // Use the provided key for form field name
-              initialValue: _formData[key]?.toString() ?? '', // Set initial value
+              initialValue:
+                  _formData[key]?.toString() ?? '', // Set initial value
               options: [
                 FormBuilderChipOption(value: "1", child: Text('Available')),
                 FormBuilderChipOption(value: "0", child: Text('Not Available')),
               ],
               spacing: 10,
               selectedColor: Colors.green, // Change color to match your theme
-              selectedShadowColor: Colors.greenAccent.shade700, // Change shadow color
+              selectedShadowColor:
+                  Colors.greenAccent.shade700, // Change shadow color
               onChanged: (value) {
                 _formData[key] = value ?? '';
               },
@@ -605,7 +765,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       ],
     );
   }
-
 
   Widget _buildWarrantyAvailableField(String key, String label) {
     return Stack(
@@ -622,14 +781,16 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
             SizedBox(height: 2), // Add gap between label and choice chips
             FormBuilderChoiceChips(
               name: key, // Use the provided key for form field name
-              initialValue: _formData[key]?.toString() ?? '', // Set initial value
+              initialValue:
+                  _formData[key]?.toString() ?? '', // Set initial value
               options: [
                 FormBuilderChipOption(value: "1", child: Text('Yes')),
                 FormBuilderChipOption(value: "0", child: Text('No')),
               ],
               spacing: 10,
               selectedColor: Colors.green, // Change color to match your theme
-              selectedShadowColor: Colors.greenAccent.shade700, // Change shadow color
+              selectedShadowColor:
+                  Colors.greenAccent.shade700, // Change shadow color
               onChanged: (value) {
                 _formData[key] = value ?? '';
               },
@@ -640,17 +801,11 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
-
-
-
   Widget _buildCustomDateField(String fieldName, String labelText) {
     return TextFormField(
       readOnly: true,
       controller: TextEditingController(text: _formData[fieldName] ?? ''),
-      decoration: InputDecoration(
-        labelText: labelText,
-      ),
+      decoration: InputDecoration(labelText: labelText),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please select a date';
@@ -662,7 +817,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         if (pickedDate != null) {
           setState(() {
             _formData[fieldName] =
-            _formData[fieldName] = DateFormat.yMd().format(pickedDate);
+                _formData[fieldName] = DateFormat.yMd().format(pickedDate);
           });
         }
       },
@@ -676,13 +831,12 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       firstDate: DateTime(1950),
       lastDate: DateTime(2100),
     );
-    return picked != null ? DateTime(picked.year, picked.month, picked.day) : null;
+    return picked != null
+        ? DateTime(picked.year, picked.month, picked.day)
+        : null;
   }
 
   //installation date picker
-
-
-
 
   Future<void> _submitData() async {
     if (_formKey.currentState!.validate()) {
@@ -692,13 +846,13 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HttpPostPrecision(formDataList: _formData,User:userName),
-
+          builder:
+              (context) =>
+                  HttpPostPrecision(formDataList: _formData, User: userName),
         ),
       );
     }
   }
-
 
   Widget _buildTextFieldNonValidated(String key, String label) {
     return FormBuilderTextField(
@@ -706,7 +860,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
 
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -718,7 +874,10 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
       validator: FormBuilderValidators.compose([
         // Max length of 25 characters
-        FormBuilderValidators.maxLength(25, errorText: 'Max length is 25 characters'),
+        FormBuilderValidators.maxLength(
+          25,
+          errorText: 'Max length is 25 characters',
+        ),
         // Allow only English capital letters and colons
         FormBuilderValidators.match(
           RegExp(r'^[a-zA-Z0-9&_: @]+$'),
@@ -726,13 +885,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         ),
       ]),
     );
-
   }
-
-
-
-
-
 
   Widget _buildTextFieldEmailValidated(String key, String label) {
     return FormBuilderTextField(
@@ -750,12 +903,16 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
       validator: FormBuilderValidators.compose([
         // FormBuilderValidators.required(errorText: 'Email is required'), // Make email mandatory
-        FormBuilderValidators.email(errorText: 'Invalid email format'), // Validate email format
-        FormBuilderValidators.maxLength(50, errorText: 'Max length is 50 characters'), // Increased max length for typical email lengths
+        FormBuilderValidators.email(
+          errorText: 'Invalid email format',
+        ), // Validate email format
+        FormBuilderValidators.maxLength(
+          50,
+          errorText: 'Max length is 50 characters',
+        ), // Increased max length for typical email lengths
       ]),
     );
   }
-
 
   Widget _buildTextFieldMobileValidated(String key, String label) {
     return FormBuilderTextField(
@@ -774,7 +931,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       validator: FormBuilderValidators.compose([
         // FormBuilderValidators.required(errorText: 'Mobile number is required'), // Ensure the field is not empty
         FormBuilderValidators.match(
-          RegExp(r'^[a-zA-Z0-9&_: ]+$'), // Regex for mobile number starting with '0' and exactly 10 digits
+          RegExp(
+            r'^[a-zA-Z0-9&_: ]+$',
+          ), // Regex for mobile number starting with '0' and exactly 10 digits
           errorText: 'must start with 0 and have exactly 10 digits.',
         ),
       ]),
@@ -782,11 +941,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
-
-  List<String> Manufacturers = [
-    'STULZ', 'Vertiv Liebert', 'Other'
-  ];
+  List<String> Manufacturers = ['STULZ', 'Vertiv Liebert', 'Other'];
 
   Widget _ManufacturerDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -798,10 +953,13 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: Manufacturers.map((Manufacturer) => DropdownMenuItem(
-          value: Manufacturer,
-          child: Text(Manufacturer)
-      )).toList(),
+      items:
+          Manufacturers.map(
+            (Manufacturer) => DropdownMenuItem(
+              value: Manufacturer,
+              child: Text(Manufacturer),
+            ),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -821,7 +979,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   }
 
   void _showCustomManufacturerDialog(String key) {
-    TextEditingController customManufacturerController = TextEditingController();
+    TextEditingController customManufacturerController =
+        TextEditingController();
 
     showDialog(
       context: context,
@@ -834,9 +993,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
             title: Text("Add Manufacturer"),
             content: TextField(
               controller: customManufacturerController,
-              decoration: InputDecoration(
-                hintText: "Enter Manufacturer name",
-              ),
+              decoration: InputDecoration(hintText: "Enter Manufacturer name"),
               autofocus: true, // Automatically focus on the input field
             ),
             actions: <Widget>[
@@ -849,10 +1006,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
               TextButton(
                 child: Text("OK"),
                 onPressed: () {
-                  String customManufacturer = customManufacturerController.text.trim();
-                  if (customManufacturer.isNotEmpty && !Manufacturers.contains(customManufacturer)) {
+                  String customManufacturer =
+                      customManufacturerController.text.trim();
+                  if (customManufacturer.isNotEmpty &&
+                      !Manufacturers.contains(customManufacturer)) {
                     setState(() {
-                      Manufacturers.insert(Manufacturers.length - 1, customManufacturer);
+                      Manufacturers.insert(
+                        Manufacturers.length - 1,
+                        customManufacturer,
+                      );
                       _formData[key] = customManufacturer;
                     });
                   }
@@ -866,9 +1028,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-  List<String> AirflowTypes = [
-    'STULZ', 'Vertiv Liebert', 'Other'
-  ];
+  List<String> AirflowTypes = ['STULZ', 'Vertiv Liebert', 'Other'];
 
   Widget _AirflowTypesDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -880,10 +1040,11 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: AirflowTypes.map((AirflowType) => DropdownMenuItem(
-          value: AirflowType,
-          child: Text(AirflowType)
-      )).toList(),
+      items:
+          AirflowTypes.map(
+            (AirflowType) =>
+                DropdownMenuItem(value: AirflowType, child: Text(AirflowType)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -903,7 +1064,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   }
 
   void _showCustomAirflowTypesDialog(String key) {
-    TextEditingController customManufacturerController = TextEditingController();
+    TextEditingController customManufacturerController =
+        TextEditingController();
 
     showDialog(
       context: context,
@@ -916,9 +1078,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
             title: Text("Add Manufacturer"),
             content: TextField(
               controller: customManufacturerController,
-              decoration: InputDecoration(
-                hintText: "Enter Manufacturer name",
-              ),
+              decoration: InputDecoration(hintText: "Enter Manufacturer name"),
               autofocus: true, // Automatically focus on the input field
             ),
             actions: <Widget>[
@@ -931,10 +1091,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
               TextButton(
                 child: Text("OK"),
                 onPressed: () {
-                  String customManufacturer = customManufacturerController.text.trim();
-                  if (customManufacturer.isNotEmpty && !Manufacturers.contains(customManufacturer)) {
+                  String customManufacturer =
+                      customManufacturerController.text.trim();
+                  if (customManufacturer.isNotEmpty &&
+                      !Manufacturers.contains(customManufacturer)) {
                     setState(() {
-                      Manufacturers.insert(Manufacturers.length - 1, customManufacturer);
+                      Manufacturers.insert(
+                        Manufacturers.length - 1,
+                        customManufacturer,
+                      );
                       _formData[key] = customManufacturer;
                     });
                   }
@@ -948,8 +1113,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
-
   //======================================txtfields=====================================================
 
   Widget _buildTextField(String key, String label) {
@@ -957,25 +1120,27 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       name: key,
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
-
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
-
-
 
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
         FormBuilderValidators.match(
-            RegExp(r'^[a-zA-Z0-9&_: ]+$'),
-            errorText: '$label must contain only letters and numbers'),
+          RegExp(r'^[a-zA-Z0-9&_: ]+$'),
+          errorText: '$label must contain only letters and numbers',
+        ),
         // FormBuilderValidators.minLength(1, errorText: 'Minimum 5 characters.'),
         FormBuilderValidators.maxLength(
-            25, errorText: 'Maximum 25 characters.'),
-
+          25,
+          errorText: 'Maximum 25 characters.',
+        ),
       ]),
 
-      autovalidateMode: AutovalidateMode.onUserInteraction,//validation on input
+      autovalidateMode:
+          AutovalidateMode.onUserInteraction, //validation on input
 
       onChanged: (value) {
         _formData[key] = value ?? '';
@@ -989,14 +1154,21 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
         FormBuilderValidators.match(
-            RegExp(r'^[#/a-zA-Z0-9&_: /#-.@]+$'),
-            errorText: '$label must contain letters, numbers, and allowed symbols (&, _, :).'),
-        FormBuilderValidators.maxLength(20, errorText: 'Maximum 20 characters allowed.'),
+          RegExp(r'^[#/a-zA-Z0-9&_: /#-.@]+$'),
+          errorText:
+              '$label must contain letters, numbers, and allowed symbols (&, _, :).',
+        ),
+        FormBuilderValidators.maxLength(
+          20,
+          errorText: 'Maximum 20 characters allowed.',
+        ),
       ]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value) {
@@ -1005,16 +1177,13 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
   Widget _buildTextFieldModelValidated(String key, String label) {
     return FormBuilderTextField(
       name: key,
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
-
         labelText: label,
         errorStyle: TextStyle(color: Colors.red),
-
       ),
 
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -1025,7 +1194,10 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
       validator: FormBuilderValidators.compose([
         // Max length of 25 characters
-        FormBuilderValidators.maxLength(25, errorText: 'Max length is 25 characters'),
+        FormBuilderValidators.maxLength(
+          25,
+          errorText: 'Max length is 25 characters',
+        ),
         // Allow only English capital letters and colons
         FormBuilderValidators.match(
           RegExp(r'^[-a-zA-Z0-9&_: ]+$'),
@@ -1043,8 +1215,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
       decoration: InputDecoration(
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
-
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
@@ -1064,8 +1237,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         // FormBuilderValidators.maxLength(
         //     10, errorText: '$label cannot be more than 10 characters'),
         FormBuilderValidators.match(
-            RegExp(r'^[a-zA-Z0-9&_: /#-.@]+$'),
-            errorText: '$label must contain only numbers'),
+          RegExp(r'^[a-zA-Z0-9&_: /#-.@]+$'),
+          errorText: '$label must contain only numbers',
+        ),
       ]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value) {
@@ -1076,14 +1250,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
   Widget _buildNumValueFieldsTextField(String key, String label) {
     return FormBuilderTextField(
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
       name: key,
       initialValue: _formData[key]?.toString() ?? '',
 
       decoration: InputDecoration(
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
-
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
@@ -1103,8 +1278,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         // FormBuilderValidators.maxLength(
         //     10, errorText: '$label cannot be more than 10 characters'),
         FormBuilderValidators.match(
-            RegExp(r'^[a-zA-Z0-9&_: ]+$'),
-            errorText: '$label must contain only numbers and letters'),
+          RegExp(r'^[a-zA-Z0-9&_: ]+$'),
+          errorText: '$label must contain only numbers and letters',
+        ),
       ]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value) {
@@ -1112,18 +1288,18 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
 
   Widget _buildNoiseLevelTextField(String key, String label) {
     return FormBuilderTextField(
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
       name: key,
       initialValue: _formData[key]?.toString() ?? '',
 
       decoration: InputDecoration(
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
-
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
@@ -1143,8 +1319,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         // FormBuilderValidators.maxLength(
         //     10, errorText: '$label cannot be more than 10 characters'),
         FormBuilderValidators.match(
-            RegExp(r'^[/#.a-zA-Z0-9&_:]+$'),
-            errorText: '$label must contain only numbers'),
+          RegExp(r'^[/#.a-zA-Z0-9&_:]+$'),
+          errorText: '$label must contain only numbers',
+        ),
       ]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value) {
@@ -1152,20 +1329,18 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
-
-
 
   Widget _buildNumWeightTextField(String key, String label) {
     return FormBuilderTextField(
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
       name: key,
       initialValue: _formData[key]?.toString() ?? '',
 
       decoration: InputDecoration(
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
-
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
@@ -1185,8 +1360,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         // FormBuilderValidators.maxLength(
         //     10, errorText: '$label cannot be more than 10 characters'),
         FormBuilderValidators.match(
-            RegExp(r'^[.a-zA-Z0-9&_: /@+=]+$'),
-            errorText: '$label must contain only numbers'),
+          RegExp(r'^[.a-zA-Z0-9&_: /@+=]+$'),
+          errorText: '$label must contain only numbers',
+        ),
       ]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value) {
@@ -1194,8 +1370,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
-
 
   Widget _AirflowTypeDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -1207,13 +1381,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: ['Upblow','DownBlow']
-          .map((status) => DropdownMenuItem(value: status, child: Text(status)))
-          .toList(),
+      items:
+          ['Upblow', 'DownBlow']
+              .map(
+                (status) =>
+                    DropdownMenuItem(value: status, child: Text(status)),
+              )
+              .toList(),
       validator: (value) {
-        if (value == null || value
-            .toString()
-            .isEmpty) {
+        if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
         }
         return null;
@@ -1226,19 +1402,17 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
-
-
   Widget _buildNumAirflowTextField(String key, String label) {
     return FormBuilderTextField(
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
       name: key,
       initialValue: _formData[key]?.toString() ?? '',
 
       decoration: InputDecoration(
         labelText: label,
-        errorStyle: TextStyle(color: Colors.red), // Optional: Customize error text style
-
+        errorStyle: TextStyle(
+          color: Colors.red,
+        ), // Optional: Customize error text style
       ),
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: 'Please enter $label'),
@@ -1258,8 +1432,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         // FormBuilderValidators.maxLength(
         //     10, errorText: '$label cannot be more than 10 characters'),
         FormBuilderValidators.match(
-            RegExp(r'^[.-/#.a-zA-Z0-9&_: ]+$'),
-            errorText: '$label must contain only numbers'),
+          RegExp(r'^[.-/#.a-zA-Z0-9&_: ]+$'),
+          errorText: '$label must contain only numbers',
+        ),
       ]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (value) {
@@ -1268,19 +1443,24 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
-
   //dynamic serial number logic
-
 
   // Compressor Details Section
   Widget _buildCompressorDetailsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Compressor Details', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        _buildNoOfCompressorsTextFieldDynamic('No_of_Compressors', 'No of Compressors'),
-        ..._buildSerialNumberFields(_noOfCompressors), // Dynamically generated serial number fields
+        Text(
+          'Compressor Details',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        _buildNoOfCompressorsTextFieldDynamic(
+          'No_of_Compressors',
+          'No of Compressors',
+        ),
+        ..._buildSerialNumberFields(
+          _noOfCompressors,
+        ), // Dynamically generated serial number fields
       ],
     );
   }
@@ -1288,7 +1468,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   Widget _buildNoOfCompressorsTextFieldDynamic(String key, String label) {
     return FormBuilderTextField(
       name: key,
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
       initialValue: _formData[key],
 
       decoration: InputDecoration(
@@ -1320,11 +1500,17 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     });
   }
 
-
-//===================================================================================================================
+  //===================================================================================================================
   // Region Dropdown Widget
 
-  Widget _RegionDropdown(String key, String label, LocationProvider locationProvider, Map<String, dynamic> _formData, BuildContext context) {
+  Widget _RegionDropdown(
+    String key,
+    String label,
+    //  LocationProvider
+    locationProvider,
+    Map<String, dynamic> _formData,
+    BuildContext context,
+  ) {
     if (locationProvider.isLoading || locationProvider.isCustomRegion) {
       return Center(child: CircularProgressIndicator());
     }
@@ -1339,53 +1525,58 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         ),
       ),
       items: [
-        ...locationProvider.regions.map((region) => DropdownMenuItem<String>(
-          value: region.Region_ID,
-          child: Text(region.RegionName),
-        )),
-        DropdownMenuItem<String>(
-          value: 'Other',
-          child: Text('Other'),
+        ...locationProvider.regions.map(
+          (region) => DropdownMenuItem<String>(
+            value: region.Region_ID,
+            child: Text(region.RegionName),
+          ),
         ),
+        DropdownMenuItem<String>(value: 'Other', child: Text('Other')),
       ],
-      validator: (value) => value == null || value.isEmpty ? 'Please select $label' : null,
+      validator:
+          (value) =>
+              value == null || value.isEmpty ? 'Please select $label' : null,
       onChanged: (value) {
         if (value == 'Other') {
           _showAddNewValueDialog(context, key, label, locationProvider);
-
-
-
         } else {
           // Get the region name based on selected Region_ID
-          String? selectedRegionName = locationProvider.regions.firstWhere(
-                (region) => region.Region_ID == value,
-            // orElse: () => null, // In case the region is not found
-          )?.RegionName;
+          String? selectedRegionName =
+              locationProvider.regions
+                  .firstWhere(
+                    (region) => region.Region_ID == value,
+                    // orElse: () => null, // In case the region is not found
+                  )
+                  ?.RegionName;
 
           setState(() {
             // Store the region name in the formData
             _formData[key] = selectedRegionName;
             locationProvider.selectedRegion = value;
           });
-
-
         }
       },
     );
   }
 
-
-
-
-  Widget _RtomDropdown(String key, String label, LocationProvider locationProvider, Map<String, dynamic> _formData, BuildContext context) {
+  Widget _RtomDropdown(
+    String key,
+    String label,
+    // LocationProvider
+    locationProvider,
+    Map<String, dynamic> _formData,
+    BuildContext context,
+  ) {
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
 
-    String? initialRtomValue = locationProvider.rtoms
-        .any((rtom) => rtom.RTOM_ID == locationProvider.selectedRtom)
-        ? locationProvider.selectedRtom
-        : null;
+    String? initialRtomValue =
+        locationProvider.rtoms.any(
+              (rtom) => rtom.RTOM_ID == locationProvider.selectedRtom,
+            )
+            ? locationProvider.selectedRtom
+            : null;
 
     return FormBuilderDropdown<String>(
       name: key,
@@ -1397,53 +1588,59 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         ),
       ),
       items: [
-        ...locationProvider.rtoms.map((rtom) => DropdownMenuItem<String>(
-          value: rtom.RTOM_ID,
-          child: Text(rtom.RTOM),
-        )),
-        DropdownMenuItem<String>(
-          value: 'Other',
-          child: Text('Other'),
+        ...locationProvider.rtoms.map(
+          (rtom) => DropdownMenuItem<String>(
+            value: rtom.RTOM_ID,
+            child: Text(rtom.RTOM),
+          ),
         ),
+        DropdownMenuItem<String>(value: 'Other', child: Text('Other')),
       ],
-      validator: (value) => value == null || value.isEmpty ? 'Please select $label' : null,
+      validator:
+          (value) =>
+              value == null || value.isEmpty ? 'Please select $label' : null,
       onChanged: (value) {
         if (value == 'Other') {
           _showAddNewValueDialog(context, key, label, locationProvider);
-
-
         } else {
           // Get the RTOM name based on selected RTOM_ID
-          String? selectedRtomName = locationProvider.rtoms.firstWhere(
-                (rtom) => rtom.RTOM_ID == value,
-            // orElse: () => null, // Handle if RTOM is not found
-          )?.RTOM;
+          String? selectedRtomName =
+              locationProvider.rtoms
+                  .firstWhere(
+                    (rtom) => rtom.RTOM_ID == value,
+                    // orElse: () => null, // Handle if RTOM is not found
+                  )
+                  ?.RTOM;
 
           setState(() {
             // Store the RTOM name in the formData
             _formData[key] = selectedRtomName;
             locationProvider.selectedRtom = value;
           });
-
-
         }
       },
     );
   }
 
-
-
-
-
-  Widget _StationDropdown(String key, String label, LocationProvider locationProvider, Map<String, dynamic> _formData, BuildContext context) {
+  Widget _StationDropdown(
+    String key,
+    String label,
+  //  LocationProvider 
+    locationProvider,
+    Map<String, dynamic> _formData,
+    BuildContext context,
+  ) {
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
 
-    String? initialStationValue = locationProvider.stations
-        .any((station) => station.Station_ID == locationProvider.selectedStation)
-        ? locationProvider.selectedStation
-        : null;
+    String? initialStationValue =
+        locationProvider.stations.any(
+              (station) =>
+                  station.Station_ID == locationProvider.selectedStation,
+            )
+            ? locationProvider.selectedStation
+            : null;
 
     return FormBuilderDropdown<String>(
       name: key,
@@ -1455,43 +1652,47 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
         ),
       ),
       items: [
-        ...locationProvider.stations.map((station) => DropdownMenuItem<String>(
-          value: station.Station_ID,
-          child: Text(station.StationName),
-        )),
-        DropdownMenuItem<String>(
-          value: 'Other',
-          child: Text('Other'),
+        ...locationProvider.stations.map(
+          (station) => DropdownMenuItem<String>(
+            value: station.Station_ID,
+            child: Text(station.StationName),
+          ),
         ),
+        DropdownMenuItem<String>(value: 'Other', child: Text('Other')),
       ],
-      validator: (value) => value == null || value.isEmpty ? 'Please select $label' : null,
+      validator:
+          (value) =>
+              value == null || value.isEmpty ? 'Please select $label' : null,
       onChanged: (value) {
         if (value == 'Other') {
           _showAddNewValueDialog(context, key, label, locationProvider);
-
-
         } else {
           // Get the station name based on selected Station_ID
-          String? selectedStationName = locationProvider.stations.firstWhere(
-                (station) => station.Station_ID == value,
-            // orElse: () => null, // Handle if station is not found
-          )?.StationName;
+          String? selectedStationName =
+              locationProvider.stations
+                  .firstWhere(
+                    (station) => station.Station_ID == value,
+                    // orElse: () => null, // Handle if station is not found
+                  )
+                  ?.StationName;
 
           setState(() {
             // Store the station name in the formData
             _formData[key] = selectedStationName;
             locationProvider.selectedStation = value;
           });
-
-
         }
       },
     );
   }
 
-
-
-  void _showAddNewValueDialog(BuildContext context, String key, String label, LocationProvider locationProvider) {
+  void _showAddNewValueDialog(
+    BuildContext context,
+    String key,
+    String label,
+   // LocationProvider 
+    locationProvider,
+  ) {
     TextEditingController _newValueController = TextEditingController();
 
     showDialog(
@@ -1515,7 +1716,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
             TextButton(
               child: Text('Add', style: TextStyle(color: Colors.green[700])),
               onPressed: () {
-
                 if (_newValueController.text.isNotEmpty) {
                   String newValue = _newValueController.text;
 
@@ -1526,23 +1726,31 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
                   switch (key) {
                     case 'Region':
-                      locationProvider.addCustomRegion(newValue!); // Add custom Region to list
-                      locationProvider.selectedRegion = newValue; // Set as selected value
+                      locationProvider.addCustomRegion(
+                        newValue!,
+                      ); // Add custom Region to list
+                      locationProvider.selectedRegion =
+                          newValue; // Set as selected value
                       break;
                     case 'RTOM':
-                      locationProvider.addCustomRtom(newValue); // Add custom RTOM to list
-                      locationProvider.selectedRtom = newValue; // Set as selected value
+                      locationProvider.addCustomRtom(
+                        newValue,
+                      ); // Add custom RTOM to list
+                      locationProvider.selectedRtom =
+                          newValue; // Set as selected value
                       break;
                     case 'Station':
-                      locationProvider.addCustomStation(newValue); // Add custom station to list
-                      locationProvider.selectedStation = newValue; // Set as selected value
+                      locationProvider.addCustomStation(
+                        newValue,
+                      ); // Add custom station to list
+                      locationProvider.selectedStation =
+                          newValue; // Set as selected value
                       break;
                   }
 
                   setState(() {
                     _formData[key] = newValue;
                   });
-
 
                   Navigator.of(context).pop();
                 }
@@ -1554,7 +1762,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-//===================================================================================================================
+  //===================================================================================================================
 
   Widget _StatusDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -1566,13 +1774,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: ['StandBy', 'Running','Stopped', 'Waiting to dispose']
-          .map((status) => DropdownMenuItem(value: status, child: Text(status)))
-          .toList(),
+      items:
+          ['StandBy', 'Running', 'Stopped', 'Waiting to dispose']
+              .map(
+                (status) =>
+                    DropdownMenuItem(value: status, child: Text(status)),
+              )
+              .toList(),
       validator: (value) {
-        if (value == null || value
-            .toString()
-            .isEmpty) {
+        if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
         }
         return null;
@@ -1584,7 +1794,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
 
   Widget _PowerSupplyDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -1596,13 +1805,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: ['1','3',]
-          .map((status) => DropdownMenuItem(value: status, child: Text(status)))
-          .toList(),
+      items:
+          ['1', '3']
+              .map(
+                (status) =>
+                    DropdownMenuItem(value: status, child: Text(status)),
+              )
+              .toList(),
       validator: (value) {
-        if (value == null || value
-            .toString()
-            .isEmpty) {
+        if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
         }
         return null;
@@ -1615,10 +1826,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
-  List<String> Refrigerants = [
-    'R-134a','R-407C','R-410A','Other'
-  ];
+  List<String> Refrigerants = ['R-134a', 'R-407C', 'R-410A', 'Other'];
 
   Widget _RefrigDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -1630,10 +1838,13 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: Refrigerants.map((refrigerants) => DropdownMenuItem(
-          value: refrigerants,
-          child: Text(refrigerants)
-      )).toList(),
+      items:
+          Refrigerants.map(
+            (refrigerants) => DropdownMenuItem(
+              value: refrigerants,
+              child: Text(refrigerants),
+            ),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1666,9 +1877,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
             title: Text("Add Custom refrigerants"),
             content: TextField(
               controller: customModelController,
-              decoration: InputDecoration(
-                hintText: "Enter refrigerant name",
-              ),
+              decoration: InputDecoration(hintText: "Enter refrigerant name"),
             ),
             actions: <Widget>[
               TextButton(
@@ -1697,15 +1906,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     );
   }
 
-
   //refrig dropdown
-
-
-
-
-
-
-
 
   Widget _ConditionAirFilterDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -1717,13 +1918,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: ['Good', 'Fair', 'Poor','Not Available']
-          .map((status) => DropdownMenuItem(value: status, child: Text(status)))
-          .toList(),
+      items:
+          ['Good', 'Fair', 'Poor', 'Not Available']
+              .map(
+                (status) =>
+                    DropdownMenuItem(value: status, child: Text(status)),
+              )
+              .toList(),
       validator: (value) {
-        if (value == null || value
-            .toString()
-            .isEmpty) {
+        if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
         }
         return null;
@@ -1735,7 +1938,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
 
   Widget _ConditionIndoorDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -1747,13 +1949,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: ['Good', 'Faulty', 'Standby', 'Stopped', 'Waiting to dispose']
-          .map((status) => DropdownMenuItem(value: status, child: Text(status)))
-          .toList(),
+      items:
+          ['Good', 'Faulty', 'Standby', 'Stopped', 'Waiting to dispose']
+              .map(
+                (status) =>
+                    DropdownMenuItem(value: status, child: Text(status)),
+              )
+              .toList(),
       validator: (value) {
-        if (value == null || value
-            .toString()
-            .isEmpty) {
+        if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
         }
         return null;
@@ -1765,7 +1969,6 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
 
   Widget _CondensorMountedDropdown(String key, String label) {
     return FormBuilderDropdown(
@@ -1777,13 +1980,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: ['Vertical','Horizontal',]
-          .map((status) => DropdownMenuItem(value: status, child: Text(status)))
-          .toList(),
+      items:
+          ['Vertical', 'Horizontal']
+              .map(
+                (status) =>
+                    DropdownMenuItem(value: status, child: Text(status)),
+              )
+              .toList(),
       validator: (value) {
-        if (value == null || value
-            .toString()
-            .isEmpty) {
+        if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
         }
         return null;
@@ -1795,8 +2000,4 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
       },
     );
   }
-
 }
-
-
-

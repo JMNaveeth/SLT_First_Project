@@ -38,7 +38,7 @@ class _ACFormPageState extends State<ACFormPage> {
   //user variable
 
   String userName = 'testUser';
- bool? _isVerified = false;
+
   // final Map<String, String> _customValues = {}; // Track custom values
 
 
@@ -112,10 +112,9 @@ class _ACFormPageState extends State<ACFormPage> {
 
     return ChangeNotifierProvider(
       create: (context) => LocationProvider()..loadAllData(),
-      child: Consumer<LocationProvider>
-      (
+      child: Consumer<LocationProvider>(
         builder: (context, locationProvider, child) {
-         // var _isVerified;
+          var _isVerified;
           return Scaffold(
             appBar: AppBar(
               title: Text('Add new AC Unit', style: TextStyle(color: Colors.white)),
@@ -608,7 +607,9 @@ class _ACFormPageState extends State<ACFormPage> {
   //dropdowns
   //===========================================================================================================================
 
-  Widget _RegionDropdownComfort(String key, String label, LocationProvider locationProvider, Map<String, dynamic> _formData, BuildContext context) {
+  Widget _RegionDropdownComfort(String key, String label, 
+  //LocationProvider 
+  locationProvider, Map<String, dynamic> _formData, BuildContext context) {
     if (locationProvider.isLoading || locationProvider.isCustomRegion) {
       return Center(child: CircularProgressIndicator());
     }
@@ -659,7 +660,9 @@ class _ACFormPageState extends State<ACFormPage> {
 
 
 
-  Widget _RtomDropdownComfort(String key, String label, LocationProvider locationProvider, Map<String, dynamic> _formData, BuildContext context) {
+  Widget _RtomDropdownComfort(String key, String label, 
+  //LocationProvider
+   locationProvider, Map<String, dynamic> _formData, BuildContext context) {
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -709,7 +712,9 @@ class _ACFormPageState extends State<ACFormPage> {
     );
   }
 
-  Widget _StationDropdownComfort(String key, String label, LocationProvider locationProvider, Map<String, dynamic> _formData, BuildContext context) {
+  Widget _StationDropdownComfort(String key, String label,
+  // LocationProvider
+   locationProvider, Map<String, dynamic> _formData, BuildContext context) {
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -763,7 +768,9 @@ class _ACFormPageState extends State<ACFormPage> {
 
   //===========reusable dialogbox
 
-  void _showAddNewValueDialogComfort(BuildContext context, String key, String label, LocationProvider locationProvider) {
+  void _showAddNewValueDialogComfort(BuildContext context, String key, String label,
+  // LocationProvider 
+  locationProvider) {
     TextEditingController _newValueController = TextEditingController();
 
     showDialog(

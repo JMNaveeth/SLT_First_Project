@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import '../../ACMaintenancePage.dart';
+//import '../../ACMaintenancePage.dart';
 
 // Model class for Precision AC
 class updatePrecisionAC {
@@ -832,10 +832,10 @@ class _ACDetailViewState extends State<ACDetailView> {
           );
 
           // Navigate to HomeScreen after successful update
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => ACMaintenancePage()),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => ACMaintenancePage()),
+          // );
         } else {
           print(
               'Failed to update PrecisionAC information: ${response.statusCode}');
