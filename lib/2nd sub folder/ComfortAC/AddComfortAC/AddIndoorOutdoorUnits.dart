@@ -117,234 +117,313 @@ class _ACFormPageState extends State<ACFormPage> {
         backgroundColor: customColors.appbarColor,
         actions: [ThemeToggleButton()],
       ),
-      body:Container( // Add Container widget
-    color: customColors.mainBackgroundColor,
-    child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Indoor Units Form Fields
-                Text(
-                  'AC Indoor Unit',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Location Details',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                // _RegionDropdownComfort('region', 'region', locationProvider, _formData, context),
-                // _RtomDropdownComfort('rtom', 'rtom', locationProvider, _formData, context),
-                // _StationDropdownComfort('station', 'station', locationProvider, _formData, context),
-                _buildTextField(
-                  'rtom_building_id',
-                  'RTOM Building ID (eg:Building A)',
-                ),
-                _buildTextField(
-                  'indoor_floor_number',
-                  'Floor Number (eg:OTS-1-AC-No)',
-                ),
-                _buildTextFieldModelValidated(
-                  'indoor_office_number',
-                  'Office Number (eg: 01)',
-                ),
-                _buildTextFieldLocationValidated(
-                  'indoor_location',
-                  'Location (eg:OTS UPS room)',
-                ),
-                SizedBox(height: 40),
-                // GPS Location fields
-                Text(
-                  'Mark GPS Location of the Unit',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                _buildGPSLatitudeField(
-                  'Latitude',
-                  'Latitude (Enter Manually or press Get Location)',
-                  _latitudeController1,
-                ),
-                _buildGPSLongitudeField(
-                  'Longitude',
-                  'Longitude (Enter manually or press Get Location)',
-                  _longitudeController1,
-                ),
-                SizedBox(height: 20),
-                CupertinoButton(
-                  onPressed: _fetchLocation,
-                  color: Color(0xFF00AEE4),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+      body: Container(
+        // Add Container widget
+        color: customColors.mainBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Indoor Units Form Fields
+                  Text(
+                    'AC Indoor Unit',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Location Details',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  // _RegionDropdownComfort('region', 'region', locationProvider, _formData, context),
+                  // _RtomDropdownComfort('rtom', 'rtom', locationProvider, _formData, context),
+                  // _StationDropdownComfort('station', 'station', locationProvider, _formData, context),
+                  _buildTextField(
+                    'rtom_building_id',
+                    'RTOM Building ID (eg:Building A)',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildTextField(
+                    'indoor_floor_number',
+                    'Floor Number (eg:OTS-1-AC-No)',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildTextFieldModelValidated(
+                    'indoor_office_number',
+                    'Office Number (eg: 01)',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildTextFieldLocationValidated(
+                    'indoor_location',
+                    'Location (eg:OTS UPS room)',
+                  ),
+                  SizedBox(height: 40),
+                  // GPS Location fields
+                  Text(
+                    'Mark GPS Location of the Unit',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildGPSLatitudeField(
+                    'Latitude',
+                    'Latitude (Enter Manually or press Get Location)',
+                    _latitudeController1,
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildGPSLongitudeField(
+                    'Longitude',
+                    'Longitude (Enter manually or press Get Location)',
+                    _longitudeController1,
+                  ),
+                  SizedBox(height: 20),
+                  CupertinoButton(
+                    onPressed: _fetchLocation,
+                    color: Color(0xFF00AEE4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.location_on, color: Colors.white),
+                        SizedBox(width: 8),
+                        Text('Get Location'),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // Asset Details for Indoor Unit
+                  Text(
+                    'Asset Details',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildTextField('QR_In', 'Indoor Tag Code(eg:AI:0001)'),
+                  SizedBox(height: 10),
+
+                  _BrandDropdown('indoor_brand', 'Brand'), SizedBox(height: 10),
+
+                  _buildTextFieldModelValidated('indoor_model', 'Model'),
+                  SizedBox(height: 10),
+
+                  _CustomCapacityDropdown('indoor_capacity', 'Capacity'),
+                  SizedBox(height: 10),
+
+                  _buildNumValTextField('serial_number', 'Serial code'),
+                  SizedBox(height: 10),
+
+                  _InstallationCategoryDropdown(
+                    'installation_type',
+                    'Installation Type',
+                  ),
+                  SizedBox(height: 10),
+
+                  _RefrigDropdown('refrigerant_type', 'Refrigerant Type'),
+                  SizedBox(height: 10),
+
+                  _PowerSupplyDropdown('indoor_power_supply', 'Power Supply'),
+                  SizedBox(height: 10),
+
+                  _ConditionDropdown('condition_ID_unit', 'Condition ID Unit'),
+                  SizedBox(height: 10),
+
+                  _RemoteDropdown('remote_available', 'Remote Available'),
+                  SizedBox(height: 10),
+
+                  _buildNotesTextField('indoor_notes', 'Notes'),
+                  SizedBox(height: 40),
+                  // Supplier and Warranty Details for Indoor Unit
+                  Text(
+                    'Supplier and Warranty Details',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildCustomDateField(
+                    'installation_date',
+                    'Installation Date (YYYY-MM-DD)',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildDatePicker(
+                    'indoor_warranty_expiry_date',
+                    'Warranty Expiry Date (YYYY-MM-DD)',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildTextFieldNonValidated(
+                    'indoor_supplier_name',
+                    'Supplier Name',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildPoNumberTextField('indoor_po_number', 'PO Number'),
+                  SizedBox(height: 40),
+                  // AC Outdoor Unit Form Fields
+                  Text(
+                    'AC Outdoor Unit',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+
+                  Text(
+                    'Asset Details',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildTextField('QR_Out', 'Outdoor Tag Code(eg:AO:0001)'),
+                  SizedBox(height: 10),
+
+                  _BrandDropdown('brand', 'Brand'), SizedBox(height: 10),
+
+                  _buildTextFieldModelValidated('model', 'Model'),
+                  SizedBox(height: 10),
+
+                  _CustomCapacityDropdown('capacity', 'Capacity'),
+                  SizedBox(height: 10),
+
+                  _buildTextFieldNonValidated(
+                    'outdoor_fan_model',
+                    'Outdoor Fan Model',
+                  ),
+                  SizedBox(height: 10),
+
+                  _PowerSupplyDropdown('outdoor_power_supply', 'Power Supply'),
+                  SizedBox(height: 10),
+
+                  _CompressormountedDropdown(
+                    'compressor_mounted_with',
+                    'Compressor Mounted With',
+                  ),
+                  SizedBox(height: 10),
+
+                  _CustomCapacityDropdown(
+                    'compressor_capacity',
+                    'Compressor Capacity',
+                  ),
+                  SizedBox(height: 10),
+
+                  _BrandDropdown('compressor_brand', 'Compressor Brand'),
+                  _buildTextFieldModelValidated(
+                    'compressor_model',
+                    'Compressor Model',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildNumValTextField(
+                    'compressor_serial_number',
+                    'Compressor Serial Number',
+                  ),
+                  SizedBox(height: 10),
+
+                  _ConditionDropdown('condition_OD_unit', 'Condition OD Unit'),
+                  SizedBox(height: 10),
+
+                  _buildNotesTextField('outdoor_notes', 'Notes'),
+                  SizedBox(height: 10),
+
+                  _CategoryDropdown('category', 'Category'),
+                  SizedBox(height: 10),
+
+                  _buildCustomDateField(
+                    'Installation_Date',
+                    'Outdoor Installation Date (YYYY-MM-DD)',
+                  ),
+                  SizedBox(height: 20),
+                  // Supplier and Warranty Details for Outdoor Unit
+                  Text(
+                    'Supplier and Warranty Details',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildDatePicker(
+                    'outdoor_warranty_expiry_date',
+                    'Warranty Expiry Date (YYYY-MM-DD)',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildDatePicker('DoM', 'Date Of Manufactured'),
+                  SizedBox(height: 10),
+
+                  _buildTextFieldNonValidated(
+                    'outdoor_supplier_name',
+                    'Supplier Name',
+                  ),
+                  SizedBox(height: 10),
+
+                  _buildPoNumberTextField('outdoor_po_number', 'PO Number'),
+                  SizedBox(height: 20),
+                  // Verification Checkbox
+                  FormBuilderCheckbox(
+                    name: 'verify',
+                    //    initialValue: _isVerified,
+                    title: Text(
+                      'I verify that submitted details are true and correct',
+                      style: TextStyle(color: customColors.mainTextColor),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        //   _isVerified = value;
+                      });
+                    },
+                    checkColor: Colors.white,
+                    activeColor: Color(0xFF0056A2),
+                    validator: (value) {
+                      if (value != true) {
+                        return 'You must verify the details to proceed.';
+                      }
+                      return null;
+                    },
+                  ),
+                  // Submit and Reset Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.location_on, color: Colors.white),
-                      SizedBox(width: 8),
-                      Text('Get Location'),
+                      Expanded(
+                        child: CupertinoButton(
+                          onPressed: _resetForm,
+                          child: const Text('Reset'),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 10.0,
+                          ),
+                          color: const Color(0xFF00AEE4),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: CupertinoButton(
+                          onPressed: _submitData,
+                          child: const Text('Submit'),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 10.0,
+                          ),
+                          color: const Color(0xFF0056A2),
+                        ),
+                      ),
+
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     print(_formData); // Print collected data to console
+                      //   }, child: null,
+                      // )
                     ],
                   ),
-                ),
-                SizedBox(height: 20),
-                // Asset Details for Indoor Unit
-                Text(
-                  'Asset Details',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                _buildTextField('QR_In', 'Indoor Tag Code(eg:AI:0001)'),
-                _BrandDropdown('indoor_brand', 'Brand'),
-                _buildTextFieldModelValidated('indoor_model', 'Model'),
-                _CustomCapacityDropdown('indoor_capacity', 'Capacity'),
-                _buildNumValTextField('serial_number', 'Serial code'),
-                _InstallationCategoryDropdown(
-                  'installation_type',
-                  'Installation Type',
-                ),
-                _RefrigDropdown('refrigerant_type', 'Refrigerant Type'),
-                _PowerSupplyDropdown('indoor_power_supply', 'Power Supply'),
-                _ConditionDropdown('condition_ID_unit', 'Condition ID Unit'),
-                _RemoteDropdown('remote_available', 'Remote Available'),
-                _buildNotesTextField('indoor_notes', 'Notes'),
-                SizedBox(height: 40),
-                // Supplier and Warranty Details for Indoor Unit
-                Text(
-                  'Supplier and Warranty Details',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                _buildCustomDateField(
-                  'installation_date',
-                  'Installation Date (YYYY-MM-DD)',
-                ),
-                _buildDatePicker(
-                  'indoor_warranty_expiry_date',
-                  'Warranty Expiry Date (YYYY-MM-DD)',
-                ),
-                _buildTextFieldNonValidated(
-                  'indoor_supplier_name',
-                  'Supplier Name',
-                ),
-                _buildPoNumberTextField('indoor_po_number', 'PO Number'),
-                SizedBox(height: 40),
-                // AC Outdoor Unit Form Fields
-                Text(
-                  'AC Outdoor Unit',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Asset Details',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                _buildTextField('QR_Out', 'Outdoor Tag Code(eg:AO:0001)'),
-                _BrandDropdown('brand', 'Brand'),
-                _buildTextFieldModelValidated('model', 'Model'),
-                _CustomCapacityDropdown('capacity', 'Capacity'),
-                _buildTextFieldNonValidated(
-                  'outdoor_fan_model',
-                  'Outdoor Fan Model',
-                ),
-                _PowerSupplyDropdown('outdoor_power_supply', 'Power Supply'),
-                _CompressormountedDropdown(
-                  'compressor_mounted_with',
-                  'Compressor Mounted With',
-                ),
-                _CustomCapacityDropdown(
-                  'compressor_capacity',
-                  'Compressor Capacity',
-                ),
-                _BrandDropdown('compressor_brand', 'Compressor Brand'),
-                _buildTextFieldModelValidated(
-                  'compressor_model',
-                  'Compressor Model',
-                ),
-                _buildNumValTextField(
-                  'compressor_serial_number',
-                  'Compressor Serial Number',
-                ),
-                _ConditionDropdown('condition_OD_unit', 'Condition OD Unit'),
-                _buildNotesTextField('outdoor_notes', 'Notes'),
-                _CategoryDropdown('category', 'Category'),
-                _buildCustomDateField(
-                  'Installation_Date',
-                  'Outdoor Installation Date (YYYY-MM-DD)',
-                ),
-                SizedBox(height: 20),
-                // Supplier and Warranty Details for Outdoor Unit
-                Text(
-                  'Supplier and Warranty Details',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                _buildDatePicker(
-                  'outdoor_warranty_expiry_date',
-                  'Warranty Expiry Date (YYYY-MM-DD)',
-                ),
-                _buildDatePicker('DoM', 'Date Of Manufactured'),
-                _buildTextFieldNonValidated(
-                  'outdoor_supplier_name',
-                  'Supplier Name',
-                ),
-                _buildPoNumberTextField('outdoor_po_number', 'PO Number'),
-                SizedBox(height: 20),
-                // Verification Checkbox
-                FormBuilderCheckbox(
-                  name: 'verify',
-                  //    initialValue: _isVerified,
-                  title: Text(
-                    'I verify that submitted details are true and correct',
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      //   _isVerified = value;
-                    });
-                  },
-                  checkColor: Colors.white,
-                  activeColor: Color(0xFF0056A2),
-                  validator: (value) {
-                    if (value != true) {
-                      return 'You must verify the details to proceed.';
-                    }
-                    return null;
-                  },
-                ),
-                // Submit and Reset Buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CupertinoButton(
-                        onPressed: _resetForm,
-                        child: const Text('Reset'),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 10.0,
-                        ),
-                        color: const Color(0xFF00AEE4),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: CupertinoButton(
-                        onPressed: _submitData,
-                        child: const Text('Submit'),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 10.0,
-                        ),
-                        color: const Color(0xFF0056A2),
-                      ),
-                    ),
-
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     print(_formData); // Print collected data to console
-                    //   }, child: null,
-                    // )
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
     //  },
@@ -355,8 +434,11 @@ class _ACFormPageState extends State<ACFormPage> {
   //================================formBuilderTextfields With Validations====================================================================================================
 
   Widget _buildTextField(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -388,8 +470,11 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _buildNotesTextField(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -417,8 +502,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _CompressormountedDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -426,6 +515,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           ['Indoor', 'Outdoor']
               .map(
@@ -448,8 +538,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _buildTextFieldLocationValidated(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -481,8 +575,11 @@ class _ACFormPageState extends State<ACFormPage> {
     String label,
     TextEditingController controller,
   ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       name: name,
+      style: TextStyle(color: customColors.mainTextColor),
 
       controller: controller,
       decoration: InputDecoration(labelText: label),
@@ -499,8 +596,11 @@ class _ACFormPageState extends State<ACFormPage> {
     String label,
     TextEditingController controller,
   ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       controller: controller,
       decoration: InputDecoration(labelText: label),
@@ -513,8 +613,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _buildTextFieldNonValidated(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -546,9 +650,13 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _buildNumValTextField(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       keyboardType: TextInputType.text,
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key]?.toString() ?? '',
 
       decoration: InputDecoration(
@@ -587,9 +695,13 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _buildPoNumberTextField(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       keyboardType: TextInputType.text,
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -605,8 +717,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _buildDatePicker(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDateTimePicker(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
@@ -621,8 +737,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _buildCustomDateField(String fieldName, String labelText) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return TextFormField(
       readOnly: true,
+      style: TextStyle(color: customColors.mainTextColor),
+
       controller: TextEditingController(text: _formData[fieldName] ?? ''),
       decoration: InputDecoration(labelText: labelText),
       // validator: (value) {
@@ -658,8 +778,12 @@ class _ACFormPageState extends State<ACFormPage> {
   //installation date picker
 
   Widget _buildTextFieldModelValidated(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderTextField(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -966,8 +1090,12 @@ class _ACFormPageState extends State<ACFormPage> {
   //brand dropdown
 
   Widget _BrandDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -975,7 +1103,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           brands
               .map(
@@ -1058,8 +1186,12 @@ class _ACFormPageState extends State<ACFormPage> {
   ];
 
   Widget _CustomCapacityDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -1067,6 +1199,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           Capacity.map(
             (Capacity) =>
@@ -1134,8 +1267,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _InstallationCategoryDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -1143,6 +1280,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           ['Wall Mount', 'Floor Stand', 'Ceiling Mount', 'Ceiling Cassette']
               .map(
@@ -1165,8 +1303,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _RefrigDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -1174,6 +1316,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           ['R410', 'R410A', 'R22', 'R32', 'R407C']
               .map(
@@ -1196,8 +1339,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _PowerSupplyDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -1205,6 +1352,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           ['1', '3']
               .map(
@@ -1227,8 +1375,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _ConditionDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -1236,6 +1388,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           ['Good', 'Faulty', 'Standby', 'Stopped', 'Waiting to dispose']
               .map(
@@ -1258,8 +1411,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _RemoteDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -1267,6 +1424,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           ['Yes', 'No']
               .map(
@@ -1289,8 +1447,12 @@ class _ACFormPageState extends State<ACFormPage> {
   }
 
   Widget _CategoryDropdown(String key, String label) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: _formData[key],
       decoration: InputDecoration(
         labelText: label,
@@ -1298,6 +1460,7 @@ class _ACFormPageState extends State<ACFormPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
       items:
           ['Inverter', 'Non Inverter']
               .map(

@@ -2096,7 +2096,7 @@ class _CompleteFormState extends State<CompleteForm> {
 
                     SizedBox(height: 10),
 
-                  //RTOM Entering
+                    //RTOM Entering
                     Stack(
                       alignment: Alignment.centerRight,
                       children: [
@@ -2393,7 +2393,8 @@ class _CompleteFormState extends State<CompleteForm> {
                             value: value,
                             child: Text(
                               value,
-                              style: TextStyle( // Added style for consistency
+                              style: TextStyle(
+                                // Added style for consistency
                                 fontSize: 12,
                                 color: customColors.mainTextColor,
                               ),
@@ -2417,12 +2418,15 @@ class _CompleteFormState extends State<CompleteForm> {
                             key: "SPD_Manu", // Dialog key
                             brandList: SPDBrands,
                             formData: updatedValues,
-                            formKey: "SPD_Manu", // Form field key in updatedValues
+                            formKey:
+                                "SPD_Manu", // Form field key in updatedValues
                           );
                         } else {
                           setState(() {
-                            updatedValues['SPD_Manu'] = val; // Update the central map
-                            _selectedValues['SPD_Manu'] = val!; // If you use this elsewhere
+                            updatedValues['SPD_Manu'] =
+                                val; // Update the central map
+                            _selectedValues['SPD_Manu'] =
+                                val!; // If you use this elsewhere
                             // selectedSPDManufacturer = val; // If you have a specific state variable
                             _eBrandHasError =
                                 !(_formKey.currentState?.fields['SPD_Manu']
