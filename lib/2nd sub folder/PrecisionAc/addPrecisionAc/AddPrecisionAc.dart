@@ -106,11 +106,11 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     // userName=userAccess.username!;
 
     return ChangeNotifierProvider(
-     create: (context) =>
-    // LocationProvider()
-    //..loadAllData(),
-     // child: Consumer<LocationProvider>(
-      //  builder: (context, locationProvider, child) {
+      create: (context) => null,
+    //  create: (context) => LocationProvider()..loadAllData(),
+    // child: Consumer<LocationProvider>(
+         child: Consumer<dynamic>(
+        builder: (context, locationProvider, child) {
           var _isVerified;
           return Scaffold(
             appBar: AppBar(
@@ -452,9 +452,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
               ),
             ),
           );
-        //},
-      );
-   // );
+        },
+      ),
+    );
   }
 
   Widget _buildGPSLatitudeField(

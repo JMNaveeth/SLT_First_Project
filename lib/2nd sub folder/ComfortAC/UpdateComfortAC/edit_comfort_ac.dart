@@ -1,7 +1,7 @@
 
-// import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
-// import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
-// import '../../../../../Widgets/LoadLocations/locationModel.dart';
+import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
+import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
+import '../../../../../Widgets/LoadLocations/locationModel.dart';
 import 'httpComfortACUpdatePost.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -324,7 +324,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                 buildIndoorUnitCard(),
                 buildOutdoorUnitCard(),
                 buildLatitudeLongitudeCard(),
-              //  buildConnectionCard(LocationProvider()),
+                buildConnectionCard(LocationProvider()),
                 CupertinoButton(
                   color: Colors.blue[900], // Dark blue color
                   child: const Text('Send to Approve',
@@ -699,14 +699,14 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   bool isAutoLocationEnabled = false;
 
   // Dummy GPSLocationFetcher class
-//  GPSLocationFetcher locationFetcher = GPSLocationFetcher();
+  GPSLocationFetcher locationFetcher = GPSLocationFetcher();
 
   Future<void> fetchLocation() async {
     if (isAutoLocationEnabled) {
-    //  final locationData = await locationFetcher.fetchLocation();
+      final locationData = await locationFetcher.fetchLocation();
       setState(() {
-      //  _connectionLatitudeController.text = locationData['latitude']!;
-      //  _connectionLongitudeController.text = locationData['longitude']!;
+        _connectionLatitudeController.text = locationData['latitude']!;
+        _connectionLongitudeController.text = locationData['longitude']!;
       });
     }
   }
@@ -766,9 +766,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     );
   }
 
-  Widget buildConnectionCard(
-    //LocationProvider
-     locationProvider) {
+  Widget buildConnectionCard(LocationProvider locationProvider) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -855,9 +853,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
 
   //dropdowns
   Widget _RegionDropdown(
-      String key, String label,
-      // LocationProvider
-        locationProvider) {
+      String key, String label, LocationProvider locationProvider) {
     if (locationProvider.isLoading || locationProvider.isCustomRegion) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -908,8 +904,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
 
   // Modify this method to immediately update the regions list and form data
   void _showAddNewValueDialog(BuildContext context, String key, String label,
-    //  LocationProvider
-       locationProvider) {
+      LocationProvider locationProvider) {
     final TextEditingController controller = TextEditingController();
 
     showDialog(
@@ -929,12 +924,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                 if (newValue.isNotEmpty) {
                   setState(() {
                     // Update the regions list
-                    locationProvider.regions.add(
-                      // Region(
-                      //   Region_ID: newValue,
-                      //   RegionName:
-                      //       newValue)
-                            ); // Adjust according to your Region model
+                    locationProvider.regions.add(Region(
+                        Region_ID: newValue,
+                        RegionName:
+                            newValue)); // Adjust according to your Region model
                     // Update the form data
                     formData[key] =
                         newValue; // Update the form data immediately

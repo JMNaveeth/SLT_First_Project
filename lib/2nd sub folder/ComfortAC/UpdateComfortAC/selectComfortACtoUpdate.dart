@@ -61,14 +61,11 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
 
   @override
   Widget build(BuildContext context) {
-  //  UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
-  //  userName=userAccess.username!;
+    // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
+    // userName=userAccess.username!;
     return ChangeNotifierProvider(
-      create: (context) => 
-      //LocationProvider()..loadAllData(),
-      child: Consumer
-      <LocationProvider>
-      (
+      create: (context) => LocationProvider()..loadAllData(),
+      child: Consumer<LocationProvider>(
           builder: (context, locationProvider, child) {
         return Scaffold(
           appBar: AppBar(

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:theme_update/2nd%20sub%20folder/ComfortAC/AddComfortAC/AddIndoorOutdoorUnits.dart';
+import 'package:theme_update/2nd%20sub%20folder/ComfortAC/UpdateComfortAC/selectComfortACtoUpdate.dart';
+import 'package:theme_update/2nd%20sub%20folder/PrecisionAc/UpdatePrecisionAc/updatePrecisionACList.dart';
+import 'package:theme_update/2nd%20sub%20folder/PrecisionAc/addPrecisionAc/AddPrecisionAc.dart';
 import 'package:theme_update/2nd%20sub%20folder/SPD%20Maitenance/AddACSPD/AddacSPD.dart';
 import 'package:theme_update/2nd%20sub%20folder/SPD%20Maitenance/AddDCSPD/AddDCSpd.dart';
 import 'package:theme_update/2nd%20sub%20folder/SPD%20Maitenance/UpdateSPD/UpdateSPDDetails.dart';
@@ -223,6 +227,54 @@ class secondsub_folder extends StatelessWidget {
                   );
                 },
                 child: const Text('Update Generator'),
+              ),
+               ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ACFormPage(),
+                    ),
+                  );
+                },
+                child: const Text('Add Comfort AC'),
+              ),
+               ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ComfortAcUpdate(),
+                    ),
+                  );
+                },
+                child: const Text('Update Comfort AC'),
+              ),
+               ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddPrecisionAcUnit(),
+                    ),
+                  );
+                },
+                child: const Text('add Precision Ac'),
+              ),
+               ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => updatePrecisionACList(),
+                    ),
+                  );
+                },
+                child: const Text('Update Precision Ac'),
               ),
             ],
           ),
