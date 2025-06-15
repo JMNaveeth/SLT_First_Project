@@ -118,7 +118,6 @@ class _ACFormPageState extends State<ACFormPage> {
         actions: [ThemeToggleButton()],
       ),
       body: Container(
-        // Add Container widget
         color: customColors.mainBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
