@@ -105,13 +105,11 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
     // userName=userAccess.username!;
 
-    return ChangeNotifierProvider(
-      create: (context) => null,
-    //  create: (context) => LocationProvider()..loadAllData(),
-    // child: Consumer<LocationProvider>(
-         child: Consumer<dynamic>(
-        builder: (context, locationProvider, child) {
-          var _isVerified;
+ //   return ChangeNotifierProvider(
+    //   create: (context) => LocationProvider()..loadAllData(),
+    //  child: Consumer<LocationProvider>(
+       // builder: (context, locationProvider, child) {
+      //    var _isVerified;
           return Scaffold(
             appBar: AppBar(
               title: Text(
@@ -136,28 +134,28 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                         ),
                       ),
 
-                      // _RegionDropdown('Region', 'Region',locationProvider),
-                      _RegionDropdown(
-                        'Region',
-                        'Region',
-                        locationProvider,
-                        _formData,
-                        context,
-                      ),
-                      _RtomDropdown(
-                        'RTOM',
-                        'RTOM',
-                        locationProvider,
-                        _formData,
-                        context,
-                      ),
-                      _StationDropdown(
-                        'Station',
-                        'Station',
-                        locationProvider,
-                        _formData,
-                        context,
-                      ),
+                      // // _RegionDropdown('Region', 'Region',locationProvider),
+                      // _RegionDropdown(
+                      //   'Region',
+                      //   'Region',
+                      //   locationProvider,
+                      //   _formData,
+                      //   context,
+                      // ),
+                      // _RtomDropdown(
+                      //   'RTOM',
+                      //   'RTOM',
+                      //   locationProvider,
+                      //   _formData,
+                      //   context,
+                      // ),
+                      // _StationDropdown(
+                      //   'Station',
+                      //   'Station',
+                      //   locationProvider,
+                      //   _formData,
+                      //   context,
+                      // ),
 
                       _buildTextField(
                         'building_id',
@@ -386,13 +384,13 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
                       FormBuilderCheckbox(
                         name: 'verify',
-                        initialValue: _isVerified,
+                      //  initialValue: _isVerified,
                         title: Text(
                           'I verify that submitted details are true and correct',
                         ),
                         onChanged: (value) {
                           setState(() {
-                            _isVerified = value;
+                          //  _isVerified = value;
                           });
                         },
 
@@ -452,9 +450,9 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
               ),
             ),
           );
-        },
-      ),
-    );
+    //    },
+     // ),
+   // );
   }
 
   Widget _buildGPSLatitudeField(

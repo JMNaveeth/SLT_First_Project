@@ -1,7 +1,6 @@
-
-import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
+//import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
 import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
-import '../../../../../Widgets/LoadLocations/locationModel.dart';
+//import '../../../../../Widgets/LoadLocations/locationModel.dart';
 import 'httpComfortACUpdatePost.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,6 @@ import 'dart:convert';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:provider/provider.dart';
-
 
 class EditComfortAcPage extends StatefulWidget {
   final Map<String, dynamic> indoorData;
@@ -110,134 +108,195 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
 
     // Initialize Indoor Unit Controllers
     _acIndoorIdController = TextEditingController(
-        text: widget.indoorData['ac_indoor_id']?.toString());
-    _statusController =
-        TextEditingController(text: widget.indoorData['status']?.toString());
-    _regionController =
-        TextEditingController(text: widget.indoorData['region'] ?? '');
-    _brandController =
-        TextEditingController(text: widget.indoorData['brand'] ?? '');
-    _modelController =
-        TextEditingController(text: widget.indoorData['model'] ?? '');
-    _capacityController =
-        TextEditingController(text: widget.indoorData['capacity'] ?? '');
-    _TypeController =
-        TextEditingController(text: widget.indoorData['Type'] ?? '');
+      text: widget.indoorData['ac_indoor_id']?.toString(),
+    );
+    _statusController = TextEditingController(
+      text: widget.indoorData['status']?.toString(),
+    );
+    _regionController = TextEditingController(
+      text: widget.indoorData['region'] ?? '',
+    );
+    _brandController = TextEditingController(
+      text: widget.indoorData['brand'] ?? '',
+    );
+    _modelController = TextEditingController(
+      text: widget.indoorData['model'] ?? '',
+    );
+    _capacityController = TextEditingController(
+      text: widget.indoorData['capacity'] ?? '',
+    );
+    _TypeController = TextEditingController(
+      text: widget.indoorData['Type'] ?? '',
+    );
     _installationTypeController = TextEditingController(
-        text: widget.indoorData['installation_type'] ?? '');
+      text: widget.indoorData['installation_type'] ?? '',
+    );
     _refrigerantTypeController = TextEditingController(
-        text: widget.indoorData['refrigerant_type'] ?? '');
-    _powerSupplyController =
-        TextEditingController(text: widget.indoorData['power_supply'] ?? '');
-    _categoryController =
-        TextEditingController(text: widget.indoorData['category'] ?? '');
-    serial_numberController =
-        TextEditingController(text: widget.indoorData['serial_number'] ?? '');
-    supplier_nameController =
-        TextEditingController(text: widget.indoorData['supplier_name'] ?? '');
-    po_numberController =
-        TextEditingController(text: widget.indoorData['po_number'] ?? '');
+      text: widget.indoorData['refrigerant_type'] ?? '',
+    );
+    _powerSupplyController = TextEditingController(
+      text: widget.indoorData['power_supply'] ?? '',
+    );
+    _categoryController = TextEditingController(
+      text: widget.indoorData['category'] ?? '',
+    );
+    serial_numberController = TextEditingController(
+      text: widget.indoorData['serial_number'] ?? '',
+    );
+    supplier_nameController = TextEditingController(
+      text: widget.indoorData['supplier_name'] ?? '',
+    );
+    po_numberController = TextEditingController(
+      text: widget.indoorData['po_number'] ?? '',
+    );
     remote_availableController = TextEditingController(
-        text: widget.indoorData['remote_available'] ?? '');
-    _notesController =
-        TextEditingController(text: widget.indoorData['notes'] ?? '');
-    _last_updatedController =
-        TextEditingController(text: widget.indoorData['last_updated'] ?? '');
+      text: widget.indoorData['remote_available'] ?? '',
+    );
+    _notesController = TextEditingController(
+      text: widget.indoorData['notes'] ?? '',
+    );
+    _last_updatedController = TextEditingController(
+      text: widget.indoorData['last_updated'] ?? '',
+    );
     _condition_ID_unitController = TextEditingController(
-        text: widget.indoorData['condition_ID_unit'] ?? '');
-    _DoMController =
-        TextEditingController(text: widget.indoorData['DoM'] ?? '');
+      text: widget.indoorData['condition_ID_unit'] ?? '',
+    );
+    _DoMController = TextEditingController(
+      text: widget.indoorData['DoM'] ?? '',
+    );
     _installation_dateController = TextEditingController(
-        text: widget.indoorData['installation_date'] ?? '');
+      text: widget.indoorData['installation_date'] ?? '',
+    );
     _warranty_expiry_dateController = TextEditingController(
-        text: widget.indoorData['warranty_expiry_date'] ?? '');
-    _QR_InController =
-        TextEditingController(text: widget.indoorData['QR_In'] ?? '');
-    _uploaded_byController =
-        TextEditingController(text: widget.indoorData['uploaded_by'] ?? '');
+      text: widget.indoorData['warranty_expiry_date'] ?? '',
+    );
+    _QR_InController = TextEditingController(
+      text: widget.indoorData['QR_In'] ?? '',
+    );
+    _uploaded_byController = TextEditingController(
+      text: widget.indoorData['uploaded_by'] ?? '',
+    );
 
     // Initialize Outdoor Unit Controllers
     _outdoorUnitIdController = TextEditingController(
-        text: widget.outdoorUnitData['ac_outdoor_id']?.toString());
-    _outdoorBrandController =
-        TextEditingController(text: widget.outdoorUnitData['brand'] ?? '');
-    _outdoorModelController =
-        TextEditingController(text: widget.outdoorUnitData['model'] ?? '');
-    _outdoorCapacityController =
-        TextEditingController(text: widget.outdoorUnitData['capacity'] ?? '');
+      text: widget.outdoorUnitData['ac_outdoor_id']?.toString(),
+    );
+    _outdoorBrandController = TextEditingController(
+      text: widget.outdoorUnitData['brand'] ?? '',
+    );
+    _outdoorModelController = TextEditingController(
+      text: widget.outdoorUnitData['model'] ?? '',
+    );
+    _outdoorCapacityController = TextEditingController(
+      text: widget.outdoorUnitData['capacity'] ?? '',
+    );
     _outdoorFanModelController = TextEditingController(
-        text: widget.outdoorUnitData['outdoor_fan_model'] ?? '');
+      text: widget.outdoorUnitData['outdoor_fan_model'] ?? '',
+    );
 
-    _outdoorstatusController =
-        TextEditingController(text: widget.outdoorUnitData['status'] ?? '');
+    _outdoorstatusController = TextEditingController(
+      text: widget.outdoorUnitData['status'] ?? '',
+    );
     _outdoorpower_supplyController = TextEditingController(
-        text: widget.outdoorUnitData['power_supply'] ?? '');
+      text: widget.outdoorUnitData['power_supply'] ?? '',
+    );
     _outdoorcompressor_mounted_withController = TextEditingController(
-        text: widget.outdoorUnitData['compressor_mounted_with'] ?? '');
+      text: widget.outdoorUnitData['compressor_mounted_with'] ?? '',
+    );
     _outdoorcompressor_capacityController = TextEditingController(
-        text: widget.outdoorUnitData['compressor_capacity'] ?? '');
+      text: widget.outdoorUnitData['compressor_capacity'] ?? '',
+    );
     _outdoorcompressor_brandController = TextEditingController(
-        text: widget.outdoorUnitData['compressor_brand'] ?? '');
+      text: widget.outdoorUnitData['compressor_brand'] ?? '',
+    );
     _outdoorcompressor_modelController = TextEditingController(
-        text: widget.outdoorUnitData['compressor_model'] ?? '');
+      text: widget.outdoorUnitData['compressor_model'] ?? '',
+    );
     _outdoorcompressor_serial_numberController = TextEditingController(
-        text: widget.outdoorUnitData['compressor_serial_number'] ?? '');
+      text: widget.outdoorUnitData['compressor_serial_number'] ?? '',
+    );
     _outdoorsupplier_nameController = TextEditingController(
-        text: widget.outdoorUnitData['supplier_name'] ?? '');
-    _outdoorpo_numberController =
-        TextEditingController(text: widget.outdoorUnitData['po_number'] ?? '');
-    _outdoornotesController =
-        TextEditingController(text: widget.outdoorUnitData['notes'] ?? '');
+      text: widget.outdoorUnitData['supplier_name'] ?? '',
+    );
+    _outdoorpo_numberController = TextEditingController(
+      text: widget.outdoorUnitData['po_number'] ?? '',
+    );
+    _outdoornotesController = TextEditingController(
+      text: widget.outdoorUnitData['notes'] ?? '',
+    );
     _outdoorcondition_OD_unitController = TextEditingController(
-        text: widget.outdoorUnitData['condition_OD_unit'] ?? '');
+      text: widget.outdoorUnitData['condition_OD_unit'] ?? '',
+    );
     _outdoorlast_updatedController = TextEditingController(
-        text: widget.outdoorUnitData['last_updated'] ?? '');
-    _outdoorDoMController =
-        TextEditingController(text: widget.outdoorUnitData['DoM'] ?? '');
+      text: widget.outdoorUnitData['last_updated'] ?? '',
+    );
+    _outdoorDoMController = TextEditingController(
+      text: widget.outdoorUnitData['DoM'] ?? '',
+    );
     _outdoorInstallation_DateController = TextEditingController(
-        text: widget.outdoorUnitData['Installation_Date'] ?? '');
+      text: widget.outdoorUnitData['Installation_Date'] ?? '',
+    );
     _outdoorwarranty_expiry_dateController = TextEditingController(
-        text: widget.outdoorUnitData['warranty_expiry_date'] ?? '');
-    _outdoorQR_OutController =
-        TextEditingController(text: widget.outdoorUnitData['QR_Out'] ?? '');
+      text: widget.outdoorUnitData['warranty_expiry_date'] ?? '',
+    );
+    _outdoorQR_OutController = TextEditingController(
+      text: widget.outdoorUnitData['QR_Out'] ?? '',
+    );
     _outdooruploaded_byController = TextEditingController(
-        text: widget.outdoorUnitData['uploaded_by'] ?? '');
+      text: widget.outdoorUnitData['uploaded_by'] ?? '',
+    );
 
     // Initialize Connection Controllers
     _connectionlog_idController = TextEditingController(
-        text: widget.connectionData['log_id']?.toString());
+      text: widget.connectionData['log_id']?.toString(),
+    );
     _connectionac_indoor_idController = TextEditingController(
-        text: widget.connectionData['ac_indoor_id'] ?? '');
+      text: widget.connectionData['ac_indoor_id'] ?? '',
+    );
     _connectionac_outdoor_idController = TextEditingController(
-        text: widget.connectionData['ac_outdoor_id'] ?? '');
+      text: widget.connectionData['ac_outdoor_id'] ?? '',
+    );
     _connectionNoAcPlantsController = TextEditingController(
-        text: widget.connectionData['no_AC_plants'] ?? '');
-    _connectionrtomController =
-        TextEditingController(text: widget.connectionData['rtom'] ?? '');
+      text: widget.connectionData['no_AC_plants'] ?? '',
+    );
+    _connectionrtomController = TextEditingController(
+      text: widget.connectionData['rtom'] ?? '',
+    );
 
-    _regionController =
-        TextEditingController(text: widget.connectionData['region'] ?? '');
+    _regionController = TextEditingController(
+      text: widget.connectionData['region'] ?? '',
+    );
 
-    _connectionstationController =
-        TextEditingController(text: widget.connectionData['station'] ?? '');
+    _connectionstationController = TextEditingController(
+      text: widget.connectionData['station'] ?? '',
+    );
     _connectionrtom_building_idController = TextEditingController(
-        text: widget.connectionData['rtom_building_id'] ?? '');
+      text: widget.connectionData['rtom_building_id'] ?? '',
+    );
     _connectionfloor_numberController = TextEditingController(
-        text: widget.connectionData['floor_number'] ?? '');
+      text: widget.connectionData['floor_number'] ?? '',
+    );
     _connectionoffice_numberController = TextEditingController(
-        text: widget.connectionData['office_number'] ?? '');
-    _connectionlocationController =
-        TextEditingController(text: widget.connectionData['location'] ?? '');
-    _connectionQR_locController =
-        TextEditingController(text: widget.connectionData['QR_loc'] ?? '');
-    _connectionLongitudeController =
-        TextEditingController(text: widget.connectionData['Longitude'] ?? '');
-    _connectionLatitudeController =
-        TextEditingController(text: widget.connectionData['Latitude'] ?? '');
+      text: widget.connectionData['office_number'] ?? '',
+    );
+    _connectionlocationController = TextEditingController(
+      text: widget.connectionData['location'] ?? '',
+    );
+    _connectionQR_locController = TextEditingController(
+      text: widget.connectionData['QR_loc'] ?? '',
+    );
+    _connectionLongitudeController = TextEditingController(
+      text: widget.connectionData['Longitude'] ?? '',
+    );
+    _connectionLatitudeController = TextEditingController(
+      text: widget.connectionData['Latitude'] ?? '',
+    );
     _connectionlast_updatedController = TextEditingController(
-        text: widget.connectionData['last_updated'] ?? '');
-    _connectionuploaded_byController =
-        TextEditingController(text: widget.connectionData['uploaded_by'] ?? '');
+      text: widget.connectionData['last_updated'] ?? '',
+    );
+    _connectionuploaded_byController = TextEditingController(
+      text: widget.connectionData['uploaded_by'] ?? '',
+    );
   }
 
   @override
@@ -311,9 +370,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Comfort AC'),
-      ),
+      appBar: AppBar(title: const Text('Edit Comfort AC')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -324,12 +381,13 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                 buildIndoorUnitCard(),
                 buildOutdoorUnitCard(),
                 buildLatitudeLongitudeCard(),
-                buildConnectionCard(LocationProvider()),
+               // buildConnectionCard(LocationProvider()),
                 CupertinoButton(
                   color: Colors.blue[900], // Dark blue color
-                  child: const Text('Send to Approve',
-                      style:
-                          TextStyle(color: Colors.white)), // White text color
+                  child: const Text(
+                    'Send to Approve',
+                    style: TextStyle(color: Colors.white),
+                  ), // White text color
                   onPressed: () {
                     // Collect data and navigate to the post page
                     Map<String, dynamic> formDataList = {
@@ -444,8 +502,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ComfortTestUpdatePost(
-                            formDataList: formDataList, user: widget.user),
+                        builder:
+                            (context) => ComfortTestUpdatePost(
+                              formDataList: formDataList,
+                              user: widget.user,
+                            ),
                       ),
                     );
                   },
@@ -462,108 +523,164 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         decoration: BoxDecoration(
           // border: Border.all(color: Colors.blue, width: 2),
           // Thin blue accent border
-          borderRadius:
-              BorderRadius.circular(12), // Match the Card's border radius
+          borderRadius: BorderRadius.circular(
+            12,
+          ), // Match the Card's border radius
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Edit Indoor Units',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                'Edit Indoor Units',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               ListTile(
-                  title: _buildUneditableFormField('Indoor_Unit_Id',
-                      'Indoor_Unit_Id', _acIndoorIdController.text)),
+                title: _buildUneditableFormField(
+                  'Indoor_Unit_Id',
+                  'Indoor_Unit_Id',
+                  _acIndoorIdController.text,
+                ),
+              ),
               ListTile(
-                  title:
-                      _StatusDropdown('status', 'status', _statusController)),
+                title: _StatusDropdown('status', 'status', _statusController),
+              ),
               ListTile(
-                  title: _BrandDropdown('brand', 'brand', _brandController)),
+                title: _BrandDropdown('brand', 'brand', _brandController),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _modelController,
-                      decoration: const InputDecoration(labelText: 'Model'))),
+                title: TextFormField(
+                  controller: _modelController,
+                  decoration: const InputDecoration(labelText: 'Model'),
+                ),
+              ),
               ListTile(
-                  title: _CustomCapacityDropdown(
-                      'capacity', 'capacity', _capacityController)),
+                title: _CustomCapacityDropdown(
+                  'capacity',
+                  'capacity',
+                  _capacityController,
+                ),
+              ),
               ListTile(
-                  title: _InstallationCategoryDropdown('InstallationType',
-                      'InstallationType', _installationTypeController)),
+                title: _InstallationCategoryDropdown(
+                  'InstallationType',
+                  'InstallationType',
+                  _installationTypeController,
+                ),
+              ),
               ListTile(
-                  title: _CustomRefrigTypeDropdown('Refrigerant_type',
-                      'Refrigerant_type', _refrigerantTypeController)),
+                title: _CustomRefrigTypeDropdown(
+                  'Refrigerant_type',
+                  'Refrigerant_type',
+                  _refrigerantTypeController,
+                ),
+              ),
               ListTile(
-                  title: _CustomPowerSupplyDropdown(
-                      'power_supply', 'power_supply', _powerSupplyController)),
+                title: _CustomPowerSupplyDropdown(
+                  'power_supply',
+                  'power_supply',
+                  _powerSupplyController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _TypeController,
-                      decoration: const InputDecoration(labelText: 'Type'))),
+                title: TextFormField(
+                  controller: _TypeController,
+                  decoration: const InputDecoration(labelText: 'Type'),
+                ),
+              ),
               ListTile(
-                  title: _CustomCategoryDropdown(
-                      'category', 'category', _categoryController)),
+                title: _CustomCategoryDropdown(
+                  'category',
+                  'category',
+                  _categoryController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: serial_numberController,
-                      decoration:
-                          const InputDecoration(labelText: 'serial_number'))),
+                title: TextFormField(
+                  controller: serial_numberController,
+                  decoration: const InputDecoration(labelText: 'serial_number'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: supplier_nameController,
-                      decoration:
-                          const InputDecoration(labelText: 'supplier_name'))),
+                title: TextFormField(
+                  controller: supplier_nameController,
+                  decoration: const InputDecoration(labelText: 'supplier_name'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: po_numberController,
-                      decoration:
-                          const InputDecoration(labelText: 'po_number'))),
+                title: TextFormField(
+                  controller: po_numberController,
+                  decoration: const InputDecoration(labelText: 'po_number'),
+                ),
+              ),
               ListTile(
-                  title: _CustomRemoteDropdown('remote_available',
-                      'remote_available', remote_availableController)),
+                title: _CustomRemoteDropdown(
+                  'remote_available',
+                  'remote_available',
+                  remote_availableController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _notesController,
-                      decoration: const InputDecoration(labelText: 'notes'))),
+                title: TextFormField(
+                  controller: _notesController,
+                  decoration: const InputDecoration(labelText: 'notes'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _last_updatedController,
-                      decoration:
-                          const InputDecoration(labelText: 'last_updated'))),
+                title: TextFormField(
+                  controller: _last_updatedController,
+                  decoration: const InputDecoration(labelText: 'last_updated'),
+                ),
+              ),
               ListTile(
-                  title: _CustomConditionDropdown('condition_ID_Unit',
-                      'condition_ID_Unit', _condition_ID_unitController)),
+                title: _CustomConditionDropdown(
+                  'condition_ID_Unit',
+                  'condition_ID_Unit',
+                  _condition_ID_unitController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _DoMController,
-                      decoration: const InputDecoration(labelText: 'DoM'))),
+                title: TextFormField(
+                  controller: _DoMController,
+                  decoration: const InputDecoration(labelText: 'DoM'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _installation_dateController,
-                      decoration: const InputDecoration(
-                          labelText: 'installation_date'))),
+                title: TextFormField(
+                  controller: _installation_dateController,
+                  decoration: const InputDecoration(
+                    labelText: 'installation_date',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _warranty_expiry_dateController,
-                      decoration: const InputDecoration(
-                          labelText: 'warranty_expiry_date'))),
+                title: TextFormField(
+                  controller: _warranty_expiry_dateController,
+                  decoration: const InputDecoration(
+                    labelText: 'warranty_expiry_date',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _QR_InController,
-                      decoration:
-                          const InputDecoration(labelText: 'Indoor Tag Code'))),
+                title: TextFormField(
+                  controller: _QR_InController,
+                  decoration: const InputDecoration(
+                    labelText: 'Indoor Tag Code',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _uploaded_byController,
-                      decoration:
-                          const InputDecoration(labelText: 'uploaded_by'))),
+                title: TextFormField(
+                  controller: _uploaded_byController,
+                  decoration: const InputDecoration(labelText: 'uploaded_by'),
+                ),
+              ),
             ],
           ),
         ),
@@ -575,120 +692,171 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         decoration: BoxDecoration(
           // border: Border.all(color: Color(0xFF2BDC27), width: 2),
           // Thin blue accent border
-          borderRadius:
-              BorderRadius.circular(12), // Match the Card's border radius
+          borderRadius: BorderRadius.circular(
+            12,
+          ), // Match the Card's border radius
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Edit Outdoor Units',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                'Edit Outdoor Units',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               ListTile(
-                  title: _buildUneditableFormField('outdoor_unit_id',
-                      'Outdoor unit id', _outdoorUnitIdController.text)),
+                title: _buildUneditableFormField(
+                  'outdoor_unit_id',
+                  'Outdoor unit id',
+                  _outdoorUnitIdController.text,
+                ),
+              ),
               ListTile(
-                  title: _BrandDropdown(
-                      'Brand', 'Brand', _outdoorBrandController)),
+                title: _BrandDropdown(
+                  'Brand',
+                  'Brand',
+                  _outdoorBrandController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorModelController,
-                      decoration: const InputDecoration(labelText: 'Model'))),
+                title: TextFormField(
+                  controller: _outdoorModelController,
+                  decoration: const InputDecoration(labelText: 'Model'),
+                ),
+              ),
               ListTile(
-                  title: _CustomCapacityDropdown(
-                      'Capacity', 'Capacity', _outdoorCapacityController)),
+                title: _CustomCapacityDropdown(
+                  'Capacity',
+                  'Capacity',
+                  _outdoorCapacityController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorFanModelController,
-                      decoration: const InputDecoration(
-                          labelText: 'Outdoor Fan Model'))),
+                title: TextFormField(
+                  controller: _outdoorFanModelController,
+                  decoration: const InputDecoration(
+                    labelText: 'Outdoor Fan Model',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: _StatusDropdown(
-                'status',
-                'status',
-                _statusController,
-              )),
+                title: _StatusDropdown('status', 'status', _statusController),
+              ),
               ListTile(
-                  title: _CustomPowerSupplyDropdown('power_supply',
-                      'power_supply', _outdoorpower_supplyController)),
+                title: _CustomPowerSupplyDropdown(
+                  'power_supply',
+                  'power_supply',
+                  _outdoorpower_supplyController,
+                ),
+              ),
               ListTile(
-                  title: _CustomCompressorMountDropdown(
-                      'compressor_mounted_with',
-                      'compressor_mounted_with',
-                      _outdoorcompressor_mounted_withController)),
+                title: _CustomCompressorMountDropdown(
+                  'compressor_mounted_with',
+                  'compressor_mounted_with',
+                  _outdoorcompressor_mounted_withController,
+                ),
+              ),
               ListTile(
-                  title: _CustomCapacityDropdown(
-                      'compressor_capacity',
-                      'compressor_capacity',
-                      _outdoorcompressor_capacityController)),
+                title: _CustomCapacityDropdown(
+                  'compressor_capacity',
+                  'compressor_capacity',
+                  _outdoorcompressor_capacityController,
+                ),
+              ),
               ListTile(
-                  title: _BrandDropdown('compressor_brand', 'compressor_brand',
-                      _outdoorBrandController)),
+                title: _BrandDropdown(
+                  'compressor_brand',
+                  'compressor_brand',
+                  _outdoorBrandController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorcompressor_modelController,
-                      decoration: const InputDecoration(
-                          labelText: 'compressor_model'))),
+                title: TextFormField(
+                  controller: _outdoorcompressor_modelController,
+                  decoration: const InputDecoration(
+                    labelText: 'compressor_model',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorcompressor_serial_numberController,
-                      decoration: const InputDecoration(
-                          labelText: 'compressor_serial_number'))),
+                title: TextFormField(
+                  controller: _outdoorcompressor_serial_numberController,
+                  decoration: const InputDecoration(
+                    labelText: 'compressor_serial_number',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorsupplier_nameController,
-                      decoration:
-                          const InputDecoration(labelText: 'Supplier_Name'))),
+                title: TextFormField(
+                  controller: _outdoorsupplier_nameController,
+                  decoration: const InputDecoration(labelText: 'Supplier_Name'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorpo_numberController,
-                      decoration:
-                          const InputDecoration(labelText: 'po_number'))),
+                title: TextFormField(
+                  controller: _outdoorpo_numberController,
+                  decoration: const InputDecoration(labelText: 'po_number'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoornotesController,
-                      decoration: const InputDecoration(labelText: 'notes'))),
+                title: TextFormField(
+                  controller: _outdoornotesController,
+                  decoration: const InputDecoration(labelText: 'notes'),
+                ),
+              ),
               ListTile(
-                  title: _CustomConditionDropdown(
-                      'condition_OD_Unit',
-                      'condition_OD_Unit',
-                      _outdoorcondition_OD_unitController)),
+                title: _CustomConditionDropdown(
+                  'condition_OD_Unit',
+                  'condition_OD_Unit',
+                  _outdoorcondition_OD_unitController,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorlast_updatedController,
-                      decoration:
-                          const InputDecoration(labelText: 'last_updated'))),
+                title: TextFormField(
+                  controller: _outdoorlast_updatedController,
+                  decoration: const InputDecoration(labelText: 'last_updated'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorDoMController,
-                      decoration: const InputDecoration(labelText: 'DoM'))),
+                title: TextFormField(
+                  controller: _outdoorDoMController,
+                  decoration: const InputDecoration(labelText: 'DoM'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorInstallation_DateController,
-                      decoration: const InputDecoration(
-                          labelText: 'Installation_Date'))),
+                title: TextFormField(
+                  controller: _outdoorInstallation_DateController,
+                  decoration: const InputDecoration(
+                    labelText: 'Installation_Date',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorwarranty_expiry_dateController,
-                      decoration: const InputDecoration(
-                          labelText: 'Warranty_Expire_Date'))),
+                title: TextFormField(
+                  controller: _outdoorwarranty_expiry_dateController,
+                  decoration: const InputDecoration(
+                    labelText: 'Warranty_Expire_Date',
+                  ),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdoorQR_OutController,
-                      decoration: const InputDecoration(labelText: 'QR_Out'))),
+                title: TextFormField(
+                  controller: _outdoorQR_OutController,
+                  decoration: const InputDecoration(labelText: 'QR_Out'),
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _outdooruploaded_byController,
-                      decoration:
-                          const InputDecoration(labelText: 'uploaded_by'))),
+                title: TextFormField(
+                  controller: _outdooruploaded_byController,
+                  decoration: const InputDecoration(labelText: 'uploaded_by'),
+                ),
+              ),
             ],
           ),
         ),
@@ -699,14 +867,14 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   bool isAutoLocationEnabled = false;
 
   // Dummy GPSLocationFetcher class
-  GPSLocationFetcher locationFetcher = GPSLocationFetcher();
+ // GPSLocationFetcher locationFetcher = GPSLocationFetcher();
 
   Future<void> fetchLocation() async {
     if (isAutoLocationEnabled) {
-      final locationData = await locationFetcher.fetchLocation();
+    //  final locationData = await locationFetcher.fetchLocation();
       setState(() {
-        _connectionLatitudeController.text = locationData['latitude']!;
-        _connectionLongitudeController.text = locationData['longitude']!;
+        // _connectionLatitudeController.text = locationData['latitude']!;
+        // _connectionLongitudeController.text = locationData['longitude']!;
       });
     }
   }
@@ -715,9 +883,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -766,84 +932,131 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     );
   }
 
-  Widget buildConnectionCard(LocationProvider locationProvider) {
+  Widget buildConnectionCard(
+    //LocationProvider 
+  locationProvider) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         decoration: BoxDecoration(
           // border: Border.all(color: Color(0xFF732BE0), width: 2),
           // Thin blue accent border
-          borderRadius:
-              BorderRadius.circular(12), // Match the Card's border radius
+          borderRadius: BorderRadius.circular(
+            12,
+          ), // Match the Card's border radius
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Edit Connection Details',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                'Edit Connection Details',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               ListTile(
-                  title: _buildUneditableFormField(
-                      'log_Id', 'log_Id', _connectionlog_idController.text)),
+                title: _buildUneditableFormField(
+                  'log_Id',
+                  'log_Id',
+                  _connectionlog_idController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField('ac_indoor_id',
-                      'ac_indoor_id', _connectionac_indoor_idController.text)),
+                title: _buildUneditableFormField(
+                  'ac_indoor_id',
+                  'ac_indoor_id',
+                  _connectionac_indoor_idController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField(
-                      'ac_outdoor_id',
-                      'ac_outdoor_id',
-                      _connectionac_outdoor_idController.text)),
+                title: _buildUneditableFormField(
+                  'ac_outdoor_id',
+                  'ac_outdoor_id',
+                  _connectionac_outdoor_idController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField(
-                'region',
-                'Region',
-                _regionController.text,
-              )),
+                title: _buildUneditableFormField(
+                  'region',
+                  'Region',
+                  _regionController.text,
+                ),
+              ),
 
               ListTile(
-                  title: _buildUneditableFormField(
-                      'RTOM', 'rtom', _connectionrtomController.text)),
+                title: _buildUneditableFormField(
+                  'RTOM',
+                  'rtom',
+                  _connectionrtomController.text,
+                ),
+              ),
 
               ListTile(
-                  title: _buildUneditableFormField(
-                      'station', 'station', _connectionstationController.text)),
+                title: _buildUneditableFormField(
+                  'station',
+                  'station',
+                  _connectionstationController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField(
-                      'rtom_building_id',
-                      'rtom_building_id',
-                      _connectionrtom_building_idController.text)),
+                title: _buildUneditableFormField(
+                  'rtom_building_id',
+                  'rtom_building_id',
+                  _connectionrtom_building_idController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField('floor_number',
-                      'floor_number', _connectionfloor_numberController.text)),
+                title: _buildUneditableFormField(
+                  'floor_number',
+                  'floor_number',
+                  _connectionfloor_numberController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField(
-                      'office_number',
-                      'office_number',
-                      _connectionoffice_numberController.text)),
+                title: _buildUneditableFormField(
+                  'office_number',
+                  'office_number',
+                  _connectionoffice_numberController.text,
+                ),
+              ),
               ListTile(
-                  title: TextFormField(
-                      controller: _connectionlocationController,
-                      decoration:
-                          const InputDecoration(labelText: 'location'))),
+                title: TextFormField(
+                  controller: _connectionlocationController,
+                  decoration: const InputDecoration(labelText: 'location'),
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField('no_AC_plants',
-                      'no_AC_plants', _connectionNoAcPlantsController.text)),
+                title: _buildUneditableFormField(
+                  'no_AC_plants',
+                  'no_AC_plants',
+                  _connectionNoAcPlantsController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField(
-                      'QR_loc', 'QR_loc', _connectionQR_locController.text)),
+                title: _buildUneditableFormField(
+                  'QR_loc',
+                  'QR_loc',
+                  _connectionQR_locController.text,
+                ),
+              ),
               // ListTile(title: TextFormField(controller: _connectionLongitudeController, decoration: InputDecoration(labelText: 'Longitude'))),
               // ListTile(title: TextFormField(controller: _connectionLatitudeController, decoration: InputDecoration(labelText: 'Latitude'))),
               ListTile(
-                  title: _buildUneditableFormField('last_updated',
-                      'last_updated', _connectionlast_updatedController.text)),
+                title: _buildUneditableFormField(
+                  'last_updated',
+                  'last_updated',
+                  _connectionlast_updatedController.text,
+                ),
+              ),
               ListTile(
-                  title: _buildUneditableFormField('uploaded_by', 'uploaded_by',
-                      _connectionuploaded_byController.text)),
+                title: _buildUneditableFormField(
+                  'uploaded_by',
+                  'uploaded_by',
+                  _connectionuploaded_byController.text,
+                ),
+              ),
             ],
           ),
         ),
@@ -853,7 +1066,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
 
   //dropdowns
   Widget _RegionDropdown(
-      String key, String label, LocationProvider locationProvider) {
+    String key,
+    String label,
+  //  LocationProvider
+     locationProvider,
+  ) {
     if (locationProvider.isLoading || locationProvider.isCustomRegion) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -868,28 +1085,29 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         ),
       ),
       items: [
-        ...locationProvider.regions.map((region) => DropdownMenuItem<String>(
-              value: region.Region_ID,
-              child: Text(region.RegionName),
-            )),
-        const DropdownMenuItem<String>(
-          value: 'Other',
-          child: Text('Other'),
+        ...locationProvider.regions.map(
+          (region) => DropdownMenuItem<String>(
+            value: region.Region_ID,
+            child: Text(region.RegionName),
+          ),
         ),
+        const DropdownMenuItem<String>(value: 'Other', child: Text('Other')),
       ],
-      validator: (value) =>
-          value == null || value.isEmpty ? 'Please select $label' : null,
+      validator:
+          (value) =>
+              value == null || value.isEmpty ? 'Please select $label' : null,
       onChanged: (value) {
         if (value == 'Other') {
           _showAddNewValueDialog(context, key, label, locationProvider);
         } else {
           // Get the region name based on selected Region_ID
-          String? selectedRegionName = locationProvider.regions
-              .firstWhere(
-                (region) => region.Region_ID == value,
-                // orElse: () => null,
-              )
-              .RegionName;
+          String? selectedRegionName =
+              locationProvider.regions
+                  .firstWhere(
+                    (region) => region.Region_ID == value,
+                    // orElse: () => null,
+                  )
+                  .RegionName;
 
           setState(() {
             // Store the region name in the formData
@@ -903,8 +1121,13 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   }
 
   // Modify this method to immediately update the regions list and form data
-  void _showAddNewValueDialog(BuildContext context, String key, String label,
-      LocationProvider locationProvider) {
+  void _showAddNewValueDialog(
+    BuildContext context,
+    String key,
+    String label,
+ //   LocationProvider
+     locationProvider,
+  ) {
     final TextEditingController controller = TextEditingController();
 
     showDialog(
@@ -924,10 +1147,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                 if (newValue.isNotEmpty) {
                   setState(() {
                     // Update the regions list
-                    locationProvider.regions.add(Region(
-                        Region_ID: newValue,
-                        RegionName:
-                            newValue)); // Adjust according to your Region model
+                    locationProvider.regions.add(
+                     // Region
+                      (Region_ID: newValue, RegionName: newValue),
+                    ); // Adjust according to your Region model
                     // Update the form data
                     formData[key] =
                         newValue; // Update the form data immediately
@@ -977,23 +1200,29 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     'WPSE',
     'WPSW',
     'UVA',
-    'Other'
+    'Other',
   ];
 
   Widget _RegionDropdown2(
-      String key, String label, TextEditingController regionController) {
+    String key,
+    String label,
+    TextEditingController regionController,
+  ) {
     // Check if the manufacturer value from widget.acUnit is not in the list
     String RegionFromAcUnit = _regionController.text;
     if (RegionFromAcUnit.isNotEmpty &&
         !Regions.contains(RegionFromAcUnit) &&
         RegionFromAcUnit != 'Other') {
       Regions.insert(
-          Regions.length - 1, RegionFromAcUnit); // Insert it before 'Other'
+        Regions.length - 1,
+        RegionFromAcUnit,
+      ); // Insert it before 'Other'
     }
 
     return FormBuilderDropdown(
       name: key,
-      initialValue: formData[key] ??
+      initialValue:
+          formData[key] ??
           RegionFromAcUnit, // Set initial value from widget.acUnit['Manufacturer']
       decoration: InputDecoration(
         labelText: label,
@@ -1001,10 +1230,13 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: Regions.map((Manufacturer) => DropdownMenuItem(
-            value: Manufacturer,
-            child: Text(Manufacturer),
-          )).toList(),
+      items:
+          Regions.map(
+            (Manufacturer) => DropdownMenuItem(
+              value: Manufacturer,
+              child: Text(Manufacturer),
+            ),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1037,9 +1269,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             title: const Text("Add Region"),
             content: TextField(
               controller: customRegionController,
-              decoration: const InputDecoration(
-                hintText: "Enter Region name",
-              ),
+              decoration: const InputDecoration(hintText: "Enter Region name"),
               autofocus: true, // Automatically focus on the input field
             ),
             actions: <Widget>[
@@ -1134,18 +1364,22 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     "SMW5",
     "SMW6",
     "Pitipana",
-    "Other"
+    "Other",
   ];
 
   //brand dropdown
 
   Widget _RTOMDropdown(
-      String key, String label, TextEditingController brandController) {
+    String key,
+    String label,
+    TextEditingController brandController,
+  ) {
     String RtomsFromAcUnit = _connectionrtomController.text;
 
     if (RtomsFromAcUnit.isNotEmpty && !Rtoms.contains(RtomsFromAcUnit)) {
       Rtoms.add(
-          RtomsFromAcUnit); // Add the status if it's not already in the list
+        RtomsFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -1158,8 +1392,9 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         ),
       ),
       items:
-          Rtoms.map((RTOM) => DropdownMenuItem(value: RTOM, child: Text(RTOM)))
-              .toList(),
+          Rtoms.map(
+            (RTOM) => DropdownMenuItem(value: RTOM, child: Text(RTOM)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1429,18 +1664,22 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     "CDMA TOWER MEEKANUWA",
     "RSU (PUDUKADUWA)",
     "EXCHANGE (LO) RANGIRI DMB",
-    "Other"
+    "Other",
   ];
 
   //brand dropdown
 
   Widget _StationDropdown(
-      String key, String label, TextEditingController brandController) {
+    String key,
+    String label,
+    TextEditingController brandController,
+  ) {
     String StationFromAcUnit = _connectionstationController.text;
 
     if (StationFromAcUnit.isNotEmpty && !Stations.contains(StationFromAcUnit)) {
       Stations.add(
-          StationFromAcUnit); // Add the status if it's not already in the list
+        StationFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -1452,8 +1691,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: Stations.map((Stations) =>
-          DropdownMenuItem(value: Stations, child: Text(Stations))).toList(),
+      items:
+          Stations.map(
+            (Stations) =>
+                DropdownMenuItem(value: Stations, child: Text(Stations)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1523,22 +1765,27 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     'StandBy',
     'Running',
     'Stopped',
-    'Waiting to dispose'
+    'Waiting to dispose',
   ];
 
   Widget _StatusDropdown(
-      String key, String label, TextEditingController statusController) {
+    String key,
+    String label,
+    TextEditingController statusController,
+  ) {
     // Get the status value from widget.acUnit and add it to the list if not already present
     String statusFromAcUnit = _statusController.text;
 
     if (statusFromAcUnit.isNotEmpty && !statuses.contains(statusFromAcUnit)) {
       statuses.add(
-          statusFromAcUnit); // Add the status if it's not already in the list
+        statusFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
       name: key,
-      initialValue: formData[key] ??
+      initialValue:
+          formData[key] ??
           statusFromAcUnit, // Set initial value from widget.acUnit['Status']
       decoration: InputDecoration(
         labelText: label,
@@ -1546,12 +1793,13 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: statuses
-          .map((status) => DropdownMenuItem(
-                value: status,
-                child: Text(status),
-              ))
-          .toList(),
+      items:
+          statuses
+              .map(
+                (status) =>
+                    DropdownMenuItem(value: status, child: Text(status)),
+              )
+              .toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1573,18 +1821,22 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     'Panasonic',
     'York',
     'Hitachi',
-    'Other'
+    'Other',
   ];
 
   //brand dropdown
 
   Widget _BrandDropdown(
-      String key, String label, TextEditingController brandController) {
+    String key,
+    String label,
+    TextEditingController brandController,
+  ) {
     String brandsFromAcUnit = _brandController.text;
 
     if (brandsFromAcUnit.isNotEmpty && !brands.contains(brandsFromAcUnit)) {
       brands.add(
-          brandsFromAcUnit); // Add the status if it's not already in the list
+        brandsFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -1596,9 +1848,12 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: brands
-          .map((brand) => DropdownMenuItem(value: brand, child: Text(brand)))
-          .toList(),
+      items:
+          brands
+              .map(
+                (brand) => DropdownMenuItem(value: brand, child: Text(brand)),
+              )
+              .toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1667,23 +1922,33 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   //capacity dropdown dropdown
 
   List<String> Capacity = [
-    '0.75' 'TR',
-    '1.00' 'TR',
-    '1.50' 'TR',
-    '2.00' 'TR',
-    '2.50' 'TR',
-    '3.00' 'TR',
-    'Other'
+    '0.75'
+        'TR',
+    '1.00'
+        'TR',
+    '1.50'
+        'TR',
+    '2.00'
+        'TR',
+    '2.50'
+        'TR',
+    '3.00'
+        'TR',
+    'Other',
   ];
 
   Widget _CustomCapacityDropdown(
-      String key, String label, TextEditingController capacityController) {
+    String key,
+    String label,
+    TextEditingController capacityController,
+  ) {
     String CapacityFromAcUnit = _capacityController.text;
 
     if (CapacityFromAcUnit.isNotEmpty &&
         !Capacity.contains(CapacityFromAcUnit)) {
       Capacity.add(
-          CapacityFromAcUnit); // Add the status if it's not already in the list
+        CapacityFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -1695,8 +1960,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: Capacity.map((Capacity) =>
-          DropdownMenuItem(value: Capacity, child: Text(Capacity))).toList(),
+      items:
+          Capacity.map(
+            (Capacity) =>
+                DropdownMenuItem(value: Capacity, child: Text(Capacity)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1765,11 +2033,14 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     'Floor Stand',
     'Ceiling Mount',
     'Ceiling Cassette',
-    'Other'
+    'Other',
   ];
 
-  Widget _InstallationCategoryDropdown(String key, String label,
-      TextEditingController installationTypeController) {
+  Widget _InstallationCategoryDropdown(
+    String key,
+    String label,
+    TextEditingController installationTypeController,
+  ) {
     String ITCFromAcUnit = _installationTypeController.text;
 
     if (ITCFromAcUnit.isNotEmpty && !ITC.contains(ITCFromAcUnit)) {
@@ -1785,10 +2056,13 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: ITC
-          .map((InsTypeC) =>
-              DropdownMenuItem(value: InsTypeC, child: Text(InsTypeC)))
-          .toList(),
+      items:
+          ITC
+              .map(
+                (InsTypeC) =>
+                    DropdownMenuItem(value: InsTypeC, child: Text(InsTypeC)),
+              )
+              .toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1855,13 +2129,17 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   List<String> RefrigType = ['R410', 'R410A', 'R22', 'R32', 'R407C', 'Other'];
 
   Widget _CustomRefrigTypeDropdown(
-      String key, String label, TextEditingController capacityController) {
+    String key,
+    String label,
+    TextEditingController capacityController,
+  ) {
     String RefrigTypeFromAcUnit = _refrigerantTypeController.text;
 
     if (RefrigTypeFromAcUnit.isNotEmpty &&
         !RefrigType.contains(RefrigTypeFromAcUnit)) {
       RefrigType.add(
-          RefrigTypeFromAcUnit); // Add the status if it's not already in the list
+        RefrigTypeFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -1873,9 +2151,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: RefrigType.map((refrigType) =>
-              DropdownMenuItem(value: refrigType, child: Text(refrigType)))
-          .toList(),
+      items:
+          RefrigType.map(
+            (refrigType) =>
+                DropdownMenuItem(value: refrigType, child: Text(refrigType)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1942,13 +2222,17 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   List<String> PowerSupply = ['1P', '3P', 'Other'];
 
   Widget _CustomPowerSupplyDropdown(
-      String key, String label, TextEditingController capacityController) {
+    String key,
+    String label,
+    TextEditingController capacityController,
+  ) {
     String PowerSupplyFromAcUnit = _powerSupplyController.text;
 
     if (PowerSupplyFromAcUnit.isNotEmpty &&
         !PowerSupply.contains(PowerSupplyFromAcUnit)) {
       PowerSupply.add(
-          PowerSupplyFromAcUnit); // Add the status if it's not already in the list
+        PowerSupplyFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -1960,9 +2244,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: PowerSupply.map((powerSupply) =>
-              DropdownMenuItem(value: powerSupply, child: Text(powerSupply)))
-          .toList(),
+      items:
+          PowerSupply.map(
+            (powerSupply) =>
+                DropdownMenuItem(value: powerSupply, child: Text(powerSupply)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -1995,9 +2281,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             title: const Text("Add Custom Power Supply"),
             content: TextField(
               controller: customPowerSupplyController,
-              decoration: const InputDecoration(
-                hintText: "Enter Power Supply",
-              ),
+              decoration: const InputDecoration(hintText: "Enter Power Supply"),
             ),
             actions: <Widget>[
               TextButton(
@@ -2014,7 +2298,9 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   if (customCapacity.isNotEmpty) {
                     setState(() {
                       PowerSupply.insert(
-                          PowerSupply.length - 1, customCapacity);
+                        PowerSupply.length - 1,
+                        customCapacity,
+                      );
                       formData[key] = customCapacity;
                     });
                   }
@@ -2031,13 +2317,17 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   List<String> RemoteStatus = ['Yes', 'No', 'Other'];
 
   Widget _CustomRemoteDropdown(
-      String key, String label, TextEditingController capacityController) {
+    String key,
+    String label,
+    TextEditingController capacityController,
+  ) {
     String RemoteStatusFromAcUnit = remote_availableController.text;
 
     if (RemoteStatusFromAcUnit.isNotEmpty &&
         !RemoteStatus.contains(RemoteStatusFromAcUnit)) {
       RemoteStatus.add(
-          RemoteStatusFromAcUnit); // Add the status if it's not already in the list
+        RemoteStatusFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -2049,9 +2339,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: RemoteStatus.map((powerSupply) =>
-              DropdownMenuItem(value: powerSupply, child: Text(powerSupply)))
-          .toList(),
+      items:
+          RemoteStatus.map(
+            (powerSupply) =>
+                DropdownMenuItem(value: powerSupply, child: Text(powerSupply)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -2104,7 +2396,9 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   if (customCapacity.isNotEmpty) {
                     setState(() {
                       RemoteStatus.insert(
-                          RemoteStatus.length - 1, customCapacity);
+                        RemoteStatus.length - 1,
+                        customCapacity,
+                      );
                       formData[key] = customCapacity;
                     });
                   }
@@ -2121,13 +2415,17 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   List<String> Category = ['Inverter', 'Non Inverter', 'Other'];
 
   Widget _CustomCategoryDropdown(
-      String key, String label, TextEditingController capacityController) {
+    String key,
+    String label,
+    TextEditingController capacityController,
+  ) {
     String RemoteCategoryFromAcUnit = _categoryController.text;
 
     if (RemoteCategoryFromAcUnit.isNotEmpty &&
         !Category.contains(RemoteCategoryFromAcUnit)) {
       Category.add(
-          RemoteCategoryFromAcUnit); // Add the status if it's not already in the list
+        RemoteCategoryFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -2139,8 +2437,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: Category.map((category) =>
-          DropdownMenuItem(value: category, child: Text(category))).toList(),
+      items:
+          Category.map(
+            (category) =>
+                DropdownMenuItem(value: category, child: Text(category)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -2173,9 +2474,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             title: const Text("Add Custom Category"),
             content: TextField(
               controller: customCategoryController,
-              decoration: const InputDecoration(
-                hintText: "Enter Category",
-              ),
+              decoration: const InputDecoration(hintText: "Enter Category"),
             ),
             actions: <Widget>[
               TextButton(
@@ -2210,17 +2509,21 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     'Standby',
     'Stopped',
     'Waiting to dispose',
-    'Other'
+    'Other',
   ];
 
   Widget _CustomConditionDropdown(
-      String key, String label, TextEditingController capacityController) {
+    String key,
+    String label,
+    TextEditingController capacityController,
+  ) {
     String ConditionFromAcUnit = _condition_ID_unitController.text;
 
     if (ConditionFromAcUnit.isNotEmpty &&
         !Condition.contains(ConditionFromAcUnit)) {
       Condition.add(
-          ConditionFromAcUnit); // Add the status if it's not already in the list
+        ConditionFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -2232,8 +2535,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: Condition.map((condition) =>
-          DropdownMenuItem(value: condition, child: Text(condition))).toList(),
+      items:
+          Condition.map(
+            (condition) =>
+                DropdownMenuItem(value: condition, child: Text(condition)),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -2266,9 +2572,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             title: const Text("Add Custom condition"),
             content: TextField(
               controller: customCategoryController,
-              decoration: const InputDecoration(
-                hintText: "Enter condition",
-              ),
+              decoration: const InputDecoration(hintText: "Enter condition"),
             ),
             actions: <Widget>[
               TextButton(
@@ -2300,14 +2604,18 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   List<String> CompressorMount = ['Indoor', 'Outdoor'];
 
   Widget _CustomCompressorMountDropdown(
-      String key, String label, TextEditingController capacityController) {
+    String key,
+    String label,
+    TextEditingController capacityController,
+  ) {
     String CompressorMountFromAcUnit =
         _outdoorcompressor_mounted_withController.text;
 
     if (CompressorMountFromAcUnit.isNotEmpty &&
         !CompressorMount.contains(CompressorMountFromAcUnit)) {
       CompressorMount.add(
-          CompressorMountFromAcUnit); // Add the status if it's not already in the list
+        CompressorMountFromAcUnit,
+      ); // Add the status if it's not already in the list
     }
 
     return FormBuilderDropdown(
@@ -2319,8 +2627,13 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
-      items: CompressorMount.map((compressorMount) => DropdownMenuItem(
-          value: compressorMount, child: Text(compressorMount))).toList(),
+      items:
+          CompressorMount.map(
+            (compressorMount) => DropdownMenuItem(
+              value: compressorMount,
+              child: Text(compressorMount),
+            ),
+          ).toList(),
       validator: (value) {
         if (value == null || value.toString().isEmpty) {
           return 'Please select $label';
@@ -2354,9 +2667,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             title: const Text("Add Custom condition"),
             content: TextField(
               controller: customCompressorMountController,
-              decoration: const InputDecoration(
-                hintText: "Enter condition",
-              ),
+              decoration: const InputDecoration(hintText: "Enter condition"),
             ),
             actions: <Widget>[
               TextButton(
@@ -2373,7 +2684,9 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   if (customCapacity.isNotEmpty) {
                     setState(() {
                       CompressorMount.insert(
-                          CompressorMount.length - 1, customCapacity);
+                        CompressorMount.length - 1,
+                        customCapacity,
+                      );
                       formData[key] = customCapacity;
                     });
                   }
@@ -2388,13 +2701,18 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   }
 
   Widget _buildUneditableFormField(
-      String key, String label, String initialValue) {
+    String key,
+    String label,
+    String initialValue,
+  ) {
     return Column(
       children: [
         FormBuilderTextField(
           name: key,
           decoration: InputDecoration(
-              labelText: label, border: const UnderlineInputBorder()),
+            labelText: label,
+            border: const UnderlineInputBorder(),
+          ),
           initialValue: initialValue,
           readOnly: true,
           enabled: false,
