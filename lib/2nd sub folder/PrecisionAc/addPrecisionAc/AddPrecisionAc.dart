@@ -161,17 +161,20 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   //   _formData,
                   //   context,
                   // ),
-                  _buildTextField('building_id', 'Building Id(eg: Building A)'),                  SizedBox(height: 10),
+                  _buildTextField('building_id', 'Building Id(eg: Building A)'),
+                  SizedBox(height: 10),
 
                   _buildTextField(
                     'floor_number',
                     'Floor Number (eg:OTS-1-AC-No)',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildTextFieldModelValidated(
                     'Office_No',
                     'Office Number (eg: 01)',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildTextFieldLocationValidated(
                     'Location',
@@ -183,14 +186,16 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   Text(
                     'Mark GPS Location of the Unit',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   // GPS Location fields
                   _buildGPSLatitudeField(
                     'Latitude',
                     'Latitude(Enter Manually or press Get Location)',
                     _latitudeController,
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildGPSLongitudeField(
                     'Longitude',
@@ -209,10 +214,15 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                       children: [
                         Icon(
                           Icons.location_on, // choose any icon you prefer
-                          color: Colors.white, // Adjust the color of the icon
+                          color:
+                              customColors
+                                  .mainTextColor, // Adjust the color of the icon
                         ),
                         SizedBox(width: 8), // space between the icon and text
-                        Text('Get Location'),
+                        Text(
+                          'Get Location',
+                          style: TextStyle(color: customColors.subTextColor),
+                        ),
                       ],
                     ),
                   ),
@@ -225,21 +235,26 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   ),
                   SizedBox(height: 10),
 
-                  _buildTextField('QRTag', 'Tag code(eg:PR:0001)'),                  SizedBox(height: 10),
+                  _buildTextField('QRTag', 'Tag code(eg:PR:0001)'),
+                  SizedBox(height: 10),
 
                   _buildTextFieldModelValidated(
                     'Model',
                     'Model(eg:Brand_Name-model)',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
-                  _buildNumValTextField('Serial_Number', 'Serial Number'),                  SizedBox(height: 10),
+                  _buildNumValTextField('Serial_Number', 'Serial Number'),
+                  SizedBox(height: 10),
 
-                  _ManufacturerDropdown('Manufacturer', 'Manufacturer'),                  SizedBox(height: 10),
+                  _ManufacturerDropdown('Manufacturer', 'Manufacturer'),
+                  SizedBox(height: 10),
 
                   _buildCustomDateField(
                     'Installation_Date',
                     'Installation Date(YYYY-MM-DD)',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _StatusDropdown('Status', 'Status'),
 
@@ -257,25 +272,30 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   Text(
                     'Technical Specifications',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),                  SizedBox(height: 10),
-
+                  ),
+                  SizedBox(height: 10),
 
                   // More fields
                   _buildCoolingCapacityTextField(
                     'Cooling_Capacity',
                     'Cooling Capacity (in BTU/hr)',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
-                  _PowerSupplyDropdown('Power_Supply', 'Power Supply'),                  SizedBox(height: 10),
+                  _PowerSupplyDropdown('Power_Supply', 'Power Supply'),
+                  SizedBox(height: 10),
 
-                  _RefrigDropdown('Refrigerant_Type', 'Refrigerant Type'),                  SizedBox(height: 10),
+                  _RefrigDropdown('Refrigerant_Type', 'Refrigerant Type'),
+                  SizedBox(height: 10),
 
                   _buildDimensionTextField(
                     'Dimensions',
                     'Dimensions (eg:cm x cm x cm)',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
-                  _buildNumWeightTextField('Weight', 'Weight (in Kg)'),                  SizedBox(height: 10),
+                  _buildNumWeightTextField('Weight', 'Weight (in Kg)'),
+                  SizedBox(height: 10),
 
                   _buildNoiseLevelTextField(
                     'Noise_Level',
@@ -286,7 +306,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   Text(
                     'Compressor details',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   // Compressor Details Section
                   _buildAlphanumericTextField(
@@ -296,7 +317,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
                   SizedBox(height: 10),
 
-                  _buildSerialNumberDisplayFields(),                  SizedBox(height: 10),
+                  _buildSerialNumberDisplayFields(), SizedBox(height: 10),
 
                   _buildEnterSerialNumbersField(),
                   SizedBox(height: 10),
@@ -304,43 +325,51 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   _ConditionAirFilterDropdown(
                     'Condition_Indoor_Air_Filters',
                     'Condition of the Indoor Air Filters',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _ConditionIndoorDropdown(
                     'Condition_Indoor_Unit',
                     'Condition of the Indoor Unit',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _ConditionIndoorDropdown(
                     'Condition_Outdoor_Unit',
                     'Condition of the Outdoor Unit',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildUnvalidatedTextField(
                     'Other_Specifications',
                     'Other Specifications',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
-                  _buildNumAirflowTextField('Airflow', 'Airflow Rate( In CFM)'),                  SizedBox(height: 10),
+                  _buildNumAirflowTextField('Airflow', 'Airflow Rate( In CFM)'),
+                  SizedBox(height: 10),
 
-                  _AirflowTypeDropdown('Airflow_Type', 'Airflow Type'),                  SizedBox(height: 10),
-
+                  _AirflowTypeDropdown('Airflow_Type', 'Airflow Type'),
+                  SizedBox(height: 10),
 
                   //need airflow type
                   _buildNumValueFieldsTextField(
                     'No_of_Refrigerant_Circuits',
                     'No of Refrigerant Circuits',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildNumValueFieldsTextField(
                     'No_of_Evaporator_Coils',
                     'No of Evaporator Coils',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildNumValueFieldsTextField(
                     'No_of_Condenser_Circuits',
                     'No of Condenser Circuits',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildNumValueFieldsTextField(
                     'No_of_Condenser_Fans',
@@ -351,8 +380,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   _buildNumValueFieldsTextField(
                     'No_of_Indoor_Fans',
                     'No of indoor Fans',
-                  ),                  SizedBox(height: 10),
-
+                  ),
+                  SizedBox(height: 10),
 
                   _CondensorMountedDropdown(
                     'Condenser_Mounting_Method',
@@ -368,23 +397,27 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                   SizedBox(height: 10),
 
                   // Supplier details
-                  _buildTextFieldNonValidated('Supplier_Name', 'Supplier Name'),                  SizedBox(height: 10),
+                  _buildTextFieldNonValidated('Supplier_Name', 'Supplier Name'),
+                  SizedBox(height: 10),
 
                   _buildTextFieldEmailValidated(
                     'Supplier_email',
                     'Supplier Email',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildTextFieldMobileValidated(
                     'Supplier_contact_no',
                     'Supplier Contact no',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   // _buildTextFieldContactDetails('Supplier_Contact_Details', 'Supplier Contact Details'),
                   _buildWarrantyAvailableField(
                     'Warranty_Details',
                     'Warranty Available ?',
-                  ),                  SizedBox(height: 10),
+                  ),
+                  SizedBox(height: 10),
 
                   _buildDatePicker(
                     'Warranty_Expire_Date',
@@ -397,8 +430,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                     name: 'verify',
                     //  initialValue: _isVerified,
                     title: Text(
-                      'I verify that submitted details are true and correct',      style: TextStyle(color: customColors.mainTextColor),
-
+                      'I verify that submitted details are true and correct',
+                      style: TextStyle(color: customColors.mainTextColor),
                     ),
                     onChanged: (value) {
                       setState(() {

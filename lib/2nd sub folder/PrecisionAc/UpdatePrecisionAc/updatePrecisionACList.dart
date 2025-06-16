@@ -283,7 +283,6 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
   String? selectedRegion;
   String? selectedRTOM;
   String? selectedStation;
-  String searchQuery = '';
 
   List<String> statuses = ['All', 'Working', 'Running', 'Stopped', 'Faulty'];
 
@@ -297,43 +296,6 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
     futureStations = Future.value([]);
     fetchData();
   }
-
-
-
-  // void handleSearch(String query) {
-  //   setState(() {
-  //     searchQuery = query;
-  //   });
-  // }
-
-  // List<updatePrecisionAC> _filterACs(List<updatePrecisionAC> acs) {
-  //   var tempFiltered =
-  //       acs.where((ac) {
-  //         final matchesStatus =
-  //             selectedStatus == null ||
-  //             selectedStatus == 'All' ||
-  //             ac.status == selectedStatus;
-  //         final matchesRegion =
-  //             selectedRegion == null ||
-  //             selectedRegion == 'All' ||
-  //             ac.region == selectedRegion;
-  //         final matchesRTOM =
-  //             selectedRTOM == null ||
-  //             selectedRTOM == 'All' ||
-  //             ac.rtom == selectedRTOM;
-  //         final matchesStation =
-  //             selectedStation == null ||
-  //             selectedStation == 'All' ||
-  //             ac.station == selectedStation;
-
-  //         return matchesStatus &&
-  //             matchesRegion &&
-  //             matchesRTOM &&
-  //             matchesStation;
-  //       }).toList();
-  //   return tempFiltered;
-  // }
-
 
   // Method to handle region change
   void _onRegionChanged(String? newValue) {
@@ -407,7 +369,10 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
                 children: [
                   Expanded(
                     child: DropdownButton<String>(
-                      hint: Text('Select Status'),
+                      hint: Text(
+                        'Select Status',
+                        style: TextStyle(color: customColors.mainTextColor),
+                      ),
                       style: TextStyle(color: customColors.mainTextColor),
                       dropdownColor: customColors.suqarBackgroundColor,
 
@@ -480,12 +445,12 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
                     _buildCard(
                       'UpBlow Units',
                       UpblowUnits.toString(),
-                      Colors.lightBlue[200]!,
+                      const Color.fromARGB(255, 97, 176, 240),
                     ),
                     _buildCard(
                       'DownBlow Units',
                       DownBlowUnits.toString(),
-                      Colors.lightGreen[200]!,
+                      const Color.fromARGB(255, 105, 228, 105),
                     ),
                     // _buildCard('Stopped Units', stoppedUnits.toString(), Colors.red[200]!),
                   ],
@@ -1007,360 +972,478 @@ class _ACDetailViewState extends State<ACDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
-      appBar: AppBar(title: Text(widget.ac.model)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            // General Info
-            _buildCategoryHeader('General Info'),
-            // _buildDetailTile(Icons.label, 'Precision Ac Id:', ac.precisionACId),
-            ///////////////////////////////////////////////////////////////////////////
-            //_buildDetailTile(Icons.analytics, 'Model:', ac.model),
-            _buildEditableCard(Icons.analytics, 'Model:', _modelController),
-            //_buildDetailTile(Icons.factory, 'Manufacturer:', ac.manufacturer),
-            _buildEditableCard(
-              Icons.factory,
-              'Manufacturer:',
-              _manufacturerController,
-            ),
-            //_buildDetailTile(Icons.assignment, 'Serial Code:', ac.serialNumber),
-            _buildEditableCard(
-              Icons.assignment,
-              'Serial Code:',
-              _serialNumberController,
-            ),
-            //_buildDetailTile(Icons.calendar_today, 'Installation Date:',
-            //    ac.installationDate),
-            _buildEditableCard(
-              Icons.calendar_today,
-              'Installation Date:',
-              _installationDateController,
-            ),
-            // _buildDetailTile(Icons.label, 'QR Tag:', ac.qrTag),
-            _buildEditableCard(Icons.label, 'QR Tag:', _qrTagController),
-            // _buildDetailTile(Icons.location_on, 'Region:', ac.region),
-            _buildEditableCard(Icons.location_on, 'Region:', _regionController),
-            //_buildDetailTile(Icons.location_city, 'RTOM:', ac.rtom),
-            _buildEditableCard(Icons.location_city, 'RTOM:', _rtomController),
-            //_buildDetailTile(Icons.home_work, 'Station:', ac.station),
-            _buildEditableCard(Icons.home_work, 'Station:', _stationController),
-            //_buildDetailTile(Icons.home_work, 'Office no:', ac.officeNo),
-            _buildEditableCard(
-              Icons.home_work,
-              'Office no:',
-              _officeNoController,
-            ),
-            _buildEditableCard(
-              Icons.home_work,
-              'Floor number:',
-              _floorNumberController,
-            ),
-            _buildEditableCard(
-              Icons.home_work,
-              'Building ID:',
-              _buildingIDController,
-            ),
+      appBar: AppBar(
+        title: Text(
+          widget.ac.model,
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
+      ),
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              // General Info
+              _buildCategoryHeader('General Info'),
+              // _buildDetailTile(Icons.label, 'Precision Ac Id:', ac.precisionACId),
+              ///////////////////////////////////////////////////////////////////////////
+              //_buildDetailTile(Icons.analytics, 'Model:', ac.model),
+              _buildEditableCard(
+                context,
+                Icons.analytics,
+                'Model:',
+                _modelController,
+              ),
+              //_buildDetailTile(Icons.factory, 'Manufacturer:', ac.manufacturer),
+              _buildEditableCard(
+                context,
+                Icons.factory,
+                'Manufacturer:',
+                _manufacturerController,
+              ),
+              //_buildDetailTile(Icons.assignment, 'Serial Code:', ac.serialNumber),
+              _buildEditableCard(
+                context,
+                Icons.assignment,
+                'Serial Code:',
+                _serialNumberController,
+              ),
+              //_buildDetailTile(Icons.calendar_today, 'Installation Date:',
+              //    ac.installationDate),
+              _buildEditableCard(
+                context,
+                Icons.calendar_today,
+                'Installation Date:',
+                _installationDateController,
+              ),
+              // _buildDetailTile(Icons.label, 'QR Tag:', ac.qrTag),
+              _buildEditableCard(
+                context,
+                Icons.label,
+                'QR Tag:',
+                _qrTagController,
+              ),
+              // _buildDetailTile(Icons.location_on, 'Region:', ac.region),
+              _buildEditableCard(
+                context,
+                Icons.location_on,
+                'Region:',
+                _regionController,
+              ),
+              //_buildDetailTile(Icons.location_city, 'RTOM:', ac.rtom),
+              _buildEditableCard(
+                context,
+                Icons.location_city,
+                'RTOM:',
+                _rtomController,
+              ),
+              //_buildDetailTile(Icons.home_work, 'Station:', ac.station),
+              _buildEditableCard(
+                context,
+                Icons.home_work,
+                'Station:',
+                _stationController,
+              ),
+              //_buildDetailTile(Icons.home_work, 'Office no:', ac.officeNo),
+              _buildEditableCard(
+                context,
+                Icons.home_work,
+                'Office no:',
+                _officeNoController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.home_work,
+                'Floor number:',
+                _floorNumberController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.home_work,
+                'Building ID:',
+                _buildingIDController,
+              ),
 
-            //_buildDetailTile(Icons.copyright, 'Status:', ac.status),
-            _buildEditableCard(Icons.copyright, 'Status:', _statusController),
+              //_buildDetailTile(Icons.copyright, 'Status:', ac.status),
+              _buildEditableCard(
+                context,
+                Icons.copyright,
+                'Status:',
+                _statusController,
+              ),
 
-            _buildCategoryHeader('Indoor Info'),
-            // _buildDetailTile(Icons.view_array, 'Dimensions:', ac.dimensions),
-            // _buildDetailTile(Icons.fitness_center, 'Weight:', ac.weight),
-            // _buildDetailTile(Icons.volume_up, 'Noise Level:', ac.noiseLevel),
-            // _buildDetailTile(Icons.filter_alt, 'Indoor Air Filters Condition:',
-            //     ac.conditionIndoorAirFilters),
-            // _buildDetailTile(Icons.ac_unit, 'No. of Evaporator Coils:',
-            //     ac.noOfEvaporatorCoils),
-            // _buildDetailTile(
-            //     Icons.ac_unit, 'No. of Indoor Fans:', ac.No_of_Indoor_Fans),
-            // _buildDetailTile(Icons.ac_unit, 'Condition. of Indoor Unit:',
-            //     ac.conditionIndoorUnit),
-            _buildEditableCard(
-              Icons.view_array,
-              'Dimensions:',
-              _dimensionsController,
-            ),
-            _buildEditableCard(
-              Icons.fitness_center,
-              'Weight:',
-              _weightController,
-            ),
-            _buildEditableCard(
-              Icons.volume_up,
-              'Noise Level:',
-              _noiseLevelController,
-            ),
-            _buildEditableCard(
-              Icons.filter_alt,
-              'Indoor Air Filters Condition:',
-              _conditionIndoorAirFiltersController,
-            ),
-            _buildEditableCard(
-              Icons.ac_unit,
-              'No. of Evaporator Coils:',
-              _noOfEvaporatorCoilsController,
-            ),
-            _buildEditableCard(
-              Icons.ac_unit,
-              'No. of Indoor Fans:',
-              _noOfIndoorFansController,
-            ),
-            _buildEditableCard(
-              Icons.ac_unit,
-              'Condition of Indoor Unit:',
-              _conditionIndoorUnitController,
-            ),
+              _buildCategoryHeader('Indoor Info'),
+              // _buildDetailTile(Icons.view_array, 'Dimensions:', ac.dimensions),
+              // _buildDetailTile(Icons.fitness_center, 'Weight:', ac.weight),
+              // _buildDetailTile(Icons.volume_up, 'Noise Level:', ac.noiseLevel),
+              // _buildDetailTile(Icons.filter_alt, 'Indoor Air Filters Condition:',
+              //     ac.conditionIndoorAirFilters),
+              // _buildDetailTile(Icons.ac_unit, 'No. of Evaporator Coils:',
+              //     ac.noOfEvaporatorCoils),
+              // _buildDetailTile(
+              //     Icons.ac_unit, 'No. of Indoor Fans:', ac.No_of_Indoor_Fans),
+              // _buildDetailTile(Icons.ac_unit, 'Condition. of Indoor Unit:',
+              //     ac.conditionIndoorUnit),
+              _buildEditableCard(
+                context,
+                Icons.view_array,
+                'Dimensions:',
+                _dimensionsController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.fitness_center,
+                'Weight:',
+                _weightController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.volume_up,
+                'Noise Level:',
+                _noiseLevelController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.filter_alt,
+                'Indoor Air Filters Condition:',
+                _conditionIndoorAirFiltersController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.ac_unit,
+                'No. of Evaporator Coils:',
+                _noOfEvaporatorCoilsController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.ac_unit,
+                'No. of Indoor Fans:',
+                _noOfIndoorFansController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.ac_unit,
+                'Condition of Indoor Unit:',
+                _conditionIndoorUnitController,
+              ),
 
-            _buildCategoryHeader('Outdoor Info'),
-            // _buildDetailTile(Icons.ac_unit, 'No. of Condenser Circuits:',
-            //     ac.noOfCondenserCircuits),
-            // _buildDetailTile(
-            //     Icons.ac_unit, 'No. of Condenser Fans:', ac.noOfCondenserFans),
+              _buildCategoryHeader('Outdoor Info'),
+              // _buildDetailTile(Icons.ac_unit, 'No. of Condenser Circuits:',
+              //     ac.noOfCondenserCircuits),
+              // _buildDetailTile(
+              //     Icons.ac_unit, 'No. of Condenser Fans:', ac.noOfCondenserFans),
 
-            // _buildDetailTile(Icons.home, 'Condenser Mounting Method:',
-            //     ac.condenserMountingMethod),
-            // _buildDetailTile(Icons.ac_unit, 'Condition. of Outdoor Unit:',
-            //     ac.conditionOutdoorUnit),
-            _buildEditableCard(
-              Icons.ac_unit,
-              'No. of Condenser Circuits:',
-              _noOfCondenserCircuitsController,
-            ),
-            _buildEditableCard(
-              Icons.ac_unit,
-              'No. of Condenser Fans:',
-              _noOfCondenserFansController,
-            ),
-            _buildEditableCard(
-              Icons.home,
-              'Condenser Mounting Method:',
-              _condenserMountingMethodController,
-            ),
-            _buildEditableCard(
-              Icons.ac_unit,
-              'Condition of Outdoor Unit:',
-              _conditionOutdoorUnitController,
-            ),
+              // _buildDetailTile(Icons.home, 'Condenser Mounting Method:',
+              //     ac.condenserMountingMethod),
+              // _buildDetailTile(Icons.ac_unit, 'Condition. of Outdoor Unit:',
+              //     ac.conditionOutdoorUnit),
+              _buildEditableCard(
+                context,
+                Icons.ac_unit,
+                'No. of Condenser Circuits:',
+                _noOfCondenserCircuitsController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.ac_unit,
+                'No. of Condenser Fans:',
+                _noOfCondenserFansController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.home,
+                'Condenser Mounting Method:',
+                _condenserMountingMethodController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.ac_unit,
+                'Condition of Outdoor Unit:',
+                _conditionOutdoorUnitController,
+              ),
 
-            // Compressor Info
-            _buildCategoryHeader('Compressor Info'),
-            // _buildDetailTile(
-            //     Icons.compress, 'No. of Compressors:', ac.noOfCompressors),
-            // _buildDetailTile2(Icons.copyright, 'Compressor Serial code:',
-            //     ac.serialNumberOfCompressors),
-            _buildEditableCard(
-              Icons.compress,
-              'No. of Compressors:',
-              _noOfCompressorsController,
-            ),
-            _buildEditableDetailTile2(
-              Icons.copyright,
-              'Compressor Serial Code:',
-              widget.ac.serialNumberOfCompressors,
-            ),
+              // Compressor Info
+              _buildCategoryHeader('Compressor Info'),
+              // _buildDetailTile(
+              //     Icons.compress, 'No. of Compressors:', ac.noOfCompressors),
+              // _buildDetailTile2(Icons.copyright, 'Compressor Serial code:',
+              //     ac.serialNumberOfCompressors),
+              _buildEditableCard(
+                context,
+                Icons.compress,
+                'No. of Compressors:',
+                _noOfCompressorsController,
+              ),
+              _buildEditableDetailTile2(
+                context,
+                Icons.copyright,
+                'Compressor Serial Code:',
+                widget.ac.serialNumberOfCompressors,
+              ),
 
-            // Specifications
-            _buildCategoryHeader('Specifications'),
-            // _buildDetailTile(
-            //     Icons.ac_unit, 'Cooling Capacity:', ac.coolingCapacity),
-            // _buildDetailTile(Icons.power, 'Power Supply:', ac.powerSupply),
-            // _buildDetailTile(
-            //     Icons.settings, 'Refrigerant Type:', ac.refrigerantType),
-            // _buildDetailTile(Icons.replay, 'No. of Refrigerant Circuits:',
-            //     ac.noOfRefrigerantCircuits),
-            // _buildDetailTile(Icons.air, 'Airflow Rate:', ac.airflow),
-            // _buildDetailTile(Icons.air, 'Airflow Type:', ac.airflow_type),
-            // _buildDetailTile(Icons.settings, 'Other Specifications:',
-            //     ac.otherSpecifications),
-            _buildEditableCard(
-              Icons.ac_unit,
-              'Cooling Capacity:',
-              _coolingCapacityController,
-            ),
-            _buildEditableCard(
-              Icons.power,
-              'Power Supply:',
-              _powerSupplyController,
-            ),
-            _buildEditableCard(
-              Icons.settings,
-              'Refrigerant Type:',
-              _refrigerantTypeController,
-            ),
-            _buildEditableCard(
-              Icons.replay,
-              'No. of Refrigerant Circuits:',
-              _noOfRefrigerantCircuitsController,
-            ),
-            _buildEditableCard(Icons.air, 'Airflow Rate:', _airflowController),
-            _buildEditableCard(
-              Icons.air,
-              'Airflow Type:',
-              _airflowTypeController,
-            ),
-            _buildEditableCard(
-              Icons.settings,
-              'Other Specifications:',
-              _otherSpecificationsController,
-            ),
+              // Specifications
+              _buildCategoryHeader('Specifications'),
+              // _buildDetailTile(
+              //     Icons.ac_unit, 'Cooling Capacity:', ac.coolingCapacity),
+              // _buildDetailTile(Icons.power, 'Power Supply:', ac.powerSupply),
+              // _buildDetailTile(
+              //     Icons.settings, 'Refrigerant Type:', ac.refrigerantType),
+              // _buildDetailTile(Icons.replay, 'No. of Refrigerant Circuits:',
+              //     ac.noOfRefrigerantCircuits),
+              // _buildDetailTile(Icons.air, 'Airflow Rate:', ac.airflow),
+              // _buildDetailTile(Icons.air, 'Airflow Type:', ac.airflow_type),
+              // _buildDetailTile(Icons.settings, 'Other Specifications:',
+              //     ac.otherSpecifications),
+              _buildEditableCard(
+                context,
+                Icons.ac_unit,
+                'Cooling Capacity:',
+                _coolingCapacityController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.power,
+                'Power Supply:',
+                _powerSupplyController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.settings,
+                'Refrigerant Type:',
+                _refrigerantTypeController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.replay,
+                'No. of Refrigerant Circuits:',
+                _noOfRefrigerantCircuitsController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.air,
+                'Airflow Rate:',
+                _airflowController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.air,
+                'Airflow Type:',
+                _airflowTypeController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.settings,
+                'Other Specifications:',
+                _otherSpecificationsController,
+              ),
 
-            // Location & Warranty Info
-            _buildCategoryHeader('Location & Warranty Info'),
-            // _buildDetailTile(Icons.map, 'Latitude:', ac.latitude),
-            // _buildDetailTile(Icons.map, 'Longitude:', ac.longitude),
-            // _buildDetailTile(Icons.map, 'Location:', ac.location),
-            // _buildDetailTile(Icons.access_alarm, 'Warranty Details:',
-            //     ac.warrantyDetails ?? 'N/A'),
-            // _buildDetailTile(Icons.access_time, 'Warranty Expire Date:',
-            //     ac.warrantyExpireDate ?? 'N/A'),
-            // _buildDetailTile(
-            //     Icons.access_time,
-            //     'Annual maintenance Contract availability:',
-            //     ac.amcExpireDate ?? 'N/A'),
-            _buildEditableCard(Icons.map, 'Latitude:', _latitudeController),
-            _buildEditableCard(Icons.map, 'Longitude:', _longitudeController),
-            _buildEditableCard(Icons.map, 'Location:', _locationController),
-            _buildEditableCard(
-              Icons.access_alarm,
-              'Warranty Details:',
-              _warrantyDetailsController,
-            ),
-            _buildEditableCard(
-              Icons.access_time,
-              'Warranty Expire Date:',
-              _warrantyExpireDateController,
-            ),
-            _buildEditableCard(
-              Icons.access_time,
-              'AMC Expiry Date:',
-              _amcExpireDateController,
-            ),
+              // Location & Warranty Info
+              _buildCategoryHeader('Location & Warranty Info'),
+              // _buildDetailTile(Icons.map, 'Latitude:', ac.latitude),
+              // _buildDetailTile(Icons.map, 'Longitude:', ac.longitude),
+              // _buildDetailTile(Icons.map, 'Location:', ac.location),
+              // _buildDetailTile(Icons.access_alarm, 'Warranty Details:',
+              //     ac.warrantyDetails ?? 'N/A'),
+              // _buildDetailTile(Icons.access_time, 'Warranty Expire Date:',
+              //     ac.warrantyExpireDate ?? 'N/A'),
+              // _buildDetailTile(
+              //     Icons.access_time,
+              //     'Annual maintenance Contract availability:',
+              //     ac.amcExpireDate ?? 'N/A'),
+              _buildEditableCard(
+                context,
+                Icons.map,
+                'Latitude:',
+                _latitudeController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.map,
+                'Longitude:',
+                _longitudeController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.map,
+                'Location:',
+                _locationController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.access_alarm,
+                'Warranty Details:',
+                _warrantyDetailsController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.access_time,
+                'Warranty Expire Date:',
+                _warrantyExpireDateController,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.access_time,
+                'AMC Expiry Date:',
+                _amcExpireDateController,
+              ),
 
-            // Supplier Details
-            _buildCategoryHeader('Supplier Details'),
-            // _buildDetailTile(Icons.person, 'Supplier Name:', ac.supplierName),
-            // _buildMailTile(Icons.email, 'Supplier Email:',
-            //     ac.supplierEmail ?? 'N/A', AutofillHints.email, context),
-            // _buildCallTile(
-            //     Icons.phone,
-            //     'Supplier Contact No:',
-            //     ac.supplierContactNo ?? 'N/A',
-            //     AutofillHints.telephoneNumber,
-            //     context),
-            _buildEditableCard(
-              Icons.person,
-              'Supplier Name:',
-              _supplierNameController,
-            ),
-            _buildEditableMailTile(
-              Icons.email,
-              'Supplier Email:',
-              _supplierEmailController, // Pass the email controller
-              context,
-            ),
-            _buildEditableCallTile(
-              Icons.phone,
-              'Supplier Contact No:',
-              _supplierContactNoController, // Pass the phone controller
-              context,
-            ),
+              // Supplier Details
+              _buildCategoryHeader('Supplier Details'),
+              // _buildDetailTile(Icons.person, 'Supplier Name:', ac.supplierName),
+              // _buildMailTile(Icons.email, 'Supplier Email:',
+              //     ac.supplierEmail ?? 'N/A', AutofillHints.email, context),
+              // _buildCallTile(
+              //     Icons.phone,
+              //     'Supplier Contact No:',
+              //     ac.supplierContactNo ?? 'N/A',
+              //     AutofillHints.telephoneNumber,
+              //     context),
+              _buildEditableCard(
+                context,
+                Icons.person,
+                'Supplier Name:',
+                _supplierNameController,
+              ),
+              _buildEditableMailTile(
+                Icons.email,
+                'Supplier Email:',
+                _supplierEmailController, // Pass the email controller
+                context,
+              ),
+              _buildEditableCallTile(
+                Icons.phone,
+                'Supplier Contact No:',
+                _supplierContactNoController, // Pass the phone controller
+                context,
+              ),
+              _buildEditableCard(
+                context,
+                Icons.person,
+                'Supplier Name:',
+                _supplierNameController,
+              ),
+              _buildEditableMailTile(
+                Icons.email,
+                'Supplier Email:',
+                _supplierEmailController, // Pass the email controller
+                context,
+              ),
+              _buildEditableCallTile(
+                Icons.phone,
+                'Supplier Contact No:',
+                _supplierContactNoController, // Pass the phone controller
+                context,
+              ),
 
-            // Update Info
-            _buildCategoryHeader('Update Info'),
-            _buildDetailTile(
-              Icons.person_add,
-              'Updated By:',
-              widget.ac.updatedBy.isNotEmpty ? widget.ac.updatedBy : 'N/A',
-            ),
-            _buildDetailTile(
-              Icons.access_time,
-              'Updated Time:',
-              widget.ac.updatedTime.isNotEmpty ? widget.ac.updatedTime : 'N/A',
-            ),
+              // Update Info
+              _buildCategoryHeader('Update Info'),
+              _buildDetailTile(
+                Icons.person_add,
+                'Updated By:',
+                widget.ac.updatedBy.isNotEmpty ? widget.ac.updatedBy : 'N/A',
+              ),
+              _buildDetailTile(
+                Icons.access_time,
+                'Updated Time:',
+                widget.ac.updatedTime.isNotEmpty
+                    ? widget.ac.updatedTime
+                    : 'N/A',
+              ),
 
-            // _buildEditableCard(
-            //     Icons.person_add, 'Updated By:', _updatedByController),
-            // _buildEditableCard(
-            //     Icons.access_time, 'Updated Time:', _updatedTimeController),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Print values to debug
-                print('Model: ${_modelController.text}');
-                print('Manufacturer: ${_manufacturerController.text}');
-                print('Serial Number: ${_serialNumberController.text}');
-                print('Installation Date: ${_installationDateController.text}');
-                print('QR Tag: ${_qrTagController.text}');
-                print('Region: ${_regionController.text}');
-                print('RTOM: ${_rtomController.text}');
-                print('Station: ${_stationController.text}');
-                print('Office No: ${_officeNoController.text}');
-                print('Floor Number: ${_floorNumberController.text}');
-                print('Building ID: ${_buildingIDController.text}');
-                print('Status: ${_statusController.text}');
-                print('Dimensions: ${_dimensionsController.text}');
-                print('Weight: ${_weightController.text}');
-                print('Noise Level: ${_noiseLevelController.text}');
-                print(
-                  'Indoor Air Filters Condition: ${_conditionIndoorAirFiltersController.text}',
-                );
-                print(
-                  'No. of Evaporator Coils: ${_noOfEvaporatorCoilsController.text}',
-                );
-                print('No. of Indoor Fans: ${_noOfIndoorFansController.text}');
-                print(
-                  'Condition of Indoor Unit: ${_conditionIndoorUnitController.text}',
-                );
-                print(
-                  'No. of Condenser Circuits: ${_noOfCondenserCircuitsController.text}',
-                );
-                print(
-                  'No. of Condenser Fans: ${_noOfCondenserFansController.text}',
-                );
-                print(
-                  'Condenser Mounting Method: ${_condenserMountingMethodController.text}',
-                );
-                print(
-                  'Condition of Outdoor Unit: ${_conditionOutdoorUnitController.text}',
-                );
-                print('Cooling Capacity: ${_coolingCapacityController.text}');
-                print('Power Supply: ${_powerSupplyController.text}');
-                print('Refrigerant Type: ${_refrigerantTypeController.text}');
-                print(
-                  'No. of Refrigerant Circuits: ${_noOfRefrigerantCircuitsController.text}',
-                );
-                print('Airflow Rate: ${_airflowController.text}');
-                print('Airflow Type: ${_airflowTypeController.text}');
-                print(
-                  'Other Specifications: ${_otherSpecificationsController.text}',
-                );
-                print('Latitude: ${_latitudeController.text}');
-                print('Longitude: ${_longitudeController.text}');
-                print('Location: ${_locationController.text}');
-                print('Warranty Details: ${_warrantyDetailsController.text}');
-                print(
-                  'Warranty Expire Date: ${_warrantyExpireDateController.text}',
-                );
-                print('AMC Expiry Date: ${_amcExpireDateController.text}');
-                print('Supplier Name: ${_supplierNameController.text}');
-                print('Supplier Email: ${_supplierEmailController.text}');
-                print(
-                  'Supplier Contact No: ${_supplierContactNoController.text}',
-                );
-                if (_hasChanges()) {
-                  _saveData();
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("No changes detected.")),
+              // _buildEditableCard(
+              //     Icons.person_add, 'Updated By:', _updatedByController),
+              // _buildEditableCard(
+              //     Icons.access_time, 'Updated Time:', _updatedTimeController),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // Print values to debug
+                  print('Model: ${_modelController.text}');
+                  print('Manufacturer: ${_manufacturerController.text}');
+                  print('Serial Number: ${_serialNumberController.text}');
+                  print(
+                    'Installation Date: ${_installationDateController.text}',
                   );
-                }
-              },
-              child: const Text('Save Changes'),
-            ),
-          ],
+                  print('QR Tag: ${_qrTagController.text}');
+                  print('Region: ${_regionController.text}');
+                  print('RTOM: ${_rtomController.text}');
+                  print('Station: ${_stationController.text}');
+                  print('Office No: ${_officeNoController.text}');
+                  print('Floor Number: ${_floorNumberController.text}');
+                  print('Building ID: ${_buildingIDController.text}');
+                  print('Status: ${_statusController.text}');
+                  print('Dimensions: ${_dimensionsController.text}');
+                  print('Weight: ${_weightController.text}');
+                  print('Noise Level: ${_noiseLevelController.text}');
+                  print(
+                    'Indoor Air Filters Condition: ${_conditionIndoorAirFiltersController.text}',
+                  );
+                  print(
+                    'No. of Evaporator Coils: ${_noOfEvaporatorCoilsController.text}',
+                  );
+                  print(
+                    'No. of Indoor Fans: ${_noOfIndoorFansController.text}',
+                  );
+                  print(
+                    'Condition of Indoor Unit: ${_conditionIndoorUnitController.text}',
+                  );
+                  print(
+                    'No. of Condenser Circuits: ${_noOfCondenserCircuitsController.text}',
+                  );
+                  print(
+                    'No. of Condenser Fans: ${_noOfCondenserFansController.text}',
+                  );
+                  print(
+                    'Condenser Mounting Method: ${_condenserMountingMethodController.text}',
+                  );
+                  print(
+                    'Condition of Outdoor Unit: ${_conditionOutdoorUnitController.text}',
+                  );
+                  print('Cooling Capacity: ${_coolingCapacityController.text}');
+                  print('Power Supply: ${_powerSupplyController.text}');
+                  print('Refrigerant Type: ${_refrigerantTypeController.text}');
+                  print(
+                    'No. of Refrigerant Circuits: ${_noOfRefrigerantCircuitsController.text}',
+                  );
+                  print('Airflow Rate: ${_airflowController.text}');
+                  print('Airflow Type: ${_airflowTypeController.text}');
+                  print(
+                    'Other Specifications: ${_otherSpecificationsController.text}',
+                  );
+                  print('Latitude: ${_latitudeController.text}');
+                  print('Longitude: ${_longitudeController.text}');
+                  print('Location: ${_locationController.text}');
+                  print('Warranty Details: ${_warrantyDetailsController.text}');
+                  print(
+                    'Warranty Expire Date: ${_warrantyExpireDateController.text}',
+                  );
+                  print('AMC Expiry Date: ${_amcExpireDateController.text}');
+                  print('Supplier Name: ${_supplierNameController.text}');
+                  print('Supplier Email: ${_supplierEmailController.text}');
+                  print(
+                    'Supplier Contact No: ${_supplierContactNoController.text}',
+                  );
+                  if (_hasChanges()) {
+                    _saveData();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("No changes detected.")),
+                    );
+                  }
+                },
+                child: const Text('Save Changes'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1377,13 +1460,161 @@ class _ACDetailViewState extends State<ACDetailView> {
   }
 
   Widget _buildDetailTile(IconData icon, String title, String subtitle) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
+      color: customColors.suqarBackgroundColor,
       margin: const EdgeInsets.symmetric(vertical: 5),
       elevation: 2,
       child: ListTile(
-        leading: Icon(icon, color: Colors.blue),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(subtitle),
+        leading: Icon(icon, color: customColors.subTextColor),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: customColors.mainTextColor,
+          ),
+        ),
+        subtitle: Text(subtitle,
+          style: TextStyle(
+            color: customColors.subTextColor,
+          ),
+              // Update Info
+              _buildCategoryHeader('Update Info'),
+              _buildDetailTile(
+                Icons.person_add,
+                'Updated By:',
+                widget.ac.updatedBy.isNotEmpty ? widget.ac.updatedBy : 'N/A',
+              ),
+              _buildDetailTile(
+                Icons.access_time,
+                'Updated Time:',
+                widget.ac.updatedTime.isNotEmpty
+                    ? widget.ac.updatedTime
+                    : 'N/A',
+              ),
+
+              // _buildEditableCard(
+              //     Icons.person_add, 'Updated By:', _updatedByController),
+              // _buildEditableCard(
+              //     Icons.access_time, 'Updated Time:', _updatedTimeController),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // Print values to debug
+                  print('Model: ${_modelController.text}');
+                  print('Manufacturer: ${_manufacturerController.text}');
+                  print('Serial Number: ${_serialNumberController.text}');
+                  print(
+                    'Installation Date: ${_installationDateController.text}',
+                  );
+                  print('QR Tag: ${_qrTagController.text}');
+                  print('Region: ${_regionController.text}');
+                  print('RTOM: ${_rtomController.text}');
+                  print('Station: ${_stationController.text}');
+                  print('Office No: ${_officeNoController.text}');
+                  print('Floor Number: ${_floorNumberController.text}');
+                  print('Building ID: ${_buildingIDController.text}');
+                  print('Status: ${_statusController.text}');
+                  print('Dimensions: ${_dimensionsController.text}');
+                  print('Weight: ${_weightController.text}');
+                  print('Noise Level: ${_noiseLevelController.text}');
+                  print(
+                    'Indoor Air Filters Condition: ${_conditionIndoorAirFiltersController.text}',
+                  );
+                  print(
+                    'No. of Evaporator Coils: ${_noOfEvaporatorCoilsController.text}',
+                  );
+                  print(
+                    'No. of Indoor Fans: ${_noOfIndoorFansController.text}',
+                  );
+                  print(
+                    'Condition of Indoor Unit: ${_conditionIndoorUnitController.text}',
+                  );
+                  print(
+                    'No. of Condenser Circuits: ${_noOfCondenserCircuitsController.text}',
+                  );
+                  print(
+                    'No. of Condenser Fans: ${_noOfCondenserFansController.text}',
+                  );
+                  print(
+                    'Condenser Mounting Method: ${_condenserMountingMethodController.text}',
+                  );
+                  print(
+                    'Condition of Outdoor Unit: ${_conditionOutdoorUnitController.text}',
+                  );
+                  print('Cooling Capacity: ${_coolingCapacityController.text}');
+                  print('Power Supply: ${_powerSupplyController.text}');
+                  print('Refrigerant Type: ${_refrigerantTypeController.text}');
+                  print(
+                    'No. of Refrigerant Circuits: ${_noOfRefrigerantCircuitsController.text}',
+                  );
+                  print('Airflow Rate: ${_airflowController.text}');
+                  print('Airflow Type: ${_airflowTypeController.text}');
+                  print(
+                    'Other Specifications: ${_otherSpecificationsController.text}',
+                  );
+                  print('Latitude: ${_latitudeController.text}');
+                  print('Longitude: ${_longitudeController.text}');
+                  print('Location: ${_locationController.text}');
+                  print('Warranty Details: ${_warrantyDetailsController.text}');
+                  print(
+                    'Warranty Expire Date: ${_warrantyExpireDateController.text}',
+                  );
+                  print('AMC Expiry Date: ${_amcExpireDateController.text}');
+                  print('Supplier Name: ${_supplierNameController.text}');
+                  print('Supplier Email: ${_supplierEmailController.text}');
+                  print(
+                    'Supplier Contact No: ${_supplierContactNoController.text}',
+                  );
+                  if (_hasChanges()) {
+                    _saveData();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("No changes detected.")),
+                    );
+                  }
+                },
+                child: const Text('Save Changes'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildDetailTile(IconData icon, String title, String subtitle) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    return Card(
+      color: customColors.suqarBackgroundColor,
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      elevation: 2,
+      child: ListTile(
+        leading: Icon(icon, color: customColors.subTextColor),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: customColors.mainTextColor,
+          ),
+        ),
+        subtitle: Text(subtitle,
+          style: TextStyle(
+            color: customColors.subTextColor,
+          ),
+        ),
       ),
     );
   }
@@ -1464,29 +1695,36 @@ Widget _buildCategoryHeader(String title) {
 
 // Editable Card
 Widget _buildEditableCard(
+  BuildContext context,
   IconData icon,
   String label,
   TextEditingController controller,
 ) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+
   return Card(
+    color: customColors.suqarBackgroundColor,
     elevation: 4, // Add a shadow effect
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10), // Rounded corners
     ),
     margin: const EdgeInsets.all(8.0), // Margin between cards
     child: ListTile(
-      leading: Icon(icon, color: Colors.blue),
+      leading: Icon(icon, color: customColors.subTextColor),
       title: Text(
         label,
-        style: const TextStyle(
-          color: Colors.black,
+        style: TextStyle(
+          color: customColors.mainTextColor,
           fontWeight: FontWeight.bold,
         ),
       ),
       subtitle: TextFormField(
         controller: controller,
-        decoration: const InputDecoration(
+        style: TextStyle(color: customColors.mainTextColor),
+
+        decoration: InputDecoration(
           hintText: 'Tap to edit',
+          hintStyle: TextStyle(color: customColors.mainTextColor),
           border: OutlineInputBorder(),
         ),
       ),
@@ -1498,10 +1736,13 @@ Widget _buildEditableCard(
 
 /// Editable Detail Tile for Serial Numbers
 Widget _buildEditableDetailTile2(
+  BuildContext context,
   IconData icon,
   String title,
   String serialNumbers,
 ) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+
   // Split the serial numbers into a list
   List<String> serialList =
       serialNumbers.split(',').map((s) => s.trim()).toList();
@@ -1512,17 +1753,26 @@ Widget _buildEditableDetailTile2(
   );
 
   return Card(
+    color: customColors.suqarBackgroundColor,
     margin: const EdgeInsets.symmetric(vertical: 4.0),
     elevation: 2,
     child: ListTile(
-      leading: Icon(icon, color: Colors.blue),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+      leading: Icon(icon, color: customColors.subTextColor),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: customColors.mainTextColor,
+        ),
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Editable text field for serial numbers
           TextField(
             controller: serialController,
+            style: TextStyle(color: customColors.mainTextColor),
+
             decoration: const InputDecoration(
               hintText: 'Enter serial numbers',
               border: OutlineInputBorder(),
@@ -1543,16 +1793,29 @@ Widget _buildEditableMailTile(
   TextEditingController emailController,
   BuildContext context,
 ) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+
   return Card(
+    color: customColors.suqarBackgroundColor,
     margin: const EdgeInsets.symmetric(vertical: 4.0),
     elevation: 2,
     child: ListTile(
-      leading: Icon(icon, color: Colors.blue),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+      leading: Icon(icon, color: customColors.subTextColor),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: customColors.mainTextColor,
+        ),
+      ),
       subtitle: TextField(
-        controller: emailController, // Controller passed as argument
-        decoration: const InputDecoration(
+        controller: emailController,
+        style: TextStyle(color: customColors.mainTextColor),
+
+        decoration: InputDecoration(
           hintText: 'Enter email address',
+          hintStyle: TextStyle(color: customColors.mainTextColor),
+
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.emailAddress,
@@ -1582,16 +1845,22 @@ Widget _buildEditableCallTile(
   TextEditingController phoneController,
   BuildContext context,
 ) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+
   return Card(
+    color: customColors.suqarBackgroundColor,
     margin: const EdgeInsets.symmetric(vertical: 4.0),
     elevation: 2,
     child: ListTile(
-      leading: Icon(icon, color: Colors.blue),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+      leading: Icon(icon, color: customColors.subTextColor),
+      title: Text(title, style:  TextStyle(fontWeight: FontWeight.bold,color: customColors.mainTextColor)),
       subtitle: TextField(
-        controller: phoneController, // Controller passed as argument
-        decoration: const InputDecoration(
+        controller: phoneController,
+        style: TextStyle(color: customColors.mainTextColor),
+
+        decoration: InputDecoration(
           hintText: 'Enter contact number',
+          hintStyle: TextStyle(color: customColors.mainTextColor),
           border: OutlineInputBorder(),
         ),
         keyboardType: TextInputType.phone,

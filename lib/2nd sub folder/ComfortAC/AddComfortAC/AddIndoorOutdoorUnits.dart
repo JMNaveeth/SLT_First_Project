@@ -190,9 +190,15 @@ class _ACFormPageState extends State<ACFormPage> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.location_on, color: Colors.white),
+                        Icon(
+                          Icons.location_on,
+                          color: customColors.mainTextColor,
+                        ),
                         SizedBox(width: 8),
-                        Text('Get Location'),
+                        Text(
+                          'Get Location',
+                          style: TextStyle(color: customColors.subTextColor),
+                        ),
                       ],
                     ),
                   ),
