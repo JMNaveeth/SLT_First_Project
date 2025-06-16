@@ -578,7 +578,9 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _modelController,
-                  decoration: const InputDecoration(labelText: 'Model',),
+                  style: TextStyle(color: customColors.mainTextColor),
+
+                  decoration: const InputDecoration(labelText: 'Model'),
                 ),
               ),
               ListTile(
@@ -612,6 +614,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _TypeController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'Type'),
                 ),
               ),
@@ -625,18 +629,24 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: serial_numberController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'serial_number'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: supplier_nameController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'supplier_name'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: po_numberController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'po_number'),
                 ),
               ),
@@ -650,12 +660,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _notesController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'notes'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: _last_updatedController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'last_updated'),
                 ),
               ),
@@ -669,12 +683,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _DoMController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'DoM'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: _installation_dateController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'installation_date',
                   ),
@@ -683,6 +701,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _warranty_expiry_dateController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'warranty_expiry_date',
                   ),
@@ -691,6 +711,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _QR_InController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'Indoor Tag Code',
                   ),
@@ -699,6 +721,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _uploaded_byController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'uploaded_by'),
                 ),
               ),
@@ -710,7 +734,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   }
 
   Widget buildOutdoorUnitCard() {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
+      color: customColors.suqarBackgroundColor,
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -748,6 +775,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorModelController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'Model'),
                 ),
               ),
@@ -761,6 +790,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorFanModelController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'Outdoor Fan Model',
                   ),
@@ -800,6 +831,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorcompressor_modelController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'compressor_model',
                   ),
@@ -808,6 +841,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorcompressor_serial_numberController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'compressor_serial_number',
                   ),
@@ -816,18 +851,24 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorsupplier_nameController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'Supplier_Name'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: _outdoorpo_numberController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'po_number'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: _outdoornotesController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'notes'),
                 ),
               ),
@@ -841,18 +882,24 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorlast_updatedController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'last_updated'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: _outdoorDoMController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'DoM'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: _outdoorInstallation_DateController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'Installation_Date',
                   ),
@@ -861,6 +908,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorwarranty_expiry_dateController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(
                     labelText: 'Warranty_Expire_Date',
                   ),
@@ -869,12 +918,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _outdoorQR_OutController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'QR_Out'),
                 ),
               ),
               ListTile(
                 title: TextFormField(
                   controller: _outdooruploaded_byController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'uploaded_by'),
                 ),
               ),
@@ -901,7 +954,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   }
 
   Widget buildLatitudeLongitudeCard() {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
+      color: customColors.suqarBackgroundColor,
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -915,7 +971,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SwitchListTile(
-              title: const Text("Auto-Location"),
+              title: Text(
+                "Auto-Location",
+                style: TextStyle(color: customColors.mainTextColor),
+              ),
               value: isAutoLocationEnabled,
               onChanged: (value) async {
                 setState(() {
@@ -931,7 +990,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             ),
             ListTile(
               title: TextFormField(
-                controller: _connectionLatitudeController,
+                controller: _connectionLatitudeController,      style: TextStyle(color: customColors.mainTextColor),
+
                 decoration: const InputDecoration(labelText: 'Latitude'),
                 keyboardType: TextInputType.number,
                 enabled:
@@ -940,7 +1000,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             ),
             ListTile(
               title: TextFormField(
-                controller: _connectionLongitudeController,
+                controller: _connectionLongitudeController,      style: TextStyle(color: customColors.mainTextColor),
+
                 decoration: const InputDecoration(labelText: 'Longitude'),
                 keyboardType: TextInputType.number,
                 enabled:
@@ -1798,7 +1859,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController statusController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     // Get the status value from widget.acUnit and add it to the list if not already present
     String statusFromAcUnit = _statusController.text;
@@ -1810,7 +1872,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue:
           formData[key] ??
@@ -1820,7 +1883,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           statuses
@@ -1859,7 +1923,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController brandController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String brandsFromAcUnit = _brandController.text;
 
@@ -1870,7 +1935,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? brandsFromAcUnit,
       decoration: InputDecoration(
@@ -1878,7 +1944,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           brands
@@ -1973,7 +2040,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String CapacityFromAcUnit = _capacityController.text;
 
@@ -1985,7 +2053,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? CapacityFromAcUnit,
       decoration: InputDecoration(
@@ -1993,7 +2062,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           Capacity.map(
@@ -2075,7 +2145,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController installationTypeController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String ITCFromAcUnit = _installationTypeController.text;
 
@@ -2084,7 +2155,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? ITCFromAcUnit,
       decoration: InputDecoration(
@@ -2092,7 +2164,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           ITC
@@ -2170,7 +2243,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String RefrigTypeFromAcUnit = _refrigerantTypeController.text;
 
@@ -2182,7 +2256,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? RefrigTypeFromAcUnit,
       decoration: InputDecoration(
@@ -2190,7 +2265,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           RefrigType.map(
@@ -2266,7 +2342,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String PowerSupplyFromAcUnit = _powerSupplyController.text;
 
@@ -2278,7 +2355,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? PowerSupplyFromAcUnit,
       decoration: InputDecoration(
@@ -2286,7 +2364,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           PowerSupply.map(
@@ -2364,7 +2443,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String RemoteStatusFromAcUnit = remote_availableController.text;
 
@@ -2376,7 +2456,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? RemoteStatusFromAcUnit,
       decoration: InputDecoration(
@@ -2384,7 +2465,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           RemoteStatus.map(
@@ -2465,7 +2547,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String RemoteCategoryFromAcUnit = _categoryController.text;
 
@@ -2477,7 +2560,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? RemoteCategoryFromAcUnit,
       decoration: InputDecoration(
@@ -2485,7 +2569,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           Category.map(
@@ -2566,7 +2651,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     String ConditionFromAcUnit = _condition_ID_unitController.text;
 
@@ -2578,7 +2664,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,      style: TextStyle(color: customColors.mainTextColor),
+      name: key,
+      style: TextStyle(color: customColors.mainTextColor),
 
       initialValue: formData[key] ?? ConditionFromAcUnit,
       decoration: InputDecoration(
@@ -2586,7 +2673,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),      dropdownColor: customColors.suqarBackgroundColor,
+      ),
+      dropdownColor: customColors.suqarBackgroundColor,
 
       items:
           Condition.map(
@@ -2661,6 +2749,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String label,
     TextEditingController capacityController,
   ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String CompressorMountFromAcUnit =
         _outdoorcompressor_mounted_withController.text;
 
@@ -2673,6 +2763,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
 
     return FormBuilderDropdown(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? CompressorMountFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
@@ -2680,6 +2772,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           CompressorMount.map(
             (compressorMount) => DropdownMenuItem(
@@ -2757,12 +2851,14 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     String initialValue,
-  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+  ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Column(
       children: [
         FormBuilderTextField(
-          name: key,      style: TextStyle(color: customColors.mainTextColor),
+          name: key,
+          style: TextStyle(color: customColors.mainTextColor),
 
           decoration: InputDecoration(
             labelText: label,

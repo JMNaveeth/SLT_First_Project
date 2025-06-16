@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import '../../ACMaintenancePage.dart';
 
@@ -183,8 +185,9 @@ class updatePrecisionAC {
 
 // Fetch Precision AC data function
 Future<List<updatePrecisionAC>> fetchPrecisionAC() async {
-  final response = await http
-      .get(Uri.parse('https://powerprox.sltidc.lk/GET_PrecisionAC.php'));
+  final response = await http.get(
+    Uri.parse('https://powerprox.sltidc.lk/GET_PrecisionAC.php'),
+  );
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
@@ -200,15 +203,18 @@ Future<List<updatePrecisionAC>> fetchPrecisionAC() async {
 
 // Fetch regions function
 Future<List<String>> fetchRegions() async {
-  final response = await http
-      .get(Uri.parse('https://powerprox.sltidc.lk/GETLocationRegion.php'));
+  final response = await http.get(
+    Uri.parse('https://powerprox.sltidc.lk/GETLocationRegion.php'),
+  );
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
     // Filter out null or empty regions
-    return List<String>.from(jsonResponse
-        .map((data) => data['Region'])
-        .where((region) => region != null && region.isNotEmpty));
+    return List<String>.from(
+      jsonResponse
+          .map((data) => data['Region'])
+          .where((region) => region != null && region.isNotEmpty),
+    );
   } else {
     throw Exception('Failed to load regions');
   }
@@ -216,15 +222,20 @@ Future<List<String>> fetchRegions() async {
 
 // Fetch RTOMs function based on selected Region ID
 Future<List<String>> fetchRTOMs(String regionId) async {
-  final response = await http.get(Uri.parse(
-      'https://powerprox.sltidc.lk/GETLocationRTOM.php?regionId=$regionId'));
+  final response = await http.get(
+    Uri.parse(
+      'https://powerprox.sltidc.lk/GETLocationRTOM.php?regionId=$regionId',
+    ),
+  );
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
     // Filter out null or empty RTOMs
-    return List<String>.from(jsonResponse
-        .map((data) => data['RTOM'])
-        .where((rtom) => rtom != null && rtom.isNotEmpty));
+    return List<String>.from(
+      jsonResponse
+          .map((data) => data['RTOM'])
+          .where((rtom) => rtom != null && rtom.isNotEmpty),
+    );
   } else {
     throw Exception('Failed to load RTOMs');
   }
@@ -232,15 +243,20 @@ Future<List<String>> fetchRTOMs(String regionId) async {
 
 // Fetch stations function based on selected RTOM
 Future<List<String>> fetchStations(String rtom) async {
-  final response = await http.get(Uri.parse(
-      'https://powerprox.sltidc.lk/GETLocationStationTable.php?rtom=$rtom'));
+  final response = await http.get(
+    Uri.parse(
+      'https://powerprox.sltidc.lk/GETLocationStationTable.php?rtom=$rtom',
+    ),
+  );
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
     // Filter out null or empty stations
-    return List<String>.from(jsonResponse
-        .map((data) => data['Station'])
-        .where((station) => station != null && station.isNotEmpty));
+    return List<String>.from(
+      jsonResponse
+          .map((data) => data['Station'])
+          .where((station) => station != null && station.isNotEmpty),
+    );
   } else {
     throw Exception('Failed to load stations');
   }
@@ -267,6 +283,7 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
   String? selectedRegion;
   String? selectedRTOM;
   String? selectedStation;
+  String searchQuery = '';
 
   List<String> statuses = ['All', 'Working', 'Running', 'Stopped', 'Faulty'];
 
@@ -280,6 +297,43 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
     futureStations = Future.value([]);
     fetchData();
   }
+
+
+
+  // void handleSearch(String query) {
+  //   setState(() {
+  //     searchQuery = query;
+  //   });
+  // }
+
+  // List<updatePrecisionAC> _filterACs(List<updatePrecisionAC> acs) {
+  //   var tempFiltered =
+  //       acs.where((ac) {
+  //         final matchesStatus =
+  //             selectedStatus == null ||
+  //             selectedStatus == 'All' ||
+  //             ac.status == selectedStatus;
+  //         final matchesRegion =
+  //             selectedRegion == null ||
+  //             selectedRegion == 'All' ||
+  //             ac.region == selectedRegion;
+  //         final matchesRTOM =
+  //             selectedRTOM == null ||
+  //             selectedRTOM == 'All' ||
+  //             ac.rtom == selectedRTOM;
+  //         final matchesStation =
+  //             selectedStation == null ||
+  //             selectedStation == 'All' ||
+  //             ac.station == selectedStation;
+
+  //         return matchesStatus &&
+  //             matchesRegion &&
+  //             matchesRTOM &&
+  //             matchesStation;
+  //       }).toList();
+  //   return tempFiltered;
+  // }
+
 
   // Method to handle region change
   void _onRegionChanged(String? newValue) {
@@ -304,8 +358,9 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
 
   Future<void> fetchData() async {
     try {
-      final response = await http
-          .get(Uri.parse('https://powerprox.sltidc.lk/GET_PrecisionAC.php'));
+      final response = await http.get(
+        Uri.parse('https://powerprox.sltidc.lk/GET_PrecisionAC.php'),
+      );
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
         setState(() {
@@ -328,156 +383,213 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Precision AC List', style: TextStyle(color: Colors.white)),
-        backgroundColor: Color(0xFF0056A2),
+        title: Text(
+          'Precision AC List',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        actions: [ThemeToggleButton()],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Filter dropdowns in two columns
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Filter dropdowns in two columns
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: DropdownButton<String>(
+                      hint: Text('Select Status'),
+                      style: TextStyle(color: customColors.mainTextColor),
+                      dropdownColor: customColors.suqarBackgroundColor,
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: DropdownButton<String>(
-                    hint: Text('Select Status'),
-                    value: selectedStatus,
-                    isExpanded: true,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedStatus = newValue;
-                      });
-                    },
-                    items: statuses.map((String status) {
-                      return DropdownMenuItem<String>(
-                        value: status,
-                        child: Text(status),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: FutureBuilder<List<String>>(
-                    future: futureRegions,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return DropdownButton<String>(
-                          hint: Text('Select Region'),
-                          value: selectedRegion,
-                          isExpanded: true,
-                          onChanged: _onRegionChanged, // Use new method
-                          items:
-                              ['All', ...snapshot.data!].map((String region) {
+                      value: selectedStatus,
+                      isExpanded: true,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedStatus = newValue;
+                        });
+                      },
+                      items:
+                          statuses.map((String status) {
                             return DropdownMenuItem<String>(
-                              value: region,
-                              child: Text(region),
+                              value: status,
+                              child: Text(status),
                             );
                           }).toList(),
-                        );
-                      }
-                    },
+                    ),
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: FutureBuilder<List<String>>(
+                      future: futureRegions,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return DropdownButton<String>(
+                            hint: Text(
+                              'Select Region',
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+                            style: TextStyle(color: customColors.mainTextColor),
+                            dropdownColor: customColors.suqarBackgroundColor,
 
-            // Display cards in a responsive-height container just below the filters
-            Container(
-              height: MediaQuery.of(context).size.height *
-                  0.15, // Increased height to accommodate all cards
-              child: GridView.count(
-                crossAxisCount: 2, // Two columns
-                childAspectRatio:
-                    1.5, // Maintain aspect ratio for better visibility
-                children: [
-                  // _buildCard('Total AC Units', totalUnits.toString(), Colors.lightBlue[200]!),
-                  _buildCard('UpBlow Units', UpblowUnits.toString(),
-                      Colors.lightBlue[200]!),
-                  _buildCard('DownBlow Units', DownBlowUnits.toString(),
-                      Colors.lightGreen[200]!),
-                  // _buildCard('Stopped Units', stoppedUnits.toString(), Colors.red[200]!),
+                            value: selectedRegion,
+                            isExpanded: true,
+                            onChanged: _onRegionChanged, // Use new method
+                            items:
+                                ['All', ...snapshot.data!].map((String region) {
+                                  return DropdownMenuItem<String>(
+                                    value: region,
+                                    child: Text(region),
+                                  );
+                                }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 ],
               ),
-            ),
 
-            // Spacing between rows
-            Expanded(
-              child: FutureBuilder<List<updatePrecisionAC>>(
-                future: futurePrecisionAC,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else {
-                    final precisionACs = snapshot.data!;
-                    List<updatePrecisionAC> filteredACs =
-                        precisionACs.where((ac) {
-                      final matchesStatus = selectedStatus == null ||
-                          selectedStatus == 'All' ||
-                          ac.status == selectedStatus;
-                      final matchesRegion = selectedRegion == null ||
-                          selectedRegion == 'All' ||
-                          ac.region == selectedRegion;
-                      final matchesRTOM = selectedRTOM == null ||
-                          selectedRTOM == 'All' ||
-                          ac.rtom == selectedRTOM;
-                      final matchesStation = selectedStation == null ||
-                          selectedStation == 'All' ||
-                          ac.station == selectedStation;
-
-                      return matchesStatus &&
-                          matchesRegion &&
-                          matchesRTOM &&
-                          matchesStation;
-                    }).toList();
-
-                    return ListView.builder(
-                      itemCount: filteredACs.length,
-                      itemBuilder: (context, index) {
-                        final ac = filteredACs[index];
-                        return Card(
-                          margin: EdgeInsets.all(10),
-                          child: ListTile(
-                            title: Text(ac.model),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Status: ${ac.status}'),
-                                Text('Region: ${ac.region}'),
-                                Text(
-                                    'Installation Date: ${ac.installationDate}'),
-                                Text(
-                                    'Cooling Capacity: ${ac.coolingCapacity} BTU'),
-                              ],
-                            ),
-                            onTap: () {
-                              // Navigate to the detailed view
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ACDetailView(ac: ac),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
+              // Display cards in a responsive-height container just below the filters
+              Container(
+                height:
+                    MediaQuery.of(context).size.height *
+                    0.15, // Increased height to accommodate all cards
+                child: GridView.count(
+                  crossAxisCount: 2, // Two columns
+                  childAspectRatio:
+                      1.5, // Maintain aspect ratio for better visibility
+                  children: [
+                    // _buildCard('Total AC Units', totalUnits.toString(), Colors.lightBlue[200]!),
+                    _buildCard(
+                      'UpBlow Units',
+                      UpblowUnits.toString(),
+                      Colors.lightBlue[200]!,
+                    ),
+                    _buildCard(
+                      'DownBlow Units',
+                      DownBlowUnits.toString(),
+                      Colors.lightGreen[200]!,
+                    ),
+                    // _buildCard('Stopped Units', stoppedUnits.toString(), Colors.red[200]!),
+                  ],
+                ),
               ),
-            ),
-          ],
+
+              // Spacing between rows
+              Expanded(
+                child: FutureBuilder<List<updatePrecisionAC>>(
+                  future: futurePrecisionAC,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      final precisionACs = snapshot.data!;
+                      List<updatePrecisionAC> filteredACs =
+                          precisionACs.where((ac) {
+                            final matchesStatus =
+                                selectedStatus == null ||
+                                selectedStatus == 'All' ||
+                                ac.status == selectedStatus;
+                            final matchesRegion =
+                                selectedRegion == null ||
+                                selectedRegion == 'All' ||
+                                ac.region == selectedRegion;
+                            final matchesRTOM =
+                                selectedRTOM == null ||
+                                selectedRTOM == 'All' ||
+                                ac.rtom == selectedRTOM;
+                            final matchesStation =
+                                selectedStation == null ||
+                                selectedStation == 'All' ||
+                                ac.station == selectedStation;
+
+                            return matchesStatus &&
+                                matchesRegion &&
+                                matchesRTOM &&
+                                matchesStation;
+                          }).toList();
+
+                      return ListView.builder(
+                        itemCount: filteredACs.length,
+                        itemBuilder: (context, index) {
+                          final ac = filteredACs[index];
+                          return Card(
+                            color: customColors.suqarBackgroundColor,
+                            margin: EdgeInsets.all(10),
+                            child: ListTile(
+                              title: Text(
+                                ac.model,
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Status: ${ac.status}',
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Region: ${ac.region}',
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Installation Date: ${ac.installationDate}',
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Cooling Capacity: ${ac.coolingCapacity} BTU',
+                                    style: TextStyle(
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                // Navigate to the detailed view
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ACDetailView(ac: ac),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -559,12 +671,15 @@ class _ACDetailViewState extends State<ACDetailView> {
     print("Initial daaaata: ${widget.ac.toJson()}");
 
     _modelController = TextEditingController(text: widget.ac.model);
-    _manufacturerController =
-        TextEditingController(text: widget.ac.manufacturer);
-    _serialNumberController =
-        TextEditingController(text: widget.ac.serialNumber);
-    _installationDateController =
-        TextEditingController(text: widget.ac.installationDate);
+    _manufacturerController = TextEditingController(
+      text: widget.ac.manufacturer,
+    );
+    _serialNumberController = TextEditingController(
+      text: widget.ac.serialNumber,
+    );
+    _installationDateController = TextEditingController(
+      text: widget.ac.installationDate,
+    );
     _qrTagController = TextEditingController(text: widget.ac.qrTag);
     _regionController = TextEditingController(text: widget.ac.region);
     _rtomController = TextEditingController(text: widget.ac.rtom);
@@ -578,58 +693,79 @@ class _ACDetailViewState extends State<ACDetailView> {
     _dimensionsController = TextEditingController(text: widget.ac.dimensions);
     _weightController = TextEditingController(text: widget.ac.weight);
     _noiseLevelController = TextEditingController(text: widget.ac.noiseLevel);
-    _conditionIndoorAirFiltersController =
-        TextEditingController(text: widget.ac.conditionIndoorAirFilters);
-    _noOfEvaporatorCoilsController =
-        TextEditingController(text: widget.ac.noOfEvaporatorCoils);
-    _noOfIndoorFansController =
-        TextEditingController(text: widget.ac.No_of_Indoor_Fans);
-    _conditionIndoorUnitController =
-        TextEditingController(text: widget.ac.conditionIndoorUnit);
+    _conditionIndoorAirFiltersController = TextEditingController(
+      text: widget.ac.conditionIndoorAirFilters,
+    );
+    _noOfEvaporatorCoilsController = TextEditingController(
+      text: widget.ac.noOfEvaporatorCoils,
+    );
+    _noOfIndoorFansController = TextEditingController(
+      text: widget.ac.No_of_Indoor_Fans,
+    );
+    _conditionIndoorUnitController = TextEditingController(
+      text: widget.ac.conditionIndoorUnit,
+    );
 
-    _noOfCondenserCircuitsController =
-        TextEditingController(text: widget.ac.noOfCondenserCircuits);
-    _noOfCondenserFansController =
-        TextEditingController(text: widget.ac.noOfCondenserFans);
-    _condenserMountingMethodController =
-        TextEditingController(text: widget.ac.condenserMountingMethod);
-    _conditionOutdoorUnitController =
-        TextEditingController(text: widget.ac.conditionOutdoorUnit);
+    _noOfCondenserCircuitsController = TextEditingController(
+      text: widget.ac.noOfCondenserCircuits,
+    );
+    _noOfCondenserFansController = TextEditingController(
+      text: widget.ac.noOfCondenserFans,
+    );
+    _condenserMountingMethodController = TextEditingController(
+      text: widget.ac.condenserMountingMethod,
+    );
+    _conditionOutdoorUnitController = TextEditingController(
+      text: widget.ac.conditionOutdoorUnit,
+    );
 
-    _noOfCompressorsController =
-        TextEditingController(text: widget.ac.noOfCompressors);
-    _serialNumberOfCompressorsController =
-        TextEditingController(text: widget.ac.serialNumberOfCompressors);
+    _noOfCompressorsController = TextEditingController(
+      text: widget.ac.noOfCompressors,
+    );
+    _serialNumberOfCompressorsController = TextEditingController(
+      text: widget.ac.serialNumberOfCompressors,
+    );
 
-    _coolingCapacityController =
-        TextEditingController(text: widget.ac.coolingCapacity);
+    _coolingCapacityController = TextEditingController(
+      text: widget.ac.coolingCapacity,
+    );
     _powerSupplyController = TextEditingController(text: widget.ac.powerSupply);
-    _refrigerantTypeController =
-        TextEditingController(text: widget.ac.refrigerantType);
-    _noOfRefrigerantCircuitsController =
-        TextEditingController(text: widget.ac.noOfRefrigerantCircuits);
+    _refrigerantTypeController = TextEditingController(
+      text: widget.ac.refrigerantType,
+    );
+    _noOfRefrigerantCircuitsController = TextEditingController(
+      text: widget.ac.noOfRefrigerantCircuits,
+    );
     _airflowController = TextEditingController(text: widget.ac.airflow);
-    _airflowTypeController =
-        TextEditingController(text: widget.ac.airflow_type);
-    _otherSpecificationsController =
-        TextEditingController(text: widget.ac.otherSpecifications);
+    _airflowTypeController = TextEditingController(
+      text: widget.ac.airflow_type,
+    );
+    _otherSpecificationsController = TextEditingController(
+      text: widget.ac.otherSpecifications,
+    );
 
     _latitudeController = TextEditingController(text: widget.ac.latitude);
     _longitudeController = TextEditingController(text: widget.ac.longitude);
     _locationController = TextEditingController(text: widget.ac.location);
-    _warrantyDetailsController =
-        TextEditingController(text: widget.ac.warrantyDetails ?? 'N/A');
-    _warrantyExpireDateController =
-        TextEditingController(text: widget.ac.warrantyExpireDate ?? 'N/A');
-    _amcExpireDateController =
-        TextEditingController(text: widget.ac.amcExpireDate ?? 'N/A');
+    _warrantyDetailsController = TextEditingController(
+      text: widget.ac.warrantyDetails ?? 'N/A',
+    );
+    _warrantyExpireDateController = TextEditingController(
+      text: widget.ac.warrantyExpireDate ?? 'N/A',
+    );
+    _amcExpireDateController = TextEditingController(
+      text: widget.ac.amcExpireDate ?? 'N/A',
+    );
 
-    _supplierNameController =
-        TextEditingController(text: widget.ac.supplierName);
-    _supplierEmailController =
-        TextEditingController(text: widget.ac.supplierEmail ?? 'N/A');
-    _supplierContactNoController =
-        TextEditingController(text: widget.ac.supplierContactNo ?? 'N/A');
+    _supplierNameController = TextEditingController(
+      text: widget.ac.supplierName,
+    );
+    _supplierEmailController = TextEditingController(
+      text: widget.ac.supplierEmail ?? 'N/A',
+    );
+    _supplierContactNoController = TextEditingController(
+      text: widget.ac.supplierContactNo ?? 'N/A',
+    );
 
     // _updatedByController = TextEditingController(
     //     text: widget.ac.updatedBy.isNotEmpty ? widget.ac.updatedBy : 'N/A');
@@ -704,7 +840,6 @@ class _ACDetailViewState extends State<ACDetailView> {
         _floorNumberController.text != widget.ac.floorNumber ||
         _buildingIDController.text != widget.ac.buildingID ||
         _statusController.text != widget.ac.status ||
-
         // Additional fields
         _dimensionsController.text != widget.ac.dimensions ||
         _weightController.text != widget.ac.weight ||
@@ -817,7 +952,8 @@ class _ACDetailViewState extends State<ACDetailView> {
         final response = await http
             .post(
               Uri.parse(
-                  "https://powerprox.sltidc.lk/POST_PrecisionAC_test.php"),
+                "https://powerprox.sltidc.lk/POST_PrecisionAC_test.php",
+              ),
               body: requestData,
             )
             .timeout(const Duration(seconds: 10));
@@ -827,9 +963,9 @@ class _ACDetailViewState extends State<ACDetailView> {
           print(response.body);
 
           // Show success message to the user
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Update successful!")),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text("Update successful!")));
 
           // Navigate to HomeScreen after successful update
           // Navigator.pushReplacement(
@@ -838,13 +974,15 @@ class _ACDetailViewState extends State<ACDetailView> {
           // );
         } else {
           print(
-              'Failed to update PrecisionAC information: ${response.statusCode}');
+            'Failed to update PrecisionAC information: ${response.statusCode}',
+          );
           print(response.body);
 
           // Show error message to the user
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-                content: Text("Failed to update PrecisionAC information!")),
+              content: Text("Failed to update PrecisionAC information!"),
+            ),
           );
           throw Exception('Failed to update PrecisionAC information.');
         }
@@ -852,18 +990,18 @@ class _ACDetailViewState extends State<ACDetailView> {
         print('Error updating PrecisionAC information: $e');
 
         // Show error message to the user
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error during update: $e")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error during update: $e")));
         rethrow;
       }
     } catch (e, stackTrace) {
       print("Error during update: $e");
       print(stackTrace);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error during update: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error during update: $e")));
     }
   }
 
@@ -883,14 +1021,23 @@ class _ACDetailViewState extends State<ACDetailView> {
             _buildEditableCard(Icons.analytics, 'Model:', _modelController),
             //_buildDetailTile(Icons.factory, 'Manufacturer:', ac.manufacturer),
             _buildEditableCard(
-                Icons.factory, 'Manufacturer:', _manufacturerController),
+              Icons.factory,
+              'Manufacturer:',
+              _manufacturerController,
+            ),
             //_buildDetailTile(Icons.assignment, 'Serial Code:', ac.serialNumber),
             _buildEditableCard(
-                Icons.assignment, 'Serial Code:', _serialNumberController),
+              Icons.assignment,
+              'Serial Code:',
+              _serialNumberController,
+            ),
             //_buildDetailTile(Icons.calendar_today, 'Installation Date:',
             //    ac.installationDate),
-            _buildEditableCard(Icons.calendar_today, 'Installation Date:',
-                _installationDateController),
+            _buildEditableCard(
+              Icons.calendar_today,
+              'Installation Date:',
+              _installationDateController,
+            ),
             // _buildDetailTile(Icons.label, 'QR Tag:', ac.qrTag),
             _buildEditableCard(Icons.label, 'QR Tag:', _qrTagController),
             // _buildDetailTile(Icons.location_on, 'Region:', ac.region),
@@ -901,11 +1048,20 @@ class _ACDetailViewState extends State<ACDetailView> {
             _buildEditableCard(Icons.home_work, 'Station:', _stationController),
             //_buildDetailTile(Icons.home_work, 'Office no:', ac.officeNo),
             _buildEditableCard(
-                Icons.home_work, 'Office no:', _officeNoController),
+              Icons.home_work,
+              'Office no:',
+              _officeNoController,
+            ),
             _buildEditableCard(
-                Icons.home_work, 'Floor number:', _floorNumberController),
+              Icons.home_work,
+              'Floor number:',
+              _floorNumberController,
+            ),
             _buildEditableCard(
-                Icons.home_work, 'Building ID:', _buildingIDController),
+              Icons.home_work,
+              'Building ID:',
+              _buildingIDController,
+            ),
 
             //_buildDetailTile(Icons.copyright, 'Status:', ac.status),
             _buildEditableCard(Icons.copyright, 'Status:', _statusController),
@@ -923,21 +1079,40 @@ class _ACDetailViewState extends State<ACDetailView> {
             // _buildDetailTile(Icons.ac_unit, 'Condition. of Indoor Unit:',
             //     ac.conditionIndoorUnit),
             _buildEditableCard(
-                Icons.view_array, 'Dimensions:', _dimensionsController),
+              Icons.view_array,
+              'Dimensions:',
+              _dimensionsController,
+            ),
             _buildEditableCard(
-                Icons.fitness_center, 'Weight:', _weightController),
+              Icons.fitness_center,
+              'Weight:',
+              _weightController,
+            ),
             _buildEditableCard(
-                Icons.volume_up, 'Noise Level:', _noiseLevelController),
+              Icons.volume_up,
+              'Noise Level:',
+              _noiseLevelController,
+            ),
             _buildEditableCard(
-                Icons.filter_alt,
-                'Indoor Air Filters Condition:',
-                _conditionIndoorAirFiltersController),
-            _buildEditableCard(Icons.ac_unit, 'No. of Evaporator Coils:',
-                _noOfEvaporatorCoilsController),
-            _buildEditableCard(Icons.ac_unit, 'No. of Indoor Fans:',
-                _noOfIndoorFansController),
-            _buildEditableCard(Icons.ac_unit, 'Condition of Indoor Unit:',
-                _conditionIndoorUnitController),
+              Icons.filter_alt,
+              'Indoor Air Filters Condition:',
+              _conditionIndoorAirFiltersController,
+            ),
+            _buildEditableCard(
+              Icons.ac_unit,
+              'No. of Evaporator Coils:',
+              _noOfEvaporatorCoilsController,
+            ),
+            _buildEditableCard(
+              Icons.ac_unit,
+              'No. of Indoor Fans:',
+              _noOfIndoorFansController,
+            ),
+            _buildEditableCard(
+              Icons.ac_unit,
+              'Condition of Indoor Unit:',
+              _conditionIndoorUnitController,
+            ),
 
             _buildCategoryHeader('Outdoor Info'),
             // _buildDetailTile(Icons.ac_unit, 'No. of Condenser Circuits:',
@@ -949,14 +1124,26 @@ class _ACDetailViewState extends State<ACDetailView> {
             //     ac.condenserMountingMethod),
             // _buildDetailTile(Icons.ac_unit, 'Condition. of Outdoor Unit:',
             //     ac.conditionOutdoorUnit),
-            _buildEditableCard(Icons.ac_unit, 'No. of Condenser Circuits:',
-                _noOfCondenserCircuitsController),
-            _buildEditableCard(Icons.ac_unit, 'No. of Condenser Fans:',
-                _noOfCondenserFansController),
-            _buildEditableCard(Icons.home, 'Condenser Mounting Method:',
-                _condenserMountingMethodController),
-            _buildEditableCard(Icons.ac_unit, 'Condition of Outdoor Unit:',
-                _conditionOutdoorUnitController),
+            _buildEditableCard(
+              Icons.ac_unit,
+              'No. of Condenser Circuits:',
+              _noOfCondenserCircuitsController,
+            ),
+            _buildEditableCard(
+              Icons.ac_unit,
+              'No. of Condenser Fans:',
+              _noOfCondenserFansController,
+            ),
+            _buildEditableCard(
+              Icons.home,
+              'Condenser Mounting Method:',
+              _condenserMountingMethodController,
+            ),
+            _buildEditableCard(
+              Icons.ac_unit,
+              'Condition of Outdoor Unit:',
+              _conditionOutdoorUnitController,
+            ),
 
             // Compressor Info
             _buildCategoryHeader('Compressor Info'),
@@ -964,10 +1151,16 @@ class _ACDetailViewState extends State<ACDetailView> {
             //     Icons.compress, 'No. of Compressors:', ac.noOfCompressors),
             // _buildDetailTile2(Icons.copyright, 'Compressor Serial code:',
             //     ac.serialNumberOfCompressors),
-            _buildEditableCard(Icons.compress, 'No. of Compressors:',
-                _noOfCompressorsController),
-            _buildEditableDetailTile2(Icons.copyright,
-                'Compressor Serial Code:', widget.ac.serialNumberOfCompressors),
+            _buildEditableCard(
+              Icons.compress,
+              'No. of Compressors:',
+              _noOfCompressorsController,
+            ),
+            _buildEditableDetailTile2(
+              Icons.copyright,
+              'Compressor Serial Code:',
+              widget.ac.serialNumberOfCompressors,
+            ),
 
             // Specifications
             _buildCategoryHeader('Specifications'),
@@ -983,18 +1176,36 @@ class _ACDetailViewState extends State<ACDetailView> {
             // _buildDetailTile(Icons.settings, 'Other Specifications:',
             //     ac.otherSpecifications),
             _buildEditableCard(
-                Icons.ac_unit, 'Cooling Capacity:', _coolingCapacityController),
+              Icons.ac_unit,
+              'Cooling Capacity:',
+              _coolingCapacityController,
+            ),
             _buildEditableCard(
-                Icons.power, 'Power Supply:', _powerSupplyController),
-            _buildEditableCard(Icons.settings, 'Refrigerant Type:',
-                _refrigerantTypeController),
-            _buildEditableCard(Icons.replay, 'No. of Refrigerant Circuits:',
-                _noOfRefrigerantCircuitsController),
+              Icons.power,
+              'Power Supply:',
+              _powerSupplyController,
+            ),
+            _buildEditableCard(
+              Icons.settings,
+              'Refrigerant Type:',
+              _refrigerantTypeController,
+            ),
+            _buildEditableCard(
+              Icons.replay,
+              'No. of Refrigerant Circuits:',
+              _noOfRefrigerantCircuitsController,
+            ),
             _buildEditableCard(Icons.air, 'Airflow Rate:', _airflowController),
             _buildEditableCard(
-                Icons.air, 'Airflow Type:', _airflowTypeController),
-            _buildEditableCard(Icons.settings, 'Other Specifications:',
-                _otherSpecificationsController),
+              Icons.air,
+              'Airflow Type:',
+              _airflowTypeController,
+            ),
+            _buildEditableCard(
+              Icons.settings,
+              'Other Specifications:',
+              _otherSpecificationsController,
+            ),
 
             // Location & Warranty Info
             _buildCategoryHeader('Location & Warranty Info'),
@@ -1012,12 +1223,21 @@ class _ACDetailViewState extends State<ACDetailView> {
             _buildEditableCard(Icons.map, 'Latitude:', _latitudeController),
             _buildEditableCard(Icons.map, 'Longitude:', _longitudeController),
             _buildEditableCard(Icons.map, 'Location:', _locationController),
-            _buildEditableCard(Icons.access_alarm, 'Warranty Details:',
-                _warrantyDetailsController),
-            _buildEditableCard(Icons.access_time, 'Warranty Expire Date:',
-                _warrantyExpireDateController),
-            _buildEditableCard(Icons.access_time, 'AMC Expiry Date:',
-                _amcExpireDateController),
+            _buildEditableCard(
+              Icons.access_alarm,
+              'Warranty Details:',
+              _warrantyDetailsController,
+            ),
+            _buildEditableCard(
+              Icons.access_time,
+              'Warranty Expire Date:',
+              _warrantyExpireDateController,
+            ),
+            _buildEditableCard(
+              Icons.access_time,
+              'AMC Expiry Date:',
+              _amcExpireDateController,
+            ),
 
             // Supplier Details
             _buildCategoryHeader('Supplier Details'),
@@ -1031,7 +1251,10 @@ class _ACDetailViewState extends State<ACDetailView> {
             //     AutofillHints.telephoneNumber,
             //     context),
             _buildEditableCard(
-                Icons.person, 'Supplier Name:', _supplierNameController),
+              Icons.person,
+              'Supplier Name:',
+              _supplierNameController,
+            ),
             _buildEditableMailTile(
               Icons.email,
               'Supplier Email:',
@@ -1047,19 +1270,21 @@ class _ACDetailViewState extends State<ACDetailView> {
 
             // Update Info
             _buildCategoryHeader('Update Info'),
-            _buildDetailTile(Icons.person_add, 'Updated By:',
-                widget.ac.updatedBy.isNotEmpty ? widget.ac.updatedBy : 'N/A'),
             _buildDetailTile(
-                Icons.access_time,
-                'Updated Time:',
-                widget.ac.updatedTime.isNotEmpty
-                    ? widget.ac.updatedTime
-                    : 'N/A'),
+              Icons.person_add,
+              'Updated By:',
+              widget.ac.updatedBy.isNotEmpty ? widget.ac.updatedBy : 'N/A',
+            ),
+            _buildDetailTile(
+              Icons.access_time,
+              'Updated Time:',
+              widget.ac.updatedTime.isNotEmpty ? widget.ac.updatedTime : 'N/A',
+            ),
+
             // _buildEditableCard(
             //     Icons.person_add, 'Updated By:', _updatedByController),
             // _buildEditableCard(
             //     Icons.access_time, 'Updated Time:', _updatedTimeController),
-
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
@@ -1080,40 +1305,51 @@ class _ACDetailViewState extends State<ACDetailView> {
                 print('Weight: ${_weightController.text}');
                 print('Noise Level: ${_noiseLevelController.text}');
                 print(
-                    'Indoor Air Filters Condition: ${_conditionIndoorAirFiltersController.text}');
+                  'Indoor Air Filters Condition: ${_conditionIndoorAirFiltersController.text}',
+                );
                 print(
-                    'No. of Evaporator Coils: ${_noOfEvaporatorCoilsController.text}');
+                  'No. of Evaporator Coils: ${_noOfEvaporatorCoilsController.text}',
+                );
                 print('No. of Indoor Fans: ${_noOfIndoorFansController.text}');
                 print(
-                    'Condition of Indoor Unit: ${_conditionIndoorUnitController.text}');
+                  'Condition of Indoor Unit: ${_conditionIndoorUnitController.text}',
+                );
                 print(
-                    'No. of Condenser Circuits: ${_noOfCondenserCircuitsController.text}');
+                  'No. of Condenser Circuits: ${_noOfCondenserCircuitsController.text}',
+                );
                 print(
-                    'No. of Condenser Fans: ${_noOfCondenserFansController.text}');
+                  'No. of Condenser Fans: ${_noOfCondenserFansController.text}',
+                );
                 print(
-                    'Condenser Mounting Method: ${_condenserMountingMethodController.text}');
+                  'Condenser Mounting Method: ${_condenserMountingMethodController.text}',
+                );
                 print(
-                    'Condition of Outdoor Unit: ${_conditionOutdoorUnitController.text}');
+                  'Condition of Outdoor Unit: ${_conditionOutdoorUnitController.text}',
+                );
                 print('Cooling Capacity: ${_coolingCapacityController.text}');
                 print('Power Supply: ${_powerSupplyController.text}');
                 print('Refrigerant Type: ${_refrigerantTypeController.text}');
                 print(
-                    'No. of Refrigerant Circuits: ${_noOfRefrigerantCircuitsController.text}');
+                  'No. of Refrigerant Circuits: ${_noOfRefrigerantCircuitsController.text}',
+                );
                 print('Airflow Rate: ${_airflowController.text}');
                 print('Airflow Type: ${_airflowTypeController.text}');
                 print(
-                    'Other Specifications: ${_otherSpecificationsController.text}');
+                  'Other Specifications: ${_otherSpecificationsController.text}',
+                );
                 print('Latitude: ${_latitudeController.text}');
                 print('Longitude: ${_longitudeController.text}');
                 print('Location: ${_locationController.text}');
                 print('Warranty Details: ${_warrantyDetailsController.text}');
                 print(
-                    'Warranty Expire Date: ${_warrantyExpireDateController.text}');
+                  'Warranty Expire Date: ${_warrantyExpireDateController.text}',
+                );
                 print('AMC Expiry Date: ${_amcExpireDateController.text}');
                 print('Supplier Name: ${_supplierNameController.text}');
                 print('Supplier Email: ${_supplierEmailController.text}');
                 print(
-                    'Supplier Contact No: ${_supplierContactNoController.text}');
+                  'Supplier Contact No: ${_supplierContactNoController.text}',
+                );
                 if (_hasChanges()) {
                   _saveData();
                 } else {
@@ -1164,13 +1400,18 @@ Widget _buildCard(String title, String value, Color color) {
     child: ListTile(
       title: Text(
         title,
-        style:
-            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       subtitle: Text(
         value,
         style: const TextStyle(
-            color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+          color: Colors.black,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       tileColor: color, // Set the background color of the ListTile
       shape: RoundedRectangleBorder(
@@ -1189,11 +1430,15 @@ Widget _buildDetailTile2(IconData icon, String title, String serialNumbers) {
       serialNumbers.split(',').map((s) => s.trim()).toList();
 
   // Create a formatted string for the subtitle
-  String serialCodes = serialList.asMap().entries.map((entry) {
-    int index = entry.key;
-    String value = entry.value;
-    return 'Compressor ${index + 1} Serial Code: $value';
-  }).join('\n'); // Join with new line for better formatting
+  String serialCodes = serialList
+      .asMap()
+      .entries
+      .map((entry) {
+        int index = entry.key;
+        String value = entry.value;
+        return 'Compressor ${index + 1} Serial Code: $value';
+      })
+      .join('\n'); // Join with new line for better formatting
 
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 5),
@@ -1219,7 +1464,10 @@ Widget _buildCategoryHeader(String title) {
 
 // Editable Card
 Widget _buildEditableCard(
-    IconData icon, String label, TextEditingController controller) {
+  IconData icon,
+  String label,
+  TextEditingController controller,
+) {
   return Card(
     elevation: 4, // Add a shadow effect
     shape: RoundedRectangleBorder(
@@ -1230,8 +1478,10 @@ Widget _buildEditableCard(
       leading: Icon(icon, color: Colors.blue),
       title: Text(
         label,
-        style:
-            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       subtitle: TextFormField(
         controller: controller,
@@ -1248,14 +1498,18 @@ Widget _buildEditableCard(
 
 /// Editable Detail Tile for Serial Numbers
 Widget _buildEditableDetailTile2(
-    IconData icon, String title, String serialNumbers) {
+  IconData icon,
+  String title,
+  String serialNumbers,
+) {
   // Split the serial numbers into a list
   List<String> serialList =
       serialNumbers.split(',').map((s) => s.trim()).toList();
 
   // Store the modified serial numbers
-  TextEditingController serialController =
-      TextEditingController(text: serialNumbers);
+  TextEditingController serialController = TextEditingController(
+    text: serialNumbers,
+  );
 
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -1283,8 +1537,12 @@ Widget _buildEditableDetailTile2(
   );
 }
 
-Widget _buildEditableMailTile(IconData icon, String title,
-    TextEditingController emailController, BuildContext context) {
+Widget _buildEditableMailTile(
+  IconData icon,
+  String title,
+  TextEditingController emailController,
+  BuildContext context,
+) {
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 4.0),
     elevation: 2,
@@ -1304,10 +1562,7 @@ Widget _buildEditableMailTile(IconData icon, String title,
         },
       ),
       onTap: () async {
-        final Uri emailUri = Uri(
-          scheme: 'mailto',
-          path: emailController.text,
-        );
+        final Uri emailUri = Uri(scheme: 'mailto', path: emailController.text);
         if (await canLaunchUrl(emailUri)) {
           await launchUrl(emailUri, mode: LaunchMode.externalApplication);
         } else {
@@ -1321,8 +1576,12 @@ Widget _buildEditableMailTile(IconData icon, String title,
   );
 }
 
-Widget _buildEditableCallTile(IconData icon, String title,
-    TextEditingController phoneController, BuildContext context) {
+Widget _buildEditableCallTile(
+  IconData icon,
+  String title,
+  TextEditingController phoneController,
+  BuildContext context,
+) {
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 4.0),
     elevation: 2,
@@ -1342,10 +1601,7 @@ Widget _buildEditableCallTile(IconData icon, String title,
         },
       ),
       onTap: () async {
-        final Uri telUri = Uri(
-          scheme: 'tel',
-          path: phoneController.text,
-        );
+        final Uri telUri = Uri(scheme: 'tel', path: phoneController.text);
         if (await canLaunchUrl(telUri)) {
           await launchUrl(telUri);
         } else {

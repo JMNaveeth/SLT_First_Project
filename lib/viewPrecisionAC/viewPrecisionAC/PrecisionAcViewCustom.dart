@@ -433,68 +433,105 @@ class _PrecisionACListState extends State<PrecisionACList> {
                               ...filteredACs.map((ac) => ac.status).toSet(),
                             ];
 
-                           return filteredACs.isNotEmpty
-    ? Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DropdownButton<String>(
-            hint: Text(
-              'Select Region',
-              style: TextStyle(color: customColors.subTextColor),
-            ),
-            value: selectedRegion,
-            isExpanded: true,
-            dropdownColor: customColors.suqarBackgroundColor,
-            onChanged: (v) => setState(() => selectedRegion = v),
-            items: [
-              'All',
-              ...filteredACs
-                  .map((ac) => ac.region)
-                  .where((region) => region.trim().isNotEmpty)
-                  .toSet()
-                  .toList()
-            ].map((r) => DropdownMenuItem(
-                  value: r,
-                  child: Text(
-                    r,
-                    style: TextStyle(color: customColors.mainTextColor),
-                  ),
-                ))
-                .toList(),
-          ),
-          SizedBox(height: 12),
-          DropdownButton<String>(
-            hint: Text(
-              'Select Status',
-              style: TextStyle(color: customColors.subTextColor),
-            ),
-            value: selectedStatus,
-            isExpanded: true,
-            dropdownColor: customColors.suqarBackgroundColor,
-            onChanged: (v) => setState(() => selectedStatus = v),
-            items: [
-              'All',
-              ...filteredACs
-                  .map((ac) => ac.status)
-                  .where((status) => status.trim().isNotEmpty)
-                  .toSet()
-                  .toList()
-            ].map((s) => DropdownMenuItem(
-                  value: s,
-                  child: Text(
-                    s,
-                    style: TextStyle(color: customColors.mainTextColor),
-                  ),
-                ))
-                .toList(),
-          ),
-        ],
-      )
-    : SizedBox.shrink();
+                            return filteredACs.isNotEmpty
+                                ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    DropdownButton<String>(
+                                      hint: Text(
+                                        'Select Region',
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
+                                      ),
+                                      value: selectedRegion,
+                                      isExpanded: true,
+                                      dropdownColor:
+                                          customColors.suqarBackgroundColor,
+                                      onChanged:
+                                          (v) => setState(
+                                            () => selectedRegion = v,
+                                          ),
+                                      items:
+                                          [
+                                                'All',
+                                                ...filteredACs
+                                                    .map((ac) => ac.region)
+                                                    .where(
+                                                      (region) =>
+                                                          region
+                                                              .trim()
+                                                              .isNotEmpty,
+                                                    )
+                                                    .toSet()
+                                                    .toList(),
+                                              ]
+                                              .map(
+                                                (r) => DropdownMenuItem(
+                                                  value: r,
+                                                  child: Text(
+                                                    r,
+                                                    style: TextStyle(
+                                                      color:
+                                                          customColors
+                                                              .mainTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                    ),
+                                    SizedBox(height: 12),
+                                    DropdownButton<String>(
+                                      hint: Text(
+                                        'Select Status',
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
+                                      ),
+                                      value: selectedStatus,
+                                      isExpanded: true,
+                                      dropdownColor:
+                                          customColors.suqarBackgroundColor,
+                                      onChanged:
+                                          (v) => setState(
+                                            () => selectedStatus = v,
+                                          ),
+                                      items:
+                                          [
+                                                'All',
+                                                ...filteredACs
+                                                    .map((ac) => ac.status)
+                                                    .where(
+                                                      (status) =>
+                                                          status
+                                                              .trim()
+                                                              .isNotEmpty,
+                                                    )
+                                                    .toSet()
+                                                    .toList(),
+                                              ]
+                                              .map(
+                                                (s) => DropdownMenuItem(
+                                                  value: s,
+                                                  child: Text(
+                                                    s,
+                                                    style: TextStyle(
+                                                      color:
+                                                          customColors
+                                                              .mainTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                    ),
+                                  ],
+                                )
+                                : SizedBox.shrink();
                           },
                         ),
                         SizedBox(height: 12),
-                       
                       ],
                     ),
                   ),
