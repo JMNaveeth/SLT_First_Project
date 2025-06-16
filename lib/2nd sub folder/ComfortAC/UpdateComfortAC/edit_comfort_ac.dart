@@ -1,4 +1,7 @@
 //import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
+
 import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
 //import '../../../../../Widgets/LoadLocations/locationModel.dart';
 import 'httpComfortACUpdatePost.dart';
@@ -369,149 +372,164 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Comfort AC')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                buildIndoorUnitCard(),
-                buildOutdoorUnitCard(),
-                buildLatitudeLongitudeCard(),
-               // buildConnectionCard(LocationProvider()),
-                CupertinoButton(
-                  color: Colors.blue[900], // Dark blue color
-                  child: const Text(
-                    'Send to Approve',
-                    style: TextStyle(color: Colors.white),
-                  ), // White text color
-                  onPressed: () {
-                    // Collect data and navigate to the post page
-                    Map<String, dynamic> formDataList = {
-                      'comfortAC_ID': _acIndoorIdController.text,
-                      'QRIn': _QR_InController.text,
-                      'Status': _statusController.text,
-                      'Brand': _brandController.text,
-                      'Model': _modelController.text,
-                      'Capacity': _capacityController.text,
-                      'InstallationType': _installationTypeController.text,
-                      'RefrigerantType': _refrigerantTypeController.text,
-                      'PowerSupply': _powerSupplyController.text,
-                      'Type': _TypeController.text,
-                      'Category': _categoryController.text,
-                      'SerialNumber': serial_numberController.text,
-                      'Supplier_Name': supplier_nameController.text,
-                      'PONumber': po_numberController.text,
-                      'RemoteAvailable': remote_availableController.text,
-                      'Notes': _notesController.text,
-                      'LastUpdated': _last_updatedController.text,
-                      'ConditionID': _condition_ID_unitController.text,
-                      'DoM': _DoMController.text,
-                      'Installation_Date': _installation_dateController.text,
-                      'WarrantyExpiryDate':
-                          _warranty_expiry_dateController.text,
-                      /////////////////////////////////////////
+      appBar: AppBar(
+        title: Text(
+          'Edit Comfort AC',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        actions: [ThemeToggleButton()],
+      ),
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  buildIndoorUnitCard(),
+                  buildOutdoorUnitCard(),
+                  buildLatitudeLongitudeCard(),
+                  // buildConnectionCard(LocationProvider()),
+                  CupertinoButton(
+                    color: Colors.blue[900], // Dark blue color
+                    child: const Text(
+                      'Send to Approve',
+                      style: TextStyle(color: Colors.white),
+                    ), // White text color
+                    onPressed: () {
+                      // Collect data and navigate to the post page
+                      Map<String, dynamic> formDataList = {
+                        'comfortAC_ID': _acIndoorIdController.text,
+                        'QRIn': _QR_InController.text,
+                        'Status': _statusController.text,
+                        'Brand': _brandController.text,
+                        'Model': _modelController.text,
+                        'Capacity': _capacityController.text,
+                        'InstallationType': _installationTypeController.text,
+                        'RefrigerantType': _refrigerantTypeController.text,
+                        'PowerSupply': _powerSupplyController.text,
+                        'Type': _TypeController.text,
+                        'Category': _categoryController.text,
+                        'SerialNumber': serial_numberController.text,
+                        'Supplier_Name': supplier_nameController.text,
+                        'PONumber': po_numberController.text,
+                        'RemoteAvailable': remote_availableController.text,
+                        'Notes': _notesController.text,
+                        'LastUpdated': _last_updatedController.text,
+                        'ConditionID': _condition_ID_unitController.text,
+                        'DoM': _DoMController.text,
+                        'Installation_Date': _installation_dateController.text,
+                        'WarrantyExpiryDate':
+                            _warranty_expiry_dateController.text,
+                        /////////////////////////////////////////
 
-                      // 'IndoorBrand': formDataList['IndoorBrand'] ?? '',
-                      // 'IndoorCapacity': formDataList['IndoorCapacity'] ?? '',
-                      // 'Type': formDataList['type'] ?? '',
-                      // 'Category': formDataList['category'] ?? '',
-                      // 'InstallationType': formDataList['installationType'] ?? '',
-                      // 'PowerSupply': formDataList['powerSupply'] ?? '',
-                      // 'IndoorPONumber': formDataList['IndoorPONumber'] ?? '',
-                      // 'RemoteAvailable': formDataList['remoteAvailable'] ?? '',
-                      // 'IndoorNotes': formDataList['IndoorNotes'] ?? '',
-                      // 'indoor_last_updated': formDataList['indoor_last_updated'] ?? '',
-                      // 'IndoorConditionIDUnit': formDataList['IndoorConditionIDUnit'] ?? '',
-                      // 'IndoorDoM': formDataList['IndoorDoM'] ?? '',
+                        // 'IndoorBrand': formDataList['IndoorBrand'] ?? '',
+                        // 'IndoorCapacity': formDataList['IndoorCapacity'] ?? '',
+                        // 'Type': formDataList['type'] ?? '',
+                        // 'Category': formDataList['category'] ?? '',
+                        // 'InstallationType': formDataList['installationType'] ?? '',
+                        // 'PowerSupply': formDataList['powerSupply'] ?? '',
+                        // 'IndoorPONumber': formDataList['IndoorPONumber'] ?? '',
+                        // 'RemoteAvailable': formDataList['remoteAvailable'] ?? '',
+                        // 'IndoorNotes': formDataList['IndoorNotes'] ?? '',
+                        // 'indoor_last_updated': formDataList['indoor_last_updated'] ?? '',
+                        // 'IndoorConditionIDUnit': formDataList['IndoorConditionIDUnit'] ?? '',
+                        // 'IndoorDoM': formDataList['IndoorDoM'] ?? '',
 
-                      ///////////////////////////////////////////////////
-                      'IndoorBrand': _brandController.text,
-                      'IndoorCapacity': _capacityController.text,
-                      'type': _TypeController.text,
-                      'category': _categoryController.text,
-                      'installationType': _installationTypeController.text,
-                      'powerSupply': _powerSupplyController.text,
-                      'IndoorPONumber': po_numberController.text,
-                      'remoteAvailable': remote_availableController.text,
-                      'IndoorNotes': _notesController.text,
-                      'indoor_last_updated': _last_updatedController.text,
-                      'IndoorConditionIDUnit':
-                          _condition_ID_unitController.text,
-                      'IndoorDoM': _DoMController.text,
+                        ///////////////////////////////////////////////////
+                        'IndoorBrand': _brandController.text,
+                        'IndoorCapacity': _capacityController.text,
+                        'type': _TypeController.text,
+                        'category': _categoryController.text,
+                        'installationType': _installationTypeController.text,
+                        'powerSupply': _powerSupplyController.text,
+                        'IndoorPONumber': po_numberController.text,
+                        'remoteAvailable': remote_availableController.text,
+                        'IndoorNotes': _notesController.text,
+                        'indoor_last_updated': _last_updatedController.text,
+                        'IndoorConditionIDUnit':
+                            _condition_ID_unitController.text,
+                        'IndoorDoM': _DoMController.text,
 
-                      ///////////////////////////////////////////////////
-                      'UploadedBy': _uploaded_byController.text,
-                      'OutdoorUnitID': _outdoorUnitIdController.text,
-                      'OutdoorBrand': _outdoorBrandController.text,
-                      'OutdoorModel': _outdoorModelController.text,
-                      'OutdoorCapacity': _outdoorCapacityController.text,
-                      'OutdoorFanModel': _outdoorFanModelController.text,
-                      'OutdoorStatus': _outdoorstatusController.text,
-                      'OutdoorPowerSupply': _outdoorpower_supplyController.text,
-                      'OutdoorCompressorMountedWith':
-                          _outdoorcompressor_mounted_withController.text,
-                      'OutdoorCompressorCapacity':
-                          _outdoorcompressor_capacityController.text,
-                      'OutdoorCompressorBrand':
-                          _outdoorcompressor_brandController.text,
-                      'OutdoorCompressorModel':
-                          _outdoorcompressor_modelController.text,
-                      'OutdoorCompressorSerialNumber':
-                          _outdoorcompressor_serial_numberController.text,
-                      'OutdoorSupplierName':
-                          _outdoorsupplier_nameController.text,
-                      'OutdoorPONumber': _outdoorpo_numberController.text,
-                      'OutdoorNotes': _outdoornotesController.text,
-                      'OutdoorConditionID':
-                          _outdoorcondition_OD_unitController.text,
-                      'OutdoorLastUpdated': _outdoorlast_updatedController.text,
-                      'OutdoorDoM': _outdoorDoMController.text,
-                      'OutdoorInstallationDate':
-                          _outdoorInstallation_DateController.text,
-                      'OutdoorWarrantyExpiryDate':
-                          _outdoorwarranty_expiry_dateController.text,
-                      'OutdoorQROut': _outdoorQR_OutController.text,
-                      'OutdoorUploadedBy': _outdooruploaded_byController.text,
-                      'ConnectionLogID': _connectionlog_idController.text,
-                      'ConnectionIndoorID':
-                          _connectionac_indoor_idController.text,
-                      'ConnectionOutdoorID':
-                          _connectionac_outdoor_idController.text,
-                      'Region': _regionController.text,
-                      'RTOM': _connectionrtomController.text,
-                      'Station': _connectionstationController.text,
-                      'RTOMBuildingID':
-                          _connectionrtom_building_idController.text,
-                      'floor_number': _connectionfloor_numberController.text,
-                      'Office_No': _connectionoffice_numberController.text,
-                      'Location': _connectionlocationController.text,
-                      'NoAcPlants': _connectionNoAcPlantsController.text,
-                      'QRLoc': _connectionQR_locController.text,
-                      'Longitude': _connectionLongitudeController.text,
-                      'Latitude': _connectionLatitudeController.text,
-                      'ConnectionLastUpdated':
-                          _connectionlast_updatedController.text,
-                      'ConnectionUploadedBy':
-                          _connectionuploaded_byController.text,
-                    };
+                        ///////////////////////////////////////////////////
+                        'UploadedBy': _uploaded_byController.text,
+                        'OutdoorUnitID': _outdoorUnitIdController.text,
+                        'OutdoorBrand': _outdoorBrandController.text,
+                        'OutdoorModel': _outdoorModelController.text,
+                        'OutdoorCapacity': _outdoorCapacityController.text,
+                        'OutdoorFanModel': _outdoorFanModelController.text,
+                        'OutdoorStatus': _outdoorstatusController.text,
+                        'OutdoorPowerSupply':
+                            _outdoorpower_supplyController.text,
+                        'OutdoorCompressorMountedWith':
+                            _outdoorcompressor_mounted_withController.text,
+                        'OutdoorCompressorCapacity':
+                            _outdoorcompressor_capacityController.text,
+                        'OutdoorCompressorBrand':
+                            _outdoorcompressor_brandController.text,
+                        'OutdoorCompressorModel':
+                            _outdoorcompressor_modelController.text,
+                        'OutdoorCompressorSerialNumber':
+                            _outdoorcompressor_serial_numberController.text,
+                        'OutdoorSupplierName':
+                            _outdoorsupplier_nameController.text,
+                        'OutdoorPONumber': _outdoorpo_numberController.text,
+                        'OutdoorNotes': _outdoornotesController.text,
+                        'OutdoorConditionID':
+                            _outdoorcondition_OD_unitController.text,
+                        'OutdoorLastUpdated':
+                            _outdoorlast_updatedController.text,
+                        'OutdoorDoM': _outdoorDoMController.text,
+                        'OutdoorInstallationDate':
+                            _outdoorInstallation_DateController.text,
+                        'OutdoorWarrantyExpiryDate':
+                            _outdoorwarranty_expiry_dateController.text,
+                        'OutdoorQROut': _outdoorQR_OutController.text,
+                        'OutdoorUploadedBy': _outdooruploaded_byController.text,
+                        'ConnectionLogID': _connectionlog_idController.text,
+                        'ConnectionIndoorID':
+                            _connectionac_indoor_idController.text,
+                        'ConnectionOutdoorID':
+                            _connectionac_outdoor_idController.text,
+                        'Region': _regionController.text,
+                        'RTOM': _connectionrtomController.text,
+                        'Station': _connectionstationController.text,
+                        'RTOMBuildingID':
+                            _connectionrtom_building_idController.text,
+                        'floor_number': _connectionfloor_numberController.text,
+                        'Office_No': _connectionoffice_numberController.text,
+                        'Location': _connectionlocationController.text,
+                        'NoAcPlants': _connectionNoAcPlantsController.text,
+                        'QRLoc': _connectionQR_locController.text,
+                        'Longitude': _connectionLongitudeController.text,
+                        'Latitude': _connectionLatitudeController.text,
+                        'ConnectionLastUpdated':
+                            _connectionlast_updatedController.text,
+                        'ConnectionUploadedBy':
+                            _connectionuploaded_byController.text,
+                      };
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => ComfortTestUpdatePost(
-                              formDataList: formDataList,
-                              user: widget.user,
-                            ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => ComfortTestUpdatePost(
+                                formDataList: formDataList,
+                                user: widget.user,
+                              ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -520,7 +538,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   }
 
   Widget buildIndoorUnitCard() {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
+      color: customColors.suqarBackgroundColor,
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -557,7 +578,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _modelController,
-                  decoration: const InputDecoration(labelText: 'Model'),
+                  decoration: const InputDecoration(labelText: 'Model',),
                 ),
               ),
               ListTile(
@@ -867,11 +888,11 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   bool isAutoLocationEnabled = false;
 
   // Dummy GPSLocationFetcher class
- // GPSLocationFetcher locationFetcher = GPSLocationFetcher();
+  // GPSLocationFetcher locationFetcher = GPSLocationFetcher();
 
   Future<void> fetchLocation() async {
     if (isAutoLocationEnabled) {
-    //  final locationData = await locationFetcher.fetchLocation();
+      //  final locationData = await locationFetcher.fetchLocation();
       setState(() {
         // _connectionLatitudeController.text = locationData['latitude']!;
         // _connectionLongitudeController.text = locationData['longitude']!;
@@ -933,8 +954,9 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   }
 
   Widget buildConnectionCard(
-    //LocationProvider 
-  locationProvider) {
+    //LocationProvider
+    locationProvider,
+  ) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -1068,15 +1090,19 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   Widget _RegionDropdown(
     String key,
     String label,
-  //  LocationProvider
-     locationProvider,
+    //  LocationProvider
+    locationProvider,
   ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (locationProvider.isLoading || locationProvider.isCustomRegion) {
       return const Center(child: CircularProgressIndicator());
     }
 
     return FormBuilderDropdown<String>(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: locationProvider.selectedRegion,
       decoration: InputDecoration(
         labelText: label,
@@ -1125,8 +1151,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     BuildContext context,
     String key,
     String label,
- //   LocationProvider
-     locationProvider,
+    //   LocationProvider
+    locationProvider,
   ) {
     final TextEditingController controller = TextEditingController();
 
@@ -1148,7 +1174,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   setState(() {
                     // Update the regions list
                     locationProvider.regions.add(
-                     // Region
+                      // Region
                       (Region_ID: newValue, RegionName: newValue),
                     ); // Adjust according to your Region model
                     // Update the form data
@@ -1772,7 +1798,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController statusController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     // Get the status value from widget.acUnit and add it to the list if not already present
     String statusFromAcUnit = _statusController.text;
 
@@ -1783,7 +1810,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue:
           formData[key] ??
           statusFromAcUnit, // Set initial value from widget.acUnit['Status']
@@ -1792,7 +1820,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           statuses
               .map(
@@ -1830,7 +1859,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController brandController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String brandsFromAcUnit = _brandController.text;
 
     if (brandsFromAcUnit.isNotEmpty && !brands.contains(brandsFromAcUnit)) {
@@ -1840,14 +1870,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? brandsFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           brands
               .map(
@@ -1941,7 +1973,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String CapacityFromAcUnit = _capacityController.text;
 
     if (CapacityFromAcUnit.isNotEmpty &&
@@ -1952,14 +1985,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? CapacityFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           Capacity.map(
             (Capacity) =>
@@ -2040,7 +2075,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController installationTypeController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String ITCFromAcUnit = _installationTypeController.text;
 
     if (ITCFromAcUnit.isNotEmpty && !ITC.contains(ITCFromAcUnit)) {
@@ -2048,14 +2084,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? ITCFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           ITC
               .map(
@@ -2132,7 +2170,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String RefrigTypeFromAcUnit = _refrigerantTypeController.text;
 
     if (RefrigTypeFromAcUnit.isNotEmpty &&
@@ -2143,14 +2182,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? RefrigTypeFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           RefrigType.map(
             (refrigType) =>
@@ -2225,7 +2266,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String PowerSupplyFromAcUnit = _powerSupplyController.text;
 
     if (PowerSupplyFromAcUnit.isNotEmpty &&
@@ -2236,14 +2278,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? PowerSupplyFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           PowerSupply.map(
             (powerSupply) =>
@@ -2320,7 +2364,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String RemoteStatusFromAcUnit = remote_availableController.text;
 
     if (RemoteStatusFromAcUnit.isNotEmpty &&
@@ -2331,14 +2376,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? RemoteStatusFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           RemoteStatus.map(
             (powerSupply) =>
@@ -2418,7 +2465,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String RemoteCategoryFromAcUnit = _categoryController.text;
 
     if (RemoteCategoryFromAcUnit.isNotEmpty &&
@@ -2429,14 +2477,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? RemoteCategoryFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           Category.map(
             (category) =>
@@ -2516,7 +2566,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     TextEditingController capacityController,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     String ConditionFromAcUnit = _condition_ID_unitController.text;
 
     if (ConditionFromAcUnit.isNotEmpty &&
@@ -2527,14 +2578,16 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     }
 
     return FormBuilderDropdown(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: formData[key] ?? ConditionFromAcUnit,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items:
           Condition.map(
             (condition) =>
@@ -2704,11 +2757,13 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     String key,
     String label,
     String initialValue,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Column(
       children: [
         FormBuilderTextField(
-          name: key,
+          name: key,      style: TextStyle(color: customColors.mainTextColor),
+
           decoration: InputDecoration(
             labelText: label,
             border: const UnderlineInputBorder(),

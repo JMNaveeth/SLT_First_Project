@@ -1,3 +1,5 @@
+import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/theme_toggle_button.dart';
 
 import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
 //import '../../../../UserAccess.dart';
@@ -35,11 +37,14 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
   Future<void> fetchData() async {
     try {
       final indoorResponse = await http.get(
-          Uri.parse('https://powerprox.sltidc.lk/GET_AC_Indoor_Units.php'));
+        Uri.parse('https://powerprox.sltidc.lk/GET_AC_Indoor_Units.php'),
+      );
       final outdoorResponse = await http.get(
-          Uri.parse('https://powerprox.sltidc.lk/GET_AC_Outdoor_Units.php'));
-      final connectionsResponse = await http
-          .get(Uri.parse('https://powerprox.sltidc.lk/GET_AC_Connection.php'));
+        Uri.parse('https://powerprox.sltidc.lk/GET_AC_Outdoor_Units.php'),
+      );
+      final connectionsResponse = await http.get(
+        Uri.parse('https://powerprox.sltidc.lk/GET_AC_Connection.php'),
+      );
 
       if (indoorResponse.statusCode == 200) {
         indoorUnits = json.decode(indoorResponse.body);
@@ -63,17 +68,28 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
   Widget build(BuildContext context) {
     // UserAccess userAccess = Provider.of<UserAccess>(context, listen: true); // Use listen: true to rebuild the widget when the data changes
     // userName=userAccess.username!;
-  //  return ChangeNotifierProvider(
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    //  return ChangeNotifierProvider(
     //  create: (context) => LocationProvider()..loadAllData(),
     //  child: Consumer<LocationProvider>(
-     //     builder: (context, locationProvider, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('AC Comfort Units'),
-          ),
-          body: isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
+    //     builder: (context, locationProvider, child) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'AC Comfort Units',
+          style: TextStyle(color: customColors.mainTextColor),
+        ),
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        backgroundColor: customColors.appbarColor,
+        actions: [ThemeToggleButton()],
+      ),
+      body: Container(
+        color: customColors.mainBackgroundColor,
+        child:
+            isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
                   itemCount: indoorUnits.length,
                   itemBuilder: (context, index) {
                     final unit = indoorUnits[index];
@@ -84,22 +100,39 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
                     }
 
                     return Card(
+                      color: customColors.suqarBackgroundColor,
+
                       margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16.0),
+                        vertical: 8.0,
+                        horizontal: 16.0,
+                      ),
                       child: ListTile(
-                        title: Text('Brand : ${unit['brand'] ?? 'No Brand'}'),
+                        title: Text(
+                          'Brand : ${unit['brand'] ?? 'No Brand'}',
+                          style: TextStyle( fontSize: 16,
+                                color: customColors.mainTextColor,),
+                        ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Model : ${unit['model'] ?? 'No model'}'),
+                            Text(
+                              'Model : ${unit['model'] ?? 'No model'}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: customColors.mainTextColor,
+                              ),
+                            ),
+
                             // Text('Rtom: ${ConnectionUnits['rtom'] ?? 'No rtom'}'),
                             Text(
                               'Location: ${ConnectionUnits['region'] ?? 'No region'}'
                               '| ${ConnectionUnits['rtom'] ?? 'No RTOM'}'
                               '| ${ConnectionUnits['station'] ?? 'No station'}'
                               '| ${ConnectionUnits['office_number'] ?? 'No office_number'}',
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: customColors.mainTextColor,
+                              ),
                             ),
                           ],
                         ),
@@ -107,16 +140,19 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditComfortAcPage(
-                                indoorData: unit,
-                                outdoorUnitData: outdoorUnits.length > index
-                                    ? outdoorUnits[index]
-                                    : {},
-                                connectionData: connections.length > index
-                                    ? connections[index]
-                                    : {},
-                                user: userName,
-                              ),
+                              builder:
+                                  (context) => EditComfortAcPage(
+                                    indoorData: unit,
+                                    outdoorUnitData:
+                                        outdoorUnits.length > index
+                                            ? outdoorUnits[index]
+                                            : {},
+                                    connectionData:
+                                        connections.length > index
+                                            ? connections[index]
+                                            : {},
+                                    user: userName,
+                                  ),
                             ),
                           );
                         },
@@ -124,8 +160,9 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
                     );
                   },
                 ),
-        );
-     // }),
-   // );
+      ),
+    );
+    // }),
+    // );
   }
 }
