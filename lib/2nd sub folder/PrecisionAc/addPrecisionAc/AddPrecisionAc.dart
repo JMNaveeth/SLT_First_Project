@@ -455,28 +455,34 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: CupertinoButton(
+                        child: OutlinedButton(
                           onPressed: _resetForm,
-                          child: const Text('Reset'),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 10.0,
+                          child: const Text(
+                            'Reset',
+                            style: TextStyle(color: Colors.redAccent),
                           ),
-                          color: Color(0xFF4DB146),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blue,
+                            ), // Set the button color here
+                          ),
                         ),
                       ),
 
                       const SizedBox(width: 10), // Add spacing between buttons
 
                       Expanded(
-                        child: CupertinoButton(
+                        child: OutlinedButton(
                           onPressed: _submitData,
-                          child: const Text('Submit'),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 10.0,
+                          child: const Text(
+                            'Submit',
+                            style: TextStyle(color: Colors.white),
                           ),
-                          color: Color(0xFF00AEE4),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blue,
+                            ), // Set the button color here
+                          ),
                         ),
                       ),
 

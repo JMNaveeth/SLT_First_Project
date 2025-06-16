@@ -397,8 +397,12 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   buildOutdoorUnitCard(),
                   buildLatitudeLongitudeCard(),
                   // buildConnectionCard(LocationProvider()),
-                  CupertinoButton(
-                    color: Colors.blue[900], // Dark blue color
+                  OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.blue,
+                      ), // Set the button color here
+                    ),
                     child: const Text(
                       'Send to Approve',
                       style: TextStyle(color: Colors.white),
@@ -990,7 +994,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             ),
             ListTile(
               title: TextFormField(
-                controller: _connectionLatitudeController,      style: TextStyle(color: customColors.mainTextColor),
+                controller: _connectionLatitudeController,
+                style: TextStyle(color: customColors.mainTextColor),
 
                 decoration: const InputDecoration(labelText: 'Latitude'),
                 keyboardType: TextInputType.number,
@@ -1000,7 +1005,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
             ),
             ListTile(
               title: TextFormField(
-                controller: _connectionLongitudeController,      style: TextStyle(color: customColors.mainTextColor),
+                controller: _connectionLongitudeController,
+                style: TextStyle(color: customColors.mainTextColor),
 
                 decoration: const InputDecoration(labelText: 'Longitude'),
                 keyboardType: TextInputType.number,

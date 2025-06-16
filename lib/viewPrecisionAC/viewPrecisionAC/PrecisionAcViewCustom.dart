@@ -1130,7 +1130,7 @@ class ACDetailView extends StatelessWidget {
       elevation: 2,
       color: customColors.suqarBackgroundColor,
       child: ListTile(
-        leading: Icon(icon, color: Colors.grey),
+        leading: Icon(icon, color: customColors.subTextColor),
         title: Text(
           title,
           style: TextStyle(
@@ -1190,7 +1190,7 @@ class ACDetailView extends StatelessWidget {
       elevation: 2,
       color: customColors.suqarBackgroundColor,
       child: ListTile(
-        leading: Icon(icon, color: Colors.grey),
+        leading: Icon(icon, color: customColors.subTextColor),
         title: Text(
           title,
           style: TextStyle(

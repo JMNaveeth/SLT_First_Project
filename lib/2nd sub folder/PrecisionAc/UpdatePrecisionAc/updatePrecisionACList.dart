@@ -395,7 +395,6 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Left side: Status (top) and Region (bottom)
                   Expanded(
                     flex: 2,
                     child: Column(
@@ -418,9 +417,11 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
                             ];
 
                             return filteredACs.isNotEmpty
-                                ? Column(
+                                ? Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                     Expanded( // Wrap Status Dropdown in Expanded
+                                        child:
                                     DropdownButton<String>(
                                       hint: Text(
                                         'Select Region',
@@ -465,7 +466,10 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
                                               )
                                               .toList(),
                                     ),
-                                    SizedBox(height: 12),
+                                     ),
+                                    SizedBox(width: 12), 
+                                    Expanded( // Wrap Region Dropdown in Expanded
+                                        child:
                                     DropdownButton<String>(
                                       hint: Text(
                                         'Select Status',
@@ -509,6 +513,7 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
                                                 ),
                                               )
                                               .toList(),
+                                    ),
                                     ),
                                   ],
                                 )

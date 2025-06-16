@@ -394,26 +394,33 @@ class _ACFormPageState extends State<ACFormPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: CupertinoButton(
+                        child: OutlinedButton(
                           onPressed: _resetForm,
-                          child: const Text('Reset'),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 10.0,
+
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blue,
+                            ), // Set the button color here
                           ),
-                          color: const Color(0xFF00AEE4),
+                          child: const Text(
+                            'Reset',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: CupertinoButton(
+                        child: OutlinedButton(
                           onPressed: _submitData,
-                          child: const Text('Submit'),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 10.0,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blue,
+                            ), // Set the button color here
                           ),
-                          color: const Color(0xFF0056A2),
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
 
