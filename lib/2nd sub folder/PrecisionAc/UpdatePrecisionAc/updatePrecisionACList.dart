@@ -297,6 +297,35 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
     fetchData();
   }
 
+  List<updatePrecisionAC> _filterACs(List<updatePrecisionAC> acs) {
+    var tempFiltered =
+        acs.where((ac) {
+          final matchesStatus =
+              selectedStatus == null ||
+              selectedStatus == 'All' ||
+              ac.status == selectedStatus;
+          final matchesRegion =
+              selectedRegion == null ||
+              selectedRegion == 'All' ||
+              ac.region == selectedRegion;
+          final matchesRTOM =
+              selectedRTOM == null ||
+              selectedRTOM == 'All' ||
+              ac.rtom == selectedRTOM;
+          final matchesStation =
+              selectedStation == null ||
+              selectedStation == 'All' ||
+              ac.station == selectedStation;
+
+          return matchesStatus &&
+              matchesRegion &&
+              matchesRTOM &&
+              matchesStation;
+        }).toList();
+
+    return tempFiltered;
+  }
+
   // Method to handle region change
   void _onRegionChanged(String? newValue) {
     setState(() {
@@ -363,101 +392,137 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Filter dropdowns in two columns
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Left side: Status (top) and Region (bottom)
                   Expanded(
-                    child: DropdownButton<String>(
-                      hint: Text(
-                        'Select Status',
-                        style: TextStyle(color: customColors.mainTextColor),
-                      ),
-                      style: TextStyle(color: customColors.mainTextColor),
-                      dropdownColor: customColors.suqarBackgroundColor,
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FutureBuilder<List<updatePrecisionAC>>(
+                          future: futurePrecisionAC,
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) return SizedBox();
+                            final filteredACs = _filterACs(snapshot.data!);
 
-                      value: selectedStatus,
-                      isExpanded: true,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedStatus = newValue;
-                        });
-                      },
-                      items:
-                          statuses.map((String status) {
-                            return DropdownMenuItem<String>(
-                              value: status,
-                              child: Text(status),
-                            );
-                          }).toList(),
+                            // Get unique regions and statuses from filtered cards
+                            final regions = [
+                              'All',
+                              ...filteredACs.map((ac) => ac.region).toSet(),
+                            ];
+                            final statuses = [
+                              'All',
+                              ...filteredACs.map((ac) => ac.status).toSet(),
+                            ];
+
+                            return filteredACs.isNotEmpty
+                                ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    DropdownButton<String>(
+                                      hint: Text(
+                                        'Select Region',
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
+                                      ),
+                                      value: selectedRegion,
+                                      isExpanded: true,
+                                      dropdownColor:
+                                          customColors.suqarBackgroundColor,
+                                      onChanged:
+                                          (v) => setState(
+                                            () => selectedRegion = v,
+                                          ),
+                                      items:
+                                          [
+                                                'All',
+                                                ...filteredACs
+                                                    .map((ac) => ac.region)
+                                                    .where(
+                                                      (region) =>
+                                                          region
+                                                              .trim()
+                                                              .isNotEmpty,
+                                                    )
+                                                    .toSet()
+                                                    .toList(),
+                                              ]
+                                              .map(
+                                                (r) => DropdownMenuItem(
+                                                  value: r,
+                                                  child: Text(
+                                                    r,
+                                                    style: TextStyle(
+                                                      color:
+                                                          customColors
+                                                              .mainTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                    ),
+                                    SizedBox(height: 12),
+                                    DropdownButton<String>(
+                                      hint: Text(
+                                        'Select Status',
+                                        style: TextStyle(
+                                          color: customColors.subTextColor,
+                                        ),
+                                      ),
+                                      value: selectedStatus,
+                                      isExpanded: true,
+                                      dropdownColor:
+                                          customColors.suqarBackgroundColor,
+                                      onChanged:
+                                          (v) => setState(
+                                            () => selectedStatus = v,
+                                          ),
+                                      items:
+                                          [
+                                                'All',
+                                                ...filteredACs
+                                                    .map((ac) => ac.status)
+                                                    .where(
+                                                      (status) =>
+                                                          status
+                                                              .trim()
+                                                              .isNotEmpty,
+                                                    )
+                                                    .toSet()
+                                                    .toList(),
+                                              ]
+                                              .map(
+                                                (s) => DropdownMenuItem(
+                                                  value: s,
+                                                  child: Text(
+                                                    s,
+                                                    style: TextStyle(
+                                                      color:
+                                                          customColors
+                                                              .mainTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                    ),
+                                  ],
+                                )
+                                : SizedBox.shrink();
+                          },
+                        ),
+                        SizedBox(height: 12),
+                      ],
                     ),
                   ),
                   SizedBox(width: 16),
-                  Expanded(
-                    child: FutureBuilder<List<String>>(
-                      future: futureRegions,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return DropdownButton<String>(
-                            hint: Text(
-                              'Select Region',
-                              style: TextStyle(
-                                color: customColors.mainTextColor,
-                              ),
-                            ),
-                            style: TextStyle(color: customColors.mainTextColor),
-                            dropdownColor: customColors.suqarBackgroundColor,
-
-                            value: selectedRegion,
-                            isExpanded: true,
-                            onChanged: _onRegionChanged, // Use new method
-                            items:
-                                ['All', ...snapshot.data!].map((String region) {
-                                  return DropdownMenuItem<String>(
-                                    value: region,
-                                    child: Text(region),
-                                  );
-                                }).toList(),
-                          );
-                        }
-                      },
-                    ),
-                  ),
                 ],
               ),
-
-              // Display cards in a responsive-height container just below the filters
-              Container(
-                height:
-                    MediaQuery.of(context).size.height *
-                    0.15, // Increased height to accommodate all cards
-                child: GridView.count(
-                  crossAxisCount: 2, // Two columns
-                  childAspectRatio:
-                      1.5, // Maintain aspect ratio for better visibility
-                  children: [
-                    // _buildCard('Total AC Units', totalUnits.toString(), Colors.lightBlue[200]!),
-                    _buildCard(
-                      'UpBlow Units',
-                      UpblowUnits.toString(),
-                      const Color.fromARGB(255, 97, 176, 240),
-                    ),
-                    _buildCard(
-                      'DownBlow Units',
-                      DownBlowUnits.toString(),
-                      const Color.fromARGB(255, 105, 228, 105),
-                    ),
-                    // _buildCard('Stopped Units', stoppedUnits.toString(), Colors.red[200]!),
-                  ],
-                ),
-              ),
-
-              // Spacing between rows
+              SizedBox(height: 16),
               Expanded(
                 child: FutureBuilder<List<updatePrecisionAC>>(
                   future: futurePrecisionAC,
@@ -465,89 +530,110 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                      return Center(
+                        child: Text(
+                          'Error: ${snapshot.error}',
+                          style: TextStyle(color: customColors.subTextColor),
+                        ),
+                      );
                     } else {
                       final precisionACs = snapshot.data!;
-                      List<updatePrecisionAC> filteredACs =
-                          precisionACs.where((ac) {
-                            final matchesStatus =
-                                selectedStatus == null ||
-                                selectedStatus == 'All' ||
-                                ac.status == selectedStatus;
-                            final matchesRegion =
-                                selectedRegion == null ||
-                                selectedRegion == 'All' ||
-                                ac.region == selectedRegion;
-                            final matchesRTOM =
-                                selectedRTOM == null ||
-                                selectedRTOM == 'All' ||
-                                ac.rtom == selectedRTOM;
-                            final matchesStation =
-                                selectedStation == null ||
-                                selectedStation == 'All' ||
-                                ac.station == selectedStation;
+                      List<updatePrecisionAC> filteredACs = _filterACs(
+                        precisionACs,
+                      );
 
-                            return matchesStatus &&
-                                matchesRegion &&
-                                matchesRTOM &&
-                                matchesStation;
-                          }).toList();
+                      // Count UpBlow and DownBlow units in the filtered list
+                      int filteredUpblowUnits =
+                          filteredACs
+                              .where((ac) => ac.airflow_type == 'Upblow')
+                              .length;
+                      int filteredDownBlowUnits =
+                          filteredACs
+                              .where((ac) => ac.airflow_type == 'DownBlow')
+                              .length;
 
-                      return ListView.builder(
-                        itemCount: filteredACs.length,
-                        itemBuilder: (context, index) {
-                          final ac = filteredACs[index];
-                          return Card(
-                            color: customColors.suqarBackgroundColor,
-                            margin: EdgeInsets.all(10),
-                            child: ListTile(
-                              title: Text(
-                                ac.model,
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
+                      return Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1.5,
+                              children: [
+                                _buildCard(
+                                  'UpBlow Units',
+                                  filteredUpblowUnits.toString(),
+                                  const Color.fromARGB(255, 97, 176, 240),
                                 ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Status: ${ac.status}',
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
+                                _buildCard(
+                                  'DownBlow Units',
+                                  filteredDownBlowUnits.toString(),
+                                  const Color.fromARGB(255, 105, 228, 105),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: filteredACs.length,
+                              itemBuilder: (context, index) {
+                                final ac = filteredACs[index];
+
+                                return Card(
+                                  color: customColors.suqarBackgroundColor,
+                                  margin: EdgeInsets.all(10),
+                                  child: ListTile(
+                                    title: Text(
+                                      ac.model,
+                                      style: TextStyle(
+                                        color: customColors.mainTextColor,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Region: ${ac.region}',
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Status: ${ac.status}',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Region: ${ac.region}',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Installation Date: ${ac.installationDate}',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Cooling Capacity: ${ac.coolingCapacity} BTU',
+                                          style: TextStyle(
+                                            color: customColors.subTextColor,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  Text(
-                                    'Installation Date: ${ac.installationDate}',
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Cooling Capacity: ${ac.coolingCapacity} BTU',
-                                    style: TextStyle(
-                                      color: customColors.mainTextColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              onTap: () {
-                                // Navigate to the detailed view
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ACDetailView(ac: ac),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => ACDetailView(ac: ac),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 );
                               },
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       );
                     }
                   },
@@ -1457,10 +1543,9 @@ class _ACDetailViewState extends State<ACDetailView> {
             color: customColors.mainTextColor,
           ),
         ),
-        subtitle: Text(subtitle,
-          style: TextStyle(
-            color: customColors.subTextColor,
-          ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(color: customColors.subTextColor),
         ),
       ),
     );
@@ -1700,7 +1785,13 @@ Widget _buildEditableCallTile(
     elevation: 2,
     child: ListTile(
       leading: Icon(icon, color: customColors.subTextColor),
-      title: Text(title, style:  TextStyle(fontWeight: FontWeight.bold,color: customColors.mainTextColor)),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: customColors.mainTextColor,
+        ),
+      ),
       subtitle: TextField(
         controller: phoneController,
         style: TextStyle(color: customColors.mainTextColor),
