@@ -138,9 +138,9 @@ class _ACFormPageState extends State<ACFormPage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
-                  // _RegionDropdownComfort('region', 'region', locationProvider, _formData, context),
-                  // _RtomDropdownComfort('rtom', 'rtom', locationProvider, _formData, context),
-                  // _StationDropdownComfort('station', 'station', locationProvider, _formData, context),
+                   _RegionDropdownComfort('region', 'region', locationProvider, _formData, context),
+                   _RtomDropdownComfort('rtom', 'rtom', locationProvider, _formData, context),
+                   _StationDropdownComfort('station', 'station', locationProvider, _formData, context),
                   _buildTextField(
                     'rtom_building_id',
                     'RTOM Building ID (eg:Building A)',
