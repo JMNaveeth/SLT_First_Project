@@ -726,7 +726,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                 title: TextFormField(
                   controller: _uploaded_byController,
                   style: TextStyle(color: customColors.mainTextColor),
-
+                  readOnly: true,
                   decoration: const InputDecoration(labelText: 'uploaded_by'),
                 ),
               ),
@@ -931,7 +931,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                 title: TextFormField(
                   controller: _outdooruploaded_byController,
                   style: TextStyle(color: customColors.mainTextColor),
-
+                  readOnly: true,
                   decoration: const InputDecoration(labelText: 'uploaded_by'),
                 ),
               ),

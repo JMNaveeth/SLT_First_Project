@@ -833,20 +833,23 @@ class _ACFormPageState extends State<ACFormPage> {
     locationProvider,
     Map<String, dynamic> _formData,
     BuildContext context,
-  ) {
+  ) {    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (locationProvider.isLoading || locationProvider.isCustomRegion) {
       return Center(child: CircularProgressIndicator());
     }
 
     return FormBuilderDropdown<String>(
-      name: key,
+      name: key,      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: locationProvider.selectedRegion,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items: [
         ...locationProvider.regions.map(
           (region) => DropdownMenuItem<String>(
@@ -889,7 +892,8 @@ class _ACFormPageState extends State<ACFormPage> {
     locationProvider,
     Map<String, dynamic> _formData,
     BuildContext context,
-  ) {
+  ) { final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -902,14 +906,16 @@ class _ACFormPageState extends State<ACFormPage> {
             : null;
 
     return FormBuilderDropdown<String>(
-      name: key,
+      name: key, style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: initialRtomValue,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ),      dropdownColor: customColors.suqarBackgroundColor,
+
       items: [
         ...locationProvider.rtoms.map(
           (rtom) => DropdownMenuItem<String>(
@@ -952,7 +958,8 @@ class _ACFormPageState extends State<ACFormPage> {
     locationProvider,
     Map<String, dynamic> _formData,
     BuildContext context,
-  ) {
+  ) { final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -966,14 +973,14 @@ class _ACFormPageState extends State<ACFormPage> {
             : null;
 
     return FormBuilderDropdown<String>(
-      name: key,
+      name: key,style: TextStyle(color: customColors.mainTextColor),
       initialValue: initialStationValue,
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
-      ),
+      ), dropdownColor: customColors.suqarBackgroundColor,
       items: [
         ...locationProvider.stations.map(
           (station) => DropdownMenuItem<String>(
