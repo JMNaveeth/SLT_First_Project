@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-//import 'locationModel.dart';
+import 'locationModel.dart';
 
 class LocationProvider extends ChangeNotifier {
   // Existing lists
-  // List<Region> _allRegions = [];
-  // List<Rtom> _allRtoms = [];
-  // List<Station> _allStations = [];
+  List<Region> _allRegions = [];
+  List<Rtom> _allRtoms = [];
+  List<Station> _allStations = [];
 
-  // // Filtered lists
-  // List<Region> _regions = [];
-  // List<Rtom> _rtoms = [];
-  // List<Station> _stations = [];
+  // Filtered lists
+  List<Region> _regions = [];
+  List<Rtom> _rtoms = [];
+  List<Station> _stations = [];
 
   // Loading state
   bool _isLoading = false;
@@ -34,9 +34,9 @@ class LocationProvider extends ChangeNotifier {
   bool isCustomStation = false;
 
   // Getters for filtered lists and loading states
-  // List<Region> get regions => _regions;
-  // List<Rtom> get rtoms => _rtoms;
-  // List<Station> get stations => _stations;
+  List<Region> get regions => _regions;
+  List<Rtom> get rtoms => _rtoms;
+  List<Station> get stations => _stations;
 
   bool get isLoading => _isLoading;
 
@@ -47,8 +47,8 @@ class LocationProvider extends ChangeNotifier {
     if (value == 'Other') {
       isCustomRegion = true;
       customRegion = null;
-      // _rtoms = [];
-      // _stations = [];
+      _rtoms = [];
+      _stations = [];
       _resetRtomAndStation(); // Reset RTOM and Station when Region is 'Other'
     } else {
       isCustomRegion = false;
@@ -68,7 +68,7 @@ class LocationProvider extends ChangeNotifier {
     if (value == 'Other') {
       isCustomRtom = true;
       customRtom = null;
-   //   _stations = [];
+      _stations = [];
     } else {
       isCustomRtom = false;
       customRtom = null;
@@ -102,11 +102,11 @@ class LocationProvider extends ChangeNotifier {
       final regionsResponse = await http.get(Uri.parse('https://powerprox.sltidc.lk/GETLocationRegion.php'));
       if (regionsResponse.statusCode == 200) {
         final List<dynamic> regionsData = json.decode(regionsResponse.body);
-        // _allRegions = regionsData.map((item) => Region(
-        //   Region_ID: item['Region_ID'].toString(),
-        //   RegionName: item['Region'].toString(),
-        // )).toList();
-        // _regions = _allRegions; // Set initial regions
+        _allRegions = regionsData.map((item) => Region(
+          Region_ID: item['Region_ID'].toString(),
+          RegionName: item['Region'].toString(),
+        )).toList();
+        _regions = _allRegions; // Set initial regions
       } else {
         throw Exception('Failed to load regions');
       }
@@ -115,11 +115,11 @@ class LocationProvider extends ChangeNotifier {
       final rtomsResponse = await http.get(Uri.parse('https://powerprox.sltidc.lk/GETLocationRTOM.php'));
       if (rtomsResponse.statusCode == 200) {
         final List<dynamic> rtomsData = json.decode(rtomsResponse.body);
-        // _allRtoms = rtomsData.map((item) => Rtom(
-        //   RTOM_ID: item['RTOM_ID'].toString(),
-        //   Region_ID: item['Region_ID'].toString(),
-        //   RTOM: item['RTOM'].toString(),
-        // )).toList();
+        _allRtoms = rtomsData.map((item) => Rtom(
+          RTOM_ID: item['RTOM_ID'].toString(),
+          Region_ID: item['Region_ID'].toString(),
+          RTOM: item['RTOM'].toString(),
+        )).toList();
       } else {
         throw Exception('Failed to load RTOMs');
       }
@@ -128,12 +128,12 @@ class LocationProvider extends ChangeNotifier {
       final stationsResponse = await http.get(Uri.parse('https://powerprox.sltidc.lk/GETLocationStationTable.php'));
       if (stationsResponse.statusCode == 200) {
         final List<dynamic> stationsData = json.decode(stationsResponse.body);
-        // _allStations = stationsData.map((item) => Station(
-        //   Station_ID: item['Station_ID'].toString(),
-        //   Region_ID: item['Region_ID'].toString(),
-        //   RTOM_ID: item['RTOM_ID'].toString(),
-        //   StationName: item['Station'].toString(),
-        // )).toList();
+        _allStations = stationsData.map((item) => Station(
+          Station_ID: item['Station_ID'].toString(),
+          Region_ID: item['Region_ID'].toString(),
+          RTOM_ID: item['RTOM_ID'].toString(),
+          StationName: item['Station'].toString(),
+        )).toList();
       } else {
         throw Exception('Failed to load stations');
       }
@@ -147,11 +147,11 @@ class LocationProvider extends ChangeNotifier {
 
   // Filter RTOMs based on selected Region
   void _filterRtomsByRegion(String? regionId) {
-    // if (regionId != null) {
-    //   _rtoms = _allRtoms.where((rtom) => rtom.Region_ID == regionId).toList();
-    // } else {
-    //   _rtoms = [];
-    // }
+    if (regionId != null) {
+      _rtoms = _allRtoms.where((rtom) => rtom.Region_ID == regionId).toList();
+    } else {
+      _rtoms = [];
+    }
     _resetStation(); // Reset station when RTOMs are filtered
     notifyListeners();
   }
@@ -159,9 +159,9 @@ class LocationProvider extends ChangeNotifier {
   // Filter Stations based on selected RTOM
   void _filterStationsByRtom(String? rtomId) {
     if (rtomId != null) {
-    //   _stations = _allStations.where((station) => station.RTOM_ID == rtomId).toList();
-    // } else {
-    //   _stations = [];
+      _stations = _allStations.where((station) => station.RTOM_ID == rtomId).toList();
+    } else {
+      _stations = [];
     }
     notifyListeners(); // Notify listeners to update UI
   }
@@ -171,7 +171,7 @@ class LocationProvider extends ChangeNotifier {
     _selectedRtom = null;
     isCustomRtom = false;
     customRtom = null;
- //   _rtoms = [];
+    _rtoms = [];
 
     _resetStation(); // Also reset station when RTOM changes
   }
@@ -181,16 +181,16 @@ class LocationProvider extends ChangeNotifier {
     _selectedStation = null;
     isCustomStation = false;
     customStation = null;
-  //  _stations = [];
+    _stations = [];
   }
 
   // Add a custom region to the list
   void addCustomRegion(String customRegion) {
     if (customRegion.isNotEmpty) {
-      // _regions.add(Region(
-      //   Region_ID: customRegion, // Use custom Region name as ID
-      //   RegionName: customRegion,
-      // ));
+      _regions.add(Region(
+        Region_ID: customRegion, // Use custom Region name as ID
+        RegionName: customRegion,
+      ));
       notifyListeners();
     }
   }
@@ -198,11 +198,11 @@ class LocationProvider extends ChangeNotifier {
   // Add a custom RTOM to the list
   void addCustomRtom(String customRtom) {
     if (customRtom.isNotEmpty) {
-      // _rtoms.add(Rtom(
-      //   RTOM_ID: customRtom, // Use custom RTOM name as ID
-      //   Region_ID: '', // Set appropriate values if needed
-      //   RTOM: customRtom,
-      // ));
+      _rtoms.add(Rtom(
+        RTOM_ID: customRtom, // Use custom RTOM name as ID
+        Region_ID: '', // Set appropriate values if needed
+        RTOM: customRtom,
+      ));
       notifyListeners();
     }
   }
@@ -210,18 +210,18 @@ class LocationProvider extends ChangeNotifier {
   // Add a custom station to the list and update the selected value
   void addCustomStation(String customStation) {
     // Add custom station to the list of stations
-    // _allStations.add(Station(
-    //   Station_ID: customStation, // Use the custom value as ID
-    //   Region_ID: '', // Set appropriate values as needed
-    //   RTOM_ID: '',  // Set appropriate values as needed
-    //   StationName: customStation,
-    // ));
-    // _stations.add(Station(
-    //   Station_ID: customStation, // Use the custom value as ID
-    //   Region_ID: '', // Set appropriate values as needed
-    //   RTOM_ID: '',  // Set appropriate values as needed
-    //   StationName: customStation,
-    // ));
+    _allStations.add(Station(
+      Station_ID: customStation, // Use the custom value as ID
+      Region_ID: '', // Set appropriate values as needed
+      RTOM_ID: '',  // Set appropriate values as needed
+      StationName: customStation,
+    ));
+    _stations.add(Station(
+      Station_ID: customStation, // Use the custom value as ID
+      Region_ID: '', // Set appropriate values as needed
+      RTOM_ID: '',  // Set appropriate values as needed
+      StationName: customStation,
+    ));
     // Set the newly added custom station as the selected value
     _selectedStation = customStation;
     isCustomStation = false;
