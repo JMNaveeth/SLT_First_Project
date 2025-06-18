@@ -151,6 +151,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                           _formData,
                           context,
                         ),
+                        SizedBox(height: 10),
+
                         _RtomDropdown(
                           'RTOM',
                           'RTOM',
@@ -158,6 +160,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                           _formData,
                           context,
                         ),
+                        SizedBox(height: 10),
+
                         _StationDropdown(
                           'Station',
                           'Station',
@@ -165,6 +169,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                           _formData,
                           context,
                         ),
+                        SizedBox(height: 10),
+
                         _buildTextField(
                           'building_id',
                           'Building Id(eg: Building A)',
@@ -1687,17 +1693,20 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   Widget _RegionDropdown(
     String key,
     String label,
-    //  LocationProvider
-    locationProvider,
+    LocationProvider locationProvider,
     Map<String, dynamic> _formData,
     BuildContext context,
   ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (locationProvider.isLoading || locationProvider.isCustomRegion) {
       return Center(child: CircularProgressIndicator());
     }
 
     return FormBuilderDropdown<String>(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: locationProvider.selectedRegion,
       decoration: InputDecoration(
         labelText: label,
@@ -1705,6 +1714,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
+
       items: [
         ...locationProvider.regions.map(
           (region) => DropdownMenuItem<String>(
@@ -1743,11 +1754,12 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   Widget _RtomDropdown(
     String key,
     String label,
-    // LocationProvider
-    locationProvider,
+    LocationProvider locationProvider,
     Map<String, dynamic> _formData,
     BuildContext context,
   ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -1761,6 +1773,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
     return FormBuilderDropdown<String>(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: initialRtomValue,
       decoration: InputDecoration(
         labelText: label,
@@ -1768,6 +1782,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
+
       items: [
         ...locationProvider.rtoms.map(
           (rtom) => DropdownMenuItem<String>(
@@ -1806,11 +1822,12 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
   Widget _StationDropdown(
     String key,
     String label,
-    //  LocationProvider
-    locationProvider,
+    LocationProvider locationProvider,
     Map<String, dynamic> _formData,
     BuildContext context,
   ) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     if (locationProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -1825,6 +1842,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
 
     return FormBuilderDropdown<String>(
       name: key,
+      style: TextStyle(color: customColors.mainTextColor),
+
       initialValue: initialStationValue,
       decoration: InputDecoration(
         labelText: label,
@@ -1832,6 +1851,8 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
+      dropdownColor: customColors.suqarBackgroundColor,
+
       items: [
         ...locationProvider.stations.map(
           (station) => DropdownMenuItem<String>(
@@ -1871,8 +1892,7 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     BuildContext context,
     String key,
     String label,
-    // LocationProvider
-    locationProvider,
+    LocationProvider locationProvider,
   ) {
     TextEditingController _newValueController = TextEditingController();
 

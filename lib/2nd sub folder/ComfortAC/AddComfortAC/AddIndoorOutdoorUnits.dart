@@ -151,21 +151,24 @@ class _ACFormPageState extends State<ACFormPage> {
                           locationProvider,
                           _formData,
                           context,
-                        ),
+                        ),                        SizedBox(height: 10),
+
                         _RtomDropdownComfort(
                           'rtom',
                           'rtom',
                           locationProvider,
                           _formData,
                           context,
-                        ),
+                        ),                        SizedBox(height: 10),
+
                         _StationDropdownComfort(
                           'station',
                           'station',
                           locationProvider,
                           _formData,
                           context,
-                        ),
+                        ),                        SizedBox(height: 10),
+
                         _buildTextField(
                           'rtom_building_id',
                           'RTOM Building ID (eg:Building A)',
