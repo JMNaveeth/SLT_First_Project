@@ -1,3 +1,4 @@
+import 'package:theme_update/2nd%20sub%20folder/httpGetLocations.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 
@@ -70,99 +71,108 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
     // userName=userAccess.username!;
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    //  return ChangeNotifierProvider(
-    //  create: (context) => LocationProvider()..loadAllData(),
-    //  child: Consumer<LocationProvider>(
-    //     builder: (context, locationProvider, child) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'AC Comfort Units',
-          style: TextStyle(color: customColors.mainTextColor),
-        ),
-        iconTheme: IconThemeData(color: customColors.mainTextColor),
-        backgroundColor: customColors.appbarColor,
-        actions: [ThemeToggleButton()],
-      ),
-      body: Container(
-        color: customColors.mainBackgroundColor,
-        child:
-            isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                  itemCount: indoorUnits.length,
-                  itemBuilder: (context, index) {
-                    final unit = indoorUnits[index];
-                    final ConnectionUnits = connections[index];
+    return ChangeNotifierProvider(
+      create: (context) => LocationProvider()..loadAllData(),
+      child: Consumer<LocationProvider>(
+        builder: (context, locationProvider, child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'AC Comfort Units',
+                style: TextStyle(color: customColors.mainTextColor),
+              ),
+              iconTheme: IconThemeData(color: customColors.mainTextColor),
+              backgroundColor: customColors.appbarColor,
+              actions: [ThemeToggleButton()],
+            ),
+            body: Container(
+              color: customColors.mainBackgroundColor,
+              child:
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                        itemCount: indoorUnits.length,
+                        itemBuilder: (context, index) {
+                          final unit = indoorUnits[index];
+                          final ConnectionUnits = connections[index];
 
-                    if (unit == null) {
-                      return Container();
-                    }
+                          if (unit == null) {
+                            return Container();
+                          }
 
-                    return Card(
-                      color: customColors.suqarBackgroundColor,
+                          return Card(
+                            color: customColors.suqarBackgroundColor,
 
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 16.0,
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          'Brand : ${unit['brand'] ?? 'No Brand'}',
-                          style: TextStyle( fontSize: 16,
-                                color: customColors.mainTextColor,),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Model : ${unit['model'] ?? 'No model'}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: customColors.mainTextColor,
-                              ),
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 8.0,
+                              horizontal: 16.0,
                             ),
-
-                            // Text('Rtom: ${ConnectionUnits['rtom'] ?? 'No rtom'}'),
-                            Text(
-                              'Location: ${ConnectionUnits['region'] ?? 'No region'}'
-                              '| ${ConnectionUnits['rtom'] ?? 'No RTOM'}'
-                              '| ${ConnectionUnits['station'] ?? 'No station'}'
-                              '| ${ConnectionUnits['office_number'] ?? 'No office_number'}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: customColors.mainTextColor,
+                            child: ListTile(
+                              title: Text(
+                                'Brand : ${unit['brand'] ?? 'No Brand'}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: customColors.mainTextColor,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => EditComfortAcPage(
-                                    indoorData: unit,
-                                    outdoorUnitData:
-                                        outdoorUnits.length > index
-                                            ? outdoorUnits[index]
-                                            : {},
-                                    connectionData:
-                                        connections.length > index
-                                            ? connections[index]
-                                            : {},
-                                    user: userName,
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Model : ${unit['model'] ?? 'No model'}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: customColors.mainTextColor,
+                                    ),
                                   ),
+
+                                  Text(
+                                    'Rtom: ${ConnectionUnits['rtom'] ?? 'No rtom'}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Location: ${ConnectionUnits['region'] ?? 'No region'}'
+                                    '| ${ConnectionUnits['rtom'] ?? 'No RTOM'}'
+                                    '| ${ConnectionUnits['station'] ?? 'No station'}'
+                                    '| ${ConnectionUnits['office_number'] ?? 'No office_number'}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: customColors.mainTextColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => EditComfortAcPage(
+                                          indoorData: unit,
+                                          outdoorUnitData:
+                                              outdoorUnits.length > index
+                                                  ? outdoorUnits[index]
+                                                  : {},
+                                          connectionData:
+                                              connections.length > index
+                                                  ? connections[index]
+                                                  : {},
+                                          user: userName,
+                                        ),
+                                  ),
+                                );
+                              },
                             ),
                           );
                         },
                       ),
-                    );
-                  },
-                ),
+            ),
+          );
+        },
       ),
     );
-    // }),
-    // );
   }
 }

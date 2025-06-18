@@ -10,6 +10,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:theme_update/2nd%20sub%20folder/httpGetLocations.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 
@@ -108,401 +109,437 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
     // userName=userAccess.username!;
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    //   return ChangeNotifierProvider(
-    //   create: (context) => LocationProvider()..loadAllData(),
-    //  child: Consumer<LocationProvider>(
-    // builder: (context, locationProvider, child) {
-    //    var _isVerified;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Add Precision AC Unit',
-          style: TextStyle(color: customColors.mainTextColor),
-        ),
-        iconTheme: IconThemeData(color: customColors.mainTextColor),
-        backgroundColor: customColors.appbarColor,
-        actions: [ThemeToggleButton()],
-      ),
-      body: Container(
-        color: customColors.mainBackgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: FormBuilder(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Location Details',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-
-                  // // _RegionDropdown('Region', 'Region',locationProvider),
-                  // _RegionDropdown(
-                  //   'Region',
-                  //   'Region',
-                  //   locationProvider,
-                  //   _formData,
-                  //   context,
-                  // ),
-                  // _RtomDropdown(
-                  //   'RTOM',
-                  //   'RTOM',
-                  //   locationProvider,
-                  //   _formData,
-                  //   context,
-                  // ),
-                  // _StationDropdown(
-                  //   'Station',
-                  //   'Station',
-                  //   locationProvider,
-                  //   _formData,
-                  //   context,
-                  // ),
-                  _buildTextField('building_id', 'Building Id(eg: Building A)'),
-                  SizedBox(height: 10),
-
-                  _buildTextField(
-                    'floor_number',
-                    'Floor Number (eg:OTS-1-AC-No)',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildTextFieldModelValidated(
-                    'Office_No',
-                    'Office Number (eg: 01)',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildTextFieldLocationValidated(
-                    'Location',
-                    'Location (eg:OTS UPS room)',
-                  ),
-
-                  SizedBox(height: 20),
-                  // GPS Location fields
-                  Text(
-                    'Mark GPS Location of the Unit',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-
-                  // GPS Location fields
-                  _buildGPSLatitudeField(
-                    'Latitude',
-                    'Latitude(Enter Manually or press Get Location)',
-                    _latitudeController,
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildGPSLongitudeField(
-                    'Longitude',
-                    'Longitude(Enter Manually or press Get Location)',
-                    _longitudeController,
-                  ),
-
-                  SizedBox(height: 20),
-                  // Fetch Location Button
-                  CupertinoButton(
-                    onPressed: _fetchLocation,
-                    color: Color(0xFF00AEE4),
-                    child: Row(
-                      mainAxisSize:
-                          MainAxisSize.min, // Keeps the button size compact
+    return ChangeNotifierProvider(
+      create: (context) => LocationProvider()..loadAllData(),
+      child: Consumer<LocationProvider>(
+        builder: (context, locationProvider, child) {
+          var _isVerified;
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Add Precision AC Unit',
+                style: TextStyle(color: customColors.mainTextColor),
+              ),
+              iconTheme: IconThemeData(color: customColors.mainTextColor),
+              backgroundColor: customColors.appbarColor,
+              actions: [ThemeToggleButton()],
+            ),
+            body: Container(
+              color: customColors.mainBackgroundColor,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: FormBuilder(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Icon(
-                          Icons.location_on, // choose any icon you prefer
-                          color:
-                              customColors
-                                  .mainTextColor, // Adjust the color of the icon
-                        ),
-                        SizedBox(width: 8), // space between the icon and text
                         Text(
-                          'Get Location',
-                          style: TextStyle(color: customColors.subTextColor),
+                          'Location Details',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        // _RegionDropdown('Region', 'Region',locationProvider),
+                        _RegionDropdown(
+                          'Region',
+                          'Region',
+                          locationProvider,
+                          _formData,
+                          context,
+                        ),
+                        _RtomDropdown(
+                          'RTOM',
+                          'RTOM',
+                          locationProvider,
+                          _formData,
+                          context,
+                        ),
+                        _StationDropdown(
+                          'Station',
+                          'Station',
+                          locationProvider,
+                          _formData,
+                          context,
+                        ),
+                        _buildTextField(
+                          'building_id',
+                          'Building Id(eg: Building A)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextField(
+                          'floor_number',
+                          'Floor Number (eg:OTS-1-AC-No)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextFieldModelValidated(
+                          'Office_No',
+                          'Office Number (eg: 01)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextFieldLocationValidated(
+                          'Location',
+                          'Location (eg:OTS UPS room)',
+                        ),
+
+                        SizedBox(height: 20),
+                        // GPS Location fields
+                        Text(
+                          'Mark GPS Location of the Unit',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        // GPS Location fields
+                        _buildGPSLatitudeField(
+                          'Latitude',
+                          'Latitude(Enter Manually or press Get Location)',
+                          _latitudeController,
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildGPSLongitudeField(
+                          'Longitude',
+                          'Longitude(Enter Manually or press Get Location)',
+                          _longitudeController,
+                        ),
+
+                        SizedBox(height: 20),
+                        // Fetch Location Button
+                        CupertinoButton(
+                          onPressed: _fetchLocation,
+                          color: Color(0xFF00AEE4),
+                          child: Row(
+                            mainAxisSize:
+                                MainAxisSize
+                                    .min, // Keeps the button size compact
+                            children: [
+                              Icon(
+                                Icons.location_on, // choose any icon you prefer
+                                color:
+                                    customColors
+                                        .mainTextColor, // Adjust the color of the icon
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ), // space between the icon and text
+                              Text(
+                                'Get Location',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 20),
+
+                        Text(
+                          'General Details',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextField('QRTag', 'Tag code(eg:PR:0001)'),
+                        SizedBox(height: 10),
+
+                        _buildTextFieldModelValidated(
+                          'Model',
+                          'Model(eg:Brand_Name-model)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumValTextField('Serial_Number', 'Serial Number'),
+                        SizedBox(height: 10),
+
+                        _ManufacturerDropdown('Manufacturer', 'Manufacturer'),
+                        SizedBox(height: 10),
+
+                        _buildCustomDateField(
+                          'Installation_Date',
+                          'Installation Date(YYYY-MM-DD)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _StatusDropdown('Status', 'Status'),
+
+                        SizedBox(height: 5),
+
+                        _buildAnnualMaintenanceContractField(
+                          'AMC_Expire_Date',
+                          'Annual Maintenance Contract',
+                        ),
+
+                        // _buildTextField('UpdatedBy', 'Updated By(Officer name)'),
+                        // _buildDatePicker('UpdatedTime', 'Updated Time(YYYY-MM-DD)'),
+                        SizedBox(height: 40),
+
+                        Text(
+                          'Technical Specifications',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        // More fields
+                        _buildCoolingCapacityTextField(
+                          'Cooling_Capacity',
+                          'Cooling Capacity (in BTU/hr)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _PowerSupplyDropdown('Power_Supply', 'Power Supply'),
+                        SizedBox(height: 10),
+
+                        _RefrigDropdown('Refrigerant_Type', 'Refrigerant Type'),
+                        SizedBox(height: 10),
+
+                        _buildDimensionTextField(
+                          'Dimensions',
+                          'Dimensions (eg:cm x cm x cm)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumWeightTextField('Weight', 'Weight (in Kg)'),
+                        SizedBox(height: 10),
+
+                        _buildNoiseLevelTextField(
+                          'Noise_Level',
+                          'Noise Level (in dbm)',
+                        ),
+
+                        SizedBox(height: 20),
+                        Text(
+                          'Compressor details',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        // Compressor Details Section
+                        _buildAlphanumericTextField(
+                          'No_of_Compressors',
+                          'No of Compressors',
+                        ),
+
+                        SizedBox(height: 10),
+
+                        _buildSerialNumberDisplayFields(), SizedBox(height: 10),
+
+                        _buildEnterSerialNumbersField(),
+                        SizedBox(height: 10),
+
+                        _ConditionAirFilterDropdown(
+                          'Condition_Indoor_Air_Filters',
+                          'Condition of the Indoor Air Filters',
+                        ),
+                        SizedBox(height: 10),
+
+                        _ConditionIndoorDropdown(
+                          'Condition_Indoor_Unit',
+                          'Condition of the Indoor Unit',
+                        ),
+                        SizedBox(height: 10),
+
+                        _ConditionIndoorDropdown(
+                          'Condition_Outdoor_Unit',
+                          'Condition of the Outdoor Unit',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildUnvalidatedTextField(
+                          'Other_Specifications',
+                          'Other Specifications',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumAirflowTextField(
+                          'Airflow',
+                          'Airflow Rate( In CFM)',
+                        ),
+                        SizedBox(height: 10),
+
+                        _AirflowTypeDropdown('Airflow_Type', 'Airflow Type'),
+                        SizedBox(height: 10),
+
+                        //need airflow type
+                        _buildNumValueFieldsTextField(
+                          'No_of_Refrigerant_Circuits',
+                          'No of Refrigerant Circuits',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumValueFieldsTextField(
+                          'No_of_Evaporator_Coils',
+                          'No of Evaporator Coils',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumValueFieldsTextField(
+                          'No_of_Condenser_Circuits',
+                          'No of Condenser Circuits',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumValueFieldsTextField(
+                          'No_of_Condenser_Fans',
+                          'No of Condenser Fans',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumValueFieldsTextField(
+                          'No_of_Indoor_Fans',
+                          'No of indoor Fans',
+                        ),
+                        SizedBox(height: 10),
+
+                        _CondensorMountedDropdown(
+                          'Condenser_Mounting_Method',
+                          'Condenser Mounting Method',
+                        ),
+
+                        SizedBox(height: 40),
+
+                        Text(
+                          'Supplier And Warranty',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        // Supplier details
+                        _buildTextFieldNonValidated(
+                          'Supplier_Name',
+                          'Supplier Name',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextFieldEmailValidated(
+                          'Supplier_email',
+                          'Supplier Email',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextFieldMobileValidated(
+                          'Supplier_contact_no',
+                          'Supplier Contact no',
+                        ),
+                        SizedBox(height: 10),
+
+                        // _buildTextFieldContactDetails('Supplier_Contact_Details', 'Supplier Contact Details'),
+                        _buildWarrantyAvailableField(
+                          'Warranty_Details',
+                          'Warranty Available ?',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildDatePicker(
+                          'Warranty_Expire_Date',
+                          'Warranty Expire Date',
+                        ),
+
+                        SizedBox(height: 10),
+
+                        FormBuilderCheckbox(
+                          name: 'verify',
+                          //  initialValue: _isVerified,
+                          title: Text(
+                            'I verify that submitted details are true and correct',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              //  _isVerified = value;
+                            });
+                          },
+
+                          checkColor: Colors.white,
+                          activeColor: Color(0xFF4FB846),
+
+                          validator: (value) {
+                            if (value != true) {
+                              return 'You must verify the details to proceed.';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        // Submit Button
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: _resetForm,
+                                child: const Text(
+                                  'Reset',
+                                  style: TextStyle(color: Colors.redAccent),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                        Colors.blue,
+                                      ), // Set the button color here
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(
+                              width: 10,
+                            ), // Add spacing between buttons
+
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: _submitData,
+                                child: const Text(
+                                  'Submit',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                        Colors.blue,
+                                      ), // Set the button color here
+                                ),
+                              ),
+                            ),
+
+                            // ElevatedButton(
+                            //   onPressed: () {
+                            //     print(_formData); // Print collected data to console
+                            //   }, child: null,
+                            // )
+                          ],
                         ),
                       ],
                     ),
                   ),
-
-                  SizedBox(height: 20),
-
-                  Text(
-                    'General Details',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildTextField('QRTag', 'Tag code(eg:PR:0001)'),
-                  SizedBox(height: 10),
-
-                  _buildTextFieldModelValidated(
-                    'Model',
-                    'Model(eg:Brand_Name-model)',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildNumValTextField('Serial_Number', 'Serial Number'),
-                  SizedBox(height: 10),
-
-                  _ManufacturerDropdown('Manufacturer', 'Manufacturer'),
-                  SizedBox(height: 10),
-
-                  _buildCustomDateField(
-                    'Installation_Date',
-                    'Installation Date(YYYY-MM-DD)',
-                  ),
-                  SizedBox(height: 10),
-
-                  _StatusDropdown('Status', 'Status'),
-
-                  SizedBox(height: 5),
-
-                  _buildAnnualMaintenanceContractField(
-                    'AMC_Expire_Date',
-                    'Annual Maintenance Contract',
-                  ),
-
-                  // _buildTextField('UpdatedBy', 'Updated By(Officer name)'),
-                  // _buildDatePicker('UpdatedTime', 'Updated Time(YYYY-MM-DD)'),
-                  SizedBox(height: 40),
-
-                  Text(
-                    'Technical Specifications',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-
-                  // More fields
-                  _buildCoolingCapacityTextField(
-                    'Cooling_Capacity',
-                    'Cooling Capacity (in BTU/hr)',
-                  ),
-                  SizedBox(height: 10),
-
-                  _PowerSupplyDropdown('Power_Supply', 'Power Supply'),
-                  SizedBox(height: 10),
-
-                  _RefrigDropdown('Refrigerant_Type', 'Refrigerant Type'),
-                  SizedBox(height: 10),
-
-                  _buildDimensionTextField(
-                    'Dimensions',
-                    'Dimensions (eg:cm x cm x cm)',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildNumWeightTextField('Weight', 'Weight (in Kg)'),
-                  SizedBox(height: 10),
-
-                  _buildNoiseLevelTextField(
-                    'Noise_Level',
-                    'Noise Level (in dbm)',
-                  ),
-
-                  SizedBox(height: 20),
-                  Text(
-                    'Compressor details',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-
-                  // Compressor Details Section
-                  _buildAlphanumericTextField(
-                    'No_of_Compressors',
-                    'No of Compressors',
-                  ),
-
-                  SizedBox(height: 10),
-
-                  _buildSerialNumberDisplayFields(), SizedBox(height: 10),
-
-                  _buildEnterSerialNumbersField(),
-                  SizedBox(height: 10),
-
-                  _ConditionAirFilterDropdown(
-                    'Condition_Indoor_Air_Filters',
-                    'Condition of the Indoor Air Filters',
-                  ),
-                  SizedBox(height: 10),
-
-                  _ConditionIndoorDropdown(
-                    'Condition_Indoor_Unit',
-                    'Condition of the Indoor Unit',
-                  ),
-                  SizedBox(height: 10),
-
-                  _ConditionIndoorDropdown(
-                    'Condition_Outdoor_Unit',
-                    'Condition of the Outdoor Unit',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildUnvalidatedTextField(
-                    'Other_Specifications',
-                    'Other Specifications',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildNumAirflowTextField('Airflow', 'Airflow Rate( In CFM)'),
-                  SizedBox(height: 10),
-
-                  _AirflowTypeDropdown('Airflow_Type', 'Airflow Type'),
-                  SizedBox(height: 10),
-
-                  //need airflow type
-                  _buildNumValueFieldsTextField(
-                    'No_of_Refrigerant_Circuits',
-                    'No of Refrigerant Circuits',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildNumValueFieldsTextField(
-                    'No_of_Evaporator_Coils',
-                    'No of Evaporator Coils',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildNumValueFieldsTextField(
-                    'No_of_Condenser_Circuits',
-                    'No of Condenser Circuits',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildNumValueFieldsTextField(
-                    'No_of_Condenser_Fans',
-                    'No of Condenser Fans',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildNumValueFieldsTextField(
-                    'No_of_Indoor_Fans',
-                    'No of indoor Fans',
-                  ),
-                  SizedBox(height: 10),
-
-                  _CondensorMountedDropdown(
-                    'Condenser_Mounting_Method',
-                    'Condenser Mounting Method',
-                  ),
-
-                  SizedBox(height: 40),
-
-                  Text(
-                    'Supplier And Warranty',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-
-                  // Supplier details
-                  _buildTextFieldNonValidated('Supplier_Name', 'Supplier Name'),
-                  SizedBox(height: 10),
-
-                  _buildTextFieldEmailValidated(
-                    'Supplier_email',
-                    'Supplier Email',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildTextFieldMobileValidated(
-                    'Supplier_contact_no',
-                    'Supplier Contact no',
-                  ),
-                  SizedBox(height: 10),
-
-                  // _buildTextFieldContactDetails('Supplier_Contact_Details', 'Supplier Contact Details'),
-                  _buildWarrantyAvailableField(
-                    'Warranty_Details',
-                    'Warranty Available ?',
-                  ),
-                  SizedBox(height: 10),
-
-                  _buildDatePicker(
-                    'Warranty_Expire_Date',
-                    'Warranty Expire Date',
-                  ),
-
-                  SizedBox(height: 10),
-
-                  FormBuilderCheckbox(
-                    name: 'verify',
-                    //  initialValue: _isVerified,
-                    title: Text(
-                      'I verify that submitted details are true and correct',
-                      style: TextStyle(color: customColors.mainTextColor),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        //  _isVerified = value;
-                      });
-                    },
-
-                    checkColor: Colors.white,
-                    activeColor: Color(0xFF4FB846),
-
-                    validator: (value) {
-                      if (value != true) {
-                        return 'You must verify the details to proceed.';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  // Submit Button
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: _resetForm,
-                          child: const Text(
-                            'Reset',
-                            style: TextStyle(color: Colors.redAccent),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.blue,
-                            ), // Set the button color here
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(width: 10), // Add spacing between buttons
-
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: _submitData,
-                          child: const Text(
-                            'Submit',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.blue,
-                            ), // Set the button color here
-                          ),
-                        ),
-                      ),
-
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     print(_formData); // Print collected data to console
-                      //   }, child: null,
-                      // )
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
-    //    },
-    // ),
-    // );
   }
 
   Widget _buildGPSLatitudeField(

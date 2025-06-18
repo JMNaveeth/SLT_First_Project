@@ -1,4 +1,6 @@
 //import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
+import 'package:theme_update/2nd%20sub%20folder/httpGetLocations.dart';
+import 'package:theme_update/2nd%20sub%20folder/locationModel.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 
@@ -396,7 +398,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   buildIndoorUnitCard(),
                   buildOutdoorUnitCard(),
                   buildLatitudeLongitudeCard(),
-                  // buildConnectionCard(LocationProvider()),
+                  buildConnectionCard(LocationProvider()),
                   OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
@@ -1020,10 +1022,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     );
   }
 
-  Widget buildConnectionCard(
-    //LocationProvider
-    locationProvider,
-  ) {
+  Widget buildConnectionCard(LocationProvider locationProvider) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -1130,8 +1129,18 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   _connectionQR_locController.text,
                 ),
               ),
-              // ListTile(title: TextFormField(controller: _connectionLongitudeController, decoration: InputDecoration(labelText: 'Longitude'))),
-              // ListTile(title: TextFormField(controller: _connectionLatitudeController, decoration: InputDecoration(labelText: 'Latitude'))),
+              ListTile(
+                title: TextFormField(
+                  controller: _connectionLongitudeController,
+                  decoration: InputDecoration(labelText: 'Longitude'),
+                ),
+              ),
+              ListTile(
+                title: TextFormField(
+                  controller: _connectionLatitudeController,
+                  decoration: InputDecoration(labelText: 'Latitude'),
+                ),
+              ),
               ListTile(
                 title: _buildUneditableFormField(
                   'last_updated',
@@ -1157,8 +1166,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   Widget _RegionDropdown(
     String key,
     String label,
-    //  LocationProvider
-    locationProvider,
+    LocationProvider locationProvider,
   ) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
@@ -1218,8 +1226,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     BuildContext context,
     String key,
     String label,
-    //   LocationProvider
-    locationProvider,
+    LocationProvider locationProvider,
   ) {
     final TextEditingController controller = TextEditingController();
 
@@ -1241,8 +1248,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   setState(() {
                     // Update the regions list
                     locationProvider.regions.add(
-                      // Region
-                      (Region_ID: newValue, RegionName: newValue),
+                      Region(Region_ID: newValue, RegionName: newValue),
                     ); // Adjust according to your Region model
                     // Update the form data
                     formData[key] =
