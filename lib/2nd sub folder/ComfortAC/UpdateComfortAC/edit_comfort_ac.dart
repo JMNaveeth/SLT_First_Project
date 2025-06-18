@@ -1023,7 +1023,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   }
 
   Widget buildConnectionCard(LocationProvider locationProvider) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Card(
+      color: customColors.suqarBackgroundColor,
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -1112,6 +1115,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
               ListTile(
                 title: TextFormField(
                   controller: _connectionlocationController,
+                  style: TextStyle(color: customColors.mainTextColor),
+
                   decoration: const InputDecoration(labelText: 'location'),
                 ),
               ),
@@ -1129,18 +1134,22 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   _connectionQR_locController.text,
                 ),
               ),
-              ListTile(
-                title: TextFormField(
-                  controller: _connectionLongitudeController,
-                  decoration: InputDecoration(labelText: 'Longitude'),
-                ),
-              ),
-              ListTile(
-                title: TextFormField(
-                  controller: _connectionLatitudeController,
-                  decoration: InputDecoration(labelText: 'Latitude'),
-                ),
-              ),
+              // ListTile(
+              //   title: TextFormField(
+              //     controller: _connectionLongitudeController,
+              //     style: TextStyle(color: customColors.mainTextColor),
+
+              //     decoration: InputDecoration(labelText: 'Longitude'),
+              //   ),
+              // ),
+              // ListTile(
+              //   title: TextFormField(
+              //     controller: _connectionLatitudeController,
+              //     style: TextStyle(color: customColors.mainTextColor),
+
+              //     decoration: InputDecoration(labelText: 'Latitude'),
+              //   ),
+              // ),
               ListTile(
                 title: _buildUneditableFormField(
                   'last_updated',
