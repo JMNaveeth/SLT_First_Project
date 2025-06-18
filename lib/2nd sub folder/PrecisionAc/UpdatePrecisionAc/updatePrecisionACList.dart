@@ -284,6 +284,8 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
   String? selectedRTOM;
   String? selectedStation;
 
+  List<updatePrecisionAC> originalACData = [];
+
   List<String> statuses = ['All', 'Working', 'Running', 'Stopped', 'Faulty'];
 
   @override
@@ -295,6 +297,18 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
     futureRTOMs = Future.value([]);
     futureStations = Future.value([]);
     fetchData();
+
+    // Load original data for dropdown options
+    _loadOriginalData();
+  }
+
+  // Load original data to use for dropdown options
+  Future<void> _loadOriginalData() async {
+    try {
+      originalACData = await fetchPrecisionAC();
+    } catch (e) {
+      print('Error loading original data: $e');
+    }
   }
 
   List<updatePrecisionAC> _filterACs(List<updatePrecisionAC> acs) {
@@ -407,117 +421,96 @@ class _PrecisionACListState extends State<updatePrecisionACList> {
                             final filteredACs = _filterACs(snapshot.data!);
 
                             // Get unique regions and statuses from filtered cards
-                            final regions = [
+                            final allRegions = [
                               'All',
-                              ...filteredACs.map((ac) => ac.region).toSet(),
-                            ];
-                            final statuses = [
-                              'All',
-                              ...filteredACs.map((ac) => ac.status).toSet(),
+                              ...originalACData
+                                  .map((ac) => ac.region)
+                                  .where((region) => region.trim().isNotEmpty)
+                                  .toSet()
+                                  .toList(),
                             ];
 
-                            return filteredACs.isNotEmpty
-                                ? Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                     Expanded( // Wrap Status Dropdown in Expanded
-                                        child:
-                                    DropdownButton<String>(
-                                      hint: Text(
-                                        'Select Region',
-                                        style: TextStyle(
-                                          color: customColors.subTextColor,
-                                        ),
+                            final allStatuses = [
+                              'All',
+                              ...originalACData
+                                  .map((ac) => ac.status)
+                                  .where((status) => status.trim().isNotEmpty)
+                                  .toSet()
+                                  .toList(),
+                            ];
+
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: DropdownButton<String>(
+                                    hint: Text(
+                                      'Select Region',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
                                       ),
-                                      value: selectedRegion,
-                                      isExpanded: true,
-                                      dropdownColor:
-                                          customColors.suqarBackgroundColor,
-                                      onChanged:
-                                          (v) => setState(
-                                            () => selectedRegion = v,
-                                          ),
-                                      items:
-                                          [
-                                                'All',
-                                                ...filteredACs
-                                                    .map((ac) => ac.region)
-                                                    .where(
-                                                      (region) =>
-                                                          region
-                                                              .trim()
-                                                              .isNotEmpty,
-                                                    )
-                                                    .toSet()
-                                                    .toList(),
-                                              ]
-                                              .map(
-                                                (r) => DropdownMenuItem(
-                                                  value: r,
-                                                  child: Text(
-                                                    r,
-                                                    style: TextStyle(
-                                                      color:
-                                                          customColors
-                                                              .mainTextColor,
-                                                    ),
+                                    ),
+                                    value: selectedRegion,
+                                    isExpanded: true,
+                                    dropdownColor:
+                                        customColors.suqarBackgroundColor,
+                                    onChanged:
+                                        (v) =>
+                                            setState(() => selectedRegion = v),
+                                    items:
+                                        allRegions
+                                            .map(
+                                              (r) => DropdownMenuItem(
+                                                value: r,
+                                                child: Text(
+                                                  r,
+                                                  style: TextStyle(
+                                                    color:
+                                                        customColors
+                                                            .mainTextColor,
                                                   ),
                                                 ),
-                                              )
-                                              .toList(),
-                                    ),
-                                     ),
-                                    SizedBox(width: 12), 
-                                    Expanded( // Wrap Region Dropdown in Expanded
-                                        child:
-                                    DropdownButton<String>(
-                                      hint: Text(
-                                        'Select Status',
-                                        style: TextStyle(
-                                          color: customColors.subTextColor,
-                                        ),
+                                              ),
+                                            )
+                                            .toList(),
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: DropdownButton<String>(
+                                    hint: Text(
+                                      'Select Status',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
                                       ),
-                                      value: selectedStatus,
-                                      isExpanded: true,
-                                      dropdownColor:
-                                          customColors.suqarBackgroundColor,
-                                      onChanged:
-                                          (v) => setState(
-                                            () => selectedStatus = v,
-                                          ),
-                                      items:
-                                          [
-                                                'All',
-                                                ...filteredACs
-                                                    .map((ac) => ac.status)
-                                                    .where(
-                                                      (status) =>
-                                                          status
-                                                              .trim()
-                                                              .isNotEmpty,
-                                                    )
-                                                    .toSet()
-                                                    .toList(),
-                                              ]
-                                              .map(
-                                                (s) => DropdownMenuItem(
-                                                  value: s,
-                                                  child: Text(
-                                                    s,
-                                                    style: TextStyle(
-                                                      color:
-                                                          customColors
-                                                              .mainTextColor,
-                                                    ),
+                                    ),
+                                    value: selectedStatus,
+                                    isExpanded: true,
+                                    dropdownColor:
+                                        customColors.suqarBackgroundColor,
+                                    onChanged:
+                                        (v) =>
+                                            setState(() => selectedStatus = v),
+                                    items:
+                                        allStatuses
+                                            .map(
+                                              (s) => DropdownMenuItem(
+                                                value: s,
+                                                child: Text(
+                                                  s,
+                                                  style: TextStyle(
+                                                    color:
+                                                        customColors
+                                                            .mainTextColor,
                                                   ),
                                                 ),
-                                              )
-                                              .toList(),
-                                    ),
-                                    ),
-                                  ],
-                                )
-                                : SizedBox.shrink();
+                                              ),
+                                            )
+                                            .toList(),
+                                  ),
+                                ),
+                              ],
+                            );
                           },
                         ),
                         SizedBox(height: 12),
