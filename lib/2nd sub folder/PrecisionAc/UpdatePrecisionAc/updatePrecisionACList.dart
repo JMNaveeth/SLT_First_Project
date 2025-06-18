@@ -1103,7 +1103,7 @@ class _ACDetailViewState extends State<ACDetailView> {
               ),
               //_buildDetailTile(Icons.calendar_today, 'Installation Date:',
               //    ac.installationDate),
-              _buildEditableCard(
+              _buildEditableDateCard(
                 context,
                 Icons.calendar_today,
                 'Installation Date:',
@@ -1367,13 +1367,13 @@ class _ACDetailViewState extends State<ACDetailView> {
                 'Warranty Details:',
                 _warrantyDetailsController,
               ),
-              _buildEditableCard(
+              _buildEditableDateCard(
                 context,
                 Icons.access_time,
                 'Warranty Expire Date:',
                 _warrantyExpireDateController,
               ),
-              _buildEditableCard(
+              _buildEditableDateCard(
                 context,
                 Icons.access_time,
                 'AMC Expiry Date:',
@@ -1619,6 +1619,61 @@ Widget _buildCategoryHeader(String title) {
     child: Text(
       title,
       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    ),
+  );
+}
+
+Future<void> _selectDate(
+  BuildContext context,
+  TextEditingController controller,
+) async {
+  DateTime? selectedDate = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1990),
+    lastDate: DateTime(2100),
+  );
+
+  if (selectedDate != null) {
+    controller.text =
+        "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
+  }
+}
+
+// Add this method for date fields with date picker
+Widget _buildEditableDateCard(
+  BuildContext context,
+  IconData icon,
+  String label,
+  TextEditingController controller,
+) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+
+  return Card(
+    color: customColors.suqarBackgroundColor,
+    elevation: 4,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    margin: const EdgeInsets.all(8.0),
+    child: ListTile(
+      leading: Icon(icon, color: customColors.subTextColor),
+      title: Text(
+        label,
+        style: TextStyle(
+          color: customColors.mainTextColor,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: TextFormField(
+        controller: controller,
+        style: TextStyle(color: customColors.mainTextColor),
+        readOnly: true,
+        decoration: InputDecoration(
+          hintText: 'Tap to select date',
+          hintStyle: TextStyle(color: customColors.mainTextColor),
+          border: OutlineInputBorder(),
+        ),
+        onTap: () => _selectDate(context, controller),
+      ),
     ),
   );
 }

@@ -694,26 +694,10 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   decoration: const InputDecoration(labelText: 'DoM'),
                 ),
               ),
-              ListTile(
-                title: TextFormField(
-                  controller: _installation_dateController,
-                  style: TextStyle(color: customColors.mainTextColor),
+             _buildDatePickerField('Installation Date', _installation_dateController),
 
-                  decoration: const InputDecoration(
-                    labelText: 'installation_date',
-                  ),
-                ),
-              ),
-              ListTile(
-                title: TextFormField(
-                  controller: _warranty_expiry_dateController,
-                  style: TextStyle(color: customColors.mainTextColor),
+             _buildDatePickerField('Warranty Expiry Date', _warranty_expiry_dateController),
 
-                  decoration: const InputDecoration(
-                    labelText: 'warranty_expiry_date',
-                  ),
-                ),
-              ),
               ListTile(
                 title: TextFormField(
                   controller: _QR_InController,
@@ -901,26 +885,9 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
                   decoration: const InputDecoration(labelText: 'DoM'),
                 ),
               ),
-              ListTile(
-                title: TextFormField(
-                  controller: _outdoorInstallation_DateController,
-                  style: TextStyle(color: customColors.mainTextColor),
+            _buildDatePickerField('Installation Date', _outdoorInstallation_DateController),
 
-                  decoration: const InputDecoration(
-                    labelText: 'Installation_Date',
-                  ),
-                ),
-              ),
-              ListTile(
-                title: TextFormField(
-                  controller: _outdoorwarranty_expiry_dateController,
-                  style: TextStyle(color: customColors.mainTextColor),
-
-                  decoration: const InputDecoration(
-                    labelText: 'Warranty_Expire_Date',
-                  ),
-                ),
-              ),
+            _buildDatePickerField('Warranty Expire Date', _outdoorwarranty_expiry_dateController),
               ListTile(
                 title: TextFormField(
                   controller: _outdoorQR_OutController,
@@ -1229,7 +1196,42 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
       },
     );
   }
+// Add this method to the _EditComfortAcPageState class
+Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+  DateTime? selectedDate = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1990),
+    lastDate: DateTime(2100),
+  
+  );
 
+  if (selectedDate != null) {
+    controller.text = "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
+  }
+}
+
+// Add this method for date fields with date picker
+Widget _buildDatePickerField(
+  String label,
+  TextEditingController controller,
+) {
+  final customColors = Theme.of(context).extension<CustomColors>()!;
+
+  return ListTile(
+    title: TextFormField(
+      controller: controller,
+      style: TextStyle(color: customColors.mainTextColor),
+      readOnly: true,
+      decoration: InputDecoration(
+        labelText: label,
+       
+        border: const UnderlineInputBorder(),
+      ),
+      onTap: () => _selectDate(context, controller),
+    ),
+  );
+}
   // Modify this method to immediately update the regions list and form data
   void _showAddNewValueDialog(
     BuildContext context,
