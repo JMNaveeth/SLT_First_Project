@@ -183,7 +183,6 @@ class updatePrecisionAC {
   }
 }
 
-
 // Fetch Precision AC data function
 Future<List<updatePrecisionAC>> fetchPrecisionAC() async {
   final response = await http.get(
