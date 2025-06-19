@@ -107,6 +107,49 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
   late TextEditingController _connectionuploaded_byController;
   late TextEditingController _regionController;
 
+ // Add these helper functions to convert database codes to readable text
+  String getStatusText(String? value) {
+    if (value == null || value.isEmpty) return '';
+    switch (value) {
+      case '0': return 'Stopped';
+      case '1': return 'Running';
+      case '2': return 'StandBy';
+      case '3': return 'Waiting to dispose';
+      default: return value; // Return original if not a code
+    }
+  }
+
+  String getRemoteAvailableText(String? value) {
+    if (value == null || value.isEmpty) return '';
+    switch (value) {
+      case '0': return 'No';
+      case '1': return 'Yes';
+      default: return value;
+    }
+  }
+
+  String getCategoryText(String? value) {
+    if (value == null || value.isEmpty) return '';
+    switch (value) {
+      case '0': return 'Non Inverter';
+      case '1': return 'Inverter';
+      default: return value;
+    }
+  }
+
+  String getConditionText(String? value) {
+    if (value == null || value.isEmpty) return '';
+    switch (value) {
+      case '0': return 'Faulty';
+      case '1': return 'Good';
+      case '2': return 'Standby';
+      case '3': return 'Stopped';
+      case '4': return 'Waiting to dispose';
+      default: return value;
+    }
+  }
+
+
   @override
   void initState() {
     super.initState();
@@ -116,7 +159,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
       text: widget.indoorData['ac_indoor_id']?.toString(),
     );
     _statusController = TextEditingController(
-      text: widget.indoorData['status']?.toString(),
+      text: getStatusText(widget.indoorData['status']?.toString()), // FIXED
     );
     _regionController = TextEditingController(
       text: widget.indoorData['region'] ?? '',
@@ -143,7 +186,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
       text: widget.indoorData['power_supply'] ?? '',
     );
     _categoryController = TextEditingController(
-      text: widget.indoorData['category'] ?? '',
+      text: getCategoryText(widget.indoorData['category']?.toString()), // FIXED
     );
     serial_numberController = TextEditingController(
       text: widget.indoorData['serial_number'] ?? '',
@@ -155,7 +198,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
       text: widget.indoorData['po_number'] ?? '',
     );
     remote_availableController = TextEditingController(
-      text: widget.indoorData['remote_available'] ?? '',
+      text: getRemoteAvailableText(widget.indoorData['remote_available']?.toString()), // FIXED
     );
     _notesController = TextEditingController(
       text: widget.indoorData['notes'] ?? '',
@@ -164,7 +207,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
       text: widget.indoorData['last_updated'] ?? '',
     );
     _condition_ID_unitController = TextEditingController(
-      text: widget.indoorData['condition_ID_unit'] ?? '',
+      text: getConditionText(widget.indoorData['condition_ID_unit']?.toString()), // FIXED
     );
     _DoMController = TextEditingController(
       text: widget.indoorData['DoM'] ?? '',
@@ -200,7 +243,7 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     );
 
     _outdoorstatusController = TextEditingController(
-      text: widget.outdoorUnitData['status'] ?? '',
+      text: getStatusText(widget.outdoorUnitData['status']?.toString()), // FIXED
     );
     _outdoorpower_supplyController = TextEditingController(
       text: widget.outdoorUnitData['power_supply'] ?? '',
@@ -229,8 +272,8 @@ class _EditComfortAcPageState extends State<EditComfortAcPage> {
     _outdoornotesController = TextEditingController(
       text: widget.outdoorUnitData['notes'] ?? '',
     );
-    _outdoorcondition_OD_unitController = TextEditingController(
-      text: widget.outdoorUnitData['condition_OD_unit'] ?? '',
+   _outdoorcondition_OD_unitController = TextEditingController(
+      text: getConditionText(widget.outdoorUnitData['condition_OD_unit']?.toString()), // FIXED
     );
     _outdoorlast_updatedController = TextEditingController(
       text: widget.outdoorUnitData['last_updated'] ?? '',
