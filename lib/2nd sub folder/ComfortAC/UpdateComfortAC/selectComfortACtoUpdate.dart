@@ -163,6 +163,41 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
                 ),
               ),
               const SizedBox(width: 8),
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: 'Station',
+                    labelStyle: TextStyle(color: customColors.mainTextColor),
+                    border: OutlineInputBorder(),
+                  ),
+                  dropdownColor: customColors.suqarBackgroundColor,
+                  value: selectedStation,
+                  items: [
+                    DropdownMenuItem(
+                      value: null,
+                      child: Text(
+                        'All Stations',
+                        style: TextStyle(color: customColors.mainTextColor),
+                      ),
+                    ),
+                    ...getUniqueStations().map(
+                      (station) => DropdownMenuItem(
+                        value: station,
+                        child: Text(
+                          station,
+                          style: TextStyle(color: customColors.mainTextColor),
+                        ),
+                      ),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedStation = value;
+                      applyFilters();
+                    });
+                  },
+                ),
+              ),
               // Expanded(
               //   child: DropdownButtonFormField<String>(
               //     decoration: InputDecoration(
@@ -190,78 +225,6 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
             ],
           ),
 
-          Expanded(
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Station',
-                labelStyle: TextStyle(color: customColors.mainTextColor),
-                border: OutlineInputBorder(),
-              ),
-              dropdownColor: customColors.suqarBackgroundColor,
-              value: selectedStation,
-              items: [
-                DropdownMenuItem(
-                  value: null,
-                  child: Text(
-                    'All Stations',
-                    style: TextStyle(color: customColors.mainTextColor),
-                  ),
-                ),
-                ...getUniqueStations().map(
-                  (station) => DropdownMenuItem(
-                    value: station,
-                    child: Text(
-                      station,
-                      style: TextStyle(color: customColors.mainTextColor),
-                    ),
-                  ),
-                ),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  selectedStation = value;
-                  applyFilters();
-                });
-              },
-            ),
-          ),
-          const SizedBox(width: 8),
-
-          Expanded(
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Station',
-                labelStyle: TextStyle(color: customColors.mainTextColor),
-                border: OutlineInputBorder(),
-              ),
-              dropdownColor: customColors.suqarBackgroundColor,
-              value: selectedStation,
-              items: [
-                DropdownMenuItem(
-                  value: null,
-                  child: Text(
-                    'All Stations',
-                    style: TextStyle(color: customColors.mainTextColor),
-                  ),
-                ),
-                ...getUniqueStations().map(
-                  (station) => DropdownMenuItem(
-                    value: station,
-                    child: Text(
-                      station,
-                      style: TextStyle(color: customColors.mainTextColor),
-                    ),
-                  ),
-                ),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  selectedStation = value;
-                  applyFilters();
-                });
-              },
-            ),
-          ),
           // Expanded(
           //   child: DropdownButtonFormField<String>(
           //     decoration: InputDecoration(
