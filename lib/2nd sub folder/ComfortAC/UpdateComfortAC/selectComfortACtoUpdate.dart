@@ -322,7 +322,36 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
                                             color: customColors.mainTextColor,
                                           ),
                                         ),
-
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 4,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on,
+                                                size: 16,
+                                                color:
+                                                    customColors.mainTextColor,
+                                              ),
+                                              SizedBox(width: 4),
+                                              Expanded(
+                                                child: Text(
+                                                  'Building: ${ConnectionUnits['building'] ?? 'Not specified'} | '
+                                                  'Floor: ${ConnectionUnits['floor'] ?? 'Not specified'} | '
+                                                  'Room: ${ConnectionUnits['room'] ?? 'Not specified'}',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        customColors
+                                                            .mainTextColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         Text(
                                           'Rtom: ${ConnectionUnits['rtom'] ?? 'No rtom'}',
                                           style: TextStyle(
