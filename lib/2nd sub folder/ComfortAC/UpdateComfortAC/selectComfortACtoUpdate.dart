@@ -267,7 +267,7 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                'AC Comfort Units',
+                'Update AC Comfort Units',
                 style: TextStyle(color: customColors.mainTextColor),
               ),
               iconTheme: IconThemeData(color: customColors.mainTextColor),
@@ -318,13 +318,27 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
                                         Text(
                                           'Model : ${unit['model'] ?? 'No model'}',
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 14,
                                             color: customColors.mainTextColor,
                                           ),
                                         ),
 
                                         Text(
                                           'Rtom: ${ConnectionUnits['rtom'] ?? 'No rtom'}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: customColors.mainTextColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Building: ${ConnectionUnits['rtom_building_id'] ?? 'No building'}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: customColors.mainTextColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Floor: ${ConnectionUnits['floor_number'] ?? 'No floor'}',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: customColors.mainTextColor,
