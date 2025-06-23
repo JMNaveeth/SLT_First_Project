@@ -345,15 +345,22 @@ class _ComfortAcUpdateState extends State<ComfortAcUpdate> {
                                           ),
                                         ),
                                         Text(
-                                          'Location: ${ConnectionUnits['region'] ?? 'No region'}'
-                                          '| ${ConnectionUnits['rtom'] ?? 'No RTOM'}'
-                                          '| ${ConnectionUnits['station'] ?? 'No station'}'
-                                          '| ${ConnectionUnits['office_number'] ?? 'No office_number'}',
+                                          'Room: ${ConnectionUnits['location'] ?? 'No Room'}',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: customColors.mainTextColor,
                                           ),
                                         ),
+                                        // Text(
+                                        //   'Location: ${ConnectionUnits['region'] ?? 'No region'}'
+                                        //   '| ${ConnectionUnits['rtom'] ?? 'No RTOM'}'
+                                        //   '| ${ConnectionUnits['station'] ?? 'No station'}'
+                                        //   '| ${ConnectionUnits['office_number'] ?? 'No office_number'}',
+                                        //   style: TextStyle(
+                                        //     fontSize: 14,
+                                        //     color: customColors.mainTextColor,
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                     onTap: () {
