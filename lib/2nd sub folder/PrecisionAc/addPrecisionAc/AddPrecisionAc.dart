@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:theme_update/2nd%20sub%20folder/httpGetLocations.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
+import 'package:theme_update/widgets/gps_tag_widget.dart';
 
 // import '../../../../../Widgets/GPSGrab/gps_location_widget.dart';
 import '../../../../../Widgets/LoadLocations/httpGetLocations.dart';
@@ -204,6 +205,13 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                           ),
                         ),
                         SizedBox(height: 10),
+                        ReusableGPSWidget(
+                          onLocationFound: (lat, lng) {
+                            print('Got location: $lat, $lng');
+                            // Save to database, use in form, etc.
+                          },
+                        ),
+                        SizedBox(height: 10),
 
                         // GPS Location fields
                         _buildGPSLatitudeField(
@@ -220,34 +228,34 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                         ),
 
                         SizedBox(height: 20),
-                        // Fetch Location Button
-                        CupertinoButton(
-                          onPressed: _fetchLocation,
-                          color: Color(0xFF00AEE4),
-                          child: Row(
-                            mainAxisSize:
-                                MainAxisSize
-                                    .min, // Keeps the button size compact
-                            children: [
-                              Icon(
-                                Icons.location_on, // choose any icon you prefer
-                                color:
-                                    customColors
-                                        .mainTextColor, // Adjust the color of the icon
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ), // space between the icon and text
-                              Text(
-                                'Get Location',
-                                style: TextStyle(
-                                  color: customColors.subTextColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
 
+                        // Fetch Location Button
+                        // CupertinoButton(
+                        //   onPressed: _fetchLocation,
+                        //   color: Color(0xFF00AEE4),
+                        //   child: Row(
+                        //     mainAxisSize:
+                        //         MainAxisSize
+                        //             .min, // Keeps the button size compact
+                        //     children: [
+                        //       Icon(
+                        //         Icons.location_on, // choose any icon you prefer
+                        //         color:
+                        //             customColors
+                        //                 .mainTextColor, // Adjust the color of the icon
+                        //       ),
+                        //       SizedBox(
+                        //         width: 8,
+                        //       ), // space between the icon and text
+                        //       Text(
+                        //         'Get Location',
+                        //         style: TextStyle(
+                        //           color: customColors.subTextColor,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(height: 20),
 
                         Text(
