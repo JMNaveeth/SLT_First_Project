@@ -529,6 +529,133 @@ class _AddPrecisionAcUnitState extends State<AddPrecisionAcUnit> {
                                 ),
                               ),
                             ),
+   ),
+                        SizedBox(height: 10),
+
+                        _buildNumValueFieldsTextField(
+                          'No_of_Condenser_Fans',
+                          'No of Condenser Fans',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildNumValueFieldsTextField(
+                          'No_of_Indoor_Fans',
+                          'No of indoor Fans',
+                        ),
+                        SizedBox(height: 10),
+
+                        _CondensorMountedDropdown(
+                          'Condenser_Mounting_Method',
+                          'Condenser Mounting Method',
+                        ),
+
+                        SizedBox(height: 40),
+
+                        Text(
+                          'Supplier And Warranty',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        // Supplier details
+                        _buildTextFieldNonValidated(
+                          'Supplier_Name',
+                          'Supplier Name',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextFieldEmailValidated(
+                          'Supplier_email',
+                          'Supplier Email',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildTextFieldMobileValidated(
+                          'Supplier_contact_no',
+                          'Supplier Contact no',
+                        ),
+                        SizedBox(height: 10),
+
+                        // _buildTextFieldContactDetails('Supplier_Contact_Details', 'Supplier Contact Details'),
+                        _buildWarrantyAvailableField(
+                          'Warranty_Details',
+                          'Warranty Available ?',
+                        ),
+                        SizedBox(height: 10),
+
+                        _buildDatePicker(
+                          'Warranty_Expire_Date',
+                          'Warranty Expire Date',
+                        ),
+
+                        SizedBox(height: 10),
+
+                        FormBuilderCheckbox(
+                          name: 'verify',
+                          //  initialValue: _isVerified,
+                          title: Text(
+                            'I verify that submitted details are true and correct',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              //  _isVerified = value;
+                            });
+                          },
+
+                          checkColor: Colors.white,
+                          activeColor: Color(0xFF4FB846),
+
+                          validator: (value) {
+                            if (value != true) {
+                              return 'You must verify the details to proceed.';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        // Submit Button
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: _resetForm,
+                                child: const Text(
+                                  'Reset',
+                                  style: TextStyle(color: Colors.redAccent),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                        Colors.blue,
+                                      ), // Set the button color here
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(
+                              width: 10,
+                            ), // Add spacing between buttons
+
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: _submitData,
+                                child: const Text(
+                                  'Submit',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                        Colors.blue,
+                                      ), // Set the button color here
+                                ),
+                              ),
+                            ),
 
                             // ElevatedButton(
                             //   onPressed: () {
