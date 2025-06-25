@@ -5,6 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
+import 'package:theme_update/widgets/gps_tag_widget.dart';
 
 //import '../../../UserAccess.dart';
 import 'httpPostDEGInspection.dart';
@@ -37,11 +38,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
     debugPrint(val.toString());
     debugPrint(degFormData.toString());
     formData[fieldName] = val;
-  
 
-
-
- // Trigger re-validation for all battery fields when one changes
+    // Trigger re-validation for all battery fields when one changes
     if (fieldName.startsWith('bat')) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted && _formKey.currentState != null) {
@@ -53,8 +51,6 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
       });
     }
   }
-
-
 
   //passing data in remark
   void _onChangedRemark(dynamic val, Map<String, dynamic> formData) {
@@ -82,9 +78,9 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
     // recFormData['shift'] = _shift;
   }
 
-
-// Validation method: Checks if at least one battery field is filled
-  String? _validateAtLeastOneBattery(String? _) { // Parameter not used, but validator expects one
+  // Validation method: Checks if at least one battery field is filled
+  String? _validateAtLeastOneBattery(String? _) {
+    // Parameter not used, but validator expects one
     final fields = _formKey.currentState?.fields;
     if (fields == null) return null;
 
@@ -105,24 +101,28 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
   // Validation method: Checks individual battery field rules (numeric, max)
   String? _validateIndividualBatteryField(String? val) {
     if (val == null || val.isEmpty) {
- return null; // Field is empty, so these specific rules don't apply to it.
+      return null; // Field is empty, so these specific rules don't apply to it.
     }
     // If not empty, then check numeric and max.
-    final numericValidator = FormBuilderValidators.numeric(errorText: "Value must be \n numeric");
+    final numericValidator = FormBuilderValidators.numeric(
+      errorText: "Value must be \n numeric",
+    );
     String? error = numericValidator(val);
     if (error != null) {
       return error;
     }
 
-    final maxValidator = FormBuilderValidators.max(100, inclusive: false, errorText: "Value should be \n less than 100");
+    final maxValidator = FormBuilderValidators.max(
+      100,
+      inclusive: false,
+      errorText: "Value should be \n less than 100",
+    );
     error = maxValidator(val);
     if (error != null) {
       return error;
     }
     return null;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -245,6 +245,13 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           ),
                         ),
                       ],
+                    ),
+
+                    ReusableGPSWidget(
+                      onLocationFound: (lat, lng) {
+                        print('Got location: $lat, $lng');
+                        // Save to database, use in form, etc.
+                      },
                     ),
 
                     const SizedBox(height: 10),
@@ -802,8 +809,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -920,8 +927,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1021,8 +1028,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1038,14 +1045,16 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         spacing:
                             8.0, // Consistent horizontal space between chips
                         runSpacing: 0,
-                       options: [
-                           FormBuilderChipOption(
+                        options: [
+                          FormBuilderChipOption(
                             value: 'Ok',
                             child: const Text("Ok"),
                             avatar: CircleAvatar(
                               radius: 12, // Nice small size
-                              backgroundColor: Colors.blue[700], // A good blue color
-                              child: const Text( // Added const here
+                              backgroundColor:
+                                  Colors.blue[700], // A good blue color
+                              child: const Text(
+                                // Added const here
                                 'O',
                                 style: TextStyle(
                                   fontSize: 15, // Text size fits the circle
@@ -1059,8 +1068,10 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                             child: Text("Not Ok"),
                             avatar: CircleAvatar(
                               radius: 12, // Nice small size
-                              backgroundColor: Colors.blue[700], // A good blue color
-                              child: const Text( // Added const here
+                              backgroundColor:
+                                  Colors.blue[700], // A good blue color
+                              child: const Text(
+                                // Added const here
                                 'N', // Or 'M' if you prefer for "Not Ok"
                                 style: TextStyle(
                                   fontSize: 15, // Text size fits the circle
@@ -1122,8 +1133,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1139,14 +1150,16 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         spacing:
                             8.0, // Consistent horizontal space between chips
                         runSpacing: 0,
-                       options: [
-                           FormBuilderChipOption(
+                        options: [
+                          FormBuilderChipOption(
                             value: 'Ok',
                             child: const Text("Ok"),
                             avatar: CircleAvatar(
                               radius: 12, // Nice small size
-                              backgroundColor: Colors.blue[700], // A good blue color
-                              child: const Text( // Added const here
+                              backgroundColor:
+                                  Colors.blue[700], // A good blue color
+                              child: const Text(
+                                // Added const here
                                 'O',
                                 style: TextStyle(
                                   fontSize: 15, // Text size fits the circle
@@ -1160,8 +1173,10 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                             child: Text("Not Ok"),
                             avatar: CircleAvatar(
                               radius: 12, // Nice small size
-                              backgroundColor: Colors.blue[700], // A good blue color
-                              child: const Text( // Added const here
+                              backgroundColor:
+                                  Colors.blue[700], // A good blue color
+                              child: const Text(
+                                // Added const here
                                 'N', // Or 'M' if you prefer for "Not Ok"
                                 style: TextStyle(
                                   fontSize: 15, // Text size fits the circle
@@ -1233,8 +1248,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1346,8 +1361,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1363,7 +1378,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         spacing:
                             8.0, // Consistent horizontal space between chips
                         runSpacing: 0,
-                          options: [
+                        options: [
                           FormBuilderChipOption(
                             value: 'Yes',
                             child: const Text("Yes"),
@@ -1458,8 +1473,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1475,7 +1490,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         spacing:
                             8.0, // Consistent horizontal space between chips
                         runSpacing: 0,
-                         options: [
+                        options: [
                           FormBuilderChipOption(
                             value: 'Yes',
                             child: const Text("Yes"),
@@ -1571,8 +1586,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1588,7 +1603,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         spacing:
                             8.0, // Consistent horizontal space between chips
                         runSpacing: 0,
-                          options: [
+                        options: [
                           FormBuilderChipOption(
                             value: 'Yes',
                             child: const Text("Yes"),
@@ -1684,8 +1699,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1701,7 +1716,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         spacing:
                             8.0, // Consistent horizontal space between chips
                         runSpacing: 0,
-                          options: [
+                        options: [
                           FormBuilderChipOption(
                             value: 'Yes',
                             child: const Text("Yes"),
@@ -1785,8 +1800,8 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none, errorMaxLines: 2,
-
+                          focusedBorder: InputBorder.none,
+                          errorMaxLines: 2,
                         ),
                         // backgroundColor:
                         //     Colors
@@ -1802,14 +1817,16 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         spacing:
                             8.0, // Consistent horizontal space between chips
                         runSpacing: 0,
-                       options: [
-                           FormBuilderChipOption(
+                        options: [
+                          FormBuilderChipOption(
                             value: 'Ok',
                             child: const Text("Ok"),
                             avatar: CircleAvatar(
                               radius: 12, // Nice small size
-                              backgroundColor: Colors.blue[700], // A good blue color
-                              child: const Text( // Added const here
+                              backgroundColor:
+                                  Colors.blue[700], // A good blue color
+                              child: const Text(
+                                // Added const here
                                 'O',
                                 style: TextStyle(
                                   fontSize: 15, // Text size fits the circle
@@ -1823,8 +1840,10 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                             child: Text("Not Ok"),
                             avatar: CircleAvatar(
                               radius: 12, // Nice small size
-                              backgroundColor: Colors.blue[700], // A good blue color
-                              child: const Text( // Added const here
+                              backgroundColor:
+                                  Colors.blue[700], // A good blue color
+                              child: const Text(
+                                // Added const here
                                 'N', // Or 'M' if you prefer for "Not Ok"
                                 style: TextStyle(
                                   fontSize: 15, // Text size fits the circle
@@ -2056,7 +2075,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                   },
                                   validator: FormBuilderValidators.compose([
                                     // FormBuilderValidators.required(),
-                                     _validateAtLeastOneBattery,
+                                    _validateAtLeastOneBattery,
                                     _validateIndividualBatteryField,
                                     // FormBuilderValidators.numeric(
                                     //   errorText: "Value must be \n numeric",
@@ -2113,7 +2132,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                   },
                                   validator: FormBuilderValidators.compose([
                                     // FormBuilderValidators.required(),
-                                     _validateAtLeastOneBattery,
+                                    _validateAtLeastOneBattery,
                                     _validateIndividualBatteryField,
                                     // FormBuilderValidators.numeric(
                                     //   errorText: "Value must be \n numeric",
@@ -2169,7 +2188,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                   },
                                   validator: FormBuilderValidators.compose([
                                     // FormBuilderValidators.required(),
-                                     _validateAtLeastOneBattery,
+                                    _validateAtLeastOneBattery,
                                     _validateIndividualBatteryField,
                                     // FormBuilderValidators.numeric(
                                     //   errorText: "Value must be \n numeric",
