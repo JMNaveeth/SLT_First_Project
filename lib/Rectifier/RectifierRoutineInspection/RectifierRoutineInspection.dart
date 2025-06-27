@@ -491,7 +491,274 @@ class _InspectionRecState extends State<InspectionRec> {
                         _formKey.currentState?.validate();
                       },
                     ),
+             const SizedBox(height: 10),
 
+                    // Only show GPS widget if not HQ
+                    if (widget.RectifierUnit['Region'] != 'HQ')
+                      ReusableGPSWidget(
+                        onLocationFound: (lat, lng) {
+                          print('Got location: $lat, $lng');
+                          // Save to database, use in form, etc.
+                        },
+                      ),
+
+                    const SizedBox(height: 10),
+
+                    //Get Genaral Inspectin Date
+                    const Text(
+                      'Genaral Inspection',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    //Cleanliness of Room
+                    const customText(title: "Cleanliness of Room"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration:
+                      //     const InputDecoration(labelText: 'Cleanliness of Room'),
+                      name: 'roomClean',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'Ok',
+                          child: Text("Clean"),
+                          avatar: CircleAvatar(child: Text('C')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not Ok',
+                          child: Text("Not Clean"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not Ok' &&
+                              (recFormData['roomCleanRemark'] == null ||
+                                  recFormData['roomCleanRemark'].isEmpty)) {
+                            return 'Remark is required when the room is not clean';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, recFormData, 'roomClean'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "roomCleanRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ////////////////////////////////////////////////////////////////////////////////
+                    //Cleanliness of Cubicles
+                    const customText(title: "Cleanliness of Cubicles"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Cleanliness of Cubicles(Dusting)'),
+                      name: 'cubicleClean',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'Ok',
+                          child: Text("Clean"),
+                          avatar: CircleAvatar(child: Text('C')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not Ok',
+                          child: Text("Not Clean"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not Ok' &&
+                              (recFormData['CubicleCleanRemark'] == null ||
+                                  recFormData['CubicleCleanRemark'].isEmpty)) {
+                            return 'Remark is required when the cubicles are not clean';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, recFormData, 'cubicleClean'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "CubicleCleanRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    //////////////////////////////////////////////////////////////////////////////////
+                    //Measure Room Temperature
+                    const customText(title: "Measure Room Temperature"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Measure Room Temperature'),
+                      name: 'roomTemp',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'high',
+                          child: Text("High"),
+                          avatar: CircleAvatar(child: Text('H')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Normal',
+                          child: Text("Normal"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'high' &&
+                              (recFormData['roomTempRemark'] == null ||
+                                  recFormData['roomTempRemark'].isEmpty)) {
+                            return 'Remark is required when the room temperature is High';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, recFormData, 'roomTemp'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "roomTempRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ///////////////////////////////////////////////////////////////////////////////////////////
+                    //Measure Hydrogen Gas Emmission
+                    const customText(title: "Measure Hydrogen Gas Emmission"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Measure Hydrogen Gas Emmission'),
+                      name: 'h2gasEmission',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'yes',
+                          child: Text("Yes"),
+                          avatar: CircleAvatar(child: Text('Y')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'No',
+                          child: Text("No"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'yes' &&
+                              (recFormData['h2gasEmissionRemark'] == null ||
+                                  recFormData['h2gasEmissionRemark'].isEmpty)) {
+                            return 'Remark is required when detect Hydrogen Emmision';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) =>
+                              _onChanged(val, recFormData, 'h2gasEmission'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "h2gasEmissionRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ////////////////////////////////////////////////////////////////////////////////////////
+                    //Check Main Circuit Breakers
+                    const customText(title: "Check Main Circuit Breakers"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(
+                      //     labelText: 'Check Main Circuit Breakers'),
+                      name: 'checkMCB',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'ok',
+                          child: Text("ok"),
+                          avatar: CircleAvatar(child: Text('O')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not ok',
+                          child: Text("Not ok"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not ok' &&
+                              (recFormData['checkMCBRemark'] == null ||
+                                  recFormData['checkMCBRemark'].isEmpty)) {
+                            return 'Remark is required when MCB is not ok';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged: (val) {
+                        _onChanged(val, recFormData, 'checkMCB');
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "checkMCBRemark",
+                      formData: recFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ///////////////////////////////////////////////////////////////////////////////////
+                    //DC PDB
+                    const customText(title: "DC PDB"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      // decoration: const InputDecoration(labelText: 'DC PDB'),
+                      name: 'dcPDB',
+                      initialValue: '',
+                      selectedColor: Color
                     ///////////////////////////////////////////////////////////////////////////////////
                     //DC PDB
                     const customText(title: "DC PDB"),
