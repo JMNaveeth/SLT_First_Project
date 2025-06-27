@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:theme_update/theme_provider.dart';
 
 class ReusableGPSWidget extends StatefulWidget {
   final Function(double latitude, double longitude) onLocationFound;
@@ -26,6 +27,8 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
 
   @override
   Widget build(BuildContext context) {
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Container(
       width: double.infinity,
       child: Column(
@@ -60,14 +63,14 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
                     : _locationCaptured
                     ? 'Location Captured ✓'
                     : widget.customButtonText ?? 'Tag Generator Location',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: customColors.mainTextColor),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor:
                     _locationCaptured
                         ? Colors.green
                         : widget.customButtonColor ?? Colors.blue,
-                foregroundColor: Colors.white,
+                foregroundColor: customColors.mainTextColor,
                 elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -84,7 +87,7 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
                 color:
                     _statusMessage.contains('Error')
                         ? Colors.red.shade50
-                        : Colors.green.shade50,
+                        : customColors.suqarBackgroundColor,
                 border: Border.all(
                   color:
                       _statusMessage.contains('Error')
@@ -112,7 +115,7 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
               margin: EdgeInsets.only(top: 12),
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
+                color: customColors.suqarBackgroundColor,
                 border: Border.all(color: Colors.grey.shade300),
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -136,15 +139,15 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
                   SizedBox(height: 8),
                   Text(
                     'Latitude: ${_capturedLat!.toStringAsFixed(6)}',
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    style: TextStyle(fontSize: 13, color: customColors.subTextColor),
                   ),
                   Text(
                     'Longitude: ${_capturedLng!.toStringAsFixed(6)}',
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    style: TextStyle(fontSize: 13, color: customColors.subTextColor),
                   ),
                   Text(
                     'Time: ${DateTime.now().toString().substring(0, 16)}',
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                    style: TextStyle(fontSize: 12, color: customColors.subTextColor),
                   ),
                 ],
               ),

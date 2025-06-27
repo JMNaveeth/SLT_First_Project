@@ -5,6 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
+import 'package:theme_update/widgets/gps_tag_widget.dart';
 
 //import '../../UserAccess.dart';
 import 'httpPostUPSInspection.dart';
@@ -211,6 +212,16 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
+
+                    // Only show GPS widget if not HQ
+                    if (widget.UPSUnit['Region'] != 'HQ')
+                      ReusableGPSWidget(
+                        onLocationFound: (lat, lng) {
+                          print('Got location: $lat, $lng');
+                          // Save to database, use in form, etc.
+                        },
+                      ),
 
                     // FormBuilderDropdown(
                     //   name: "location",

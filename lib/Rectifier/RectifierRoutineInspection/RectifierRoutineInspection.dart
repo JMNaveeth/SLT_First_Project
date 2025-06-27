@@ -5,6 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
+import 'package:theme_update/widgets/gps_tag_widget.dart';
 
 //import '../../../UserAccess.dart';
 import 'httpPostRectifierInspection.dart';
@@ -232,6 +233,16 @@ class _InspectionRecState extends State<InspectionRec> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
+
+                    // Only show GPS widget if not HQ
+                    if (widget.RectifierUnit['Region'] != 'HQ')
+                      ReusableGPSWidget(
+                        onLocationFound: (lat, lng) {
+                          print('Got location: $lat, $lng');
+                          // Save to database, use in form, etc.
+                        },
+                      ),
 
                     const SizedBox(height: 10),
 
@@ -625,7 +636,8 @@ class _InspectionRecState extends State<InspectionRec> {
                               const SizedBox(width: 15),
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'noOfWorkingLine', style: TextStyle(
+                                  name: 'noOfWorkingLine',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
                                   decoration: const InputDecoration(
@@ -712,13 +724,17 @@ class _InspectionRecState extends State<InspectionRec> {
                             children: [
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'voltagePs1', style: TextStyle(
+                                  name: 'voltagePs1',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 1",
-                                    suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                                    suffixText: "V",
+                                    suffixStyle: TextStyle(
+                                      color: customColors.mainTextColor
+                                          .withOpacity(0.7),
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.number,
@@ -757,14 +773,20 @@ class _InspectionRecState extends State<InspectionRec> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'voltagePs2',                                   style: TextStyle( color: customColors.mainTextColor,),
+                                  name: 'voltagePs2',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
 
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 2",
-                                    suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                                    suffixText: "V",
+                                    suffixStyle: TextStyle(
+                                      color: customColors.mainTextColor
+                                          .withOpacity(0.7),
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.number,
@@ -801,14 +823,20 @@ class _InspectionRecState extends State<InspectionRec> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'voltagePs3',                                   style: TextStyle( color: customColors.mainTextColor,),
+                                  name: 'voltagePs3',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
 
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 3",
-                                    suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                                    suffixText: "V",
+                                    suffixStyle: TextStyle(
+                                      color: customColors.mainTextColor
+                                          .withOpacity(0.7),
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   keyboardType: TextInputType.number,
@@ -866,12 +894,14 @@ class _InspectionRecState extends State<InspectionRec> {
                             children: [
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'currentPs1',style: TextStyle(
+                                  name: 'currentPs1',
+                                  style: TextStyle(
                                     color: customColors.mainTextColor,
                                   ),
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 1",
-                                    suffixText: "A",suffixStyle: TextStyle(
+                                    suffixText: "A",
+                                    suffixStyle: TextStyle(
                                       color: customColors.mainTextColor
                                           .withOpacity(0.7),
                                     ),
@@ -913,12 +943,18 @@ class _InspectionRecState extends State<InspectionRec> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'currentPs2',                                   style: TextStyle( color: customColors.mainTextColor,),
+                                  name: 'currentPs2',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
 
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 2",
-                                    suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                                    suffixText: "A",
+                                    suffixStyle: TextStyle(
+                                      color: customColors.mainTextColor
+                                          .withOpacity(0.7),
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   autovalidateMode:
@@ -957,12 +993,18 @@ class _InspectionRecState extends State<InspectionRec> {
                               ), // Add spacing between the text fields
                               Expanded(
                                 child: FormBuilderTextField(
-                                  name: 'currentPs3',                                   style: TextStyle( color: customColors.mainTextColor,),
+                                  name: 'currentPs3',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
 
-                                  decoration:  InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: "Phase 3",
-                                    suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                                    suffixText: "A",
+                                    suffixStyle: TextStyle(
+                                      color: customColors.mainTextColor
+                                          .withOpacity(0.7),
+                                    ),
                                   ),
                                   textInputAction: TextInputAction.next,
                                   autovalidateMode:
@@ -1020,12 +1062,19 @@ class _InspectionRecState extends State<InspectionRec> {
                         children: [
                           Expanded(
                             child: FormBuilderTextField(
-                              name: 'dcVoltage',                                   style: TextStyle( color: customColors.mainTextColor,),
+                              name: 'dcVoltage',
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
 
-                              decoration:  InputDecoration(
+                              decoration: InputDecoration(
                                 labelText: "Voltage",
-                                suffixText: "V",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                                suffixText: "V",
+                                suffixStyle: TextStyle(
+                                  color: customColors.mainTextColor.withOpacity(
+                                    0.7,
+                                  ),
+                                ),
                               ),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.number,
@@ -1059,12 +1108,19 @@ class _InspectionRecState extends State<InspectionRec> {
                           ), // Add spacing between the text fields
                           Expanded(
                             child: FormBuilderTextField(
-                              name: 'dcCurrent',                                   style: TextStyle( color: customColors.mainTextColor,),
+                              name: 'dcCurrent',
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
 
-                              decoration:  InputDecoration(
+                              decoration: InputDecoration(
                                 labelText: "Current",
-                                suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                                suffixText: "A",
+                                suffixStyle: TextStyle(
+                                  color: customColors.mainTextColor.withOpacity(
+                                    0.7,
+                                  ),
+                                ),
                               ),
                               textInputAction: TextInputAction.next,
                               autovalidateMode:
@@ -1115,12 +1171,17 @@ class _InspectionRecState extends State<InspectionRec> {
                       child: Column(
                         children: [
                           FormBuilderTextField(
-                            name: 'recCapacity',                                   style: TextStyle( color: customColors.mainTextColor,),
+                            name: 'recCapacity',
+                            style: TextStyle(color: customColors.mainTextColor),
 
-                            decoration:  InputDecoration(
+                            decoration: InputDecoration(
                               labelText: "Capacity",
-                              suffixText: "A",                                    suffixStyle: TextStyle(color: customColors.mainTextColor.withOpacity(0.7),),
-
+                              suffixText: "A",
+                              suffixStyle: TextStyle(
+                                color: customColors.mainTextColor.withOpacity(
+                                  0.7,
+                                ),
+                              ),
                             ),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
@@ -1296,7 +1357,9 @@ class _InspectionRecState extends State<InspectionRec> {
                             TextSpan(
                               text:
                                   'I Verify that submitted details are true and correct ',
-                              style: TextStyle(color: customColors.mainTextColor),
+                              style: TextStyle(
+                                color: customColors.mainTextColor,
+                              ),
                             ),
                           ],
                         ),
@@ -1315,7 +1378,7 @@ class _InspectionRecState extends State<InspectionRec> {
                             onPressed: () {
                               _formKey.currentState?.reset();
                             },
-                           style: ButtonStyle(
+                            style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.blue,
                               ), // Set the button color here
@@ -1364,7 +1427,7 @@ class _InspectionRecState extends State<InspectionRec> {
                                 debugPrint('validation failed');
                               }
                             },
-                           style: buttonStyle(),
+                            style: buttonStyle(),
                             child: const Text('Submit'),
                           ),
                         ),
@@ -1402,12 +1465,9 @@ class _InspectionRecState extends State<InspectionRec> {
   }
 }
 
-
 ButtonStyle buttonStyle() {
   return ElevatedButton.styleFrom();
 }
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 ///custom remark widget
@@ -1518,11 +1578,11 @@ class customText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Text(
       title,
-      style:  TextStyle(
+      style: TextStyle(
         color: customColors.subTextColor,
         fontSize: 14,
         fontWeight: FontWeight.w600,

@@ -247,12 +247,14 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                       ],
                     ),
 
-                    ReusableGPSWidget(
-                      onLocationFound: (lat, lng) {
-                        print('Got location: $lat, $lng');
-                        // Save to database, use in form, etc.
-                      },
-                    ),
+                    // Only show GPS widget if not HQ
+                    if (widget.DEGUnit['province'] != 'HQ')
+                      ReusableGPSWidget(
+                        onLocationFound: (lat, lng) {
+                          print('Got location: $lat, $lng');
+                          // Save to database, use in form, etc.
+                        },
+                      ),
 
                     const SizedBox(height: 10),
 
