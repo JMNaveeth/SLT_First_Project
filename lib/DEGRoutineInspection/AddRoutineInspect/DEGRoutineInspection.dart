@@ -251,8 +251,13 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                     if (widget.DEGUnit['province'] != 'HQ')
                       ReusableGPSWidget(
                         onLocationFound: (lat, lng) {
+                          setState(() {
+                            degFormData['gpsLocation'] = {
+                              'lat': lat,
+                              'lng': lng,
+                            };
+                          });
                           print('Got location: $lat, $lng');
-                          // Save to database, use in form, etc.
                         },
                       ),
 
@@ -2307,6 +2312,15 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
+                              if (widget.DEGUnit['province'] != 'HQ' &&
+                                  degFormData['gpsLocation'] == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('GPS location is required!'),
+                                  ),
+                                );
+                                return;
+                              }
                               if (_formKey.currentState?.saveAndValidate() ??
                                   false) {
                                 _formKey.currentState!.save(); // Save form data
