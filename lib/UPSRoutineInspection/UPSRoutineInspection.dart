@@ -218,6 +218,12 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                     if (widget.UPSUnit['Region'] != 'HQ')
                       ReusableGPSWidget(
                         onLocationFound: (lat, lng) {
+                          setState(() {
+                            upsFormData['gpsLocation'] = {
+                              'lat': lat,
+                              'lng': lng,
+                            };
+                          });
                           print('Got location: $lat, $lng');
                           // Save to database, use in form, etc.
                         },
@@ -1266,6 +1272,16 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
+                              // GPS required check
+                              if (widget.UPSUnit['Region'] != 'HQ' &&
+                                  upsFormData['gpsLocation'] == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('GPS location is required!'),
+                                  ),
+                                );
+                                return;
+                              }
                               if (_formKey.currentState?.saveAndValidate() ??
                                   false) {
                                 _formKey.currentState!.save(); // Save form data

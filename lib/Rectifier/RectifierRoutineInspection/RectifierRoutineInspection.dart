@@ -239,6 +239,12 @@ class _InspectionRecState extends State<InspectionRec> {
                     if (widget.RectifierUnit['Region'] != 'HQ')
                       ReusableGPSWidget(
                         onLocationFound: (lat, lng) {
+                          setState(() {
+                            recFormData['gpsLocation'] = {
+                              'lat': lat,
+                              'lng': lng,
+                            };
+                          });
                           print('Got location: $lat, $lng');
                           // Save to database, use in form, etc.
                         },
@@ -1393,6 +1399,16 @@ class _InspectionRecState extends State<InspectionRec> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
+                              // GPS required check
+                              if (widget.RectifierUnit['Region'] != 'HQ' &&
+                                  recFormData['gpsLocation'] == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('GPS location is required!'),
+                                  ),
+                                );
+                                return;
+                              }
                               if (_formKey.currentState?.saveAndValidate() ??
                                   false) {
                                 debugPrint(
