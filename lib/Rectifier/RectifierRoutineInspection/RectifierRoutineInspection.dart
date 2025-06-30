@@ -236,8 +236,7 @@ class _InspectionRecState extends State<InspectionRec> {
                     const SizedBox(height: 10),
 
                     // Only show GPS widget if not HQ
-                    if (widget.RectifierUnit['Region'] != 'HQ' &&
-                        widget.RectifierUnit['Region'] != 'WEL')
+                  
                       ReusableGPSWidget(
                         region: widget.RectifierUnit['Region'],
                         onLocationFound: (lat, lng) {

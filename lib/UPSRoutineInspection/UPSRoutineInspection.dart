@@ -245,8 +245,7 @@ final List<String> userLocations = [
                     const SizedBox(height: 10),
 
                     // Only show GPS widget if not HQ
-                    if (widget.UPSUnit['Region'] != 'HQ' &&
-                        widget.UPSUnit['Region'] != 'WEL')
+                  
                       ReusableGPSWidget(
                         region: widget.UPSUnit['Region'],
                         onLocationFound: (lat, lng) {
