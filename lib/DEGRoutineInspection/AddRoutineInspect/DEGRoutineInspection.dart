@@ -248,7 +248,7 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                     ),
 
                     // Only show GPS widget if not HQ
-                    if (widget.DEGUnit['province'] != 'HQ')
+if (widget.DEGUnit['province'] != 'HQ' && widget.DEGUnit['province'] != 'WEL')
                       ReusableGPSWidget(
                         onLocationFound: (lat, lng) {
                           setState(() {

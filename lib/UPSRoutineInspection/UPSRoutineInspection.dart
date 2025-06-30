@@ -215,7 +215,8 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                     const SizedBox(height: 10),
 
                     // Only show GPS widget if not HQ
-                    if (widget.UPSUnit['Region'] != 'HQ')
+                    if (widget.UPSUnit['Region'] != 'HQ' &&
+                        widget.UPSUnit['Region'] != 'WEL')
                       ReusableGPSWidget(
                         onLocationFound: (lat, lng) {
                           setState(() {
