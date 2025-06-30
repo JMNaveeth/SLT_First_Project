@@ -27,6 +27,24 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
   double? _capturedLat;
   double? _capturedLng;
 
+
+/// Call this before submit to check if GPS is required and present.
+  static bool isGPSRequiredAndMissing({
+    required BuildContext context,
+    required String region,
+    required Map<String, dynamic> formData,
+    String gpsKey = 'gpsLocation',
+  }) {
+    if (!['HQ', 'WEL'].contains(region.trim().toUpperCase()) &&
+        (formData[gpsKey] == null)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('GPS location is required!')),
+      );
+      return true; // Required and missing
+    }
+    return false; // Not required or present
+  }
+
   @override
   void initState() {
     super.initState();
