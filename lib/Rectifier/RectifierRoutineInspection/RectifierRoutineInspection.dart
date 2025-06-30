@@ -239,6 +239,7 @@ class _InspectionRecState extends State<InspectionRec> {
                     if (widget.RectifierUnit['Region'] != 'HQ' &&
                         widget.RectifierUnit['Region'] != 'WEL')
                       ReusableGPSWidget(
+                        region: widget.RectifierUnit['Region'],
                         onLocationFound: (lat, lng) {
                           setState(() {
                             recFormData['gpsLocation'] = {

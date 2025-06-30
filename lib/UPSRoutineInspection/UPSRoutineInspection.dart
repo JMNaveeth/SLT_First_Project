@@ -52,6 +52,36 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
     'UVA',
   ];
 
+
+final List<String> userLocations = [
+ 'CPN',
+    'CPS',
+    'EPN',
+    'EPS',
+    'EPN–TC',
+    'HQ',
+    'NCP',
+    'NPN',
+    'NPS',
+    'NWPE',
+    'NWPW',
+    'PITI',
+    'SAB',
+    'SMW6',
+    'SPE',
+    'SPW',
+    'WEL',
+    'WPC',
+    'WPE',
+    'WPN',
+    'WPNE',
+    'WPS',
+    'WPSE',
+    'WPSW',
+    'UVA',
+];
+
+
   //Define recForm Data map
   Map<String, dynamic> upsFormData = {'clockTime': DateTime.now(), 'shift': ""};
   String _shift = '';
@@ -218,6 +248,7 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                     if (widget.UPSUnit['Region'] != 'HQ' &&
                         widget.UPSUnit['Region'] != 'WEL')
                       ReusableGPSWidget(
+                        region: widget.UPSUnit['Region'],
                         onLocationFound: (lat, lng) {
                           setState(() {
                             upsFormData['gpsLocation'] = {

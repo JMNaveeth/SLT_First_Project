@@ -6,10 +6,12 @@ class ReusableGPSWidget extends StatefulWidget {
   final Function(double latitude, double longitude) onLocationFound;
   final String? customButtonText;
   final Color? customButtonColor;
+  final String region; // <-- Add this
 
   const ReusableGPSWidget({
     Key? key,
     required this.onLocationFound,
+    required this.region, // <-- Add this
     this.customButtonText,
     this.customButtonColor,
   }) : super(key: key);
@@ -26,83 +28,103 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
   double? _capturedLng;
 
   @override
+  void initState() {
+    super.initState();
+    // Only auto-fetch if not HQ or WEL
+    if (!_isHQorWEL(widget.region)) {
+      _getCurrentLocation();
+    }
+  }
+
+  bool _isHQorWEL(String region) {
+    return region.trim().toUpperCase() == 'HQ' || region.trim().toUpperCase() == 'WEL';
+  }
+
+  @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    // If HQ or WEL, show nothing
+    if (_isHQorWEL(widget.region)) {
+      return SizedBox.shrink();
+    }
 
     return Container(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton.icon(
-              onPressed: _isLoading ? null : _showAskPermissionDialog,
-              icon:
-                  _isLoading
-                      ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
-                        ),
-                      )
-                      : Icon(
-                        _locationCaptured
-                            ? Icons.check_circle
-                            : Icons.location_on,
-                        size: 20,
-                      ),
-              label: Text(
-                _isLoading
-                    ? 'Getting Location...'
-                    : _locationCaptured
-                    ? 'Location Captured ✓'
-                    : widget.customButtonText ?? 'Tag Generator Location',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: customColors.mainTextColor),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    _locationCaptured
-                        ? Colors.green
-                        : widget.customButtonColor ?? Colors.blue,
-                foregroundColor: customColors.mainTextColor,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+          if (_isLoading)
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                onPressed: null,
+                icon: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                ),
+                label: Text(
+                  'Getting Location...',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: customColors.mainTextColor),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: widget.customButtonColor ?? Colors.blue,
+                  foregroundColor: customColors.mainTextColor,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
-          ),
+          if (!_isLoading && _locationCaptured)
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                onPressed: null,
+                icon: Icon(Icons.check_circle, size: 20),
+                label: Text(
+                  'Location Captured ✓',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: customColors.mainTextColor),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: customColors.mainTextColor,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ),
           if (_statusMessage.isNotEmpty)
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(top: 8),
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color:
-                    _statusMessage.contains('Error')
-                        ? Colors.red.shade50
-                        : customColors.suqarBackgroundColor,
+                color: _statusMessage.contains('Error')
+                    ? Colors.red.shade50
+                    : customColors.suqarBackgroundColor,
                 border: Border.all(
-                  color:
-                      _statusMessage.contains('Error')
-                          ? Colors.red.shade200
-                          : Colors.green.shade200,
+                  color: _statusMessage.contains('Error')
+                      ? Colors.red.shade200
+                      : Colors.green.shade200,
                 ),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 _statusMessage,
                 style: TextStyle(
-                  color:
-                      _statusMessage.contains('Error')
-                          ? Colors.red.shade700
-                          : Colors.green.shade700,
+                  color: _statusMessage.contains('Error')
+                      ? Colors.red.shade700
+                      : Colors.green.shade700,
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
                 ),
@@ -157,120 +179,93 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
     );
   }
 
- Future<void> _getCurrentLocation() async {
-  setState(() {
-    _isLoading = true;
-    _statusMessage = '';
-  });
+  Future<void> _getCurrentLocation() async {
+    setState(() {
+      _isLoading = true;
+      _statusMessage = '';
+    });
 
-  try {
-    LocationPermission permission = await Geolocator.checkPermission();
-    print('Permission status: $permission'); // <-- Add this line
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      print('Permission after request: $permission'); // <-- Add this line
+    try {
+      LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() {
+            _isLoading = false;
+            _statusMessage =
+                'Error: Location permission denied. Please allow location access.';
+          });
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        setState(() {
+          _isLoading = false;
+        });
+        _showPermissionDialog();
+        return;
+      }
+
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
         setState(() {
           _isLoading = false;
           _statusMessage =
-              'Error: Location permission denied. Please allow location access.';
+              'Error: GPS is turned off. Please turn on location services.';
         });
         return;
       }
-    }
 
-    if (permission == LocationPermission.deniedForever) {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 10),
+      );
+
       setState(() {
+        _capturedLat = position.latitude;
+        _capturedLng = position.longitude;
+        _locationCaptured = true;
+        _statusMessage = 'Location captured successfully!';
         _isLoading = false;
       });
-      _showPermissionDialog();
-      return;
-    }
 
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
+      widget.onLocationFound(position.latitude, position.longitude);
+    } catch (e) {
       setState(() {
+        _statusMessage = 'Error: ${e.toString()}';
         _isLoading = false;
-        _statusMessage =
-            'Error: GPS is turned off. Please turn on location services.';
+        _locationCaptured = false;
       });
-      return;
     }
+  }
 
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-      timeLimit: Duration(seconds: 10),
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text('Location Permission Needed'),
+        content: Text(
+          'Location permission is permanently denied. Please open settings and allow location. After coming back, try again.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close dialog
+            },
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop(); // Close dialog
+              await Geolocator.openAppSettings();
+            },
+            child: Text('Yes'),
+          ),
+        ],
+      ),
     );
-
-    setState(() {
-      _capturedLat = position.latitude;
-      _capturedLng = position.longitude;
-      _locationCaptured = true;
-      _statusMessage = 'Location captured successfully!';
-      _isLoading = false;
-    });
-
-    widget.onLocationFound(position.latitude, position.longitude);
-  } catch (e) {
-    setState(() {
-      _statusMessage = 'Error: ${e.toString()}';
-      _isLoading = false;
-      _locationCaptured = false;
-    });
   }
 }
 
- void _showAskPermissionDialog() {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => AlertDialog(
-      title: Text('Allow Location?'),
-      content: Text('Do you want to allow location access?'),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close dialog
-          },
-          child: Text('No'),
-        ),
-        TextButton(
-          onPressed: () async {
-            Navigator.of(context).pop(); // Close dialog
-            _getCurrentLocation(); // <-- This will get the location!
-          },
-          child: Text('Yes'),
-        ),
-      ],
-    ),
-  );
-}
-void _showPermissionDialog() {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => AlertDialog(
-      title: Text('Location Permission Needed'),
-      content: Text(
-        'Location permission is permanently denied. Please open settings and allow location. After coming back, press the location button again.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close dialog
-          },
-          child: Text('No'),
-        ),
-        TextButton(
-          onPressed: () async {
-            Navigator.of(context).pop(); // Close dialog
-            await Geolocator.openAppSettings();
-            // User must press the button again after returning from settings.
-          },
-          child: Text('Yes'),
-        ),
-      ],
-    ),
-  );
-}
-}
