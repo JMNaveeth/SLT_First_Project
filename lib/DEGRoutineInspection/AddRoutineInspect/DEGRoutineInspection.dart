@@ -248,19 +248,15 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                     ),
 
                     // Only show GPS widget if not HQ
-                    
-                      ReusableGPSWidget(
-                        region: widget.DEGUnit['province'],
-                        onLocationFound: (lat, lng) {
-                          setState(() {
-                            degFormData['gpsLocation'] = {
-                              'lat': lat,
-                              'lng': lng,
-                            };
-                          });
-                          print('Got location: $lat, $lng');
-                        },
-                      ),
+                    ReusableGPSWidget(
+                      region: widget.DEGUnit['province'],
+                      onLocationFound: (lat, lng) {
+                        setState(() {
+                          degFormData['gpsLocation'] = {'lat': lat, 'lng': lng};
+                        });
+                        print('Got location: $lat, $lng');
+                      },
+                    ),
 
                     const SizedBox(height: 10),
 
@@ -2313,13 +2309,11 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              if (widget.DEGUnit['province'] != 'HQ' &&
-                                  degFormData['gpsLocation'] == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('GPS location is required!'),
-                                  ),
-                                );
+                              if (ReusableGPSWidget.isGPSRequiredAndMissing(
+                                context: context,
+                                region: widget.DEGUnit['province'],
+                                formData: degFormData,
+                              )) {
                                 return;
                               }
                               if (_formKey.currentState?.saveAndValidate() ??

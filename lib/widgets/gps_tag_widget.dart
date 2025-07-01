@@ -16,16 +16,6 @@ class ReusableGPSWidget extends StatefulWidget {
     this.customButtonColor,
   }) : super(key: key);
 
-  @override
-  _ReusableGPSWidgetState createState() => _ReusableGPSWidgetState();
-}
-
-class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
-  bool _isLoading = false;
-  String _statusMessage = '';
-  bool _locationCaptured = false;
-  double? _capturedLat;
-  double? _capturedLng;
 
 
 /// Call this before submit to check if GPS is required and present.
@@ -44,6 +34,18 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
     }
     return false; // Not required or present
   }
+
+
+  @override
+  _ReusableGPSWidgetState createState() => _ReusableGPSWidgetState();
+}
+
+class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
+  bool _isLoading = false;
+  String _statusMessage = '';
+  bool _locationCaptured = false;
+  double? _capturedLat;
+  double? _capturedLng;
 
   @override
   void initState() {

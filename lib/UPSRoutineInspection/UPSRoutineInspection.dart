@@ -52,9 +52,8 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
     'UVA',
   ];
 
-
-final List<String> userLocations = [
- 'CPN',
+  final List<String> userLocations = [
+    'CPN',
     'CPS',
     'EPN',
     'EPS',
@@ -79,8 +78,7 @@ final List<String> userLocations = [
     'WPSE',
     'WPSW',
     'UVA',
-];
-
+  ];
 
   //Define recForm Data map
   Map<String, dynamic> upsFormData = {'clockTime': DateTime.now(), 'shift': ""};
@@ -245,20 +243,16 @@ final List<String> userLocations = [
                     const SizedBox(height: 10),
 
                     // Only show GPS widget if not HQ
-                  
-                      ReusableGPSWidget(
-                        region: widget.UPSUnit['Region'],
-                        onLocationFound: (lat, lng) {
-                          setState(() {
-                            upsFormData['gpsLocation'] = {
-                              'lat': lat,
-                              'lng': lng,
-                            };
-                          });
-                          print('Got location: $lat, $lng');
-                          // Save to database, use in form, etc.
-                        },
-                      ),
+                    ReusableGPSWidget(
+                      region: widget.UPSUnit['Region'],
+                      onLocationFound: (lat, lng) {
+                        setState(() {
+                          upsFormData['gpsLocation'] = {'lat': lat, 'lng': lng};
+                        });
+                        print('Got location: $lat, $lng');
+                        // Save to database, use in form, etc.
+                      },
+                    ),
 
                     // FormBuilderDropdown(
                     //   name: "location",
@@ -1304,13 +1298,13 @@ final List<String> userLocations = [
                           child: ElevatedButton(
                             onPressed: () {
                               // GPS required check
-                             if (ReusableGPSWidget.isGPSRequiredAndMissing(
-        context: context,
-        region: widget.UPSUnit['Region'],
-        formData: upsFormData,
-      )) {
-    return;
-  }
+                              if (ReusableGPSWidget.isGPSRequiredAndMissing(
+                                context: context,
+                                region: widget.UPSUnit['Region'],
+                                formData: upsFormData,
+                              )) {
+                                return;
+                              }
                               if (_formKey.currentState?.saveAndValidate() ??
                                   false) {
                                 _formKey.currentState!.save(); // Save form data

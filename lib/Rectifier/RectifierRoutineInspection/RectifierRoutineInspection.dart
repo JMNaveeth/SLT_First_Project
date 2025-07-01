@@ -236,20 +236,16 @@ class _InspectionRecState extends State<InspectionRec> {
                     const SizedBox(height: 10),
 
                     // Only show GPS widget if not HQ
-                  
-                      ReusableGPSWidget(
-                        region: widget.RectifierUnit['Region'],
-                        onLocationFound: (lat, lng) {
-                          setState(() {
-                            recFormData['gpsLocation'] = {
-                              'lat': lat,
-                              'lng': lng,
-                            };
-                          });
-                          print('Got location: $lat, $lng');
-                          // Save to database, use in form, etc.
-                        },
-                      ),
+                    ReusableGPSWidget(
+                      region: widget.RectifierUnit['Region'],
+                      onLocationFound: (lat, lng) {
+                        setState(() {
+                          recFormData['gpsLocation'] = {'lat': lat, 'lng': lng};
+                        });
+                        print('Got location: $lat, $lng');
+                        // Save to database, use in form, etc.
+                      },
+                    ),
 
                     const SizedBox(height: 10),
 
@@ -1401,13 +1397,11 @@ class _InspectionRecState extends State<InspectionRec> {
                           child: ElevatedButton(
                             onPressed: () {
                               // GPS required check
-                              if (widget.RectifierUnit['Region'] != 'HQ' &&
-                                  recFormData['gpsLocation'] == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('GPS location is required!'),
-                                  ),
-                                );
+                              if (ReusableGPSWidget.isGPSRequiredAndMissing(
+                                context: context,
+                                region: widget.RectifierUnit['Region'],
+                                formData: recFormData,
+                              )) {
                                 return;
                               }
                               if (_formKey.currentState?.saveAndValidate() ??
