@@ -372,7 +372,300 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                         _formKey.currentState?.validate();
                       },
                     ),
+ //Define recForm Data map
+  Map<String, dynamic> upsFormData = {'clockTime': DateTime.now(), 'shift': ""};
+  String _shift = '';
+  TimeOfDay? _selectedTime;
 
+  //save data from checklist to http file
+  void _onChanged(
+    dynamic val,
+    Map<String, dynamic> formData,
+    String fieldName,
+  ) {
+    debugPrint(val.toString());
+    debugPrint(upsFormData.toString());
+    formData[fieldName] = val;
+  }
+
+  //passing data in remark
+  void _onChangedRemark(dynamic val, Map<String, dynamic> formData) {
+    debugPrint(val.toString());
+    debugPrint(upsFormData.toString());
+  }
+
+  // Determine shift
+  String _determineShift(TimeOfDay time) {
+    final double hour = time.hour + time.minute / 60;
+    if (hour >= 8.0 && hour < 16.0) {
+      return 'Morning Shift';
+    } else if (hour >= 16.0 && hour < 24.0) {
+      return 'Evening Shift';
+    } else {
+      return 'Night Shift';
+    }
+  }
+
+  // //SUBMIT FORM
+  // void _submitForm() {
+  //   if (_formKey.currentState!.saveAndValidate()) {
+  //     // Navigate to httpMaintenancePost.dart with the form data
+  //     _formKey.currentState!.save(); // Save form data
+  //     debugPrint(
+  //         "Form Data: ${upsFormData.toString()}"); // Debug print the form data
+  //
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => httpPostRectifierInspection(
+  //             formData: upsFormData, recId: widget.recId!, username: username),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTime = TimeOfDay.now();
+    _shift = _determineShift(_selectedTime!);
+    // recFormData['shift'] = _shift;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // UserAccess userAccess = Provider.of<UserAccess>
+    (
+      context,
+      listen: true,
+    ); // Use listen: true to rebuild the widget when the data changes
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: customColors.appbarColor,
+          title: Text(
+            "Daily Routine Checklist",
+            style: TextStyle(color: customColors.mainTextColor),
+          ),
+          actions: [
+            ThemeToggleButton(), // Use the reusable widget
+          ],
+          iconTheme: IconThemeData(color: customColors.mainTextColor),
+        ),
+        body: Container(
+          // Wrap SingleChildScrollView with a Container
+          color:
+              customColors
+                  .mainBackgroundColor, // Set your desired background color here
+          child: SingleChildScrollView(
+            child: FormBuilder(
+              key: _formKey,
+              onChanged: () {
+                _formKey.currentState!.save();
+                // Loop through all the fields and call _onChanged for each field
+                _formKey.currentState!.fields.forEach((fieldKey, fieldState) {
+                  _onChanged(fieldState.value, upsFormData, fieldKey);
+                });
+              },
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "NOW ON :",
+                          style: TextStyle(
+                            color: customColors.mainTextColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.1,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: customColors.suqarBackgroundColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              _shift,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+
+                    //Location
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "LOCATION :",
+                          style: TextStyle(
+                            color: customColors.mainTextColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          widget.region,
+                          style: TextStyle(
+                            color: customColors.mainTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Only show GPS widget if not HQ
+                    ReusableGPSWidget(
+                      region: widget.UPSUnit['Region'],
+                      onLocationFound: (lat, lng) {
+                        setState(() {
+                          upsFormData['gpsLocation'] = {'lat': lat, 'lng': lng};
+                        });
+                        print('Got location: $lat, $lng');
+                        // Save to database, use in form, etc.
+                      },
+                    ),
+
+                    // FormBuilderDropdown(
+                    //   name: "location",
+                    //   decoration:
+                    //       const InputDecoration(labelText: "Location"),
+                    //   items: locations
+                    //       .map((location) => DropdownMenuItem(
+                    //             alignment: AlignmentDirectional.center,
+                    //             value: location,
+                    //             child: Text(location),
+                    //           ))
+                    //       .toList(),
+                    //   validator: FormBuilderValidators.required(),
+                    //   onChanged: (val) =>
+                    //       _onChanged(val, upsFormData, "location"),
+                    // ),
+                    const SizedBox(height: 10),
+                    Divider(),
+                    const SizedBox(height: 10),
+                    //Get Genaral Inspectin Date
+                    const Text(
+                      '01. Genaral Inspection',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    //Check ventilation of the room
+                    const customText(title: "Check ventilation of the room"),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      name: 'ventilation',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'Ok',
+                          child: Text("Ok"),
+                          avatar: CircleAvatar(child: Text('O')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Not Ok',
+                          child: Text("Not Ok"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Not Ok' &&
+                              (upsFormData['ventilationRemark'] == null ||
+                                  upsFormData['ventilationRemark'].isEmpty)) {
+                            return 'Remark is required when room ventilation not ok';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, upsFormData, 'ventilation'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "ventilationRemark",
+                      formData: upsFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    ////////////////////////////////////////////////////////////////////////////////
+                    //Check the battery cabinet temperature \n (20 -25 Centigrade)
+                    const customText(
+                      title:
+                          "Check the battery cabinet temperature \n (20 -25 Centigrade)",
+                    ),
+                    FormBuilderChoiceChips<String>(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      name: 'cabinTemp',
+                      initialValue: '',
+                      selectedColor: Colors.lightBlueAccent,
+                      options: const [
+                        FormBuilderChipOption(
+                          value: 'Normal',
+                          child: Text("Normal"),
+                          avatar: CircleAvatar(child: Text('N')),
+                        ),
+                        FormBuilderChipOption(
+                          value: 'Others',
+                          child: Text("Others"),
+                          avatar: CircleAvatar(child: Text('O')),
+                        ),
+                      ],
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value == 'Others' &&
+                              (upsFormData['cabinTempRemark'] == null ||
+                                  upsFormData['cabinTempRemark'].isEmpty)) {
+                            return 'Remark is required when Cabin Temperature is not Normal';
+                          }
+                          return null;
+                        },
+                      ]),
+                      onChanged:
+                          (val) => _onChanged(val, upsFormData, 'cabinTemp'),
+                    ),
+                    CustomRemarkWidget(
+                      title: "Remark",
+                      formDataKey: "cabinTempRemark",
+                      formData: upsFormData,
+                      formKey: _formKey,
+                      onChangedRemark: (p0, p1) {
+                        _onChangedRemark(p0, p1);
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+
+                    //Measure
                     //Measure Hidrogen gas emmision
                     const customText(title: "Measure Hidrogen gas emmision"),
                     FormBuilderChoiceChips<String>(
