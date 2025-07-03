@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
+import 'package:theme_update/widgets/gps_tag_widget.dart';
 
 //import '../../../HomePage/widgets/colors.dart';
 import 'deg_inspection_data.dart';
@@ -113,6 +114,19 @@ class DegInspectionDetailsPage extends StatelessWidget {
             ),
 
             SizedBox(height: 5),
+
+ ReusableGPSWidget(
+                      region: widget.UPSUnit['Region'],
+                      onLocationFound: (lat, lng) {
+                        setState(() {
+                          upsFormData['gpsLocation'] = {'lat': lat, 'lng': lng};
+                        });
+                        print('Got location: $lat, $lng');
+                        // Save to database, use in form, etc.
+                      },
+                    ),
+
+
             Divider(),
             SizedBox(height: 5),
 

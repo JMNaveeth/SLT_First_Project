@@ -1317,13 +1317,13 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                                   (key, value) => MapEntry(key, value ?? ''),
                                 );
 
-                                // Add latitude and longitude to upsFormData if GPS is present
-                                if (upsFormData['gpsLocation'] != null) {
-                                  upsFormData['latitude'] =
-                                      upsFormData['gpsLocation']['lat'];
-                                  upsFormData['longitude'] =
-                                      upsFormData['gpsLocation']['lng'];
-                                }
+                                // // Add latitude and longitude to upsFormData if GPS is present
+                                // if (upsFormData['gpsLocation'] != null) {
+                                //   upsFormData['latitude'] =
+                                //       upsFormData['gpsLocation']['lat'];
+                                //   upsFormData['longitude'] =
+                                //       upsFormData['gpsLocation']['lng'];
+                                // }
                                 // String rtom = _formKey.currentState?.value['Rtom_name'];
                                 // debugPrint('RTOM value: $rtom');
                                 //pass _formkey.currenState.value to a page called httpPostGen
