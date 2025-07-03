@@ -1297,14 +1297,7 @@ class _UPSRoutineInspectionState extends State<UPSRoutineInspection> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              // GPS required check
-                              if (ReusableGPSWidget.isGPSRequiredAndMissing(
-                                context: context,
-                                region: widget.UPSUnit['Region'],
-                                formData: upsFormData,
-                              )) {
-                                return;
-                              }
+                              
                               if (_formKey.currentState?.saveAndValidate() ??
                                   false) {
                                 _formKey.currentState!.save(); // Save form data

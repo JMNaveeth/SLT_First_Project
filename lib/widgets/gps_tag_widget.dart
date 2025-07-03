@@ -6,19 +6,21 @@ class ReusableGPSWidget extends StatefulWidget {
   final Function(double latitude, double longitude) onLocationFound;
   final String? customButtonText;
   final Color? customButtonColor;
-  final String region; // <-- Add this
+  final String region;
+  final bool compactMode; // New parameter for compact display
+  final VoidCallback? onTap; // New parameter for navigation
 
   const ReusableGPSWidget({
     Key? key,
     required this.onLocationFound,
-    required this.region, // <-- Add this
+    required this.region,
     this.customButtonText,
     this.customButtonColor,
+    this.compactMode = false, // Default to full display
+    this.onTap, // Optional navigation callback
   }) : super(key: key);
 
-
-
-/// Call this before submit to check if GPS is required and present.
+  /// Call this before submit to check if GPS is required and present.
   static bool isGPSRequiredAndMissing({
     required BuildContext context,
     required String region,
@@ -34,7 +36,6 @@ class ReusableGPSWidget extends StatefulWidget {
     }
     return false; // Not required or present
   }
-
 
   @override
   _ReusableGPSWidgetState createState() => _ReusableGPSWidgetState();
@@ -69,6 +70,137 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
       return SizedBox.shrink();
     }
 
+    // Compact mode - just 2-3 lines
+    if (widget.compactMode) {
+      return _buildCompactView(customColors);
+    }
+
+    // Full mode - original display
+    return _buildFullView(customColors);
+  }
+
+  // Compact view - just 2-3 lines
+  Widget _buildCompactView(CustomColors customColors) {
+    return GestureDetector(
+      onTap: widget.onTap, // Navigate when tapped
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: customColors.suqarBackgroundColor,
+          border: Border.all(
+            color: _locationCaptured 
+              ? Colors.green.shade300 
+              : (_statusMessage.contains('Error') || (!_locationCaptured && !_isLoading))
+                ? Colors.red.shade300 
+                : Colors.grey.shade300,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            // GPS Icon
+            Icon(
+              _isLoading 
+                ? Icons.gps_not_fixed 
+                : _locationCaptured 
+                  ? Icons.gps_fixed 
+                  : Icons.gps_off,
+              color: _isLoading 
+                ? Colors.orange 
+                : _locationCaptured 
+                  ? Colors.green 
+                  : Colors.red,
+              size: 20,
+            ),
+            SizedBox(width: 8),
+            
+            // Status and Location Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // First line - Status
+                  Row(
+                    children: [
+                      if (_isLoading)
+                        SizedBox(
+                          width: 12,
+                          height: 12,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      if (_isLoading) SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          _isLoading 
+                            ? 'Getting GPS location...' 
+                            : _locationCaptured 
+                              ? 'GPS Location Captured ✓' 
+                              : 'GPS location required ⚠️',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: _locationCaptured 
+                              ? Colors.green.shade700 
+                              : _isLoading 
+                                ? customColors.mainTextColor
+                                : Colors.red.shade700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  // Second line - Coordinates (if captured) OR warning message
+                  if (_locationCaptured && _capturedLat != null && _capturedLng != null)
+                    Text(
+                      'Lat: ${_capturedLat!.toStringAsFixed(4)}, Lng: ${_capturedLng!.toStringAsFixed(4)}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: customColors.subTextColor,
+                      ),
+                    )
+                  else if (!_locationCaptured && !_isLoading)
+                    Text(
+                      'Tap to capture GPS location before submitting',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red.shade600,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  
+                  // Third line - Error message (if any)
+                  if (_statusMessage.isNotEmpty && _statusMessage.contains('Error'))
+                    Text(
+                      _statusMessage,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red.shade600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
+              ),
+            ),
+            
+            // Arrow icon to show it's tappable
+            if (widget.onTap != null)
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: customColors.subTextColor,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Full view - original display
+  Widget _buildFullView(CustomColors customColors) {
     return Container(
       width: double.infinity,
       child: Column(
@@ -288,4 +420,3 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
     );
   }
 }
-
