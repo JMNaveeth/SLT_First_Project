@@ -93,7 +93,7 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
               ? Colors.green.shade300 
               : (_statusMessage.contains('Error') || (!_locationCaptured && !_isLoading))
                 ? Colors.red.shade300 
-                : Colors.grey.shade300,
+                : Colors.orange.shade300,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -137,7 +137,9 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
                             ? 'Getting GPS location...' 
                             : _locationCaptured 
                               ? 'GPS Location Captured ✓' 
-                              : 'GPS location required ⚠️',
+                              : _statusMessage.contains('Error')
+                                ? 'GPS Error - Tap to retry'
+                                : 'GPS location required ⚠️',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -152,7 +154,7 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
                     ],
                   ),
                   
-                  // Second line - Coordinates (if captured) OR warning message
+                  // Second line - Coordinates OR Error message OR warning
                   if (_locationCaptured && _capturedLat != null && _capturedLng != null)
                     Text(
                       'Lat: ${_capturedLat!.toStringAsFixed(4)}, Lng: ${_capturedLng!.toStringAsFixed(4)}',
@@ -160,6 +162,16 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
                         fontSize: 12,
                         color: customColors.subTextColor,
                       ),
+                    )
+                  else if (_statusMessage.isNotEmpty && _statusMessage.contains('Error'))
+                    Text(
+                      _statusMessage.replaceAll('Error: ', ''),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red.shade600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     )
                   else if (!_locationCaptured && !_isLoading)
                     Text(
@@ -171,16 +183,14 @@ class _ReusableGPSWidgetState extends State<ReusableGPSWidget> {
                       ),
                     ),
                   
-                  // Third line - Error message (if any)
-                  if (_statusMessage.isNotEmpty && _statusMessage.contains('Error'))
+                  // Third line - Time if captured
+                  if (_locationCaptured && _capturedLat != null && _capturedLng != null)
                     Text(
-                      _statusMessage,
+                      'Captured at ${DateTime.now().toString().substring(11, 16)}',
                       style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.red.shade600,
+                        fontSize: 11,
+                        color: customColors.subTextColor,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                 ],
               ),
