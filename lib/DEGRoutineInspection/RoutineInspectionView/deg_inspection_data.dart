@@ -29,9 +29,8 @@ class DegInspectionData {
   final String? problemStatus;
   final String DailyDEGRemarkID;
   final String last_updated;
-   final double? latitude;   // <--- add this
-  final double? longitude;  // <--- add this
- 
+  final String latitude;
+  final String longitude;
 
   DegInspectionData({
     required this.DailyDEGCheckID,
@@ -64,9 +63,8 @@ class DegInspectionData {
     this.problemStatus,
     required this.DailyDEGRemarkID,
     required this.last_updated,
-     this.latitude,    // <--- add this
-    this.longitude,   // <--- add this
-   
+    required this.latitude,
+    required this.longitude,
   });
 
   factory DegInspectionData.fromJson(Map<String, dynamic> json) {
@@ -101,9 +99,8 @@ class DegInspectionData {
       problemStatus: json["problemStatus"] ?? "0",
       DailyDEGRemarkID: json["DailyDEGRemarkID"] ?? '',
       last_updated: json['last_updated'] ?? '',
-       latitude: json['latitude']?.toDouble(),   // <--- add this
-      longitude: json['longitude']?.toDouble(), // <--- add this
-     
+      latitude: json['latitude'] ?? '',
+      longitude: json['longitude'] ?? '',
     );
   }
 }
@@ -129,7 +126,6 @@ class DegRemarkData {
   final String tankLeakRemark;
   final String tankSwellRemark;
   final String addiRemark;
-
 
   DegRemarkData({
     required this.DailyDEGRemarkID,
