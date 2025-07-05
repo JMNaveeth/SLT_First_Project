@@ -2332,18 +2332,18 @@ class _DEGRoutineInspectionState extends State<DEGRoutineInspection> {
                                 // debugPrint('RTOM value: $rtom');
                                 //pass _formkey.currenState.value to a page called httpPostGen
 
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) =>
-                                //         httpPostDEGInspection(
-                                //           formData: degFormData,
-                                //           degId:  widget.DEGUnit['ID'],
-                                //           userAccess: userAccess,
-                                //           region: widget.DEGUnit['station'],
-                                //         ),
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        httpPostDEGInspection(
+                                          formData: degFormData,
+                                          degId:  widget.DEGUnit['ID'],
+                                        //  userAccess: userAccess,
+                                          region: widget.DEGUnit['station'],
+                                        ),
+                                  ),
+                                );
                               } else {
                                 debugPrint(
                                   _formKey.currentState?.value.toString(),
