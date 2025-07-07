@@ -311,8 +311,8 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
       
- 'latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',
-  'longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '',
+ 'Latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',
+  'Longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '',
 };
     try {
       final nonRemarkResponse = await http
