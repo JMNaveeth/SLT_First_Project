@@ -7,7 +7,7 @@ import 'deg_inspection_data.dart';
 
 Future<List<DegInspectionData>> degFetchInspectionData() async {
   final response =
-      await http.get(Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'));
+      await http.get(Uri.parse('https://powerprox.sltidc.lk/GETDailyDEGCheck.php'));
   if (response.statusCode == 200) {
     List<dynamic> body = json.decode(response.body);
     return body
@@ -20,7 +20,7 @@ Future<List<DegInspectionData>> degFetchInspectionData() async {
 
 Future<List<DegRemarkData>> degFetchRemarkData() async {
   final response =
-      await http.get(Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks'));
+      await http.get(Uri.parse('https://powerprox.sltidc.lk/GETDailyDEGRemarks.php'));
   if (response.statusCode == 200) {
     List<dynamic> body = json.decode(response.body);
     return body.map((dynamic item) => DegRemarkData.fromJson(item)).toList();

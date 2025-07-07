@@ -109,12 +109,12 @@ class DegInspectionDetailsPage extends StatelessWidget {
     Icon(Icons.location_on, color: customColors.subTextColor, size: 18),
     SizedBox(width: 4),
     Text(
-      "Latitude: ${inspectionData.latitude.isNotEmpty ? inspectionData.latitude : "Not Available"}",
+      "Latitude: ${inspectionData.Latitude.isNotEmpty ? inspectionData.Latitude : "Not Available"}",
       style: TextStyle(color: customColors.subTextColor),
     ),
     SizedBox(width: 8),
     Text(
-      "Longitude: ${inspectionData.longitude.isNotEmpty ? inspectionData.longitude : "Not Available"}",
+      "Longitude: ${inspectionData.Longitude.isNotEmpty ? inspectionData.Longitude : "Not Available"}",
       style: TextStyle(color: customColors.subTextColor),
     ),
   ],

@@ -13,17 +13,19 @@ class httpPostDEGInspection extends StatefulWidget {
   final String region;
   //final UserAccess userAccess; // Pass UserAccess from the parent widget
 
-  const httpPostDEGInspection({
-    super.key,
-    required this.formData,
-    required this.degId,
-    required this.region,
-    //  required this.userAccess
-  });
+
+  const httpPostDEGInspection(
+      {super.key,
+        required this.formData,
+        required this.degId,
+        required this.region,
+      //  required this.userAccess
+      });
 
   @override
   // ignore: library_private_types_in_public_api
-  _httpPostDEGInspectionState createState() => _httpPostDEGInspectionState();
+  _httpPostDEGInspectionState createState() =>
+      _httpPostDEGInspectionState();
 }
 
 class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
@@ -35,9 +37,8 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
   @override
   void initState() {
     super.initState();
-    formattedTime = _formatTime(
-      widget.formData['clockTime']?.toString() ?? '',
-    ); // Ensure time is formatted
+    formattedTime = _formatTime(widget.formData['clockTime']?.toString() ??
+        ''); // Ensure time is formatted
     shift = _determineShift(TimeOfDay.now());
     if (_hasAtLeastOneRemark()) {
       _submitRemarkData();
@@ -108,57 +109,55 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
     final instance =
         widget.formData['instance']?.toString() ?? ""; // Handle null instances
     final recId = widget.degId; // Ensure GenID is passed
-    // final username = widget.userAccess.username ?? '';
+   // final username = widget.userAccess.username ?? '';
 
     final remarkData = {
       'degId': recId, // Pass RecID
       //'username': username,
       'degCleanRemark$instance':
-          widget.formData['degCleanRemark']?.toString() ?? '',
+      widget.formData['degCleanRemark']?.toString() ?? '',
       'surroundCleanRemark$instance':
-          widget.formData['surroundCleanRemark']?.toString() ?? '',
+      widget.formData['surroundCleanRemark']?.toString() ?? '',
       'vbeltRemark$instance': widget.formData['vbeltRemark']?.toString() ?? '',
       'alarmRemark$instance': widget.formData['alarmRemark']?.toString() ?? '',
       'warningRemark$instance':
-          widget.formData['warningRemark']?.toString() ?? '',
+      widget.formData['warningRemark']?.toString() ?? '',
       'issueRemark$instance': widget.formData['issueRemark']?.toString() ?? '',
       'leakRemark$instance': widget.formData['leakRemark']?.toString() ?? '',
       'waterLevelRemark$instance':
-          widget.formData['waterLevelRemark']?.toString() ?? '',
+      widget.formData['waterLevelRemark']?.toString() ?? '',
       'exteriorRemark$instance':
-          widget.formData['exteriorRemark']?.toString() ?? '',
+      widget.formData['exteriorRemark']?.toString() ?? '',
       'fuelLeakRemark$instance':
-          widget.formData['fuelLeakRemark']?.toString() ?? '',
+      widget.formData['fuelLeakRemark']?.toString() ?? '',
       'airFilterRemark$instance':
-          widget.formData['airFilterRemark']?.toString() ?? '',
+      widget.formData['airFilterRemark']?.toString() ?? '',
       'gasEmissionRemark$instance':
-          widget.formData['gasEmissionRemark']?.toString() ?? '',
+      widget.formData['gasEmissionRemark']?.toString() ?? '',
       'oilLeakRemark$instance':
-          widget.formData['oilLeakRemark']?.toString() ?? '',
+      widget.formData['oilLeakRemark']?.toString() ?? '',
       'batCleanRemark$instance':
-          widget.formData['batCleanRemark']?.toString() ?? '',
+      widget.formData['batCleanRemark']?.toString() ?? '',
       'batVoltageRemark$instance':
-          widget.formData['batVoltageRemark']?.toString() ?? '',
+      widget.formData['batVoltageRemark']?.toString() ?? '',
       'batChargerRemark$instance':
-          widget.formData['batChargerRemark']?.toString() ?? '',
-      'addiRemark$instance': 
-         widget.formData['addiRemark']?.toString() ?? '',
-      'latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',
-      'longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '',
-    };
-  print(jsonEncode(remarkData)); // Debug: see what you send
+      widget.formData['batChargerRemark']?.toString() ?? '',
+      'addiRemark$instance': widget.formData['addiRemark']?.toString() ?? '',
+    'Latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',  // Note capital L
+    'Longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '', // Note capital L
+ };
 
     try {
       // Insert remark data first
-      final remarkResponse = await http
-          .post(
-             Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks'),
+    final response = await http.post(
+  Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks'),
   headers: {'Content-Type': 'application/json'},
   body: jsonEncode(remarkData),
-          )
-          .timeout(const Duration(seconds: 10));
-
-      if (remarkResponse.statusCode == 200) {
+);
+ print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    
+      if (response.statusCode == 200) {
         // Assuming the server returns the recId in the response body
         final remarkId = await _fetchRemarkId(); // Fetch the remark ID
         if (remarkId != null) {
@@ -173,7 +172,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
         setState(() {
           _isLoading = false;
           _errorMessage =
-              'Error inserting remark data: ${remarkResponse.statusCode}';
+          'Error inserting remark data: ${response.statusCode}';
         });
       }
     } catch (e) {
@@ -193,10 +192,9 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse.isNotEmpty) {
-          final int remarkId = int.parse(
-            jsonResponse[jsonResponse.length - 1]['DailyDEGRemarkID']
-                .toString(),
-          ); // Adjust index or condition as needed
+          final int remarkId = int.parse(jsonResponse[jsonResponse.length - 1]
+          ['DailyDEGRemarkID']
+              .toString()); // Adjust index or condition as needed
           print(remarkId.toString());
           print(remarkId.runtimeType);
           return remarkId;
@@ -216,7 +214,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
     final instance =
         widget.formData['instance']?.toString() ?? ""; // Handle null instances
     final recId = widget.degId; // Ensure GenID is passed
-    // final username = widget.userAccess.username ?? '';
+   // final username = widget.userAccess.username ?? '';
     final region = widget.region;
 
     final nonRemarkData = {
@@ -229,7 +227,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'region$instance': region,
       'degClean$instance': widget.formData['degClean']?.toString() ?? '',
       'surroundClean$instance':
-          widget.formData['surroundClean']?.toString() ?? '',
+      widget.formData['surroundClean']?.toString() ?? '',
       'alarm$instance': widget.formData['alarm']?.toString() ?? '',
       'warning$instance': widget.formData['warning']?.toString() ?? '',
       'issue$instance': widget.formData['issue']?.toString() ?? '',
@@ -247,23 +245,18 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat2$instance': widget.formData['bat2']?.toString() ?? '',
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
-      'latitude':
-          widget.formData['gpsLocation']?['lat']?.toString() ?? '',
-      'longitude':
-          widget.formData['gpsLocation']?['lng']?.toString() ?? '',
-    };
-  print(jsonEncode(nonRemarkData)); // Debug: see what you send
-
+'Latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',  // Note capital L
+    'Longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '', // Note capital L
+   };
     try {
-      final nonRemarkResponse = await http
-          .post(
-            Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks'),
+      final response = await http.post(
+  Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
   headers: {'Content-Type': 'application/json'},
   body: jsonEncode(nonRemarkData),
-          )
-          .timeout(const Duration(seconds: 10));
-
-      if (nonRemarkResponse.statusCode == 200) {
+);
+ print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+      if (response.statusCode == 200) {
         setState(() {
           _isLoading = false;
         });
@@ -271,7 +264,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
         setState(() {
           _isLoading = false;
           _errorMessage =
-              'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
+          'Error inserting non-remark data: ${response.statusCode}';
         });
       }
     } catch (e) {
@@ -292,14 +285,14 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
 
     final nonRemarkData = {
       'degId': recId, // Pass RecID
-      // 'username': username,
+     // 'username': username,
       'clockTime$instance': formattedTime,
       'shift$instance': shift,
 
       'region$instance': region,
       'degClean$instance': widget.formData['degClean']?.toString() ?? '',
       'surroundClean$instance':
-          widget.formData['surroundClean']?.toString() ?? '',
+      widget.formData['surroundClean']?.toString() ?? '',
       'alarm$instance': widget.formData['alarm']?.toString() ?? '',
       'warning$instance': widget.formData['warning']?.toString() ?? '',
       'issue$instance': widget.formData['issue']?.toString() ?? '',
@@ -317,14 +310,14 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat2$instance': widget.formData['bat2']?.toString() ?? '',
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
-    };
-
+      
+ 'latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',
+  'longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '',
+};
     try {
       final nonRemarkResponse = await http
-          .post(
-            Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
-            body: nonRemarkData,
-          )
+          .post(Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
+          body: nonRemarkData)
           .timeout(const Duration(seconds: 10));
 
       if (nonRemarkResponse.statusCode == 200) {
@@ -335,7 +328,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
         setState(() {
           _isLoading = false;
           _errorMessage =
-              'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
+          'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
         });
       }
     } catch (e) {
@@ -349,35 +342,36 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Data Update')),
+      appBar: AppBar(
+        title: const Text('Data Update'),
+      ),
       body: Center(
-        child:
-            _isLoading
-                ? const CircularProgressIndicator()
-                : _errorMessage != null
-                ? Text(_errorMessage!)
-                : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Data updated',
-                      style: TextStyle(fontSize: 24.0),
-                    ),
-                    const SizedBox(height: 20.0),
-                    ElevatedButton(
-                      child: const Text('Back'),
-                      onPressed: () {
-                        //             Navigator.push(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                 builder: (context) => maintenancePage(
-                        // ),
-                        //               ),
-                        //             );
-                      },
-                    ),
-                  ],
-                ),
+        child: _isLoading
+            ? const CircularProgressIndicator()
+            : _errorMessage != null
+            ? Text(_errorMessage!)
+            : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Data updated',
+              style: TextStyle(fontSize: 24.0),
+            ),
+            const SizedBox(height: 20.0),
+            ElevatedButton(
+              child: const Text('Back'),
+              onPressed: () {
+    //             Navigator.push(
+    //               context,
+    //               MaterialPageRoute(
+    //                 builder: (context) => maintenancePage(
+    // ),
+    //               ),
+    //             );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
