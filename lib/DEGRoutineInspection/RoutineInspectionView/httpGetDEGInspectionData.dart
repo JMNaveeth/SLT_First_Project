@@ -48,16 +48,31 @@ Future<List<DegInspectionData>> degFetchInspectionData() async {
 }
 
 Future<List<DegRemarkData>> degFetchRemarkData() async {
-  final response =
-      await http.get(Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks.php'));
-  if (response.statusCode == 200) {
-    List<dynamic> body = json.decode(response.body);
-    return body.map((dynamic item) => DegRemarkData.fromJson(item)).toList();
-  } else {
-    throw Exception('Failed to load remark data');
+  try {
+    print('Calling API: http://124.43.136.185:8000/api/dailyDEGRemarks');
+    
+    final response = await http.get(
+      Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks'),  // Remove .php
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    ).timeout(const Duration(seconds: 30));
+
+    print('Response status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = json.decode(response.body);
+      return body.map((dynamic item) => DegRemarkData.fromJson(item)).toList();
+    } else {
+      throw Exception('Server returned status code ${response.statusCode}');
+    }
+  } catch (e) {
+ print('Error fetching remark data: $e');
+    throw Exception('Failed to load remark data: $e');
   }
 }
-
 Future<List<DEGDetails>> degDetailsFetchData() async {
   final response =
       await http.get(Uri.parse('https://powerprox.sltidc.lk/GETGenerators.php'));
