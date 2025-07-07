@@ -100,8 +100,8 @@ class DegInspectionData {
       problemStatus: json["problemStatus"] ?? "0",
       DailyDEGRemarkID: json["DailyDEGRemarkID"] ?? '',
       last_updated: json['last_updated'] ?? '',
-      Latitude: json['latitude'] ?? '',
-      Longitude: json['longitude'] ?? '',
+      Latitude: json['Latitude'] ?? '',
+      Longitude: json['Longitude'] ?? '',
     );
   }
 }
@@ -177,8 +177,8 @@ class DegRemarkData {
       tankLeakRemark: json['tankLeakRemark'] ?? '',
       tankSwellRemark: json['tankSwellRemark'] ?? '',
       addiRemark: json['addiRemark'] ?? '',
-       Latitude: json['latitude'] ?? '',
-      Longitude: json['longitude'] ?? '',
+       Latitude: json['Latitude'] ?? '',
+      Longitude: json['Longitude'] ?? '',
     );
   }
 }
@@ -213,8 +213,8 @@ class DEGDetails {
       station: json['station'] ?? "",
       brand_set: json['brand_set'] ?? "",
       serial_set: json['serial_set'] ?? "",
-      Latitude: json['latitude'] ?? '',
-      Longitude: json['longitude'] ?? '',
+      Latitude: json['Latitude'] ?? '',
+      Longitude: json['Longitude'] ?? '',
     );
   }
 
@@ -226,8 +226,8 @@ class DEGDetails {
       'station': station,
       'brand_set': brand_set,
       'serial_set': serial_set,
-      'latitude': Latitude,
-      'longitude': Longitude,
+      'Latitude': Latitude,
+      'Longitude': Longitude,
     };
   }
 }
