@@ -29,9 +29,8 @@ class DegInspectionData {
   final String? problemStatus;
   final String DailyDEGRemarkID;
   final String last_updated;
- final String Latitude;  // Capital L
-  final String Longitude; // Capital L
-  
+  final String latitude;
+  final String longitude;
 
   DegInspectionData({
     required this.DailyDEGCheckID,
@@ -64,8 +63,8 @@ class DegInspectionData {
     this.problemStatus,
     required this.DailyDEGRemarkID,
     required this.last_updated,
-    required this.Latitude,
-    required this.Longitude,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory DegInspectionData.fromJson(Map<String, dynamic> json) {
@@ -100,8 +99,8 @@ class DegInspectionData {
       problemStatus: json["problemStatus"] ?? "0",
       DailyDEGRemarkID: json["DailyDEGRemarkID"] ?? '',
       last_updated: json['last_updated'] ?? '',
-      Latitude: json['Latitude'] ?? '',
-      Longitude: json['Longitude'] ?? '',
+      latitude: json['latitude'] ?? '',
+      longitude: json['longitude'] ?? '',
     );
   }
 }
@@ -127,8 +126,6 @@ class DegRemarkData {
   final String tankLeakRemark;
   final String tankSwellRemark;
   final String addiRemark;
-  final String Latitude;
-  final String Longitude;
 
   DegRemarkData({
     required this.DailyDEGRemarkID,
@@ -151,8 +148,6 @@ class DegRemarkData {
     required this.tankLeakRemark,
     required this.tankSwellRemark,
     required this.addiRemark,
-    required this.Latitude,
-    required this.Longitude,
   });
 
   factory DegRemarkData.fromJson(Map<String, dynamic> json) {
@@ -177,8 +172,6 @@ class DegRemarkData {
       tankLeakRemark: json['tankLeakRemark'] ?? '',
       tankSwellRemark: json['tankSwellRemark'] ?? '',
       addiRemark: json['addiRemark'] ?? '',
-       Latitude: json['Latitude'] ?? '',
-      Longitude: json['Longitude'] ?? '',
     );
   }
 }
@@ -191,8 +184,8 @@ class DEGDetails {
   String brand_set;
   String serial_set;
 
-  String? Latitude;
-  String? Longitude;
+  String? latitude;
+  String? longitude;
 
   DEGDetails({
     required this.ID,
@@ -201,8 +194,8 @@ class DEGDetails {
     required this.station,
     required this.brand_set,
     required this.serial_set,
-    required this.Latitude,
-    required this.Longitude,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory DEGDetails.fromJson(Map<String, dynamic> json) {
@@ -213,8 +206,8 @@ class DEGDetails {
       station: json['station'] ?? "",
       brand_set: json['brand_set'] ?? "",
       serial_set: json['serial_set'] ?? "",
-      Latitude: json['Latitude'] ?? '',
-      Longitude: json['Longitude'] ?? '',
+      latitude: json['latitude'] ?? '',
+      longitude: json['longitude'] ?? '',
     );
   }
 
@@ -226,8 +219,8 @@ class DEGDetails {
       'station': station,
       'brand_set': brand_set,
       'serial_set': serial_set,
-      'Latitude': Latitude,
-      'Longitude': Longitude,
+      'latitude': latitude,
+      'longitude': longitude,
     };
   }
 }

@@ -104,22 +104,18 @@ class DegInspectionDetailsPage extends StatelessWidget {
                         )
                         : SizedBox.shrink(),
                          // --- ADD THIS BLOCK FOR GPS ---
-  Row(
+   Row(
   children: [
     Icon(Icons.location_on, color: customColors.subTextColor, size: 18),
     SizedBox(width: 4),
-    Expanded(
-      child: Builder(
-        builder: (context) {
-          print('View Location Data - Lat: ${inspectionData.Latitude}, Long: ${inspectionData.Longitude}');
-          
-          return Text(
-            "Location: ${inspectionData.Latitude.isNotEmpty ? inspectionData.Latitude : 'Not Available'}, "
-            "${inspectionData.Longitude.isNotEmpty ? inspectionData.Longitude : 'Not Available'}",
-            style: TextStyle(color: customColors.subTextColor),
-          );
-        }
-      ),
+    Text(
+      "Latitude: ${inspectionData.latitude.isNotEmpty ? inspectionData.latitude : "Not Available"}",
+      style: TextStyle(color: customColors.subTextColor),
+    ),
+    SizedBox(width: 8),
+    Text(
+      "Longitude: ${inspectionData.longitude.isNotEmpty ? inspectionData.longitude : "Not Available"}",
+      style: TextStyle(color: customColors.subTextColor),
     ),
   ],
 ),

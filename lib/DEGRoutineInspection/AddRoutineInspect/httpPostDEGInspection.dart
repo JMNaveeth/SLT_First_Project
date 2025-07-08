@@ -143,21 +143,16 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'batChargerRemark$instance':
       widget.formData['batChargerRemark']?.toString() ?? '',
       'addiRemark$instance': widget.formData['addiRemark']?.toString() ?? '',
-    'Latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',  // Note capital L
-    'Longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '', // Note capital L
- };
+    };
 
     try {
       // Insert remark data first
-    final response = await http.post(
-  Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks'),
-  headers: {'Content-Type': 'application/json'},
-  body: jsonEncode(remarkData),
-);
- print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-    
-      if (response.statusCode == 200) {
+      final remarkResponse = await http
+          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyDEGRemarks.php'),
+          body: remarkData)
+          .timeout(const Duration(seconds: 10));
+
+      if (remarkResponse.statusCode == 200) {
         // Assuming the server returns the recId in the response body
         final remarkId = await _fetchRemarkId(); // Fetch the remark ID
         if (remarkId != null) {
@@ -172,7 +167,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
         setState(() {
           _isLoading = false;
           _errorMessage =
-          'Error inserting remark data: ${response.statusCode}';
+          'Error inserting remark data: ${remarkResponse.statusCode}';
         });
       }
     } catch (e) {
@@ -187,7 +182,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
   Future<int?> _fetchRemarkId() async {
     try {
       final response = await http
-          .get(Uri.parse("http://124.43.136.185:8000/api/dailyDEGRemarks"))
+          .get(Uri.parse("https://powerprox.sltidc.lk/GETDailyDEGRemarks.php"))
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
@@ -245,18 +240,15 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat2$instance': widget.formData['bat2']?.toString() ?? '',
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
-'Latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',  // Note capital L
-    'Longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '', // Note capital L
-   };
+    };
+
     try {
-      final response = await http.post(
-  Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
-  headers: {'Content-Type': 'application/json'},
-  body: jsonEncode(nonRemarkData),
-);
- print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-      if (response.statusCode == 200) {
+      final nonRemarkResponse = await http
+          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyDEGCheck.php'),
+          body: nonRemarkData)
+          .timeout(const Duration(seconds: 10));
+
+      if (nonRemarkResponse.statusCode == 200) {
         setState(() {
           _isLoading = false;
         });
@@ -264,7 +256,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
         setState(() {
           _isLoading = false;
           _errorMessage =
-          'Error inserting non-remark data: ${response.statusCode}';
+          'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
         });
       }
     } catch (e) {
@@ -310,13 +302,11 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat2$instance': widget.formData['bat2']?.toString() ?? '',
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
-      
- 'Latitude': widget.formData['gpsLocation']?['lat']?.toString() ?? '',
-  'Longitude': widget.formData['gpsLocation']?['lng']?.toString() ?? '',
-};
+    };
+
     try {
       final nonRemarkResponse = await http
-          .post(Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
+          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyDEGCheck.php'),
           body: nonRemarkData)
           .timeout(const Duration(seconds: 10));
 
