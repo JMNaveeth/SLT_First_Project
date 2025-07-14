@@ -87,6 +87,23 @@ class RecInspectionDetailPage extends StatelessWidget {
                       "Checked By : ${inspectionData.userName}",
                       style: TextStyle(color: customColors.subTextColor),
                     ),
+                     // --- ADD THIS BLOCK FOR GPS ---
+    Row(
+      children: [
+        Icon(Icons.location_on, color: customColors.subTextColor, size: 18),
+        SizedBox(width: 4),
+        Text(
+          "Latitude: ${inspectionData.Latitude != 0.0 ? inspectionData.Latitude : "Not Available"}",
+          style: TextStyle(color: customColors.subTextColor),
+        ),
+        SizedBox(width: 8),
+        Text(
+          "Longitude: ${inspectionData.Longitude != 0.0 ? inspectionData.Longitude : "Not Available"}",
+          style: TextStyle(color: customColors.subTextColor),
+        ),
+      ],
+    ),
+    // --- END GPS BLOCK ---
                   ],
                 ),
               ),

@@ -1,3 +1,5 @@
+import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
+
 class RecInspectionData {
   final String id;
   final String userName;
@@ -148,8 +150,8 @@ class RectifierDetails {
   String brand;
   String? model;
 
-  String? latitude;
-  String? longitude;
+  double? Latitude;
+  double? Longitude;
 
   RectifierDetails({
     required this.recID,
@@ -158,8 +160,8 @@ class RectifierDetails {
     required this.station,
     required this.brand,
     required this.model,
-    required this.latitude,
-    required this.longitude,
+    required this.Latitude,
+    required this.Longitude,
   });
 
   factory RectifierDetails.fromJson(Map<String, dynamic> json) {
@@ -170,9 +172,13 @@ class RectifierDetails {
       station: json['Station'] ?? "",
       brand: json['Brand'] ?? "",
       model: json['Model'] ?? "",
-      latitude: json['latitude'] ?? '',
-      longitude: json['longitude'] ?? '',
-    );
+      Latitude: json['Latitude'] != null
+        ? double.tryParse(json['Latitude'].toString())
+        : null,
+    Longitude: json['Longitude'] != null
+        ? double.tryParse(json['Longitude'].toString())
+        : null,
+  );
   }
 
   Map<String, dynamic> toJson() {
@@ -183,8 +189,8 @@ class RectifierDetails {
       'Station': station,
       'Brand': brand,
       'Model': model,
-      'latitude': latitude,
-      'longitude': longitude,
+      'Latitude': Latitude,
+      'Longitude': Longitude,
     };
   }
 }
