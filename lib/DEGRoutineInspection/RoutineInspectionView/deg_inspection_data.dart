@@ -100,12 +100,12 @@ class DegInspectionData {
       DailyDEGRemarkID: json["DailyDEGRemarkID"]?.toString() ?? '',
       last_updated: json['last_updated']?.toString() ?? '',
      Latitude: json['Latitude'] != null
-          ? double.tryParse(json['Latitude'].toString()) ?? 0.0
-          : 0.0,
-      Longitude: json['Longitude'] != null
-          ? double.tryParse(json['Longitude'].toString()) ?? 0.0
-          : 0.0,
-    );
+        ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+        : 0.0,
+    Longitude: json['Longitude'] != null
+        ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+        : 0.0,
+  );
   }
 }
 
@@ -181,12 +181,12 @@ class DegRemarkData {
       tankSwellRemark: json['tankSwellRemark']?.toString() ?? '',
       addiRemark: json['addiRemark']?.toString() ?? '',
       Latitude: json['Latitude'] != null
-          ? double.tryParse(json['Latitude'].toString()) ?? 0.0
-          : 0.0,
-      Longitude: json['Longitude'] != null
-          ? double.tryParse(json['Longitude'].toString()) ?? 0.0
-          : 0.0,
-    );
+        ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+        : 0.0,
+    Longitude: json['Longitude'] != null
+        ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+        : 0.0,
+  );
   }
 }
 
@@ -219,12 +219,12 @@ class DEGDetails {
       station: json['station']?.toString() ?? "",
       brand_set: json['brand_set']?.toString() ?? "",
       serial_set: json['serial_set']?.toString() ?? "",
-      Latitude: json['Latitude'] != null
-          ? double.tryParse(json['Latitude'].toString())
-          : null,
-      Longitude: json['Longitude'] != null
-          ? double.tryParse(json['Longitude'].toString())
-          : null,
+       Latitude: json['Latitude'] != null
+        ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+        : 0.0,
+    Longitude: json['Longitude'] != null
+        ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+        : 0.0,
     );
   }
 
