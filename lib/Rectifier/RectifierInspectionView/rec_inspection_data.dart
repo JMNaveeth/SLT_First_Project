@@ -67,36 +67,36 @@ class RecInspectionData {
 
   factory RecInspectionData.fromJson(Map<String, dynamic> json) {
     return RecInspectionData(
-      id: json['DailyRECCheckID'] ?? '',
-      userName: json['userName'] ?? '',
-      recId: json['recId'] ?? '',
-      clockTime: json['clockTime'] ?? '',
-      shift: json['shift'] ?? '',
-      region: json['region'] ?? '',
-      room: json['room'] ?? '',
-      roomClean: json['roomClean'] ?? '',
-      cubicleClean: json['cubicleClean'] ?? '',
-      roomTemp: json['roomTemp'] ?? '',
-      h2gasEmission: json['h2gasEmission'] ?? '',
-      checkMCB: json['checkMCB'] ?? '',
-      dcPDB: json['dcPDB'] ?? '',
-      remoteAlarm: json['remoteAlarm'] ?? '',
-      noOfWorkingLine: json['noOfWorkingLine'] ?? '',
-      capacity: json['capacity'] ?? '',
-      type: json['type'] ?? '',
-      voltagePs1: json['voltagePs1'] ?? '',
-      voltagePs2: json['voltagePs2'] ?? '',
-      voltagePs3: json['voltagePs3'] ?? '',
-      currentPs1: json['currentPs1'] ?? '',
-      currentPs2: json['currentPs2'] ?? '',
-      currentPs3: json['currentPs3'] ?? '',
-      dcVoltage: json['dcVoltage'] ?? '',
-      dcCurrent: json['dcCurrent'] ?? '',
-      recCapacity: json['recCapacity'] ?? '',
-      recAlarmStatus: json['recAlarmStatus'] ?? '',
-      recIndicatorStatus: json['recIndicatorStatus'] ?? '',
-      remarkId: json["DailyRECRemarkID"] ?? '',
-      problemStatus: json['problemStatus']??'0'
+     id: json['DailyRECCheckID']?.toString() ?? '',
+      userName: json['userName']?.toString() ?? '',
+      recId: json['recId']?.toString() ?? '',
+      clockTime: json['clockTime']?.toString() ?? '',
+      shift: json['shift']?.toString() ?? '',
+      region: json['region']?.toString() ?? '',
+      room: json['room']?.toString() ?? '',
+      roomClean: json['roomClean']?.toString() ?? '',
+      cubicleClean: json['cubicleClean']?.toString() ?? '',
+      roomTemp: json['roomTemp']?.toString() ?? '',
+      h2gasEmission: json['h2gasEmission']?.toString() ?? '',
+      checkMCB: json['checkMCB']?.toString() ?? '',
+      dcPDB: json['dcPDB']?.toString() ?? '',
+      remoteAlarm: json['remoteAlarm']?.toString() ?? '',
+      noOfWorkingLine: json['noOfWorkingLine']?.toString() ?? '',
+      capacity: json['capacity']?.toString() ?? '',
+      type: json['type']?.toString() ?? '',
+      voltagePs1: json['voltagePs1']?.toString() ?? '',
+      voltagePs2: json['voltagePs2']?.toString() ?? '',
+      voltagePs3: json['voltagePs3']?.toString() ?? '',
+      currentPs1: json['currentPs1']?.toString() ?? '',
+      currentPs2: json['currentPs2']?.toString() ?? '',
+      currentPs3: json['currentPs3']?.toString() ?? '',
+      dcVoltage: json['dcVoltage']?.toString() ?? '',
+      dcCurrent: json['dcCurrent']?.toString() ?? '',
+      recCapacity: json['recCapacity']?.toString() ?? '',
+      recAlarmStatus: json['recAlarmStatus']?.toString() ?? '',
+      recIndicatorStatus: json['recIndicatorStatus']?.toString() ?? '',
+      remarkId: json["DailyRECRemarkID"]?.toString() ?? '',
+      problemStatus: json['problemStatus']?.toString() ?? '0',
     );
   }
 }
@@ -128,16 +128,16 @@ class RecRemarkData {
 
   factory RecRemarkData.fromJson(Map<String, dynamic> json) {
     return RecRemarkData(
-      id: json['DailyRECRemarkID'] ?? '',
-      roomCleanRemark: json['roomCleanRemark'] ?? '',
-      cubicleCleanRemark: json['CubicleCleanRemark'] ?? '',
-      roomTempRemark: json['roomTempRemark'] ?? '',
-      h2gasEmissionRemark: json['h2gasEmissionRemark'] ?? '',
-      checkMCBRemark: json['checkMCBRemark'] ?? '',
-      dcPDBRemark: json['dcPDBRemark'] ?? '',
-      remoteAlarmRemark: json['remoteAlarmRemark'] ?? '',
-      recAlarmRemark: json['recAlarmRemark'] ?? '',
-      indRemark: json['indRemark'] ?? '',
+      id: json['DailyRECRemarkID']?.toString() ?? '',
+      roomCleanRemark: json['roomCleanRemark']?.toString() ?? '',
+      cubicleCleanRemark: json['CubicleCleanRemark']?.toString() ?? '',
+      roomTempRemark: json['roomTempRemark']?.toString() ?? '',
+      h2gasEmissionRemark: json['h2gasEmissionRemark']?.toString() ?? '',
+      checkMCBRemark: json['checkMCBRemark']?.toString() ?? '',
+      dcPDBRemark: json['dcPDBRemark']?.toString() ?? '',
+      remoteAlarmRemark: json['remoteAlarmRemark']?.toString() ?? '',
+      recAlarmRemark: json['recAlarmRemark']?.toString() ?? '',
+      indRemark: json['indRemark']?.toString() ?? '',
     );
   }
 }
@@ -166,19 +166,19 @@ class RectifierDetails {
 
   factory RectifierDetails.fromJson(Map<String, dynamic> json) {
     return RectifierDetails(
-      recID: json['RecID'] ?? "",
-      region: json['Region'] ?? "",
-      rtom: json['RTOM'] ?? "",
-      station: json['Station'] ?? "",
-      brand: json['Brand'] ?? "",
-      model: json['Model'] ?? "",
+     recID: json['RecID']?.toString() ?? "",
+      region: json['Region']?.toString() ?? "",
+      rtom: json['RTOM']?.toString() ?? "",
+      station: json['Station']?.toString() ?? "",
+      brand: json['Brand']?.toString() ?? "",
+      model: json['Model']?.toString(),
       Latitude: json['Latitude'] != null
-        ? double.tryParse(json['Latitude'].toString())
-        : null,
-    Longitude: json['Longitude'] != null
-        ? double.tryParse(json['Longitude'].toString())
-        : null,
-  );
+          ? double.tryParse(json['Latitude'].toString())
+          : null,
+      Longitude: json['Longitude'] != null
+          ? double.tryParse(json['Longitude'].toString())
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() {

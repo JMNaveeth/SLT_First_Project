@@ -10,16 +10,16 @@ import 'package:intl/intl.dart';
 class httpPostRectifierInspection extends StatefulWidget {
   final Map<String, dynamic> formData;
   final String recId; // Pass the rec ID to the widget
- // final UserAccess userAccess; // Pass UserAccess from the parent widget
+  // final UserAccess userAccess; // Pass UserAccess from the parent widget
   final String region;
 
-
-  const httpPostRectifierInspection(
-      {super.key,
-        required this.formData,
-        required this.recId,
-     //   required this.userAccess,
-        required this.region});
+  const httpPostRectifierInspection({
+    super.key,
+    required this.formData,
+    required this.recId,
+    //   required this.userAccess,
+    required this.region,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -33,26 +33,27 @@ class _httpPostRectifierInspectionState
   String? _errorMessage;
   String? shift;
   late String formattedTime;
-  String problemStatus="0";
+  String problemStatus = "0";
 
   @override
   void initState() {
     super.initState();
-    formattedTime = _formatTime(widget.formData['clockTime']?.toString() ??
-        ''); // Ensure time is formatted
+    formattedTime = _formatTime(
+      widget.formData['clockTime']?.toString() ?? '',
+    ); // Ensure time is formatted
     shift = _determineShift(TimeOfDay.now());
     _hasAtLeastOneRemark()
         ? _submitRemarkData()
         : _submitNonRemarkDataWithOutId();
-    if(getProblemStatus()=="0"){
+    if (getProblemStatus() == "0") {
       print("Here because i see nothing");
       setState(() {
-        problemStatus="0";
+        problemStatus = "0";
       });
-    }else{
+    } else {
       print("Here because i see something");
       setState(() {
-        problemStatus="1";
+        problemStatus = "1";
       });
     }
   }
@@ -82,14 +83,21 @@ class _httpPostRectifierInspectionState
     }
   }
 
-  String getProblemStatus(){
-    if(widget.formData['roomClean']=='Not Ok'||widget.formData['cubicleClean']=='Not Ok'||widget.formData['roomTemp']=='high'||widget.formData['h2gasEmission']=='yes'||widget.formData['checkMCB']=='Not ok'||widget.formData['dcPDB']=='Not ok'||widget.formData['remoteAlarm']=='Not ok'||widget.formData['recAlarmStatus']=='notok'||widget.formData['recIndicatorStatus']=='not ok'){
+  String getProblemStatus() {
+    if (widget.formData['roomClean'] == 'Not Ok' ||
+        widget.formData['cubicleClean'] == 'Not Ok' ||
+        widget.formData['roomTemp'] == 'high' ||
+        widget.formData['h2gasEmission'] == 'yes' ||
+        widget.formData['checkMCB'] == 'Not ok' ||
+        widget.formData['dcPDB'] == 'Not ok' ||
+        widget.formData['remoteAlarm'] == 'Not ok' ||
+        widget.formData['recAlarmStatus'] == 'notok' ||
+        widget.formData['recIndicatorStatus'] == 'not ok') {
       print("I detect a fault");
       return "1";
-    }else{
+    } else {
       print("I see nothing");
       return "0";
-
     }
   }
 
@@ -123,31 +131,41 @@ class _httpPostRectifierInspectionState
 
     final remarkData = {
       'recId': recId ?? '', // Pass RecID
-     // 'uploader': widget.userAccess.username ?? '',
+      // 'uploader': widget.userAccess.username ?? '',
       'roomCleanRemark$instance':
-      widget.formData['roomCleanRemark']?.toString() ?? '',
+          widget.formData['roomCleanRemark']?.toString() ?? '',
       'CubicleCleanRemark$instance':
-      widget.formData['CubicleCleanRemark']?.toString() ?? '',
+          widget.formData['CubicleCleanRemark']?.toString() ?? '',
       'roomTempRemark$instance':
-      widget.formData['roomTempRemark']?.toString() ?? '',
+          widget.formData['roomTempRemark']?.toString() ?? '',
       'h2gasEmissionRemark$instance':
-      widget.formData['h2gasEmissionRemark']?.toString() ?? '',
+          widget.formData['h2gasEmissionRemark']?.toString() ?? '',
       'checkMCBRemark$instance':
-      widget.formData['checkMCBRemark']?.toString() ?? '',
+          widget.formData['checkMCBRemark']?.toString() ?? '',
       'dcPDBRemark$instance': widget.formData['dcPDBRemark']?.toString() ?? '',
       'remoteAlarmRemark$instance':
-      widget.formData['remoteAlarmRemark']?.toString() ?? '',
+          widget.formData['remoteAlarmRemark']?.toString() ?? '',
       'recAlarmRemark$instance':
-      widget.formData['recAlarmRemark']?.toString() ?? '',
+          widget.formData['recAlarmRemark']?.toString() ?? '',
       'indRemark$instance': widget.formData['indRemark']?.toString() ?? '',
-    //  'userName': widget.userAccess.username ?? '',
+      'Latitude':
+          widget.formData['Latitude'] is String
+              ? double.tryParse(widget.formData['Latitude']) ?? 0.0
+              : widget.formData['Latitude'] ?? 0.0,
+      'Longitude':
+          widget.formData['Longitude'] is String
+              ? double.tryParse(widget.formData['Longitude']) ?? 0.0
+              : widget.formData['Longitude'] ?? 0.0,
+      //  'userName': widget.userAccess.username ?? '',
     };
 
     try {
       // Insert remark data first
       final remarkResponse = await http
-          .post(Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
-          body: remarkData)
+          .post(
+            Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
+            body: remarkData,
+          )
           .timeout(const Duration(seconds: 10));
 
       if (remarkResponse.statusCode == 200) {
@@ -165,7 +183,7 @@ class _httpPostRectifierInspectionState
         setState(() {
           _isLoading = false;
           _errorMessage =
-          'Error inserting remark data: ${remarkResponse.statusCode}';
+              'Error inserting remark data: ${remarkResponse.statusCode}';
         });
       }
     } catch (e) {
@@ -186,9 +204,10 @@ class _httpPostRectifierInspectionState
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse.isNotEmpty) {
-          final int remarkId = int.parse(jsonResponse[jsonResponse.length - 1]
-          ['DailyRECRemarkID']
-              .toString()); // Adjust index or condition as needed
+          final int remarkId = int.parse(
+            jsonResponse[jsonResponse.length - 1]['DailyRECRemarkID']
+                .toString(),
+          ); // Adjust index or condition as needed
           print(remarkId.toString());
           print(remarkId.runtimeType);
           return remarkId;
@@ -212,11 +231,11 @@ class _httpPostRectifierInspectionState
 
     final nonRemarkData = {
       'recId': recId ?? '', // Pass Rec ID
-    //  'userName': widget.userAccess.username ?? '',
+      //  'userName': widget.userAccess.username ?? '',
       'clockTime$instance': formattedTime ?? '',
       'shift$instance': shift ?? '',
       'DailyRECRemarkID$instance':
-      remarkId.toString() ?? '', // Pass the remark ID
+          remarkId.toString() ?? '', // Pass the remark ID
 
       'region$instance': widget.region,
       'room$instance': widget.formData['room']?.toString() ?? '',
@@ -224,15 +243,15 @@ class _httpPostRectifierInspectionState
       'serialNo$instance': widget.formData['serialNo']?.toString() ?? '',
       'roomClean$instance': widget.formData['roomClean']?.toString() ?? '',
       'cubicleClean$instance':
-      widget.formData['cubicleClean']?.toString() ?? '',
+          widget.formData['cubicleClean']?.toString() ?? '',
       'roomTemp$instance': widget.formData['roomTemp']?.toString() ?? '',
       'h2gasEmission$instance':
-      widget.formData['h2gasEmission']?.toString() ?? '',
+          widget.formData['h2gasEmission']?.toString() ?? '',
       'checkMCB$instance': widget.formData['checkMCB']?.toString() ?? '',
       'dcPDB$instance': widget.formData['dcPDB']?.toString() ?? '',
       'remoteAlarm$instance': widget.formData['remoteAlarm']?.toString() ?? '',
       'noOfWorkingLine$instance':
-      widget.formData['noOfWorkingLine']?.toString() ?? '',
+          widget.formData['noOfWorkingLine']?.toString() ?? '',
       //'capacity$instance': widget.formData['capacity']?.toString() ?? '',
       //'type$instance': widget.formData['type']?.toString() ?? '',
       'voltagePs1$instance': widget.formData['voltagePs1']?.toString() ?? '',
@@ -245,16 +264,26 @@ class _httpPostRectifierInspectionState
       'dcCurrent$instance': widget.formData['dcCurrent']?.toString() ?? '',
       'recCapacity$instance': widget.formData['recCapacity']?.toString() ?? '',
       'recAlarmStatus$instance':
-      widget.formData['recAlarmStatus']?.toString() ?? '',
+          widget.formData['recAlarmStatus']?.toString() ?? '',
       'recIndicatorStatus$instance':
-      widget.formData['recIndicatorStatus']?.toString() ?? '',
+          widget.formData['recIndicatorStatus']?.toString() ?? '',
       'problemStatus': problemStatus,
+      'Latitude':
+          widget.formData['Latitude'] is String
+              ? double.tryParse(widget.formData['Latitude']) ?? 0.0
+              : widget.formData['Latitude'] ?? 0.0,
+      'Longitude':
+          widget.formData['Longitude'] is String
+              ? double.tryParse(widget.formData['Longitude']) ?? 0.0
+              : widget.formData['Longitude'] ?? 0.0,
     };
 
     try {
       final nonRemarkResponse = await http
-          .post(Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
-          body: nonRemarkData)
+          .post(
+            Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
+            body: nonRemarkData,
+          )
           .timeout(const Duration(seconds: 10));
 
       if (nonRemarkResponse.statusCode == 200) {
@@ -265,7 +294,7 @@ class _httpPostRectifierInspectionState
         setState(() {
           _isLoading = false;
           _errorMessage =
-          'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
+              'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
         });
       }
     } catch (e) {
@@ -277,8 +306,8 @@ class _httpPostRectifierInspectionState
     }
   }
 
-//without id
-// Submit non-remark data to the server
+  //without id
+  // Submit non-remark data to the server
   Future<void> _submitNonRemarkDataWithOutId() async {
     final instance =
         widget.formData['instance']?.toString() ?? ""; // Handle null instances
@@ -287,7 +316,7 @@ class _httpPostRectifierInspectionState
 
     final nonRemarkData = {
       'recId': recId ?? '', // Pass Rec ID
-     // 'userName': widget.userAccess.username ?? '',
+      // 'userName': widget.userAccess.username ?? '',
       'clockTime$instance': formattedTime ?? '',
       'shift$instance': shift ?? '',
 
@@ -297,15 +326,15 @@ class _httpPostRectifierInspectionState
       'serialNo$instance': widget.formData['serialNo']?.toString() ?? '',
       'roomClean$instance': widget.formData['roomClean']?.toString() ?? '',
       'cubicleClean$instance':
-      widget.formData['cubicleClean']?.toString() ?? '',
+          widget.formData['cubicleClean']?.toString() ?? '',
       'roomTemp$instance': widget.formData['roomTemp']?.toString() ?? '',
       'h2gasEmission$instance':
-      widget.formData['h2gasEmission']?.toString() ?? '',
+          widget.formData['h2gasEmission']?.toString() ?? '',
       'checkMCB$instance': widget.formData['checkMCB']?.toString() ?? '',
       'dcPDB$instance': widget.formData['dcPDB']?.toString() ?? '',
       'remoteAlarm$instance': widget.formData['remoteAlarm']?.toString() ?? '',
       'noOfWorkingLine$instance':
-      widget.formData['noOfWorkingLine']?.toString() ?? '',
+          widget.formData['noOfWorkingLine']?.toString() ?? '',
       // 'capacity$instance': widget.formData['capacity']?.toString() ?? '',
       // 'type$instance': widget.formData['type']?.toString() ?? '',
       'voltagePs1$instance': widget.formData['voltagePs1']?.toString() ?? '',
@@ -318,16 +347,26 @@ class _httpPostRectifierInspectionState
       'dcCurrent$instance': widget.formData['dcCurrent']?.toString() ?? '',
       'recCapacity$instance': widget.formData['recCapacity']?.toString() ?? '',
       'recAlarmStatus$instance':
-      widget.formData['recAlarmStatus']?.toString() ?? '',
+          widget.formData['recAlarmStatus']?.toString() ?? '',
       'recIndicatorStatus$instance':
-      widget.formData['recIndicatorStatus']?.toString() ?? '',
+          widget.formData['recIndicatorStatus']?.toString() ?? '',
       'problemStatus': problemStatus,
+      'Latitude':
+          widget.formData['Latitude'] is String
+              ? double.tryParse(widget.formData['Latitude']) ?? 0.0
+              : widget.formData['Latitude'] ?? 0.0,
+      'Longitude':
+          widget.formData['Longitude'] is String
+              ? double.tryParse(widget.formData['Longitude']) ?? 0.0
+              : widget.formData['Longitude'] ?? 0.0,
     };
 
     try {
       final nonRemarkResponse = await http
-          .post(Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
-          body: nonRemarkData)
+          .post(
+            Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
+            body: nonRemarkData,
+          )
           .timeout(const Duration(seconds: 10));
 
       if (nonRemarkResponse.statusCode == 200) {
@@ -338,7 +377,7 @@ class _httpPostRectifierInspectionState
         setState(() {
           _isLoading = false;
           _errorMessage =
-          'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
+              'Error inserting non-remark data: ${nonRemarkResponse.statusCode}';
         });
       }
     } catch (e) {
@@ -353,35 +392,34 @@ class _httpPostRectifierInspectionState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Data Update'),
-      ),
+      appBar: AppBar(title: const Text('Data Update')),
       body: Center(
-        child: _isLoading
-            ? const CircularProgressIndicator()
-            : _errorMessage != null
-            ? Text(_errorMessage!)
-            : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Data updated',
-              style: TextStyle(fontSize: 24.0),
-            ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              child: const Text('Back'),
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => RectifierMaintenancePage(),
-                //   ),
-                // );
-              },
-            ),
-          ],
-        ),
+        child:
+            _isLoading
+                ? const CircularProgressIndicator()
+                : _errorMessage != null
+                ? Text(_errorMessage!)
+                : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Data updated',
+                      style: TextStyle(fontSize: 24.0),
+                    ),
+                    const SizedBox(height: 20.0),
+                    ElevatedButton(
+                      child: const Text('Back'),
+                      onPressed: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => RectifierMaintenancePage(),
+                        //   ),
+                        // );
+                      },
+                    ),
+                  ],
+                ),
       ),
     );
   }
@@ -1269,7 +1307,6 @@ class _httpPostRectifierInspectionState
 //     );
 //   }
 // }
-
 
 //v1 01/07/2024
 // import 'package:flutter/material.dart';
