@@ -29,10 +29,8 @@ class DegInspectionData {
   final String? problemStatus;
   final String DailyDEGRemarkID;
   final String last_updated;
-  // ignore: non_constant_identifier_names
-  final String Latitude;
-  // ignore: non_constant_identifier_names
-  final String Longitude;
+  final double Latitude;
+  final double Longitude;
 
   DegInspectionData({
     required this.DailyDEGCheckID,
@@ -101,8 +99,12 @@ class DegInspectionData {
       problemStatus: json["problemStatus"]?.toString(),
       DailyDEGRemarkID: json["DailyDEGRemarkID"]?.toString() ?? '',
       last_updated: json['last_updated']?.toString() ?? '',
-      Latitude: json['Latitude']?.toString() ?? '',
-      Longitude: json['Longitude']?.toString() ?? '',
+     Latitude: json['Latitude'] != null
+          ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+          : 0.0,
+      Longitude: json['Longitude'] != null
+          ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+          : 0.0,
     );
   }
 }
@@ -128,8 +130,8 @@ class DegRemarkData {
   final String tankLeakRemark;
   final String tankSwellRemark;
   final String addiRemark;
-  final String Latitude;
-  final String Longitude;
+  final double Latitude;
+  final double Longitude;
 
   DegRemarkData({
     required this.DailyDEGRemarkID,
@@ -178,8 +180,12 @@ class DegRemarkData {
       tankLeakRemark: json['tankLeakRemark']?.toString() ?? '',
       tankSwellRemark: json['tankSwellRemark']?.toString() ?? '',
       addiRemark: json['addiRemark']?.toString() ?? '',
-      Latitude: json['Latitude']?.toString() ?? '',
-      Longitude: json['Longitude']?.toString() ?? '',
+      Latitude: json['Latitude'] != null
+          ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+          : 0.0,
+      Longitude: json['Longitude'] != null
+          ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+          : 0.0,
     );
   }
 }
@@ -191,8 +197,8 @@ class DEGDetails {
   String station;
   String brand_set;
   String serial_set;
-  String? Latitude;
-  String? Longitude;
+  double? Latitude;
+  double? Longitude;
 
   DEGDetails({
     required this.ID,
@@ -213,8 +219,12 @@ class DEGDetails {
       station: json['station']?.toString() ?? "",
       brand_set: json['brand_set']?.toString() ?? "",
       serial_set: json['serial_set']?.toString() ?? "",
-      Latitude: json['Latitude']?.toString(),
-      Longitude: json['Longitude']?.toString(),
+      Latitude: json['Latitude'] != null
+          ? double.tryParse(json['Latitude'].toString())
+          : null,
+      Longitude: json['Longitude'] != null
+          ? double.tryParse(json['Longitude'].toString())
+          : null,
     );
   }
 
