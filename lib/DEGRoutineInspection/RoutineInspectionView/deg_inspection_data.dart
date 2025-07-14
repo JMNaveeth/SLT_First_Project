@@ -29,7 +29,9 @@ class DegInspectionData {
   final String? problemStatus;
   final String DailyDEGRemarkID;
   final String last_updated;
+  // ignore: non_constant_identifier_names
   final String Latitude;
+  // ignore: non_constant_identifier_names
   final String Longitude;
 
   DegInspectionData({
