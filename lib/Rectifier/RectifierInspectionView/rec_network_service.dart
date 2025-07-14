@@ -6,7 +6,7 @@ import 'package:theme_update/Rectifier/RectifierInspectionView/rec_inspection_da
 
 Future<List<RecInspectionData>> recFetchInspectionData() async {
   final response =
-      await http.get(Uri.parse('https://powerprox.sltidc.lk/GETDailyRECCheck.php'));
+      await http.get(Uri.parse('http://124.43.136.185:8000/api/rectifiers'));
   if (response.statusCode == 200) {
     List<dynamic> body = json.decode(response.body);
     return body
@@ -19,7 +19,7 @@ Future<List<RecInspectionData>> recFetchInspectionData() async {
 
 Future<List<RecRemarkData>> recFetchRemarkData() async {
   final response =
-      await http.get(Uri.parse('https://powerprox.sltidc.lk/GETDailyRECRemarks.php'));
+      await http.get(Uri.parse('http://124.43.136.185:8000/api/rectifiers'));
   if (response.statusCode == 200) {
     List<dynamic> body = json.decode(response.body);
     return body.map((dynamic item) => RecRemarkData.fromJson(item)).toList();
