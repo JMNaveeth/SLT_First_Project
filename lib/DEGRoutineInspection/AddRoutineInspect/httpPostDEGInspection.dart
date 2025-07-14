@@ -143,6 +143,9 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'batChargerRemark$instance':
       widget.formData['batChargerRemark']?.toString() ?? '',
       'addiRemark$instance': widget.formData['addiRemark']?.toString() ?? '',
+       'Latitude': widget.formData['Latitude']?.toString() ?? '',
+  'Longitude': widget.formData['Longitude']?.toString() ?? '',
+
     };
 
     try {
@@ -240,6 +243,9 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat2$instance': widget.formData['bat2']?.toString() ?? '',
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
+      'Latitude': widget.formData['Latitude']?.toString() ?? '',
+  'Longitude': widget.formData['Longitude']?.toString() ?? '',
+
     };
 
     try {

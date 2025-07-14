@@ -29,8 +29,8 @@ class DegInspectionData {
   final String? problemStatus;
   final String DailyDEGRemarkID;
   final String last_updated;
-  final String latitude;
-  final String longitude;
+  final String Latitude;
+  final String Longitude;
 
   DegInspectionData({
     required this.DailyDEGCheckID,
@@ -63,44 +63,44 @@ class DegInspectionData {
     this.problemStatus,
     required this.DailyDEGRemarkID,
     required this.last_updated,
-    required this.latitude,
-    required this.longitude,
+    required this.Latitude,
+    required this.Longitude,
   });
 
   factory DegInspectionData.fromJson(Map<String, dynamic> json) {
     return DegInspectionData(
-      DailyDEGCheckID: json['DailyDEGCheckID'] ?? '',
-      username: json['username'] ?? '',
-      degId: json['degId'] ?? '',
-      clockTime: json['clockTime'] ?? '',
-      shift: json['shift'] ?? '',
-      region: json['region'] ?? '',
-      degClean: json['degClean'] ?? '',
-      surroundClean: json['surroundClean'] ?? '',
-      alarm: json['alarm'] ?? '',
-      warning: json['warning'] ?? '',
-      issue: json['issue'] ?? '',
-      leak: json['leak'] ?? '',
-      waterLevel: json['waterLevel'] ?? '',
-      exterior: json['exterior'] ?? '',
-      fuelLeak: json['fuelLeak'] ?? '',
-      airFilter: json['airFilter'] ?? '',
-      gasEmission: json['gasEmission'] ?? '',
-      oilLeak: json['oilLeak'] ?? '',
-      tankLeak: json['tankLeak'] ?? '',
-      tankSwell: json['tankSwell'] ?? '',
-      batClean: json['batClean'] ?? '',
-      batVoltage: json['batVoltage'] ?? '',
-      batCharger: json['batCharger'] ?? '',
-      bat1: json['bat1'] ?? '',
-      bat2: json['bat2'] ?? '',
-      bat3: json['bat3'] ?? '',
-      bat4: json['bat4'] ?? '',
-      problemStatus: json["problemStatus"] ?? "0",
-      DailyDEGRemarkID: json["DailyDEGRemarkID"] ?? '',
-      last_updated: json['last_updated'] ?? '',
-      latitude: json['latitude'] ?? '',
-      longitude: json['longitude'] ?? '',
+      DailyDEGCheckID: json['DailyDEGCheckID']?.toString() ?? '',
+      username: json['username']?.toString() ?? '',
+      degId: json['degId']?.toString() ?? '',
+      clockTime: json['clockTime']?.toString() ?? '',
+      shift: json['shift']?.toString() ?? '',
+      region: json['region']?.toString() ?? '',
+      degClean: json['degClean']?.toString() ?? '',
+      surroundClean: json['surroundClean']?.toString() ?? '',
+      alarm: json['alarm']?.toString() ?? '',
+      warning: json['warning']?.toString() ?? '',
+      issue: json['issue']?.toString() ?? '',
+      leak: json['leak']?.toString() ?? '',
+      waterLevel: json['waterLevel']?.toString() ?? '',
+      exterior: json['exterior']?.toString() ?? '',
+      fuelLeak: json['fuelLeak']?.toString() ?? '',
+      airFilter: json['airFilter']?.toString() ?? '',
+      gasEmission: json['gasEmission']?.toString() ?? '',
+      oilLeak: json['oilLeak']?.toString() ?? '',
+      tankLeak: json['tankLeak']?.toString() ?? '',
+      tankSwell: json['tankSwell']?.toString() ?? '',
+      batClean: json['batClean']?.toString() ?? '',
+      batVoltage: json['batVoltage']?.toString() ?? '',
+      batCharger: json['batCharger']?.toString() ?? '',
+      bat1: json['bat1']?.toString(),
+      bat2: json['bat2']?.toString(),
+      bat3: json['bat3']?.toString(),
+      bat4: json['bat4']?.toString(),
+      problemStatus: json["problemStatus"]?.toString(),
+      DailyDEGRemarkID: json["DailyDEGRemarkID"]?.toString() ?? '',
+      last_updated: json['last_updated']?.toString() ?? '',
+      Latitude: json['Latitude']?.toString() ?? '',
+      Longitude: json['Longitude']?.toString() ?? '',
     );
   }
 }
@@ -126,6 +126,8 @@ class DegRemarkData {
   final String tankLeakRemark;
   final String tankSwellRemark;
   final String addiRemark;
+  final String Latitude;
+  final String Longitude;
 
   DegRemarkData({
     required this.DailyDEGRemarkID,
@@ -148,30 +150,34 @@ class DegRemarkData {
     required this.tankLeakRemark,
     required this.tankSwellRemark,
     required this.addiRemark,
+    required this.Latitude,
+    required this.Longitude,
   });
 
   factory DegRemarkData.fromJson(Map<String, dynamic> json) {
     return DegRemarkData(
-      DailyDEGRemarkID: json['DailyDEGRemarkID'] ?? '',
-      degCleanRemark: json['degCleanRemark'] ?? '',
-      surroundCleanRemark: json['surroundCleanRemark'] ?? '',
-      vbeltRemark: json['vbeltRemark'] ?? '',
-      alarmRemark: json['alarmRemark'] ?? '',
-      warningRemark: json['warningRemark'] ?? '',
-      issueRemark: json['issueRemark'] ?? '',
-      leakRemark: json['leakRemark'] ?? '',
-      waterLevelRemark: json['waterLevelRemark'] ?? '',
-      exteriorRemark: json['exteriorRemark'] ?? '',
-      fuelLeakRemark: json['fuelLeakRemark'] ?? '',
-      airFilterRemark: json['airFilterRemark'] ?? '',
-      gasEmissionRemark: json['gasEmissionRemark'] ?? '',
-      oilLeakRemark: json['oilLeakRemark'] ?? '',
-      batCleanRemark: json['batCleanRemark'] ?? '',
-      batVoltageRemark: json['batVoltageRemark'] ?? '',
-      batChargerRemark: json['batChargerRemark'] ?? '',
-      tankLeakRemark: json['tankLeakRemark'] ?? '',
-      tankSwellRemark: json['tankSwellRemark'] ?? '',
-      addiRemark: json['addiRemark'] ?? '',
+      DailyDEGRemarkID: json['DailyDEGRemarkID']?.toString() ?? '',
+      degCleanRemark: json['degCleanRemark']?.toString() ?? '',
+      surroundCleanRemark: json['surroundCleanRemark']?.toString() ?? '',
+      vbeltRemark: json['vbeltRemark']?.toString() ?? '',
+      alarmRemark: json['alarmRemark']?.toString() ?? '',
+      warningRemark: json['warningRemark']?.toString() ?? '',
+      issueRemark: json['issueRemark']?.toString() ?? '',
+      leakRemark: json['leakRemark']?.toString() ?? '',
+      waterLevelRemark: json['waterLevelRemark']?.toString() ?? '',
+      exteriorRemark: json['exteriorRemark']?.toString() ?? '',
+      fuelLeakRemark: json['fuelLeakRemark']?.toString() ?? '',
+      airFilterRemark: json['airFilterRemark']?.toString() ?? '',
+      gasEmissionRemark: json['gasEmissionRemark']?.toString() ?? '',
+      oilLeakRemark: json['oilLeakRemark']?.toString() ?? '',
+      batCleanRemark: json['batCleanRemark']?.toString() ?? '',
+      batVoltageRemark: json['batVoltageRemark']?.toString() ?? '',
+      batChargerRemark: json['batChargerRemark']?.toString() ?? '',
+      tankLeakRemark: json['tankLeakRemark']?.toString() ?? '',
+      tankSwellRemark: json['tankSwellRemark']?.toString() ?? '',
+      addiRemark: json['addiRemark']?.toString() ?? '',
+      Latitude: json['Latitude']?.toString() ?? '',
+      Longitude: json['Longitude']?.toString() ?? '',
     );
   }
 }
@@ -183,9 +189,8 @@ class DEGDetails {
   String station;
   String brand_set;
   String serial_set;
-
-  String? latitude;
-  String? longitude;
+  String? Latitude;
+  String? Longitude;
 
   DEGDetails({
     required this.ID,
@@ -194,20 +199,20 @@ class DEGDetails {
     required this.station,
     required this.brand_set,
     required this.serial_set,
-    required this.latitude,
-    required this.longitude,
+    required this.Latitude,
+    required this.Longitude,
   });
 
   factory DEGDetails.fromJson(Map<String, dynamic> json) {
     return DEGDetails(
-      ID: json['ID'] ?? "",
-      region: json['Region'] ?? "",
-      rtom: json['RTOM'] ?? "",
-      station: json['station'] ?? "",
-      brand_set: json['brand_set'] ?? "",
-      serial_set: json['serial_set'] ?? "",
-      latitude: json['latitude'] ?? '',
-      longitude: json['longitude'] ?? '',
+      ID: json['ID']?.toString() ?? "",
+      region: json['Region']?.toString() ?? "",
+      rtom: json['RTOM']?.toString() ?? "",
+      station: json['station']?.toString() ?? "",
+      brand_set: json['brand_set']?.toString() ?? "",
+      serial_set: json['serial_set']?.toString() ?? "",
+      Latitude: json['Latitude']?.toString(),
+      Longitude: json['Longitude']?.toString(),
     );
   }
 
@@ -219,8 +224,8 @@ class DEGDetails {
       'station': station,
       'brand_set': brand_set,
       'serial_set': serial_set,
-      'latitude': latitude,
-      'longitude': longitude,
+      'Latitude': Latitude,
+      'Longitude': Longitude,
     };
   }
 }
