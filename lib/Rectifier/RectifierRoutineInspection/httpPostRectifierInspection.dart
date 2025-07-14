@@ -146,7 +146,7 @@ class _httpPostRectifierInspectionState
     try {
       // Insert remark data first
       final remarkResponse = await http
-          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyRECRemarks.php'),
+          .post(Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
           body: remarkData)
           .timeout(const Duration(seconds: 10));
 
@@ -181,7 +181,7 @@ class _httpPostRectifierInspectionState
   Future<int?> _fetchRemarkId() async {
     try {
       final response = await http
-          .get(Uri.parse("https://powerprox.sltidc.lk/GETDailyRECRemarks.php"))
+          .get(Uri.parse("http://124.43.136.185:8000/api/rectifiers"))
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
@@ -253,7 +253,7 @@ class _httpPostRectifierInspectionState
 
     try {
       final nonRemarkResponse = await http
-          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyRECCheck.php'),
+          .post(Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
           body: nonRemarkData)
           .timeout(const Duration(seconds: 10));
 
@@ -326,7 +326,7 @@ class _httpPostRectifierInspectionState
 
     try {
       final nonRemarkResponse = await http
-          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyRECCheck.php'),
+          .post(Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
           body: nonRemarkData)
           .timeout(const Duration(seconds: 10));
 
