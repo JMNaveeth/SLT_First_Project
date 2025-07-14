@@ -88,30 +88,21 @@ class RecInspectionDetailPage extends StatelessWidget {
                       style: TextStyle(color: customColors.subTextColor),
                     ),
                      // --- ADD THIS BLOCK FOR GPS ---
-   Row(
+   // ...existing code...
+Row(
   children: [
-    Icon(Icons.location_on, color: customColors.subTextColor, size: 18),
-    SizedBox(width: 4),
-    (rectifierDetails?.Latitude != null && rectifierDetails?.Longitude != null && rectifierDetails!.Latitude != 0.0 && rectifierDetails!.Longitude != 0.0)
-        ? Row(
-            children: [
-              Text(
-                "Latitude: ${rectifierDetails!.Latitude}",
-                style: TextStyle(color: customColors.subTextColor),
-              ),
-              SizedBox(width: 8),
-              Text(
-                "Longitude: ${rectifierDetails!.Longitude}",
-                style: TextStyle(color: customColors.subTextColor),
-              ),
-            ],
-          )
-        : Text(
-            "Location not available for old data",
-            style: TextStyle(color: customColors.subTextColor, fontStyle: FontStyle.italic),
-          ),
+    Text(
+      "Latitude: ${rectifierDetails?.Latitude ?? "Not Available"}",
+      style: TextStyle(color: customColors.subTextColor),
+    ),
+    SizedBox(width: 8),
+    Text(
+      "Longitude: ${rectifierDetails?.Longitude ?? "Not Available"}",
+      style: TextStyle(color: customColors.subTextColor),
+    ),
   ],
 ),
+// ...existing code...
     // --- END GPS BLOCK ---
                   ],
                 ),
