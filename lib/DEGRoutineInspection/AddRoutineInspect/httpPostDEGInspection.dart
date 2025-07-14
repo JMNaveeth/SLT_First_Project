@@ -144,11 +144,12 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       widget.formData['batChargerRemark']?.toString() ?? '',
       'addiRemark$instance': widget.formData['addiRemark']?.toString() ?? '',
       'Latitude': widget.formData['Latitude'] is String
-    ? double.tryParse(widget.formData['Latitude']) ?? null
-    : widget.formData['Latitude'],
-'Longitude': widget.formData['Longitude'] is String
-    ? double.tryParse(widget.formData['Longitude']) ?? null
-    : widget.formData['Longitude'], };
+      ? double.tryParse(widget.formData['Latitude']) ?? null
+      : widget.formData['Latitude'],
+  'Longitude': widget.formData['Longitude'] is String
+      ? double.tryParse(widget.formData['Longitude']) ?? null
+      : widget.formData['Longitude'],
+};
 
     try {
       // Insert remark data first
@@ -249,13 +250,13 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat2$instance': widget.formData['bat2']?.toString() ?? '',
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
- 'Latitude': widget.formData['Latitude'] is String
-    ? double.tryParse(widget.formData['Latitude']) ?? null
-    : widget.formData['Latitude'],
-'Longitude': widget.formData['Longitude'] is String
-    ? double.tryParse(widget.formData['Longitude']) ?? null
-    : widget.formData['Longitude'],
-    };
+  'Latitude': widget.formData['Latitude'] is String
+      ? double.tryParse(widget.formData['Latitude']) ?? null
+      : widget.formData['Latitude'],
+  'Longitude': widget.formData['Longitude'] is String
+      ? double.tryParse(widget.formData['Longitude']) ?? null
+      : widget.formData['Longitude'],
+};
 
     try {
       final nonRemarkResponse = await http.post(
@@ -322,18 +323,22 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
       'bat3$instance': widget.formData['bat3']?.toString() ?? '',
       'bat4$instance': widget.formData['bat4']?.toString() ?? '',
       'Latitude': widget.formData['Latitude'] is String
-    ? double.tryParse(widget.formData['Latitude']) ?? null
-    : widget.formData['Latitude'],
-'Longitude': widget.formData['Longitude'] is String
-    ? double.tryParse(widget.formData['Longitude']) ?? null
-    : widget.formData['Longitude'],
-    };
+      ? double.tryParse(widget.formData['Latitude']) ?? null
+      : widget.formData['Latitude'],
+  'Longitude': widget.formData['Longitude'] is String
+      ? double.tryParse(widget.formData['Longitude']) ?? null
+      : widget.formData['Longitude'],
+};
 
     try {
-      final nonRemarkResponse = await http
-          .post(Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
-          body: nonRemarkData)
-          .timeout(const Duration(seconds: 10));
+       final nonRemarkResponse = await http.post(
+      Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(nonRemarkData),
+    ).timeout(const Duration(seconds: 10));
 
       if (nonRemarkResponse.statusCode == 200) {
         setState(() {
