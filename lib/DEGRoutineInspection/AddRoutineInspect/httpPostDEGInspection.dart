@@ -148,7 +148,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
     try {
       // Insert remark data first
       final remarkResponse = await http
-          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyDEGRemarks.php'),
+          .post(Uri.parse('http://124.43.136.185:8000/api/dailyDEGRemarks'),
           body: remarkData)
           .timeout(const Duration(seconds: 10));
 
@@ -182,7 +182,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
   Future<int?> _fetchRemarkId() async {
     try {
       final response = await http
-          .get(Uri.parse("https://powerprox.sltidc.lk/GETDailyDEGRemarks.php"))
+          .get(Uri.parse("http://124.43.136.185:8000/api/dailyDEGRemarks"))
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
@@ -244,7 +244,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
 
     try {
       final nonRemarkResponse = await http
-          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyDEGCheck.php'),
+          .post(Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
           body: nonRemarkData)
           .timeout(const Duration(seconds: 10));
 
@@ -306,7 +306,7 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
 
     try {
       final nonRemarkResponse = await http
-          .post(Uri.parse('https://powerprox.sltidc.lk/POSTDailyDEGCheck.php'),
+          .post(Uri.parse('http://124.43.136.185:8000/api/dailyDEGCheck'),
           body: nonRemarkData)
           .timeout(const Duration(seconds: 10));
 
