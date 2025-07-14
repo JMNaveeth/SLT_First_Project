@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -34,18 +35,37 @@ class _httpPostDEGInspectionState extends State<httpPostDEGInspection> {
   String? shift;
   late String formattedTime;
 
-  @override
+ @override
   void initState() {
     super.initState();
-    formattedTime = _formatTime(widget.formData['clockTime']?.toString() ??
-        ''); // Ensure time is formatted
+    formattedTime = _formatTime(widget.formData['clockTime']?.toString() ?? '');
     shift = _determineShift(TimeOfDay.now());
-    if (_hasAtLeastOneRemark()) {
-      _submitRemarkData();
-    } else {
-      _submitNonRemarkDataWithoutId();
+    _setLocationAndSubmit();
+  }
+
+  Future<void> _setLocationAndSubmit() async {
+    try {
+      LocationPermission permission = await Geolocator.requestPermission();
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+      widget.formData['Latitude'] = position.latitude;
+      widget.formData['Longitude'] = position.longitude;
+
+      print('formData at submit: ${widget.formData}');
+
+      if (_hasAtLeastOneRemark()) {
+        await _submitRemarkData();
+      } else {
+        await _submitNonRemarkDataWithoutId();
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Location error: ${e.toString()}';
+      });
     }
   }
+
 
   String _formatTime(String clockTime) {
     try {
