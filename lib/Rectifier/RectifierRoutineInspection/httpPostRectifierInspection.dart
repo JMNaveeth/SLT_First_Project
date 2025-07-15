@@ -166,12 +166,13 @@ Future<void> _setLocationAndSubmit() async {
               : widget.formData['Longitude'] ?? 0.0,
       //  'userName': widget.userAccess.username ?? '',
     };
-
+print('Sending Latitude: ${remarkData['Latitude']}');
+print('Sending Longitude: ${remarkData['Longitude']}');
     try {
       // Insert remark data first
       final remarkResponse = await http
           .post(
-            Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
+            Uri.parse('http://124.43.136.185:8000/api/dailyRECRemarks'),
             body: remarkData,
           )
           .timeout(const Duration(seconds: 10));
@@ -207,7 +208,7 @@ Future<void> _setLocationAndSubmit() async {
   Future<int?> _fetchRemarkId() async {
     try {
       final response = await http
-          .get(Uri.parse("http://124.43.136.185:8000/api/rectifiers"))
+          .get(Uri.parse("http://124.43.136.185:8000/api/dailyRECRemarks"))
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
@@ -285,11 +286,12 @@ Future<void> _setLocationAndSubmit() async {
               ? double.tryParse(widget.formData['Longitude']) ?? 0.0
               : widget.formData['Longitude'] ?? 0.0,
     };
-
+ print('Sending Latitude (non-remark): ${nonRemarkData['Latitude']}');
+  print('Sending Longitude (non-remark): ${nonRemarkData['Longitude']}');
     try {
       final nonRemarkResponse = await http
           .post(
-            Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
+            Uri.parse('http://124.43.136.185:8000/api/dailyRECCheck'),
             body: nonRemarkData,
           )
           .timeout(const Duration(seconds: 10));
@@ -368,11 +370,12 @@ Future<void> _setLocationAndSubmit() async {
               ? double.tryParse(widget.formData['Longitude']) ?? 0.0
               : widget.formData['Longitude'] ?? 0.0,
     };
-
+ print('Sending Latitude (non-remark no id): ${nonRemarkData['Latitude']}');
+  print('Sending Longitude (non-remark no id): ${nonRemarkData['Longitude']}');
     try {
       final nonRemarkResponse = await http
           .post(
-            Uri.parse('http://124.43.136.185:8000/api/rectifiers'),
+            Uri.parse('http://124.43.136.185:8000/api/dailyRECCheck'),
             body: nonRemarkData,
           )
           .timeout(const Duration(seconds: 10));
