@@ -37,34 +37,35 @@ class _httpPostRectifierInspectionState
   String problemStatus = "0";
 
   @override
-void initState() {
-  super.initState();
-  formattedTime = _formatTime(widget.formData['clockTime']?.toString() ?? '');
-  shift = _determineShift(TimeOfDay.now());
-  _setLocationAndSubmit();
-}
-
-Future<void> _setLocationAndSubmit() async {
-  try {
-    // Get location
-    LocationPermission permission = await Geolocator.requestPermission();
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-    widget.formData['Latitude'] = position.latitude;
-    widget.formData['Longitude'] = position.longitude;
-
-    if (_hasAtLeastOneRemark()) {
-      await _submitRemarkData();
-    } else {
-      await _submitNonRemarkDataWithOutId();
-    }
-  } catch (e) {
-    setState(() {
-      _isLoading = false;
-      _errorMessage = 'Location error: ${e.toString()}';
-    });
+  void initState() {
+    super.initState();
+    formattedTime = _formatTime(widget.formData['clockTime']?.toString() ?? '');
+    shift = _determineShift(TimeOfDay.now());
+    _setLocationAndSubmit();
   }
-}
+
+  Future<void> _setLocationAndSubmit() async {
+    try {
+      LocationPermission permission = await Geolocator.requestPermission();
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+      widget.formData['Latitude'] = position.latitude;
+      widget.formData['Longitude'] = position.longitude;
+
+      print('formData at submit: ${widget.formData}');
+
+      if (_hasAtLeastOneRemark()) {
+        await _submitRemarkData();
+      } else {
+        await _submitNonRemarkDataWithOutId();
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Location error: ${e.toString()}';
+      });
+    }
+  }
 
   String _formatTime(String clockTime) {
     try {
@@ -122,12 +123,15 @@ Future<void> _setLocationAndSubmit() async {
       widget.formData['recAlarmRemark'],
       widget.formData['indRemark'],
     ];
+    debugPrint(remarks.toString());
 
     for (var remark in remarks) {
       if (remark != null && remark.toString().isNotEmpty) {
+        debugPrint("true");
         return true;
       }
     }
+    debugPrint("false");
     return false;
   }
 
@@ -163,17 +167,20 @@ Future<void> _setLocationAndSubmit() async {
       'Longitude':
           widget.formData['Longitude'] is String
               ? double.tryParse(widget.formData['Longitude']) ?? 0.0
-              : widget.formData['Longitude'] ?? 0.0,
-      //  'userName': widget.userAccess.username ?? '',
+              : widget.formData['Longitude'] ??
+                  0.0, 
+                  
+                  //  'userName': widget.userAccess.username ?? '',
     };
-print('Sending Latitude: ${remarkData['Latitude']}');
-print('Sending Longitude: ${remarkData['Longitude']}');
+    print('Sending Latitude: ${remarkData['Latitude']}');
+    print('Sending Longitude: ${remarkData['Longitude']}');
     try {
       // Insert remark data first
       final remarkResponse = await http
           .post(
             Uri.parse('http://124.43.136.185:8000/api/dailyRECRemarks'),
-            body: remarkData,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(remarkData),
           )
           .timeout(const Duration(seconds: 10));
 
@@ -286,16 +293,16 @@ print('Sending Longitude: ${remarkData['Longitude']}');
               ? double.tryParse(widget.formData['Longitude']) ?? 0.0
               : widget.formData['Longitude'] ?? 0.0,
     };
- print('Sending Latitude (non-remark): ${nonRemarkData['Latitude']}');
-  print('Sending Longitude (non-remark): ${nonRemarkData['Longitude']}');
+    print('Sending Latitude (non-remark): ${nonRemarkData['Latitude']}');
+    print('Sending Longitude (non-remark): ${nonRemarkData['Longitude']}');
     try {
       final nonRemarkResponse = await http
           .post(
             Uri.parse('http://124.43.136.185:8000/api/dailyRECCheck'),
-            body: nonRemarkData,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(nonRemarkData),
           )
           .timeout(const Duration(seconds: 10));
-
       if (nonRemarkResponse.statusCode == 200) {
         setState(() {
           _isLoading = false;
@@ -370,15 +377,16 @@ print('Sending Longitude: ${remarkData['Longitude']}');
               ? double.tryParse(widget.formData['Longitude']) ?? 0.0
               : widget.formData['Longitude'] ?? 0.0,
     };
- print('Sending Latitude (non-remark no id): ${nonRemarkData['Latitude']}');
-  print('Sending Longitude (non-remark no id): ${nonRemarkData['Longitude']}');
+    print('Sending nonRemarkData: ${jsonEncode(nonRemarkData)}');
     try {
       final nonRemarkResponse = await http
           .post(
             Uri.parse('http://124.43.136.185:8000/api/dailyRECCheck'),
-            body: nonRemarkData,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(nonRemarkData),
           )
           .timeout(const Duration(seconds: 10));
+      print('Server response: ${nonRemarkResponse.body}');
 
       if (nonRemarkResponse.statusCode == 200) {
         setState(() {

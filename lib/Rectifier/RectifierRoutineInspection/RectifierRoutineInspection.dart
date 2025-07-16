@@ -1419,18 +1419,18 @@ class _InspectionRecState extends State<InspectionRec> {
                                 // debugPrint('RTOM value: $rtom');
                                 //pass _formkey.currenState.value to a page called httpPostGen
 
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           httpPostRectifierInspection(
-                                //             formData: recFormData,
-                                //             recId:
-                                //             widget.RectifierUnit['RecID'],
-                                //            // userAccess: userAccess,
-                                //             region: widget.region,
-                                //           )),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          httpPostRectifierInspection(
+                                            formData: recFormData,
+                                            recId:
+                                            widget.RectifierUnit['RecID'],
+                                           // userAccess: userAccess,
+                                            region: widget.region,
+                                          )),
+                                );
                               } else {
                                 debugPrint(
                                   _formKey.currentState?.value.toString(),

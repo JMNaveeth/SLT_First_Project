@@ -37,422 +37,477 @@ class RecInspectionDetailPage extends StatelessWidget {
         iconTheme: IconThemeData(color: customColors.mainTextColor),
       ),
 
-      body: Container( // Wrap Padding with a Container
-        color: customColors.mainBackgroundColor, // Or Colors.white, or any other color
-        child:Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            //Text('ID: ${inspectionData.id}'),
-            Card(
-              color: customColors.suqarBackgroundColor,
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "${inspectionData.clockTime}",
-                      style: TextStyle(color: customColors.mainTextColor,fontSize: 16),
-                    ),
-                    Text(
-                      " ${inspectionData.shift}",
-                      style: TextStyle(color: customColors.mainTextColor,fontSize: 16,),
-                    ),
-                  ],
-                ),
-                subtitle: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Region: ${inspectionData.region}',
-                          style: TextStyle(color: customColors.mainTextColor),
+      body: Container(
+        // Wrap Padding with a Container
+        color:
+            customColors
+                .mainBackgroundColor, // Or Colors.white, or any other color
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              //Text('ID: ${inspectionData.id}'),
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${inspectionData.clockTime}",
+                        style: TextStyle(
+                          color: customColors.mainTextColor,
+                          fontSize: 16,
                         ),
-                        Text(
-                          'Rec Id: ${inspectionData.recId}',
-                          style: TextStyle(color: customColors.mainTextColor),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      'Location : ${rectifierDetails!.rtom} ${rectifierDetails!.station}',
-                      style: TextStyle(color: customColors.subTextColor),
-                    ),
-                    Text(
-                      '${rectifierDetails!.brand} | (${rectifierDetails!.model})',
-                      style: TextStyle(color: customColors.subTextColor),
-                    ),
-                    Text(
-                      "Checked By : ${inspectionData.userName}",
-                      style: TextStyle(color: customColors.subTextColor),
-                    ),
-                     // --- ADD THIS BLOCK FOR GPS ---
-    Row(
-      children: [
-        Icon(Icons.location_on, color: customColors.subTextColor, size: 18),
-        SizedBox(width: 4),
-        Text(
-          "Latitude: ${inspectionData.Latitude != 0.0 ? inspectionData.Latitude : "Not Available"}",
-          style: TextStyle(color: customColors.subTextColor),
-        ),
-        SizedBox(width: 8),
-        Text(
-          "Longitude: ${inspectionData.Longitude != 0.0 ? inspectionData.Longitude : "Not Available"}",
-          style: TextStyle(color: customColors.subTextColor),
-        ),
-      ],
-    ),
-    // --- END GPS BLOCK ---
-                  ],
-                ),
-              ),
-            ),
-
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Cleanliness of Room",
-              titleResponse: inspectionData.roomClean,
-              remarkResponse:
-                  remarkData != null ? remarkData!.roomCleanRemark : "",
-              warningConditionValue: 'Not Ok',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Cleanliness of Cubicles",
-              titleResponse: inspectionData.cubicleClean,
-              remarkResponse:
-                  remarkData != null ? remarkData!.cubicleCleanRemark : "",
-              warningConditionValue: 'Not Ok',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Measure Room Tempertature",
-              titleResponse: inspectionData.roomTemp,
-              remarkResponse:
-                  remarkData != null ? remarkData!.roomTempRemark : "",
-              warningConditionValue: 'high',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Measure Hygrogen Gas Emission",
-              titleResponse: inspectionData.h2gasEmission,
-              remarkResponse:
-                  remarkData != null ? remarkData!.h2gasEmissionRemark : "",
-              warningConditionValue: 'yes',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Check Main Circuit ",
-              titleResponse: inspectionData.checkMCB,
-              remarkResponse:
-                  remarkData != null ? remarkData!.checkMCBRemark : "",
-              warningConditionValue: 'Not ok',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "DC PDB",
-              titleResponse: inspectionData.dcPDB,
-              remarkResponse: remarkData != null ? remarkData!.dcPDBRemark : "",
-              warningConditionValue: 'Not ok',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Test Remote Alarm",
-              titleResponse: inspectionData.remoteAlarm,
-              remarkResponse:
-                  remarkData != null ? remarkData!.remoteAlarmRemark : "",
-              warningConditionValue: 'Not ok',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
-            CustomOneDetailsCard(
-              inspectionData: inspectionData,
-              title: "No.of Working Lines",
-              titleResponse: inspectionData.noOfWorkingLine,
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomOneDetailsCard(
-              inspectionData: inspectionData,
-              title: "Capacity",
-              titleResponse: inspectionData.noOfWorkingLine,
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-
-            // CustomOneDetailsCard(
-            //   inspectionData: inspectionData,
-            //   title: "Make Type",
-            //   titleResponse: inspectionData.type,
-            //   backgroundColor: suqarBackgroundColor,
-            //   textColor: subTextColor,),
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
-            Text(
-              "Rectifier Reading",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: customColors.mainTextColor,
-              ),
-            ),
-            Card(
-              color: customColors.suqarBackgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 15,
-                  bottom: 5,
-                  top: 10,
-                  left: 15,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Voltage Reading",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: customColors.mainTextColor,
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 1",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.voltagePs1} V',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
+                      Text(
+                        " ${inspectionData.shift}",
+                        style: TextStyle(
+                          color: customColors.mainTextColor,
+                          fontSize: 16,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 2",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.voltagePs2} V',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 3",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.voltagePs3} V',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            //Current Reading
-            Card(
-              color: customColors.suqarBackgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 15,
-                  bottom: 5,
-                  top: 10,
-                  left: 15,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Current Reading",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: customColors.mainTextColor,
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 1",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.currentPs1} A',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 2",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.currentPs2} A',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 3",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.currentPs3} A',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            //DC Output
-            Card(
-              color: customColors.suqarBackgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 15,
-                  bottom: 5,
-                  top: 10,
-                  left: 15,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "DC Output",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: customColors.mainTextColor,
+                    ],
+                  ),
+                  subtitle: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Region: ${inspectionData.region}',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                          Text(
+                            'Rec Id: ${inspectionData.recId}',
+                            style: TextStyle(color: customColors.mainTextColor),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Voltage",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.dcVoltage} V',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Current",
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                            Text(
-                              '${inspectionData.dcCurrent} A',
-                              style: TextStyle(color: customColors.subTextColor),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                      rectifierDetails != null
+                          ? Column(
+                            children: [
+                              Text(
+                                'Location : ${rectifierDetails!.rtom} ${rectifierDetails!.station}',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${rectifierDetails!.brand} ',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          )
+                          : SizedBox.shrink(),
+                      // --- ADD THIS BLOCK FOR GPS ---
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: customColors.subTextColor,
+                            size: 18,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            "Latitude: ${inspectionData.Latitude != 0.0 ? inspectionData.Latitude : "Not Available"}",
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "Longitude: ${inspectionData.Longitude != 0.0 ? inspectionData.Longitude : "Not Available"}",
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                        ],
+                      ), // --- END GPS BLOCK ---
+                      Text(
+                        "Checked By : ${inspectionData.userName}",
+                        style: TextStyle(color: customColors.subTextColor),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            CustomOneDetailsCard(
-              inspectionData: inspectionData,
-              title: "Capacity",
-              titleResponse: inspectionData.recCapacity,
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Alarm Status",
-              titleResponse: inspectionData.recAlarmStatus,
-              remarkResponse:
-                  remarkData != null ? remarkData!.recAlarmRemark : "",
-              warningConditionValue: 'notok',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Indicator Status",
-              titleResponse: inspectionData.recIndicatorStatus,
-              remarkResponse: remarkData != null ? remarkData!.indRemark : "",
-              warningConditionValue: 'not ok',
-              backgroundColor: customColors.suqarBackgroundColor,
-              textColor: customColors.subTextColor,
-            ),
-          ],
+
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Cleanliness of Room",
+                titleResponse: inspectionData.roomClean,
+                remarkResponse:
+                    remarkData != null ? remarkData!.roomCleanRemark : "",
+                warningConditionValue: 'Not Ok',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Cleanliness of Cubicles",
+                titleResponse: inspectionData.cubicleClean,
+                remarkResponse:
+                    remarkData != null ? remarkData!.cubicleCleanRemark : "",
+                warningConditionValue: 'Not Ok',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Measure Room Tempertature",
+                titleResponse: inspectionData.roomTemp,
+                remarkResponse:
+                    remarkData != null ? remarkData!.roomTempRemark : "",
+                warningConditionValue: 'high',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Measure Hygrogen Gas Emission",
+                titleResponse: inspectionData.h2gasEmission,
+                remarkResponse:
+                    remarkData != null ? remarkData!.h2gasEmissionRemark : "",
+                warningConditionValue: 'yes',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Check Main Circuit ",
+                titleResponse: inspectionData.checkMCB,
+                remarkResponse:
+                    remarkData != null ? remarkData!.checkMCBRemark : "",
+                warningConditionValue: 'Not ok',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "DC PDB",
+                titleResponse: inspectionData.dcPDB,
+                remarkResponse:
+                    remarkData != null ? remarkData!.dcPDBRemark : "",
+                warningConditionValue: 'Not ok',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Test Remote Alarm",
+                titleResponse: inspectionData.remoteAlarm,
+                remarkResponse:
+                    remarkData != null ? remarkData!.remoteAlarmRemark : "",
+                warningConditionValue: 'Not ok',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
+              CustomOneDetailsCard(
+                inspectionData: inspectionData,
+                title: "No.of Working Lines",
+                titleResponse: inspectionData.noOfWorkingLine,
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomOneDetailsCard(
+                inspectionData: inspectionData,
+                title: "Capacity",
+                titleResponse: inspectionData.noOfWorkingLine,
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+
+              // CustomOneDetailsCard(
+              //   inspectionData: inspectionData,
+              //   title: "Make Type",
+              //   titleResponse: inspectionData.type,
+              //   backgroundColor: suqarBackgroundColor,
+              //   textColor: subTextColor,),
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
+              Text(
+                "Rectifier Reading",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: customColors.mainTextColor,
+                ),
+              ),
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 15,
+                    bottom: 5,
+                    top: 10,
+                    left: 15,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Voltage Reading",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 1",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.voltagePs1} V',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 2",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.voltagePs2} V',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 3",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.voltagePs3} V',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              //Current Reading
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 15,
+                    bottom: 5,
+                    top: 10,
+                    left: 15,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Current Reading",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 1",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.currentPs1} A',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 2",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.currentPs2} A',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 3",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.currentPs3} A',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              //DC Output
+              Card(
+                color: customColors.suqarBackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 15,
+                    bottom: 5,
+                    top: 10,
+                    left: 15,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "DC Output",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: customColors.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Voltage",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.dcVoltage} V',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Current",
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.dcCurrent} A',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              CustomOneDetailsCard(
+                inspectionData: inspectionData,
+                title: "Capacity",
+                titleResponse: inspectionData.recCapacity,
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Alarm Status",
+                titleResponse: inspectionData.recAlarmStatus,
+                remarkResponse:
+                    remarkData != null ? remarkData!.recAlarmRemark : "",
+                warningConditionValue: 'notok',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Indicator Status",
+                titleResponse: inspectionData.recIndicatorStatus,
+                remarkResponse: remarkData != null ? remarkData!.indRemark : "",
+                warningConditionValue: 'not ok',
+                backgroundColor: customColors.suqarBackgroundColor,
+                textColor: customColors.subTextColor,
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

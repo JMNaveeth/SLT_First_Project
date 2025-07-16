@@ -116,6 +116,7 @@ class _RectifierInspectionViewSelectState
     });
     recRemarkData = recFetchRemarkData();
     rectifierDetails = rectifierDetailsFetchData();
+    debugPrint(regionSubmitters.toString());
   }
 
   @override
@@ -135,240 +136,251 @@ class _RectifierInspectionViewSelectState
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
-      body: Container( // Wrap the Column with a Container
-        color: customColors.mainBackgroundColor, // Or Colors.white for a hardcoded white
-        child:Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              DropdownButton<String>(
-                hint: Text('Select Region'),
-                value: selectedRegion,
-                dropdownColor: customColors.suqarBackgroundColor,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedRegion = newValue;
-                    // checkByPerson =
-                    //     null; // Reset person selection when region changes
-                  });
-                },
-                items:
-                    regions.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
+      body: Container(
+        // Wrap the Column with a Container
+        color:
+            customColors
+                .mainBackgroundColor, // Or Colors.white for a hardcoded white
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                DropdownButton<String>(
+                  hint: Text('Select Region'),
+                  value: selectedRegion,
+                  dropdownColor: customColors.suqarBackgroundColor,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedRegion = newValue;
+                      // checkByPerson =
+                      //     null; // Reset person selection when region changes
+                    });
+                  },
+                  items:
+                      regions.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(color: customColors.subTextColor),
+                          ),
+                        );
+                      }).toList(),
+                ),
+                DropdownButton<String>(
+                  hint: Text(
+                    'Checked By',
+                    style: TextStyle(color: customColors.mainTextColor),
+                  ),
+                  value: checkByPerson,
+                  style: (TextStyle(color: customColors.mainTextColor)),
+                  dropdownColor: customColors.suqarBackgroundColor,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      checkByPerson = newValue;
+                    });
+                  },
+                  items:
+                      selectedRegion != null &&
+                              regionSubmitters[selectedRegion] != null
+                          ? regionSubmitters[selectedRegion]!.map((
+                            String value,
+                          ) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList()
+                          : [],
+                ),
+              ],
+            ),
+            Expanded(
+              child: FutureBuilder<List<dynamic>>(
+                future: Future.wait([
+                  recInspectionData,
+                  recRemarkData,
+                  rectifierDetails,
+                ]),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData ||
+                      (snapshot.data![0] as List).isEmpty ||
+                      (snapshot.data![1] as List).isEmpty) {
+                    return Center(child: Text('No data available'));
+                  } else {
+                    List<RecInspectionData> inspectionDataList =
+                        snapshot.data![0] as List<RecInspectionData>;
+                    List<RecRemarkData> remarkDataList =
+                        snapshot.data![1] as List<RecRemarkData>;
+                    List<RectifierDetails> rectifierDetailsList =
+                        snapshot.data![2] as List<RectifierDetails>;
+
+                    // Filter data based on selected region
+                    inspectionDataList = recFilterDataByRegion(
+                      inspectionDataList,
+                      selectedRegion,
+                    );
+
+                    // Filter data based on selected person
+                    inspectionDataList = recFilterDataByPerson(
+                      inspectionDataList,
+                      checkByPerson,
+                    );
+
+                    // Sort the filtered data in reverse order by clockTime
+                    inspectionDataList.sort(
+                      (a, b) => b.clockTime.compareTo(a.clockTime),
+                    );
+
+                    // Check if the filtered list is empty
+                    if (inspectionDataList.isEmpty) {
+                      return Center(
                         child: Text(
-                          value,
-                          style: TextStyle(color: customColors.subTextColor),
+                          'No data available for the selected region',
                         ),
                       );
-                    }).toList(),
-              ),
-              DropdownButton<String>(
-                hint: Text(
-                  'Checked By',
-                  style: TextStyle(color: customColors.mainTextColor),
-                ),
-                value: checkByPerson,
-                style: (TextStyle(color: customColors.mainTextColor)),
-                dropdownColor: customColors.suqarBackgroundColor,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    checkByPerson = newValue;
-                  });
-                },
-                items:
-                    selectedRegion != null &&
-                            regionSubmitters[selectedRegion] != null
-                        ? regionSubmitters[selectedRegion]!.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList()
-                        : [],
-              ),
-            ],
-          ),
-          Expanded(
-            child: FutureBuilder<List<dynamic>>(
-              future: Future.wait([
-                recInspectionData,
-                recRemarkData,
-                rectifierDetails,
-              ]),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData ||
-                    (snapshot.data![0] as List).isEmpty ||
-                    (snapshot.data![1] as List).isEmpty) {
-                  return Center(child: Text('No data available'));
-                } else {
-                  List<RecInspectionData> inspectionDataList =
-                      snapshot.data![0] as List<RecInspectionData>;
-                  List<RecRemarkData> remarkDataList =
-                      snapshot.data![1] as List<RecRemarkData>;
-                  List<RectifierDetails> rectifierDetailsList =
-                      snapshot.data![2] as List<RectifierDetails>;
+                    }
 
-                  // Filter data based on selected region
-                  inspectionDataList = recFilterDataByRegion(
-                    inspectionDataList,
-                    selectedRegion,
-                  );
-
-                  // Filter data based on selected person
-                  inspectionDataList = recFilterDataByPerson(
-                    inspectionDataList,
-                    checkByPerson,
-                  );
-
-                  // Sort the filtered data in reverse order by clockTime
-                  inspectionDataList.sort(
-                    (a, b) => b.clockTime.compareTo(a.clockTime),
-                  );
-
-                  // Check if the filtered list is empty
-                  if (inspectionDataList.isEmpty) {
-                    return Center(
-                      child: Text('No data available for the selected region'),
-                    );
-                  }
-
-                  return ListView.builder(
-                    key: PageStorageKey(rectifierDetailsList),
-                    itemCount: inspectionDataList.length,
-                    itemBuilder: (context, index) {
-                      RecInspectionData data = inspectionDataList[index];
-                      RecRemarkData? filteredRemarkDataList =
-                          getRemarkForInspection(remarkDataList, data.remarkId);
-                      RectifierDetails? rectifierDetails = getRectifierDetails(
-                        rectifierDetailsList,
-                        data.recId,
-                      );
-
-                      // Check if filteredRemarkDataList is empty
-                      if (filteredRemarkDataList == null) {
-                        RecRemarkData? remark = filteredRemarkDataList;
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => RecInspectionDetailPage(
-                                      inspectionData: data,
-                                      remarkData: remark,
-                                      rectifierDetails: rectifierDetails,
-                                    ),
-                              ),
+                    return ListView.builder(
+                      key: PageStorageKey(rectifierDetailsList),
+                      itemCount: inspectionDataList.length,
+                      itemBuilder: (context, index) {
+                        RecInspectionData data = inspectionDataList[index];
+                        RecRemarkData? filteredRemarkDataList =
+                            getRemarkForInspection(
+                              remarkDataList,
+                              data.remarkId,
                             );
-                          },
-                          child: Card(
-                            color: customColors.suqarBackgroundColor,
-                            child: ListTile(
-                              title: Text(
-                                'Date: ${data.clockTime}',
-                                style: TextStyle(
-                                  color: customColors.mainTextColor,
+                        RectifierDetails? rectifierDetails =
+                            getRectifierDetails(
+                              rectifierDetailsList,
+                              data.recId,
+                            );
+
+                        // Check if filteredRemarkDataList is empty
+                        if (filteredRemarkDataList == null) {
+                          RecRemarkData? remark = filteredRemarkDataList;
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => RecInspectionDetailPage(
+                                        inspectionData: data,
+                                        remarkData: remark,
+                                        rectifierDetails: rectifierDetails,
+                                      ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              color: customColors.suqarBackgroundColor,
+                              child: ListTile(
+                                title: Text(
+                                  'Date: ${data.clockTime}',
+                                  style: TextStyle(
+                                    color: customColors.mainTextColor,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //Text('Region: ${data.region}'),
+                                   Text(
+                                    '${rectifierDetails!.brand} ',
+                                    style: TextStyle(
+                                      color: customColors.subTextColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Location : ${data.region} | (${data.recId})',
+                                    style: TextStyle(
+                                      color: customColors.subTextColor,
+                                    ),
+                                  ),
+                                    Text(
+                                      'Shift: ${data.shift}',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Checked By: ${data.userName}',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Remark: No remark available',
+                                      style: TextStyle(
+                                        color: customColors.subTextColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //Text('Region: ${data.region}'),
-                                  Text(
-                                    '${rectifierDetails!.brand} | (${rectifierDetails.model})',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
+                            ),
+                          );
+                        } else {
+                          debugPrint(filteredRemarkDataList.toString());
+                          RecRemarkData? remark = filteredRemarkDataList;
+                          return GestureDetector(
+                            onTap: () {
+                              debugPrint(data.currentPs1.toString());
+                              debugPrint(remark.cubicleCleanRemark.toString());
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => RecInspectionDetailPage(
+                                        inspectionData: data,
+                                        remarkData: remark,
+                                        rectifierDetails: rectifierDetails,
+                                      ),
+
+                                  //  RecInspectionDetailPage(
+                                  //   inspectionData: data,
+                                  //   remarkData: remark,
+                                  // ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              child: ListTile(
+                                title: Text('Date: ${data.clockTime}'),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Text('Region: ${data.region}'),
+                                    Text(
+                                      '${rectifierDetails!.brand} | (${rectifierDetails.model})',
                                     ),
-                                  ),
-                                  Text(
-                                    'Location : ${rectifierDetails.rtom} ${rectifierDetails.station} | (${data.recId})',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
+                                    Text(
+                                      'Location : ${rectifierDetails.rtom} ${rectifierDetails.station} | (${data.recId})',
                                     ),
-                                  ),
-                                  Text(
-                                    'Shift: ${data.shift}',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Checked By: ${data.userName}',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Remark: No remark available',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
-                                ],
+                                    Text('Shift: ${data.shift}'),
+                                    Text('Checked By: ${data.userName}'),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      } else {
-                        debugPrint(filteredRemarkDataList.toString());
-                        RecRemarkData? remark = filteredRemarkDataList;
-                        return GestureDetector(
-                          onTap: () {
-                            debugPrint(data.currentPs1.toString());
-                            debugPrint(remark.cubicleCleanRemark.toString());
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => RecInspectionDetailPage(
-                                      inspectionData: data,
-                                      remarkData: remark,
-                                      rectifierDetails: rectifierDetails,
-                                    ),
-
-                                //  RecInspectionDetailPage(
-                                //   inspectionData: data,
-                                //   remarkData: remark,
-                                // ),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            child: ListTile(
-                              title: Text('Date: ${data.clockTime}'),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Text('Region: ${data.region}'),
-                                  Text(
-                                    '${rectifierDetails!.brand} | (${rectifierDetails.model})',
-                                  ),
-                                  Text(
-                                    'Location : ${rectifierDetails.rtom} ${rectifierDetails.station} | (${data.recId})',
-                                  ),
-                                  Text('Shift: ${data.shift}'),
-                                  Text('Checked By: ${data.userName}'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                  );
-                }
-              },
+                          );
+                        }
+                      },
+                    );
+                  }
+                },
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }

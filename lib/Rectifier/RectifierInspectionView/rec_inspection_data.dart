@@ -31,6 +31,8 @@ class RecInspectionData {
   final String recIndicatorStatus;
   final String remarkId;
   final String problemStatus;
+  final double Latitude;
+  final double Longitude;
 
   RecInspectionData({
     required this.id,
@@ -63,11 +65,13 @@ class RecInspectionData {
     required this.recIndicatorStatus,
     required this.remarkId,
     required this.problemStatus,
+    required this.Latitude,
+    required this.Longitude,
   });
 
   factory RecInspectionData.fromJson(Map<String, dynamic> json) {
     return RecInspectionData(
-     id: json['DailyRECCheckID']?.toString() ?? '',
+      id: json['DailyRECCheckID']?.toString() ?? '',
       userName: json['userName']?.toString() ?? '',
       recId: json['recId']?.toString() ?? '',
       clockTime: json['clockTime']?.toString() ?? '',
@@ -97,6 +101,14 @@ class RecInspectionData {
       recIndicatorStatus: json['recIndicatorStatus']?.toString() ?? '',
       remarkId: json["DailyRECRemarkID"]?.toString() ?? '',
       problemStatus: json['problemStatus']?.toString() ?? '0',
+      Latitude:
+          json['Latitude'] != null
+              ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+              : 0.0,
+      Longitude:
+          json['Longitude'] != null
+              ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+              : 0.0,
     );
   }
 }
@@ -112,7 +124,8 @@ class RecRemarkData {
   final String remoteAlarmRemark;
   final String recAlarmRemark;
   final String indRemark;
-
+  final double Latitude;
+  final double Longitude;
   RecRemarkData({
     required this.id,
     required this.roomCleanRemark,
@@ -124,6 +137,8 @@ class RecRemarkData {
     required this.remoteAlarmRemark,
     required this.recAlarmRemark,
     required this.indRemark,
+    required this.Latitude,
+    required this.Longitude,
   });
 
   factory RecRemarkData.fromJson(Map<String, dynamic> json) {
@@ -138,6 +153,14 @@ class RecRemarkData {
       remoteAlarmRemark: json['remoteAlarmRemark']?.toString() ?? '',
       recAlarmRemark: json['recAlarmRemark']?.toString() ?? '',
       indRemark: json['indRemark']?.toString() ?? '',
+      Latitude:
+          json['Latitude'] != null
+              ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+              : 0.0,
+      Longitude:
+          json['Longitude'] != null
+              ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+              : 0.0,
     );
   }
 }
@@ -166,18 +189,20 @@ class RectifierDetails {
 
   factory RectifierDetails.fromJson(Map<String, dynamic> json) {
     return RectifierDetails(
-     recID: json['RecID']?.toString() ?? "",
+      recID: json['RecID']?.toString() ?? "",
       region: json['Region']?.toString() ?? "",
       rtom: json['RTOM']?.toString() ?? "",
       station: json['Station']?.toString() ?? "",
       brand: json['Brand']?.toString() ?? "",
       model: json['Model']?.toString(),
-      Latitude: json['Latitude'] != null
-          ? double.tryParse(json['Latitude'].toString())
-          : null,
-      Longitude: json['Longitude'] != null
-          ? double.tryParse(json['Longitude'].toString())
-          : null,
+      Latitude:
+          json['Latitude'] != null
+              ? double.tryParse(json['Latitude'].toString()) ?? 0.0
+              : 0.0,
+      Longitude:
+          json['Longitude'] != null
+              ? double.tryParse(json['Longitude'].toString()) ?? 0.0
+              : 0.0,
     );
   }
 
