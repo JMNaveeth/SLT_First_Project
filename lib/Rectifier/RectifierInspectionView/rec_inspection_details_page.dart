@@ -84,24 +84,24 @@ class RecInspectionDetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      rectifierDetails != null
-                          ? Column(
-                            children: [
-                              Text(
-                                'Location : ${rectifierDetails!.rtom} ${rectifierDetails!.station}',
-                                style: TextStyle(
-                                  color: customColors.subTextColor,
-                                ),
-                              ),
-                              Text(
-                                '${rectifierDetails!.brand} ',
-                                style: TextStyle(
-                                  color: customColors.subTextColor,
-                                ),
-                              ),
-                            ],
-                          )
-                          : SizedBox.shrink(),
+                     rectifierDetails != null
+    ? Column(
+      children: [
+        Text(
+          'Location : ${rectifierDetails.rtom} ${rectifierDetails.station}',
+          style: TextStyle(
+            color: customColors.subTextColor,
+          ),
+        ),
+        Text(
+          '${rectifierDetails.brand}',
+          style: TextStyle(
+            color: customColors.subTextColor,
+          ),
+        ),
+      ],
+    )
+    : SizedBox.shrink(),
                       // --- ADD THIS BLOCK FOR GPS ---
                       Row(
                         children: [

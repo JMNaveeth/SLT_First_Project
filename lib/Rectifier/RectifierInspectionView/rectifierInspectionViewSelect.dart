@@ -292,18 +292,22 @@ class _RectifierInspectionViewSelectState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     //Text('Region: ${data.region}'),
-                                   Text(
-                                    '${rectifierDetails!.brand} ',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
                                   Text(
-                                    'Location : ${data.region} | (${data.recId})',
-                                    style: TextStyle(
-                                      color: customColors.subTextColor,
-                                    ),
-                                  ),
+  rectifierDetails != null
+      ? '${rectifierDetails.brand}'
+      : 'Unknown Rectifier',
+  style: TextStyle(
+    color: customColors.subTextColor,
+  ),
+),
+Text(
+  rectifierDetails != null
+      ? 'Location : ${rectifierDetails.rtom} ${rectifierDetails.station} | (${data.recId})'
+      : 'Location : ${data.region} | (${data.recId})',
+  style: TextStyle(
+    color: customColors.subTextColor,
+  ),
+),
                                     Text(
                                       'Shift: ${data.shift}',
                                       style: TextStyle(
@@ -360,11 +364,15 @@ class _RectifierInspectionViewSelectState
                                   children: [
                                     // Text('Region: ${data.region}'),
                                     Text(
-                                      '${rectifierDetails!.brand} | (${rectifierDetails.model})',
-                                    ),
-                                    Text(
-                                      'Location : ${rectifierDetails.rtom} ${rectifierDetails.station} | (${data.recId})',
-                                    ),
+          rectifierDetails != null 
+              ? '${rectifierDetails.brand} | (${rectifierDetails.model})'
+              : 'Unknown Rectifier',
+        ),
+        Text(
+          rectifierDetails != null
+              ? 'Location : ${rectifierDetails.rtom} ${rectifierDetails.station} | (${data.recId})'
+              : 'Location : Unknown | (${data.recId})',
+        ),
                                     Text('Shift: ${data.shift}'),
                                     Text('Checked By: ${data.userName}'),
                                   ],
