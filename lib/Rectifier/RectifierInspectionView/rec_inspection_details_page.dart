@@ -84,17 +84,17 @@ class RecInspectionDetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                     rectifierDetails != null
+                   rectifierDetails != null
     ? Column(
       children: [
         Text(
-          'Location : ${rectifierDetails.rtom} ${rectifierDetails.station}',
+          'Location : ${rectifierDetails?.rtom} ${rectifierDetails?.station}',
           style: TextStyle(
             color: customColors.subTextColor,
           ),
         ),
         Text(
-          '${rectifierDetails.brand}',
+          '${rectifierDetails?.brand}',
           style: TextStyle(
             color: customColors.subTextColor,
           ),
