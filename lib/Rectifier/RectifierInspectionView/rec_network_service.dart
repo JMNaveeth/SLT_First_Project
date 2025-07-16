@@ -30,7 +30,7 @@ Future<List<RecRemarkData>> recFetchRemarkData() async {
 
 Future<List<RectifierDetails>> rectifierDetailsFetchData() async {
   final response =
-      await http.get(Uri.parse('http://124.43.136.185:8000/api/rectifiers'));
+      await http.get(Uri.parse('https://powerprox.sltidc.lk/RectifierView.php'));
   if (response.statusCode == 200) {
     List<dynamic> body = json.decode(response.body);
     print(body.toString());
