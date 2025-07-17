@@ -4,6 +4,7 @@ import 'package:theme_update/Rectifier/RectifierInspectionView/rec_inspection_da
 import 'package:theme_update/theme_provider.dart';
 import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
+import 'package:theme_update/widgets/SmartGPSRibbon.dart';
 // import 'package:rectifier2/rec_inspection_data3.dart';
 //import '../../../HomePage/widgets/colors.dart';
 
@@ -103,25 +104,11 @@ class RecInspectionDetailPage extends StatelessWidget {
                           )
                           : SizedBox.shrink(),
                       // --- ADD THIS BLOCK FOR GPS ---
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: customColors.subTextColor,
-                            size: 18,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            "Latitude: ${inspectionData.Latitude != 0.0 ? inspectionData.Latitude : "Not Available"}",
-                            style: TextStyle(color: customColors.subTextColor),
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "Longitude: ${inspectionData.Longitude != 0.0 ? inspectionData.Longitude : "Not Available"}",
-                            style: TextStyle(color: customColors.subTextColor),
-                          ),
-                        ],
-                      ), // --- END GPS BLOCK ---
+                    SmartGPSRibbon(
+  latitude: inspectionData.Latitude,
+  longitude: inspectionData.Longitude,
+  region: inspectionData.region,
+), // --- END GPS BLOCK ---
                       Text(
                         "Checked By : ${inspectionData.userName}",
                         style: TextStyle(color: customColors.subTextColor),
