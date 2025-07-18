@@ -46,12 +46,14 @@ class DegInspectionDetailsPage extends StatelessWidget {
                 horizontal: 16.0,
               ), // Margin around the container
               decoration: BoxDecoration(
-                color: customColors.suqarBackgroundColor, // Background color of the ListTile
+                color:
+                    customColors
+                        .suqarBackgroundColor, // Background color of the ListTile
                 borderRadius: BorderRadius.circular(8.0), // Border radius
-                boxShadow:  [
+                boxShadow: [
                   BoxShadow(
                     color: customColors.subTextColor, // Shadow color
-                   // Shadow position
+                    // Shadow position
                   ),
                 ],
               ),
@@ -98,28 +100,34 @@ class DegInspectionDetailsPage extends StatelessWidget {
                             //     'Location : ${degDetails!.rtom} ${degDetails!.station}'),
                             Text(
                               '${degDetails!.brand_set} ',
-                              style: TextStyle(color: customColors.subTextColor),
+                              style: TextStyle(
+                                color: customColors.subTextColor,
+                              ),
                             ),
                           ],
                         )
                         : SizedBox.shrink(),
-                         // --- ADD THIS BLOCK FOR GPS ---
-  Row(
-  children: [
-    Icon(Icons.location_on, color: customColors.subTextColor, size: 18),
-    SizedBox(width: 4),
-    Text(
-      "Latitude: ${inspectionData.Latitude != 0.0 ? inspectionData.Latitude : "Not Available"}",
-      style: TextStyle(color: customColors.subTextColor),
-    ),
-    SizedBox(width: 8),
-    Text(
-      "Longitude: ${inspectionData.Longitude != 0.0 ? inspectionData.Longitude : "Not Available"}",
-      style: TextStyle(color: customColors.subTextColor),
-    ),
-  ],
-),
-    // --- END GPS BLOCK ---
+                    // --- ADD THIS BLOCK FOR GPS ---
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          color: customColors.subTextColor,
+                          size: 18,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          "Latitude: ${inspectionData.Latitude != 0.0 ? inspectionData.Latitude : "Not Available"}",
+                          style: TextStyle(color: customColors.subTextColor),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          "Longitude: ${inspectionData.Longitude != 0.0 ? inspectionData.Longitude : "Not Available"}",
+                          style: TextStyle(color: customColors.subTextColor),
+                        ),
+                      ],
+                    ),
+                    // --- END GPS BLOCK ---
                     Text(
                       "Checked By : ${inspectionData.username}",
                       style: TextStyle(color: customColors.subTextColor),
@@ -442,12 +450,14 @@ class DegInspectionDetailsPage extends StatelessWidget {
                 horizontal: 16.0,
               ), // Margin around the container
               decoration: BoxDecoration(
-                color: customColors.suqarBackgroundColor, // Background color of the ListTile
+                color:
+                    customColors
+                        .suqarBackgroundColor, // Background color of the ListTile
                 borderRadius: BorderRadius.circular(8.0), // Border radius
                 boxShadow: [
                   BoxShadow(
                     color: customColors.subTextColor, // Shadow color
-                   // Shadow position
+                    // Shadow position
                   ),
                 ],
               ),
@@ -482,11 +492,15 @@ class DegInspectionDetailsPage extends StatelessWidget {
                             children: [
                               Text(
                                 "Bat 1",
-                                style: TextStyle(color: customColors.subTextColor),
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
                               ),
                               Text(
                                 '${inspectionData.bat1} V',
-                                style: TextStyle(color: customColors.subTextColor),
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
                               ),
                             ],
                           ),
@@ -497,11 +511,15 @@ class DegInspectionDetailsPage extends StatelessWidget {
                             children: [
                               Text(
                                 "Bat 2",
-                                style: TextStyle(color: customColors.subTextColor),
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
                               ),
                               Text(
                                 '${inspectionData.bat2} V',
-                                style: TextStyle(color: customColors.subTextColor),
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
                               ),
                             ],
                           ),
@@ -510,8 +528,18 @@ class DegInspectionDetailsPage extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Bat 3"),
-                              Text('${inspectionData.bat3} V'),
+                              Text(
+                                "Bat 3",
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.bat3} V',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
                             ],
                           ),
                         if (inspectionData.bat4 !=
@@ -519,8 +547,18 @@ class DegInspectionDetailsPage extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Bat 4"),
-                              Text('${inspectionData.bat4} V'),
+                              Text(
+                                "Bat 4",
+                                style: TextStyle(
+                                  color: customColors.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.bat4} V',
+                                style: TextStyle(
+                                  color: customColors.subTextColor,
+                                ),
+                              ),
                             ],
                           ),
                       ],
@@ -601,7 +639,7 @@ class CustomDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -609,7 +647,9 @@ class CustomDetailsCard extends StatelessWidget {
         horizontal: 16.0,
       ), // Margin around the container
       decoration: BoxDecoration(
-        color: customColors.suqarBackgroundColor, // Background color of the ListTile
+        color:
+            customColors
+                .suqarBackgroundColor, // Background color of the ListTile
         borderRadius: BorderRadius.circular(8.0), // Border radius
         boxShadow: [
           BoxShadow(
@@ -634,7 +674,10 @@ class CustomDetailsCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(titleResponse, style: TextStyle(color: customColors.subTextColor)),
+                  Text(
+                    titleResponse,
+                    style: TextStyle(color: customColors.subTextColor),
+                  ),
 
                   SizedBox(width: 4),
 
@@ -650,7 +693,10 @@ class CustomDetailsCard extends StatelessWidget {
         ),
         subtitle:
             remarkResponse.isNotEmpty
-                ? Text("Remark: $remarkResponse")
+                ? Text(
+                  "Remark: $remarkResponse",
+                  style: TextStyle(color: customColors.subTextColor),
+                )
                 : const SizedBox.shrink(),
       ),
     );
