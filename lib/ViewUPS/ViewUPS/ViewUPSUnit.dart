@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:theme_update/theme_provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customColors;
+
+import '../../widgets/theme change related widjets/theme_provider.dart';
+import '../../widgets/theme change related widjets/theme_toggle_button.dart';
 
 class ViewUPSUnit extends StatelessWidget {
   final dynamic UPSUnit;

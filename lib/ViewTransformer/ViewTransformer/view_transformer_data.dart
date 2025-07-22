@@ -1,8 +1,10 @@
 import 'package:provider/provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customColors;
-import '../../theme_provider.dart';
+// import '../../theme_provider.dart';
 import '../../widgets/searchWidget.dart';
+import '../../widgets/theme change related widjets/theme_provider.dart';
+import '../../widgets/theme change related widjets/theme_toggle_button.dart';
 import 'search_helper_transformer.dart';
 import 'transformer_details_screen.dart';
 import 'package:http/http.dart' as http;

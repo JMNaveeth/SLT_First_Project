@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customColors;
-import '../../theme_provider.dart';
+
+import '../../widgets/theme change related widjets/theme_provider.dart';
+import '../../widgets/theme change related widjets/theme_toggle_button.dart';
+// import '../../theme_provider.dart';
 
 class TransformerDetailScreen extends StatefulWidget {
   final Map<String, dynamic> transformerData;
