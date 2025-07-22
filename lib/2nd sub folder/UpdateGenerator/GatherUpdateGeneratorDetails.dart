@@ -7,9 +7,11 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_update/theme_provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_toggle_button.dart';
 
 // import '../../../Widgets/GPSGrab/gps_location_widget.dart';
 // import '../../HomePage/notification/notificationPage.dart';
