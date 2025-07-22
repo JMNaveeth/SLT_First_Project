@@ -106,16 +106,21 @@ class RecInspectionDetailPage extends StatelessWidget {
                             ],
                           )
                           : SizedBox.shrink(),
-                      // --- ADD THIS BLOCK FOR GPS ---
-                    SmartGPSRibbon(
-  latitude: inspectionData.Latitude,
-  longitude: inspectionData.Longitude,
-  region: inspectionData.region,
-), // --- END GPS BLOCK ---
+
                       Text(
                         "Checked By : ${inspectionData.userName}",
                         style: TextStyle(color: customColors.subTextColor),
                       ),
+                      // --- ADD THIS BLOCK FOR GPS ---
+                      if (![
+                        'HQ',
+                        'WEL',
+                      ].contains(inspectionData.region.trim().toUpperCase()))
+                        SmartGPSRibbon(
+                          latitude: inspectionData.Latitude,
+                          longitude: inspectionData.Longitude,
+                          region: inspectionData.region,
+                        ), // --- END GPS BLOCK ---
                     ],
                   ),
                 ),

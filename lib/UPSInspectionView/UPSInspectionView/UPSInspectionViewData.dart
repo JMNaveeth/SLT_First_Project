@@ -38,427 +38,434 @@ class UpsInspectionDetailsPage extends StatelessWidget {
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
-      body:Container(
-  color: customColors.mainBackgroundColor, // Add this for body background color
-  child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            //Text('ID: ${inspectionData.id}'),
-            Card(
-              color: customColors.suqarBackgroundColor,
+      body: Container(
+        color:
+            customColors
+                .mainBackgroundColor, // Add this for body background color
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              //Text('ID: ${inspectionData.id}'),
+              Card(
+                color: customColors.suqarBackgroundColor,
 
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "${inspectionData.clockTime}",
-                      style: themeData.textTheme.bodyMedium!.copyWith(
-                        color: custom.mainTextColor,
+                child: ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${inspectionData.clockTime}",
+                        style: themeData.textTheme.bodyMedium!.copyWith(
+                          color: custom.mainTextColor,
+                        ),
                       ),
-                    ),
-                    Text(
-                      " ${inspectionData.shift}",
-                      style: themeData.textTheme.bodyMedium!.copyWith(
-                        color: custom.mainTextColor,
+                      Text(
+                        " ${inspectionData.shift}",
+                        style: themeData.textTheme.bodyMedium!.copyWith(
+                          color: custom.mainTextColor,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                subtitle: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Region: ${inspectionData.region}',
-                          style: themeData.textTheme.bodyMedium!.copyWith(
-                            color: custom.mainTextColor,
+                    ],
+                  ),
+                  subtitle: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Region: ${inspectionData.region}',
+                            style: themeData.textTheme.bodyMedium!.copyWith(
+                              color: custom.mainTextColor,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Rec Id: ${inspectionData.recId}',
-                          style: themeData.textTheme.bodyMedium!.copyWith(
-                            color: custom.mainTextColor,
+                          Text(
+                            'Rec Id: ${inspectionData.recId}',
+                            style: themeData.textTheme.bodyMedium!.copyWith(
+                              color: custom.mainTextColor,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    upsDetails != null
-                        ? Column(
-                          children: [
-                            Text(
-                              'Location : ${upsDetails!.rtom} ${upsDetails!.station}',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                            Text(
-                              '${upsDetails!.brand} | (${upsDetails!.model})',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                          ],
-                        )
-                        : SizedBox.shrink(),
-                    Text(
-                      "Checked By : ${inspectionData.userName}",
-                      style: themeData.textTheme.bodyMedium!.copyWith(
-                        color: custom.mainTextColor,
+                        ],
                       ),
-                    ),
-                   // --- REPLACE GPS BLOCK WITH THIS ---
-SmartGPSRibbon(
-  latitude: inspectionData.latitude,
-  longitude: inspectionData.longitude,
-  region: inspectionData.region,
-),
-// --- END GPS BLOCK ---
-                  ],
-                ),
-              ),
-            ),
-
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
-
-            Text(
-              "01 . Genaral Inspection",
-              style: themeData.textTheme.headlineSmall!.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: custom.mainTextColor,
-              ),
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Check Ventilation of the room",
-              titleResponse: inspectionData.ventilation,
-              remarkResponse:
-                  remarkData != null ? remarkData!.ventilationRemark : "",
-              warningConditionValue: 'Not Ok',
-            ),
-
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title:
-                  "Cleck the battery \ncabinet temperature \n(20-25 Centigrade)",
-              titleResponse: inspectionData.cabinTemp,
-              remarkResponse:
-                  remarkData != null ? remarkData!.cabinTempRemark : "",
-              warningConditionValue: 'Others',
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Measure Hydrogen gas Emission",
-              titleResponse: inspectionData.h2GasEmission,
-              remarkResponse:
-                  remarkData != null ? remarkData!.h2GasEmissionRemark : "",
-              warningConditionValue: 'Yes',
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Keep UPS free and \nclean of any dust",
-              titleResponse: inspectionData.dust,
-              remarkResponse: remarkData != null ? remarkData!.dustRemark : "",
-              warningConditionValue: 'Not Ok',
-            ),
-
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
-
-            Text(
-              "02 . Batter Inspection",
-              style: themeData.textTheme.headlineSmall!.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: custom.mainTextColor,
-              ),
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Check Cleanliness",
-              titleResponse: inspectionData.batClean,
-              remarkResponse:
-                  remarkData != null ? remarkData!.batCleanRemark : "",
-              warningConditionValue: 'Not Ok',
-            ),
-
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Check Terminal Voltage",
-              titleResponse: inspectionData.trmVolt,
-              remarkResponse:
-                  remarkData != null ? remarkData!.trmVoltRemark : "",
-              warningConditionValue: 'Not Ok',
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Check for any leakage",
-              titleResponse: inspectionData.leak,
-              remarkResponse: remarkData != null ? remarkData!.leakRemark : "",
-              warningConditionValue: 'Yes',
-            ),
-
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
-
-            Text(
-              "03 . Daily Inspection of the UPS",
-              style: themeData.textTheme.headlineSmall!.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: custom.mainTextColor,
-              ),
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Mimic LED Indication",
-              titleResponse: inspectionData.mimicLED,
-              remarkResponse:
-                  remarkData != null ? remarkData!.mimicLEDRemark : "",
-              warningConditionValue: 'Not Work',
-            ),
-
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "All metered parameters",
-              titleResponse: inspectionData.meterPara,
-              remarkResponse:
-                  remarkData != null ? remarkData!.meterParaRemark : "",
-              warningConditionValue: 'Not Ok',
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Warning or Alarm Massages",
-              titleResponse: inspectionData.warningAlarm,
-              remarkResponse:
-                  remarkData != null ? remarkData!.warningAlarmRemark : "",
-              warningConditionValue: 'Yes',
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Sign of Overheating",
-              titleResponse: inspectionData.overHeat,
-              remarkResponse:
-                  remarkData != null ? remarkData!.overHeatRemark : "",
-              warningConditionValue: 'Yes',
-            ),
-
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
-            Text(
-              "04 . UPS Reading",
-              style: themeData.textTheme.headlineSmall!.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: custom.mainTextColor,
-              ),
-            ),
-            Card(
-              color: customColors.suqarBackgroundColor,
-
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 15,
-                  bottom: 5,
-                  top: 10,
-                  left: 15,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Voltage Measurements",
-                      style: themeData.textTheme.bodyMedium!.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: custom.mainTextColor,
+                      upsDetails != null
+                          ? Column(
+                            children: [
+                              Text(
+                                'Location : ${upsDetails!.rtom} ${upsDetails!.station}',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${upsDetails!.brand} | (${upsDetails!.model})',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          )
+                          : SizedBox.shrink(),
+                      Text(
+                        "Checked By : ${inspectionData.userName}",
+                        style: themeData.textTheme.bodyMedium!.copyWith(
+                          color: custom.mainTextColor,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 1",
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                            Text(
-                              '${inspectionData.voltagePs1} V',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 2",
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                            Text(
-                              '${inspectionData.voltagePs2} V',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 3",
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                            Text(
-                              '${inspectionData.voltagePs3} V',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                      // --- REPLACE GPS BLOCK WITH THIS ---
+                      if (!['HQ', 'WEL'].contains(inspectionData.region.trim().toUpperCase()))
 
-            //Current Reading
-            Card(
-              color: customColors.suqarBackgroundColor,
-
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 15,
-                  bottom: 5,
-                  top: 10,
-                  left: 15,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Current Measurements",
-                      style: themeData.textTheme.bodyMedium!.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: custom.mainTextColor,
+                      SmartGPSRibbon(
+                        latitude: inspectionData.latitude,
+                        longitude: inspectionData.longitude,
+                        region: inspectionData.region,
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 1",
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                            Text(
-                              '${inspectionData.currentPs1} A',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 2",
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                            Text(
-                              '${inspectionData.currentPs2} A',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Phase 3",
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                            Text(
-                              '${inspectionData.currentPs3} A',
-                              style: themeData.textTheme.bodyMedium!.copyWith(
-                                color: custom.mainTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                      // --- END GPS BLOCK ---
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 5),
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
 
-            CustomOneDetailsCard(
-              inspectionData: inspectionData,
-              title: "Capacity",
-              titleResponse: "${inspectionData.upsCapacity}%",
-            ),
-            CustomDetailsCard(
-              inspectionData: inspectionData,
-              remarkData: remarkData,
-              title: "Additional Remark",
-              titleResponse: "",
-              remarkResponse: remarkData != null ? remarkData!.addiRemark : "",
-              warningConditionValue: "additionalremark",
-            ),
-          ],
+              Text(
+                "01 . Genaral Inspection",
+                style: themeData.textTheme.headlineSmall!.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: custom.mainTextColor,
+                ),
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Check Ventilation of the room",
+                titleResponse: inspectionData.ventilation,
+                remarkResponse:
+                    remarkData != null ? remarkData!.ventilationRemark : "",
+                warningConditionValue: 'Not Ok',
+              ),
+
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title:
+                    "Cleck the battery \ncabinet temperature \n(20-25 Centigrade)",
+                titleResponse: inspectionData.cabinTemp,
+                remarkResponse:
+                    remarkData != null ? remarkData!.cabinTempRemark : "",
+                warningConditionValue: 'Others',
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Measure Hydrogen gas Emission",
+                titleResponse: inspectionData.h2GasEmission,
+                remarkResponse:
+                    remarkData != null ? remarkData!.h2GasEmissionRemark : "",
+                warningConditionValue: 'Yes',
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Keep UPS free and \nclean of any dust",
+                titleResponse: inspectionData.dust,
+                remarkResponse:
+                    remarkData != null ? remarkData!.dustRemark : "",
+                warningConditionValue: 'Not Ok',
+              ),
+
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
+
+              Text(
+                "02 . Batter Inspection",
+                style: themeData.textTheme.headlineSmall!.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: custom.mainTextColor,
+                ),
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Check Cleanliness",
+                titleResponse: inspectionData.batClean,
+                remarkResponse:
+                    remarkData != null ? remarkData!.batCleanRemark : "",
+                warningConditionValue: 'Not Ok',
+              ),
+
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Check Terminal Voltage",
+                titleResponse: inspectionData.trmVolt,
+                remarkResponse:
+                    remarkData != null ? remarkData!.trmVoltRemark : "",
+                warningConditionValue: 'Not Ok',
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Check for any leakage",
+                titleResponse: inspectionData.leak,
+                remarkResponse:
+                    remarkData != null ? remarkData!.leakRemark : "",
+                warningConditionValue: 'Yes',
+              ),
+
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
+
+              Text(
+                "03 . Daily Inspection of the UPS",
+                style: themeData.textTheme.headlineSmall!.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: custom.mainTextColor,
+                ),
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Mimic LED Indication",
+                titleResponse: inspectionData.mimicLED,
+                remarkResponse:
+                    remarkData != null ? remarkData!.mimicLEDRemark : "",
+                warningConditionValue: 'Not Work',
+              ),
+
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "All metered parameters",
+                titleResponse: inspectionData.meterPara,
+                remarkResponse:
+                    remarkData != null ? remarkData!.meterParaRemark : "",
+                warningConditionValue: 'Not Ok',
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Warning or Alarm Massages",
+                titleResponse: inspectionData.warningAlarm,
+                remarkResponse:
+                    remarkData != null ? remarkData!.warningAlarmRemark : "",
+                warningConditionValue: 'Yes',
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Sign of Overheating",
+                titleResponse: inspectionData.overHeat,
+                remarkResponse:
+                    remarkData != null ? remarkData!.overHeatRemark : "",
+                warningConditionValue: 'Yes',
+              ),
+
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
+              Text(
+                "04 . UPS Reading",
+                style: themeData.textTheme.headlineSmall!.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: custom.mainTextColor,
+                ),
+              ),
+              Card(
+                color: customColors.suqarBackgroundColor,
+
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 15,
+                    bottom: 5,
+                    top: 10,
+                    left: 15,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Voltage Measurements",
+                        style: themeData.textTheme.bodyMedium!.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: custom.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 1",
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.voltagePs1} V',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 2",
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.voltagePs2} V',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 3",
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.voltagePs3} V',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              //Current Reading
+              Card(
+                color: customColors.suqarBackgroundColor,
+
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 15,
+                    bottom: 5,
+                    top: 10,
+                    left: 15,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Current Measurements",
+                        style: themeData.textTheme.bodyMedium!.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: custom.mainTextColor,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 1",
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.currentPs1} A',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 2",
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.currentPs2} A',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Phase 3",
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                              Text(
+                                '${inspectionData.currentPs3} A',
+                                style: themeData.textTheme.bodyMedium!.copyWith(
+                                  color: custom.mainTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 5),
+              Divider(),
+              SizedBox(height: 5),
+
+              CustomOneDetailsCard(
+                inspectionData: inspectionData,
+                title: "Capacity",
+                titleResponse: "${inspectionData.upsCapacity}%",
+              ),
+              CustomDetailsCard(
+                inspectionData: inspectionData,
+                remarkData: remarkData,
+                title: "Additional Remark",
+                titleResponse: "",
+                remarkResponse:
+                    remarkData != null ? remarkData!.addiRemark : "",
+                warningConditionValue: "additionalremark",
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

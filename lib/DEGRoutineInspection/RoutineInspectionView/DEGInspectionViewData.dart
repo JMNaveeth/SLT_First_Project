@@ -110,17 +110,20 @@ class DegInspectionDetailsPage extends StatelessWidget {
                           ],
                         )
                         : SizedBox.shrink(),
-                    // --- REPLACE GPS BLOCK WITH THIS ---
-SmartGPSRibbon(
-  latitude: inspectionData.Latitude,
-  longitude: inspectionData.Longitude,
-  region: inspectionData.region,
-),
-// --- END GPS BLOCK ---
+                 
                     Text(
                       "Checked By : ${inspectionData.username}",
                       style: TextStyle(color: customColors.subTextColor),
                     ),
+                    // --- REPLACE GPS BLOCK WITH THIS ---
+if (!['HQ', 'WEL'].contains(inspectionData.region.trim().toUpperCase())) {
+  SmartGPSRibbon(
+    latitude: inspectionData.Latitude,
+    longitude: inspectionData.Longitude,
+    region: inspectionData.region,
+  )
+} // No comma here!
+// --- END GPS BLOCK ---
                   ],
                 ),
               ),
