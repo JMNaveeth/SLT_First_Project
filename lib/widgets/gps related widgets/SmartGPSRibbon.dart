@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:theme_update/widgets/gps_tag_widget.dart';
-import 'package:theme_update/widgets/gps_location_ribbon.dart';
+import 'package:theme_update/widgets/gps%20related%20widgets/gps_location_ribbon.dart';
+import 'package:theme_update/widgets/gps%20related%20widgets/gps_tag_widget.dart';
+// import 'package:theme_update/widgets/gps_tag_widget.dart';
+// import 'package:theme_update/widgets/gps_location_ribbon.dart';
 
 class SmartGPSRibbon extends StatefulWidget {
   final double? latitude;
