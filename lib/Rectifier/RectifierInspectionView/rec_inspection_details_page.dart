@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 //import 'package:powerprox/Screens/Other%20Assets/Rectifier/RectifierInspectionView/rec_inspection_data.dart';
 import 'package:theme_update/Rectifier/RectifierInspectionView/rec_inspection_data.dart';
-import 'package:theme_update/theme_provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
-import 'package:theme_update/widgets/SmartGPSRibbon.dart';
+// import 'package:theme_update/widgets/SmartGPSRibbon.dart';
+import 'package:theme_update/widgets/gps%20related%20widgets/SmartGPSRibbon.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_toggle_button.dart';
 // import 'package:rectifier2/rec_inspection_data3.dart';
 //import '../../../HomePage/widgets/colors.dart';
 
