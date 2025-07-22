@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:theme_update/utils/utils/colors.dart' as customColors;
 // import '../../../Widgets/ThemeToggle/theme_provider.dart';
 // import '../../../../Widgets/ThemeToggle/theme_provider.dart';
 import '../../widgets/theme change related widjets/theme_provider.dart';
+import '../../widgets/theme change related widjets/theme_toggle_button.dart';
 import 'ups_inspection_data.dart';
 import 'UPSInspectionViewData.dart';
 import 'httpGetUPSInspectionData.dart';
@@ -109,10 +111,20 @@ class _UPSInspectionViewSelectState extends State<UPSInspectionViewSelect> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final themeData = themeProvider.currentTheme;
     final custom = themeData.extension<CustomColors>()!;
+        final customColors = Theme.of(context).extension<CustomColors>()!;
+
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inspection Data'),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        title: Text(
+          'Inspection Data',
+          style: TextStyle(color: customColors.mainTextColor, fontSize: 20),
+        ),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
       body: Column(
         children: [
@@ -123,9 +135,9 @@ class _UPSInspectionViewSelectState extends State<UPSInspectionViewSelect> {
                 hint: Text('Select Region'),
                 value: selectedRegion,
                 style: themeData.textTheme.bodyMedium!.copyWith(
-                  color: custom.mainTextColor,
+                  color: customColors.mainTextColor,
                 ),
-                dropdownColor: custom.suqarBackgroundColor,
+                dropdownColor: customColors.suqarBackgroundColor,
                 iconEnabledColor: custom.mainTextColor,
                 underline: Container(
                   height: 2,
@@ -253,7 +265,7 @@ class _UPSInspectionViewSelectState extends State<UPSInspectionViewSelect> {
                               title: Text(
                                 'Date: ${data.clockTime}',
                                 style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
+                                  color: customColors.mainTextColor,
                                 ),
                               ),
                               subtitle: Column(

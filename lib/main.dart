@@ -472,18 +472,6 @@ class firstsub_folder extends StatelessWidget {
                 },
                 child: const Text('Add RoutineInspect'),
               ),
-              ElevatedButton(
-                style: buttonStyle(),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => selectUPSToInspect(),
-                    ),
-                  );
-                },
-                child: const Text('UPSRoutineInspection'),
-              ),
                ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
@@ -496,6 +484,19 @@ class firstsub_folder extends StatelessWidget {
                 },
                 child: const Text('UPSInspectionView'),
               ),
+              ElevatedButton(
+                style: buttonStyle(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => selectUPSToInspect(),
+                    ),
+                  );
+                },
+                child: const Text('UPSRoutineInspection'),
+              ),
+              
               ElevatedButton(
                 style: buttonStyle(),
                 onPressed: () {
