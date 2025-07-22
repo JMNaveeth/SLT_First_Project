@@ -115,14 +115,13 @@ class DegInspectionDetailsPage extends StatelessWidget {
                       "Checked By : ${inspectionData.username}",
                       style: TextStyle(color: customColors.subTextColor),
                     ),
-                    // --- REPLACE GPS BLOCK WITH THIS ---
-if (!['HQ', 'WEL'].contains(inspectionData.region.trim().toUpperCase())) {
+                   // --- REPLACE GPS BLOCK WITH THIS ---
+if (!['HQ', 'WEL'].contains(inspectionData.region.trim().toUpperCase()))
   SmartGPSRibbon(
     latitude: inspectionData.Latitude,
     longitude: inspectionData.Longitude,
     region: inspectionData.region,
-  )
-} // No comma here!
+  ),
 // --- END GPS BLOCK ---
                   ],
                 ),
