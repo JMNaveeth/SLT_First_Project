@@ -6,7 +6,6 @@ class SmartGPSRibbon extends StatefulWidget {
   final double? latitude;
   final double? longitude;
   final String region;
-  final bool allowCapture; // New parameter to control capture behavior
   final Function(double latitude, double longitude)? onLocationUpdated;
   
   const SmartGPSRibbon({
@@ -14,7 +13,6 @@ class SmartGPSRibbon extends StatefulWidget {
     this.latitude,
     this.longitude,
     required this.region,
-    this.allowCapture = false, // Default to false (view mode)
     this.onLocationUpdated,
   }) : super(key: key);
 
@@ -44,40 +42,29 @@ class _SmartGPSRibbonState extends State<SmartGPSRibbon> {
     }
   }
 
-  bool _isHQorWEL() {
-    // Improved check for HQ/WEL using startsWith
+  // New helper method to make the logic clearer
+  bool _shouldShowMapButton() {
+    // Don't show map button for HQ or WEL locations
     final normalizedRegion = widget.region.trim().toUpperCase();
-    return normalizedRegion.startsWith('HQ') || normalizedRegion.startsWith('WEL');
+    return normalizedRegion != 'HQ' && normalizedRegion != 'WEL';
   }
   
   @override
   Widget build(BuildContext context) {
-    // If HQ or WEL, don't show anything
-    if (_isHQorWEL()) {
-      return SizedBox.shrink();
-    }
-    
+    final bool isHQorWEL = !_shouldShowMapButton();
     final bool hasCoordinates = _latitude != null && _longitude != null && 
                                _latitude != 0.0 && _longitude != 0.0;
     
-    // If we have coordinates, just show the ribbon
-    if (hasCoordinates) {
+    // If we have coordinates or we're in HQ/WEL, just show the ribbon
+    if (hasCoordinates || isHQorWEL) {
       return GPSLocationRibbon(
         latitude: _latitude,
         longitude: _longitude,
-        showMapButton: true, // Always show map button for non-HQ/WEL
+        showMapButton: _shouldShowMapButton(),  // Only show button for non-HQ/WEL
       );
     }
     
-    // If we don't have coordinates but capture is not allowed (view mode),
-    // show a message or nothing
-    if (!widget.allowCapture) {
-      // You could return a "No coordinates available" message here
-      // Or just return nothing:
-      return SizedBox.shrink();
-    }
-    
-    // Otherwise (no coordinates but capture allowed), use the GPS tag widget
+    // Otherwise, use the GPS tag widget to capture location
     return Column(
       children: [
         ReusableGPSWidget(
@@ -91,7 +78,7 @@ class _SmartGPSRibbonState extends State<SmartGPSRibbon> {
             child: GPSLocationRibbon(
               latitude: _latitude,
               longitude: _longitude,
-              showMapButton: true,
+              showMapButton: _shouldShowMapButton(),  // Only show button for non-HQ/WEL
             ),
           ),
       ],
