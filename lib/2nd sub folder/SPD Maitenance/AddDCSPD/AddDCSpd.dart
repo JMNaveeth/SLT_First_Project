@@ -6,10 +6,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_update/theme_provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 
 //import '../../../UserAccess.dart';
+import '../../../widgets/theme change related widjets/theme_provider.dart';
+import '../../../widgets/theme change related widjets/theme_toggle_button.dart';
 import '../AddACSPD/httpPostSPD.dart';
 
 class AddDCSpd extends StatefulWidget {

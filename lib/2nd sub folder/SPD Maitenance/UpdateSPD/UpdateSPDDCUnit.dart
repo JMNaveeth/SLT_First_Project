@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_update/theme_provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
+import '../../../widgets/theme change related widjets/theme_toggle_button.dart';
 import 'HttpUpdateSPD.dart';
 
 class UpdateDCUnit extends StatefulWidget {
