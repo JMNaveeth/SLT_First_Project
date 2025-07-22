@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:theme_update/theme_provider.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
+// import 'package:theme_update/theme_provider.dart';
 
 class ReusableGPSWidget extends StatefulWidget {
   final Function(double latitude, double longitude) onLocationFound;

@@ -14,12 +14,15 @@ import 'package:theme_update/Rectifier/RectifierInspectionView/rectifierInspecti
 import 'package:theme_update/Rectifier/RectifierRoutineInspection/selectRectifierToInspect.dart';
 import 'package:theme_update/UPSRoutineInspection/selectUPSToInspect.dart';
 import 'package:theme_update/ViewGeneratorV2/ViewGenList.dart';
-import 'package:theme_update/settings_screen.dart';
-import 'package:theme_update/theme_provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/settings_screen.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customColors;
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/settings_screen.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_toggle_button.dart';
 import 'ViewComfortAC/ViewComfortAC/SelectComfortACUnit.dart';
 import 'ViewElevator/ViewElevator/viewElevator.dart';
 import 'ViewRectifier/ViewRectifierDetails.dart';
