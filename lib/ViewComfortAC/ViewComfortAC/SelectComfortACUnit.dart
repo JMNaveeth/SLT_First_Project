@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:theme_update/theme_provider.dart';
-import 'package:theme_update/theme_toggle_button.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
 import 'package:theme_update/utils/utils/colors.dart' as customsColors;
 import 'package:theme_update/widgets/searchWidget.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_toggle_button.dart';
 import 'ViewComfortACUnit.dart';
 import 'ac_details_model.dart';
 import 'httpGetComfortACdetails.dart';
