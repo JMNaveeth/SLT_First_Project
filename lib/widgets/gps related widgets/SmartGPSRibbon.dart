@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theme_update/widgets/gps%20related%20widgets/gps_location_ribbon.dart';
 import 'package:theme_update/widgets/gps%20related%20widgets/gps_tag_widget.dart';
-// import 'package:theme_update/widgets/gps_tag_widget.dart';
-// import 'package:theme_update/widgets/gps_location_ribbon.dart';
 
 class SmartGPSRibbon extends StatefulWidget {
   final double? latitude;
@@ -43,18 +41,26 @@ class _SmartGPSRibbonState extends State<SmartGPSRibbon> {
       widget.onLocationUpdated!(lat, lng);
     }
   }
+
+  // New helper method to make the logic clearer
+  bool _shouldShowMapButton() {
+    // Don't show map button for HQ or WEL locations
+    final normalizedRegion = widget.region.trim().toUpperCase();
+    return normalizedRegion != 'HQ' && normalizedRegion != 'WEL';
+  }
   
   @override
   Widget build(BuildContext context) {
-    final bool isHQorWEL = widget.region.trim().toUpperCase() == 'HQ' || 
-                           widget.region.trim().toUpperCase() == 'WEL';
+    final bool isHQorWEL = !_shouldShowMapButton();
+    final bool hasCoordinates = _latitude != null && _longitude != null && 
+                               _latitude != 0.0 && _longitude != 0.0;
     
     // If we have coordinates or we're in HQ/WEL, just show the ribbon
-    if ((_latitude != null && _longitude != null) || isHQorWEL) {
+    if (hasCoordinates || isHQorWEL) {
       return GPSLocationRibbon(
         latitude: _latitude,
         longitude: _longitude,
-        showMapButton: !isHQorWEL,
+        showMapButton: _shouldShowMapButton(),  // Only show button for non-HQ/WEL
       );
     }
     
@@ -72,6 +78,7 @@ class _SmartGPSRibbonState extends State<SmartGPSRibbon> {
             child: GPSLocationRibbon(
               latitude: _latitude,
               longitude: _longitude,
+              showMapButton: _shouldShowMapButton(),  // Only show button for non-HQ/WEL
             ),
           ),
       ],

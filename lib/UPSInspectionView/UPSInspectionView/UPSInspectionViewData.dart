@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:theme_update/utils/utils/colors.dart' as customColors;
+import 'package:theme_update/widgets/gps%20related%20widgets/SmartGPSRibbon.dart';
 // import '../../../../Widgets/ThemeToggle/theme_provider.dart';
 // import '../../../Widgets/ThemeToggle/theme_provider.dart';
 import '../../widgets/theme change related widjets/theme_provider.dart';
+import '../../widgets/theme change related widjets/theme_toggle_button.dart';
 import 'ups_inspection_data.dart';
 
 class UpsInspectionDetailsPage extends StatelessWidget {
@@ -10,25 +13,41 @@ class UpsInspectionDetailsPage extends StatelessWidget {
   final UpsRemarkData? remarkData;
   final UPSDetails? upsDetails;
 
-  UpsInspectionDetailsPage({required this.inspectionData,
+  UpsInspectionDetailsPage({
+    required this.inspectionData,
     required this.remarkData,
-    this.upsDetails});
+    this.upsDetails,
+  });
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final themeData = themeProvider.currentTheme;
     final custom = themeData.extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inspection Detail'),
+        backgroundColor: customColors.appbarColor,
+        iconTheme: IconThemeData(color: customColors.mainTextColor),
+        title: Text(
+          'Inspection Detail',
+          style: TextStyle(color: customColors.mainTextColor, fontSize: 20),
+        ),
+        actions: [
+          ThemeToggleButton(), // Use the reusable widget
+        ],
       ),
-      body: Padding(
+      body:Container(
+  color: customColors.mainBackgroundColor, // Add this for body background color
+  child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
             //Text('ID: ${inspectionData.id}'),
             Card(
+              color: customColors.suqarBackgroundColor,
+
               child: ListTile(
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,41 +87,43 @@ class UpsInspectionDetailsPage extends StatelessWidget {
                     ),
                     upsDetails != null
                         ? Column(
-                      children: [
-                        Text(
-                          'Location : ${upsDetails!.rtom} ${upsDetails!
-                              .station}',
-                          style: themeData.textTheme.bodyMedium!.copyWith(
-                            color: custom.mainTextColor,
-                          ),
-                        ),
-                        Text(
-                          '${upsDetails!.brand} | (${upsDetails!.model})',
-                          style: themeData.textTheme.bodyMedium!.copyWith(
-                            color: custom.mainTextColor,
-                          ),
-                        ),
-                      ],
-                    )
+                          children: [
+                            Text(
+                              'Location : ${upsDetails!.rtom} ${upsDetails!.station}',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                            Text(
+                              '${upsDetails!.brand} | (${upsDetails!.model})',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                          ],
+                        )
                         : SizedBox.shrink(),
                     Text(
                       "Checked By : ${inspectionData.userName}",
                       style: themeData.textTheme.bodyMedium!.copyWith(
                         color: custom.mainTextColor,
                       ),
-                    )
+                    ),
+                   // --- REPLACE GPS BLOCK WITH THIS ---
+SmartGPSRibbon(
+  latitude: inspectionData.latitude,
+  longitude: inspectionData.longitude,
+  region: inspectionData.region,
+),
+// --- END GPS BLOCK ---
                   ],
                 ),
               ),
             ),
 
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
             Divider(),
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
 
             Text(
               "01 . Genaral Inspection",
@@ -118,7 +139,7 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "Check Ventilation of the room",
               titleResponse: inspectionData.ventilation,
               remarkResponse:
-              remarkData != null ? remarkData!.ventilationRemark : "",
+                  remarkData != null ? remarkData!.ventilationRemark : "",
               warningConditionValue: 'Not Ok',
             ),
 
@@ -126,10 +147,10 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               inspectionData: inspectionData,
               remarkData: remarkData,
               title:
-              "Cleck the battery \ncabinet temperature \n(20-25 Centigrade)",
+                  "Cleck the battery \ncabinet temperature \n(20-25 Centigrade)",
               titleResponse: inspectionData.cabinTemp,
               remarkResponse:
-              remarkData != null ? remarkData!.cabinTempRemark : "",
+                  remarkData != null ? remarkData!.cabinTempRemark : "",
               warningConditionValue: 'Others',
             ),
             CustomDetailsCard(
@@ -138,7 +159,7 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "Measure Hydrogen gas Emission",
               titleResponse: inspectionData.h2GasEmission,
               remarkResponse:
-              remarkData != null ? remarkData!.h2GasEmissionRemark : "",
+                  remarkData != null ? remarkData!.h2GasEmissionRemark : "",
               warningConditionValue: 'Yes',
             ),
             CustomDetailsCard(
@@ -150,13 +171,9 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               warningConditionValue: 'Not Ok',
             ),
 
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
             Divider(),
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
 
             Text(
               "02 . Batter Inspection",
@@ -172,7 +189,7 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "Check Cleanliness",
               titleResponse: inspectionData.batClean,
               remarkResponse:
-              remarkData != null ? remarkData!.batCleanRemark : "",
+                  remarkData != null ? remarkData!.batCleanRemark : "",
               warningConditionValue: 'Not Ok',
             ),
 
@@ -182,7 +199,7 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "Check Terminal Voltage",
               titleResponse: inspectionData.trmVolt,
               remarkResponse:
-              remarkData != null ? remarkData!.trmVoltRemark : "",
+                  remarkData != null ? remarkData!.trmVoltRemark : "",
               warningConditionValue: 'Not Ok',
             ),
             CustomDetailsCard(
@@ -194,13 +211,9 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               warningConditionValue: 'Yes',
             ),
 
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
             Divider(),
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
 
             Text(
               "03 . Daily Inspection of the UPS",
@@ -216,7 +229,7 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "Mimic LED Indication",
               titleResponse: inspectionData.mimicLED,
               remarkResponse:
-              remarkData != null ? remarkData!.mimicLEDRemark : "",
+                  remarkData != null ? remarkData!.mimicLEDRemark : "",
               warningConditionValue: 'Not Work',
             ),
 
@@ -226,7 +239,7 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "All metered parameters",
               titleResponse: inspectionData.meterPara,
               remarkResponse:
-              remarkData != null ? remarkData!.meterParaRemark : "",
+                  remarkData != null ? remarkData!.meterParaRemark : "",
               warningConditionValue: 'Not Ok',
             ),
             CustomDetailsCard(
@@ -235,7 +248,7 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "Warning or Alarm Massages",
               titleResponse: inspectionData.warningAlarm,
               remarkResponse:
-              remarkData != null ? remarkData!.warningAlarmRemark : "",
+                  remarkData != null ? remarkData!.warningAlarmRemark : "",
               warningConditionValue: 'Yes',
             ),
             CustomDetailsCard(
@@ -244,17 +257,13 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               title: "Sign of Overheating",
               titleResponse: inspectionData.overHeat,
               remarkResponse:
-              remarkData != null ? remarkData!.overHeatRemark : "",
+                  remarkData != null ? remarkData!.overHeatRemark : "",
               warningConditionValue: 'Yes',
             ),
 
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
             Divider(),
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
             Text(
               "04 . UPS Reading",
               style: themeData.textTheme.headlineSmall!.copyWith(
@@ -264,174 +273,181 @@ class UpsInspectionDetailsPage extends StatelessWidget {
               ),
             ),
             Card(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      right: 15, bottom: 5, top: 10, left: 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Voltage Measurements",
-                        style: themeData.textTheme.bodyMedium!.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: custom.mainTextColor,
+              color: customColors.suqarBackgroundColor,
+
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 15,
+                  bottom: 5,
+                  top: 10,
+                  left: 15,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Voltage Measurements",
+                      style: themeData.textTheme.bodyMedium!.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: custom.mainTextColor,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Phase 1",
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                            Text(
+                              '${inspectionData.voltagePs1} V',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Phase 1",
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Phase 2",
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
                               ),
-                              Text(
-                                '${inspectionData.voltagePs1} V',
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Phase 2",
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
+                            ),
+                            Text(
+                              '${inspectionData.voltagePs2} V',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
                               ),
-                              Text(
-                                '${inspectionData.voltagePs2} V',
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Phase 3",
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Phase 3",
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
                               ),
-                              Text(
-                                '${inspectionData.voltagePs3} V',
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                )),
+                            ),
+                            Text(
+                              '${inspectionData.voltagePs3} V',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
             //Current Reading
             Card(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      right: 15, bottom: 5, top: 10, left: 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Current Measurements",
-                        style: themeData.textTheme.bodyMedium!.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: custom.mainTextColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Phase 1",
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              ),
-                              Text(
-                                '${inspectionData.currentPs1} A',
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Phase 2",
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              ),
-                              Text(
-                                '${inspectionData.currentPs2} A',
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Phase 3",
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              ),
-                              Text(
-                                '${inspectionData.currentPs3} A',
-                                style: themeData.textTheme.bodyMedium!.copyWith(
-                                  color: custom.mainTextColor,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                )),
+              color: customColors.suqarBackgroundColor,
 
-            SizedBox(
-              height: 5,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 15,
+                  bottom: 5,
+                  top: 10,
+                  left: 15,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Current Measurements",
+                      style: themeData.textTheme.bodyMedium!.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: custom.mainTextColor,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Phase 1",
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                            Text(
+                              '${inspectionData.currentPs1} A',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Phase 2",
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                            Text(
+                              '${inspectionData.currentPs2} A',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Phase 3",
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                            Text(
+                              '${inspectionData.currentPs3} A',
+                              style: themeData.textTheme.bodyMedium!.copyWith(
+                                color: custom.mainTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
+
+            SizedBox(height: 5),
             Divider(),
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 5),
 
             CustomOneDetailsCard(
-                inspectionData: inspectionData,
-                title: "Capacity",
-                titleResponse: "${inspectionData.upsCapacity}%"),
+              inspectionData: inspectionData,
+              title: "Capacity",
+              titleResponse: "${inspectionData.upsCapacity}%",
+            ),
             CustomDetailsCard(
               inspectionData: inspectionData,
               remarkData: remarkData,
@@ -443,16 +459,18 @@ class UpsInspectionDetailsPage extends StatelessWidget {
           ],
         ),
       ),
+      ),
     );
   }
 }
 
 class CustomOneDetailsCard extends StatelessWidget {
-  const CustomOneDetailsCard(
-      {super.key,
-        required this.inspectionData,
-        required this.title,
-        required this.titleResponse});
+  const CustomOneDetailsCard({
+    super.key,
+    required this.inspectionData,
+    required this.title,
+    required this.titleResponse,
+  });
 
   final UpsInspectionData inspectionData;
   final String title;
@@ -460,10 +478,17 @@ class CustomOneDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
     return Card(
+      color: customColors.suqarBackgroundColor,
+
       child: Padding(
-        padding:
-        const EdgeInsets.only(left: 15, top: 20, bottom: 20, right: 15),
+        padding: const EdgeInsets.only(
+          left: 15,
+          top: 20,
+          bottom: 20,
+          right: 15,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [Text(title), Text(titleResponse)],
@@ -496,13 +521,17 @@ class CustomDetailsCard extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final themeData = themeProvider.currentTheme;
     final custom = themeData.extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
 
     return Card(
-      color: warningConditionValue == "additionalremark"
-          ? Theme.of(context).cardColor
-          : titleResponse == warningConditionValue
-          ? Color.fromARGB(172, 216, 127, 121)
-          : Theme.of(context).cardColor,
+      color: customColors.suqarBackgroundColor,
+
+      // color:
+      //     warningConditionValue == "additionalremark"
+      //         ? Theme.of(context).cardColor
+      //         : titleResponse == warningConditionValue
+      //         ? Color.fromARGB(172, 216, 127, 121)
+      //         : Theme.of(context).cardColor,
       child: ListTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -526,32 +555,25 @@ class CustomDetailsCard extends StatelessWidget {
                 warningConditionValue == "additionalremark"
                     ? const SizedBox.shrink() // Empty space
                     : titleResponse == warningConditionValue
-                    ? Icon(
-                  Icons.cancel,
-                  color: Colors.red,
-                )
-                    : Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                ),
+                    ? Icon(Icons.cancel, color: Colors.red)
+                    : Icon(Icons.check_circle, color: Colors.green),
               ],
             ),
           ],
         ),
-        subtitle: remarkResponse.isNotEmpty
-            ? Text(
-          "Remark: $remarkResponse",
-          style: themeData.textTheme.bodyMedium!.copyWith(
-            color: custom.mainTextColor,
-          ),
-        )
-            : const SizedBox.shrink(),
+        subtitle:
+            remarkResponse.isNotEmpty
+                ? Text(
+                  "Remark: $remarkResponse",
+                  style: themeData.textTheme.bodyMedium!.copyWith(
+                    color: custom.mainTextColor,
+                  ),
+                )
+                : const SizedBox.shrink(),
       ),
     );
   }
 }
-
-
 
 //v1
 // import 'package:flutter/material.dart';

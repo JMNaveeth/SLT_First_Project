@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:theme_update/theme_provider.dart';
 // import 'package:theme_update/theme_toggle_button.dart';
 import 'package:theme_update/utils/utils/colors.dart';
+import 'package:theme_update/widgets/gps%20related%20widgets/SmartGPSRibbon.dart';
 import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
 import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_toggle_button.dart';
 
@@ -109,27 +110,13 @@ class DegInspectionDetailsPage extends StatelessWidget {
                           ],
                         )
                         : SizedBox.shrink(),
-                    // --- ADD THIS BLOCK FOR GPS ---
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          color: customColors.subTextColor,
-                          size: 18,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Latitude: ${inspectionData.Latitude != 0.0 ? inspectionData.Latitude : "Not Available"}",
-                          style: TextStyle(color: customColors.subTextColor),
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          "Longitude: ${inspectionData.Longitude != 0.0 ? inspectionData.Longitude : "Not Available"}",
-                          style: TextStyle(color: customColors.subTextColor),
-                        ),
-                      ],
-                    ),
-                    // --- END GPS BLOCK ---
+                    // --- REPLACE GPS BLOCK WITH THIS ---
+SmartGPSRibbon(
+  latitude: inspectionData.Latitude,
+  longitude: inspectionData.Longitude,
+  region: inspectionData.region,
+),
+// --- END GPS BLOCK ---
                     Text(
                       "Checked By : ${inspectionData.username}",
                       style: TextStyle(color: customColors.subTextColor),

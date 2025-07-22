@@ -126,7 +126,10 @@ class _UPSInspectionViewSelectState extends State<UPSInspectionViewSelect> {
           ThemeToggleButton(), // Use the reusable widget
         ],
       ),
-      body: Column(
+      body:
+      Container(
+  color: customColors.mainBackgroundColor, // Red background color
+  child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -261,6 +264,7 @@ class _UPSInspectionViewSelectState extends State<UPSInspectionViewSelect> {
                             );
                           },
                           child: Card(
+                            color: customColors.suqarBackgroundColor,
                             child: ListTile(
                               title: Text(
                                 'Date: ${data.clockTime}',
@@ -348,6 +352,7 @@ class _UPSInspectionViewSelectState extends State<UPSInspectionViewSelect> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

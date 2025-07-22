@@ -25,6 +25,8 @@ class UpsInspectionData {
   final String upsCapacity;
   final String remarkId;
   final String? problemStatus;
+  final double? latitude;
+  final double? longitude;
 
   UpsInspectionData({
     required this.id,
@@ -52,7 +54,9 @@ class UpsInspectionData {
     required this.currentPs3,
     required this.upsCapacity,
     required this.remarkId,
-    required this.problemStatus
+    required this.problemStatus,
+    this.latitude = 0.0,
+    this.longitude = 0.0,
   });
 
   factory UpsInspectionData.fromJson(Map<String, dynamic> json) {
@@ -82,9 +86,10 @@ class UpsInspectionData {
       currentPs3: json['currentPs3'] ?? '',
       upsCapacity: json['upsCapacity'] ?? '',
       remarkId: json["DailyUPSRemarksID"] ?? '',
-      problemStatus: json["problemStatus"]??"0"
-    );
-  }
+      problemStatus: json["problemStatus"]??"0",
+      latitude: json['latitude'] != null ? double.parse(json['latitude'].toString()) : 0.0,
+      longitude: json['longitude'] != null ? double.parse(json['longitude'].toString()) : 0.0,
+    );  }
 }
 
 class UpsRemarkData {
@@ -145,8 +150,8 @@ class UPSDetails {
   String brand;
   String model;
 
-  String? latitude;
-  String? longitude;
+  double? latitude;
+  double? longitude;
 
   UPSDetails({
     required this.upsID,
@@ -167,9 +172,11 @@ class UPSDetails {
       station: json['Station'] ?? "",
       brand: json['Brand'] ?? "",
       model: json['Model'] ?? "",
-      latitude: json['latitude'] ?? '',
-      longitude: json['longitude'] ?? '',
-    );
+       latitude: json['latitude'] != null ? 
+        double.tryParse(json['latitude'].toString()) : null,
+    longitude: json['longitude'] != null ? 
+        double.tryParse(json['longitude'].toString()) : null,
+  );
   }
 
   Map<String, dynamic> toJson() {
