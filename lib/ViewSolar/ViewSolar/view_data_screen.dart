@@ -264,7 +264,7 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
                           children: [
                             // Left side: Dropdowns in a column
                             Expanded(
-                              flex: 2,
+                              flex: 3,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
