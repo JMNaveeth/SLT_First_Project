@@ -263,7 +263,7 @@ class _ViewSPDDetailsState extends State<ViewSPDDetails> {
                               );
                             },
                             child: Card(
-                             
+                              elevation: 5,
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 30,
                                 vertical: 10,
