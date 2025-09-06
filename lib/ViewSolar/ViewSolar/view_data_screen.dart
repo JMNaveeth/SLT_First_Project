@@ -97,6 +97,105 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
     setState(() {
       isLoading = true;
     });
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+// import 'package:theme_update/theme_provider.dart';
+// import 'package:theme_update/theme_toggle_button.dart';
+import 'package:theme_update/utils/utils/colors.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_provider.dart';
+import 'package:theme_update/widgets/theme%20change%20related%20widjets/theme_toggle_button.dart';
+import '../../widgets/searchWidget.dart';
+
+// import '../AddSolar/http_get_service.dart';
+import 'http_get_service.dart';
+import 'search_helper.dart';
+import 'site_detail_screen.dart';
+
+class ViewDataScreen extends StatefulWidget {
+  @override
+  _ViewDataScreenState createState() => _ViewDataScreenState();
+}
+
+class _ViewDataScreenState extends State<ViewDataScreen> {
+  String? selectedRegion;
+  String? selectedStation;
+  String? selectedRtom;
+  String searchQuery = '';
+
+  final List<String> regions = [
+    'ALL',
+    'CPN',
+    'CPS',
+    'EPN',
+    'EPS',
+    'EPN–TC',
+    'HQ',
+    'NCP',
+    'NPN',
+    'NPS',
+    'NWPE',
+    'NWPW',
+    'PITI',
+    'SAB',
+    'SMW5'
+        'SMW6',
+    'SPE',
+    'SPW',
+    'WEL',
+    'WPC',
+    'WPE',
+    'WPN',
+    'WPNE',
+    'WPS',
+    'WPSE',
+    'WPSW',
+    'UVA',
+  ];
+
+  List<String> stations = [];
+  List<String> rToms = [];
+
+  List<Map<String, dynamic>> siteData = [];
+  List<Map<String, dynamic>> filteredSiteData = [];
+  List<Map<String, dynamic>> panelData = [];
+  List<Map<String, dynamic>> inverterData = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      HttpGetService service = HttpGetService();
+      List<Map<String, dynamic>> data =
+          await service.getSolarData(); // Fetch data from solar table
+      panelData = await service.getPanelsData();
+      inverterData = await service.getInverterData();
+
+      setState(() {
+        siteData = data;
+        filteredSiteData = data;
+      });
+    } catch (e) {
+      print('Failed to fetch data: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchStations(String region) async {
+    setState(() {
+      isLoading = true;
+    });
 
     try {
       HttpGetService service = HttpGetService();
