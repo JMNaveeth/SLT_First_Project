@@ -97,6 +97,98 @@ class _ViewDataScreenState extends State<ViewDataScreen> {
     setState(() {
       isLoading = true;
     });
+    try {
+      HttpGetService service = HttpGetService();
+      List<String> fetchedStations = await service.getStationsByRegion(region);
+      setState(() {
+        stations = fetchedStations;
+      });
+    } catch (e) {
+      print('Failed to fetch stations: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchRtoms(String region, String station) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      HttpGetService service = HttpGetService();
+      List<String> fetchedRtoms = await service.getRtomsByRegionAndStation(
+        region,
+        station,
+      );
+      setState(() {
+        rToms = fetchedRtoms;
+      });
+    } catch (e) {
+      print('Failed to fetch RTOMs: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void filterData() {
+    List<Map<String, dynamic>> tempData =
+        siteData.where((site) {
+          // Filter by dropdown selections
+          if (selectedRegion != null &&
+              selectedRegion != 'ALL' &&
+              site['region'] != selectedRegion) {
+            return false;
+          }
+          if (selectedStation != null && site['station'] != selectedStation) {
+            return false;
+          }
+          if (selectedRtom != null && site['rtom'] != selectedRtom) {
+            return false;
+          }
+
+          // Filter by search query if it exists
+          if (searchQuery.isNotEmpty) {
+            bool siteMatches = SearchHelper.matchesSiteQuery(site, searchQuery);
+            if (siteMatches) return true;
+
+            // Then search in panels for this site
+            bool panelMatches = panelData.any(
+              (panel) =>
+                  panel['site_id'] == site['site_id'] &&
+                  SearchHelper.matchesPanelQuery(panel, searchQuery),
+            );
+            if (panelMatches) return true;
+
+            // Then search in inverters for this site
+            bool inverterMatches = inverterData.any(
+              (inverter) =>
+                  inverter['site_id'] == site['site_id'] &&
+                  SearchHelper.matchesInverterQuery(inverter, searchQuery),
+            );
+            if (inverterMatches) return true;
+
+            return false;
+          }
+
+          return true;
+        }).toList();
+
+    setState(() {
+      filteredSiteData = tempData;
+    });
+  }
+
+  void handleSearch(String query) {
+    setState(() {
+      searchQuery = query;
+      filterData();
+    });
+  }
 
     try {
       HttpGetService service = HttpGetService();
