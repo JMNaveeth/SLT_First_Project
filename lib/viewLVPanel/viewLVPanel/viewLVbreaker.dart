@@ -319,7 +319,7 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                             4.0,
                                           ),
                                         ),
-                                        shadowColor: customColors.subTextColor,
+                                       // shadowColor: customColors.subTextColor,
                                         child: Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: Column(
