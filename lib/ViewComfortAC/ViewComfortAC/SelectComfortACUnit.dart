@@ -341,25 +341,21 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
               ),
             ],
           ),
-        // Add Total AC row
+          // Add Total AC row
           TableRow(
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Total AC',
-                  style: TextStyle(
-                    color: customColors.subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   '$totalAC',
-                  style: TextStyle(
-                    color: customColors.subTextColor,
-                  ),
+                  style: TextStyle(color: customColors.subTextColor),
                 ),
               ),
             ],
@@ -880,6 +876,8 @@ class _SelectComfortACUnitState extends State<SelectComfortACUnit> {
                                         ),
                                       )
                                       : ListView.builder(
+                                        key: PageStorageKey('ac_list'),
+
                                         itemCount: logDataList.length,
                                         itemBuilder: (context, index) {
                                           AcLogData logData =
