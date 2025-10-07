@@ -308,10 +308,10 @@ class _ViewLVBreakerState extends State<ViewLVBreaker> {
                                       },
                                       child: Card(
                                         elevation: 5,
-                                        // margin: const EdgeInsets.symmetric(
-                                        //   horizontal: 30,
-                                        //   vertical: 10,
-                                        // ),
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
                                         color:
                                             customColors.suqarBackgroundColor,
                                         shape: RoundedRectangleBorder(
