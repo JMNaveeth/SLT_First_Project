@@ -208,61 +208,7 @@ class LVBreakerDetailPage extends StatelessWidget {
       ),
     );
   }
-       _buildInfoCard('Supplier Details', [
-              _buildDetailRow(
-                'Supplier Name:',
-                breaker['ServiceProvider'],
-                context,
-              ),
-              _buildDetailRow(
-                'AMC Available:',
-                breaker['AMCAvailable'],
-                context,
-              ),
-              _buildDetailRow(
-                'Supplier Contact:',
-                breaker['SupplierContact'],
-                context,
-              ),
-              _buildDetailRow(
-                'Supplier Email:',
-                breaker['SupplierEmail'],
-                context,
-              ),
-            ], context),
-            const SizedBox(height: 16),
-            _buildInfoCard('Other Equipment Details', [
-              _buildDetailRow(
-                'Power Analyzer Brand:',
-                breaker['PowerAnalyzerBrand'],
-                context,
-              ),
-              _buildDetailRow(
-                'Power Analyzer Model:',
-                breaker['PowerAnalyzerModel'],
-                context,
-              ),
-              _buildDetailRow(
-                'Earth Fault Relay:',
-                breaker['EarthFaultRelay'],
-                context,
-              ),
-            ], context),
-            const SizedBox(height: 16),
-            _buildInfoCard('Other Details', [
-              _buildDetailRow('Remarks:', breaker['Remarks'], context),
-              _buildDetailRow('Uploaded By:', breaker['uploadedBy'], context),
-              _buildDetailRow(
-                'Uploaded Time:',
-                breaker['uploadedTime'],
-                context,
-              ),
-            ], context),
-          ],
-        ),
-      ),
-    );
-  }
+
   Widget _buildInfoCard(
     String title,
     List<Widget> details,
